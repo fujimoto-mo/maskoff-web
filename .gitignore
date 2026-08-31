@@ -7,4 +7,5 @@ out
 public/images/optimized
 tsconfig.tsbuildinfo
 next-env.d.ts
+*:Zone.Identifier
 .superpowers/
