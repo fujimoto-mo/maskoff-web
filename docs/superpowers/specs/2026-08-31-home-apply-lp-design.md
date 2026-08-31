@@ -106,7 +106,7 @@ Next.js App Router（Turbopack、Vercel）+ Tailwind v4（フォームのみ）+
 - dependencies: `next@^16.3.3` `react@^19.2` `react-dom@^19.2` `zod@^4` `gsap@^3.15`（③用）`lenis@^1.3`（③用）
 - devDependencies: `tailwindcss@^4` `@tailwindcss/postcss@^4` `sharp@^0.35` `typescript@^5` `@types/node` `@types/react` `@types/react-dom` `eslint@^9` `eslint-config-next@16.3.3` `prettier` `prettier-plugin-tailwindcss` `wrangler@^4` `@cloudflare/workers-types`
 - 外すもの: `swiper` `microcms-js-sdk`（生 fetch で足りる）
-- scripts: `dev` / `prebuild: node scripts/optimize-images.mjs` / `build: next build` / `lint: eslint` / `typecheck: tsc --noEmit` / `test: node --test "src/**/*.test.ts" "worker/**/*.test.ts"` / `preview` / `deploy`
+- scripts: `dev` / `predev` と `prebuild`: `node scripts/optimize-images.mjs` / `build: next build` / `lint: eslint` / `typecheck: tsc --noEmit` / `test: node --test "src/**/*.test.ts" "worker/**/*.test.ts"` / `preview` / `deploy`
 
 Next.js 16 の留意点（同梱 docs `node_modules/next/dist/docs/` で確認済み）: Turbopack 既定、`params` は Promise、`next lint` 廃止（ESLint CLI）、Node ≥20.9、`output: "export"` は従来どおり。
 
@@ -138,12 +138,14 @@ src/
 └ types/microcms.ts
 ```
 
-`tsconfig.json`: `"@/*": ["./src/*"]`、`exclude` に `worker` `out` `scripts`。`worker/tsconfig.json` は `../src/lib/schema/**` を `include` に追加。
+`tsconfig.json`: `"@/*": ["./src/*"]`、`exclude` に `worker` `out` `scripts`、`allowImportingTsExtensions` / `erasableSyntaxOnly` を有効化。`worker/tsconfig.json` は `../src/lib/schema/**` を `include` に追加。
+
+衛生: `Untitled` を削除、`.gitignore` に `*:Zone.Identifier` と `public/images/optimized/` を追加。
 
 ### 4-3. 画像パイプライン
 
-- `scripts/optimize-images.mjs`: `public/images/**/*.{png,jpg}` → `public/images/optimized/**/*.{avif,webp}` + **`src/lib/images/manifest.json`**（`{ [src]: { width, height, avif, webp } }`）。透過 PNG はアルファ保持。`public/images/optimized/` と manifest は gitignore、`prebuild` で生成。
-- `ui/Picture.tsx`: props `{ src, alt, sizes, className?, priority?, imgClassName? }`。manifest 未登録の `src` は **ビルド時エラー**（`throw`）にして `<img>` フォールバックを作らない。`width` / `height` を常に出力。`priority` で `loading="eager"` + `fetchPriority="high"`。
+- `scripts/optimize-images.mjs`: `public/images/**/*.{png,jpg}` → `public/images/optimized/**/*.{avif,webp}` + **`src/lib/images/manifest.json`**（`{ [src]: { width, height, avif, webp } }`）。透過 PNG はアルファ保持。`public/images/optimized/` は gitignore。**`src/lib/images/manifest.json` はコミットする**（`Picture` が import するため、`next dev` / `tsc` が最適化スクリプト実行前でも通る）。`prebuild` と `predev` でスクリプトを実行して再生成し、差分が出たらコミットする。
+- `ui/Picture.tsx`: props `{ src, alt, sizes, className?, priority?, imgClassName? }`。manifest 未登録の `src` は **ビルド時エラー**（`throw`）にして暗黙の `<img>` フォールバックを作らない。`width` / `height` を常に出力。`priority` で `loading="eager"` + `fetchPriority="high"`。`.svg` の `src` だけは manifest を引かず、`width` / `height` を props で必須にして `<img>` を出力する（透過 SVG の唯一の経路）。
 - サンプル素材生成 `scripts/gen-sample-assets.mjs`（sharp、初回のみ手動実行、成果物はコミット）:
   - `hero/hero-01..15.png` 透過・幾何シルエット（サイズ不揃い 600〜900px）
   - `service/svc-01..08.png` 正方形 800px
@@ -202,8 +204,10 @@ src/
   --text-caption: 12px;  --text-caption--line-height: 1.75;
   --text-card-title: 20px;  --text-card-title-sp: 16px;
 
-  /* ブレークポイント */
-  --breakpoint-sp: 600px;  --breakpoint-nav: 720px;  --breakpoint-md: 820px;  --breakpoint-form: 900px;  --breakpoint-pc: 961px;
+  /* ブレークポイント（Tailwind の変種は min-width。max-* 変種を "以下" にするため境界は +1）
+     max-sp: ≤600 / sp: ≥601 / max-nav: ≤720 / max-tab: ≤820 / max-form: ≤900 / max-pc: ≤960 / pc: ≥961 */
+  --breakpoint-*: initial;
+  --breakpoint-sp: 601px;  --breakpoint-nav: 721px;  --breakpoint-tab: 821px;  --breakpoint-form: 901px;  --breakpoint-pc: 961px;
 
   /* モーション */
   --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);  --ease-sym: cubic-bezier(0.65, 0, 0.35, 1);
@@ -259,9 +263,9 @@ src/
 ### sections/
 
 - **Hero**: `<section aria-labelledby="hero-title">` `<h1 id class="sr-only">株式会社MasKOFF — TAKE THE MASK OFF｜（サンプル）</h1>` + `Marquee`。`min-height: calc(100svh - var(--spacing-header-h))`（≥601）、`padding: clamp(30px,4vw,50px) 0 clamp(38px,5.2vw,64px)`。行 1: img×3, text, img×2 / 行 2: img×3, logo, img×2（reverse）/ 行 3: img×2, text, img×3。先頭行の最初 3 枚を `priority`。`sizes="(max-width:600px) 45vw, 20vw"`。直後に `<div class="fv-gap">`。
-- **VisionBlock**: 見出し + `.vision-grid`。左: `<img src="/images/company/vision-handwriting.svg" alt="…" width height>`（SVG は manifest 対象外なので `<img>` 直書きを **この 1 箇所のみ許可**、CLAUDE.md §9 に注記）+ 段落（`<Marker>` 3 箇所）。右: 図 SVG（同上）。
+- **VisionBlock**: 見出し + `.vision-grid`。左: `Picture`（`.svg` は manifest 対象外なので `width` / `height` を props で必須にし `<img>` を出力する。`<img>` 直書き禁止の規約はそのまま）`src="/images/company/vision-handwriting.svg" alt="（見出し文言）"` + 段落（`<Marker>` 3 箇所）。右: 図 SVG（同上）。
 - **ServiceGrid** `{ services, limit?=6, variant:"grid" }`: `<ul id="service-track" class="svf-grid">`、`<li class="svf">` → `<a href="/service/[slug]/">` 内に `.svf-visual`（`Picture` cover + `.svf-badge`）+ `<h3>` + `<p>`。≤600 で `display:flex; overflow-x:auto; scroll-snap-type:x mandatory; margin-inline:-20px; padding-inline:20px; scrollbar-width:none`、`.svf { flex:0 0 80%; scroll-snap-align:center }`。下に `CarouselDots` と「事業一覧を見る」。
-- **WorksList** `{ works }`: `<ul>` 全幅、`<li class="work-row" data-pat="p1|p2">`: `.avatar`（Picture 88px 丸）/ `.id`（`<h3>` 名前 + `<p>` 種別）/ `.bio`。サムネ `<ul class="work-thumbs" hidden>`（③で使用、①は `hidden` のまま DOM に持たせず **データのみ** `works.ts` に定義。manifest 登録のため画像は `public/images/works/` に置く）。
+- **WorksList** `{ works }`: `<ul>` 全幅、`<li class="work-row" data-pat="p1|p2">`: `.avatar`（Picture 88px 丸）/ `.id`（`<h3>` 名前 + `<p>` 種別）/ `.bio`。サムネは①では **DOM に描画しない**（③の `Collage` で使用）。`works.ts` の `thumbs` にパスだけ定義し、画像は manifest 登録のため `public/images/works/` に置く。
 - **PartnerGrid** `{ partners }`: `<ul id="partner-track" class="sp-grid">`、`<li class="sp-item">`: `.sp-img`（Picture cover + `.sp-tag` + `.sp-icon`）+ `<h3>` + `<p>`。SP は ServiceGrid と同じ scroll-snap + `CarouselDots`。
 - **NewsStrip** `{ news, notice }`: 2 カラム（≤820 縦積み）。各列 `SectionHeading`（NEWS / NOTICE）+ `<ol>` 3 件（`<time>` / カテゴリ / タイトル、行 `border-bottom`）+ `Button line`「すべて見る」。
 - **FaqList** `{ items }`: `<ul class="faq-grid">` → `<li class="faq-card"><details><summary><h3><span class="q">Q</span>質問</h3></summary><p>回答</p><small>注記</small></details></li>`。CSS: `≥601: details summary { pointer-events:none; list-style:none } details::details-content { display:block; content-visibility:visible; height:auto }`。`≤600: summary::after` に「＋」、`details[open] summary::after { rotate:45deg }`。
@@ -357,7 +361,14 @@ export type Job    = Base & { … jobs.json どおり … };
 |---|---|
 | `npm run typecheck` / `npm run lint` | 全体 |
 | `npm run build` | `prebuild` で画像最適化 → `next build`（`out/`） |
-| `npm test`（node:test） | `schema/contact.test.ts`（必須・長さ・enum・consent・honeypot）、`microcms.test.ts`（`selectPinned` の期限・未設定・複数件、フォールバック）、`jsonld.test.ts`、`marquee.test.ts`（`duplicate`）、`worker/contact.test.ts`（403 / 429 / honeypot 200 / 400 / 200 を fetch・KV のフェイクで） |
+| `npm test`（node:test） | `schema/contact.test.ts`（必須・長さ・enum・consent・honeypot）、`lib/pinned.test.ts`（`selectPinned` の期限・未設定・複数件）、`lib/jsonld.test.ts`、`motion/marquee-cells.test.ts`（`duplicate`）、`worker/contact.test.ts`（403 / 429 / honeypot 200 / 400 / 200 を fetch・KV のフェイクで） |
+
+`node:test` は Node 24 のネイティブ TS 実行（型消去のみ）で動かすため、次の制約を守る:
+
+- テスト対象は **内部 import を持たない葉モジュール**にする（`zod` など node_modules の import は可）。`selectPinned` は `lib/pinned.ts`、`duplicate` は `motion/marquee-cells.ts` に分離し、`microcms.ts` / `Marquee.tsx` から import する。
+- `worker/**` は相対 import に **`.ts` 拡張子を付ける**（`tsconfig` に `allowImportingTsExtensions: true`、wrangler の esbuild も解決可）。`json()` ヘルパーは `worker/lib/json.ts` に移して `index.ts` ↔ `contact.ts` の循環を解く。
+- `tsconfig` に `erasableSyntaxOnly: true`（`enum` / `namespace` / parameter property を禁止）。
+- テストファイルは `*.test.ts`、`node --test` の glob で拾う。
 
 ### 10-2. 手動（実装担当が実施し結果を報告）
 
@@ -376,6 +387,7 @@ export type Job    = Base & { … jobs.json どおり … };
 5. CLAUDE.md・`tokens.css`・`docs/architecture.md` が §5-2 のとおり更新済み
 6. `npm test` 成功、Lighthouse モバイル Performance ≥90 / Accessibility ≥95 / Best Practices ≥95 / SEO 100（数値を報告）
 7. iOS Safari 実機確認は依頼者に引き継ぐ（確認項目: 100svh、慣性スクロール、fixed バッジ、フォーム入力時のズーム）
+8. 完了報告時に `npm run dev`（フォーム送信まで試す場合は `npm run preview`）を起動したままにし、確認用 URL と見どころ（PC/SP の切替幅、FAQ、カルーセル、追従バッジ）を案内する
 
 ---
 
