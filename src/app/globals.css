@@ -92,6 +92,18 @@
   to { transform: rotate(360deg); }
 }
 
+/* FAQ: ≥601px は常時展開（::details-content 対応ブラウザ。未対応はクリックで開ける）。≤600px はネイティブ開閉 */
+@media (width >= 601px) {
+  .faq-card summary {
+    pointer-events: none;
+  }
+  .faq-card details::details-content {
+    display: block;
+    content-visibility: visible;
+    height: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
