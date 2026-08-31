@@ -37,13 +37,12 @@ export default function CarouselDots({ trackId, count, label }: Props) {
   };
 
   return (
-    <div role="tablist" aria-label={label} className="mt-6 hidden justify-center gap-2 max-sp:flex">
+    <div role="group" aria-label={label} className="mt-6 hidden justify-center gap-2 max-sp:flex">
       {Array.from({ length: count }, (_, i) => (
         <button
           key={i}
           type="button"
-          role="tab"
-          aria-selected={i === active}
+          aria-current={i === active ? true : undefined}
           aria-label={`${i + 1}枚目`}
           onClick={() => go(i)}
           className={cn("size-2 rounded-full transition-colors", i === active ? "bg-fg" : "bg-border")}
