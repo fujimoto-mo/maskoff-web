@@ -1,62 +1,41 @@
-/**
- * Worker エントリポイント。
- *
- * wrangler.toml の run_worker_first = ["/api/*"] により、
- * このコードが呼ばれるのは /api/* へのリクエストだけ。
- * それ以外（HTML / CSS / JS / 画像）は Cloudflare が静的アセットとして
- * 直接配信するため、Worker のリクエスト数を消費しない。
- *
- * 結果として月間の Worker 消費はフォーム送信と再ビルド通知のみになり、
- * 無料枠（10万リクエスト/日）で十分に収まる。
- */
-
 import { handleContact } from "./contact";
 import { handleRebuild } from "./rebuild";
 
 export interface Env {
   ASSETS: Fetcher;
   RATE_LIMIT: KVNamespace;
-
-  // vars（wrangler.toml）
   SITE_URL: string;
-  CONTACT_FROM_EMAIL: string;
-  CONTACT_TO_EMAIL: string;
+  MAIL_FROM: string;
+  MAIL_TO: string;
   GITHUB_REPO: string;
-
-  // secrets（wrangler secret put で登録）
   RESEND_API_KEY: string;
   TURNSTILE_SECRET_KEY: string;
   MICROCMS_WEBHOOK_SECRET: string;
-  GITHUB_DISPATCH_TOKEN: string;
-  SLACK_WEBHOOK_URL?: string;
+  GITHUB_TOKEN: string;
 }
 
-function methodNotAllowed(allow: string): Response {
-  return new Response("Method Not Allowed", {
-    status: 405,
-    headers: { Allow: allow },
-  });
-}
+const json = (body: unknown, status = 200, headers: HeadersInit = {}) =>
+  new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json; charset=utf-8", ...headers } });
 
 export default {
-  async fetch(request, env, ctx): Promise<Response> {
-    const { pathname } = new URL(request.url);
+  async fetch(req, env, ctx): Promise<Response> {
+    const url = new URL(req.url);
 
-    switch (pathname) {
-      case "/api/contact":
-        if (request.method !== "POST") return methodNotAllowed("POST");
-        return handleContact(request, env, ctx);
-
-      case "/api/rebuild":
-        if (request.method !== "POST") return methodNotAllowed("POST");
-        return handleRebuild(request, env);
-
-      case "/api/health":
-        return new Response("ok", { status: 200 });
+    // run_worker_first = ["/api/*"] のため、ここに来るのは /api/* のみ（他は静的配信）
+    if (url.pathname === "/api/contact") {
+      if (req.method !== "POST") return json({ ok: false, error: "Method Not Allowed" }, 405, { allow: "POST" });
+      const origin = req.headers.get("origin") ?? "";
+      if (!origin.startsWith(env.SITE_URL) && !origin.startsWith("http://localhost")) return json({ ok: false, error: "Forbidden" }, 403);
+      return handleContact(req, env, ctx);
     }
+    if (url.pathname === "/api/rebuild") {
+      if (req.method !== "POST") return json({ ok: false, error: "Method Not Allowed" }, 405, { allow: "POST" });
+      return handleRebuild(req, env);
+    }
+    if (url.pathname.startsWith("/api/")) return json({ ok: false, error: "Not Found" }, 404);
 
-    // run_worker_first の設定上、ここに来るのは /api/ 配下の未定義パスのみ。
-    // 念のため静的アセット側へフォールバックする。
-    return env.ASSETS.fetch(request);
+    return env.ASSETS.fetch(req);
   },
 } satisfies ExportedHandler<Env>;
+
+export { json };

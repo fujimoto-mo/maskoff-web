@@ -1,0 +1,5 @@
+# Wrangler ランタイム（Worker）— WSL 内で作成すること
+RESEND_API_KEY=re_xxxxxxxx
+TURNSTILE_SECRET_KEY=0x4AAAAAAA_xxxxxxxxx
+MICROCMS_WEBHOOK_SECRET=change-me
+GITHUB_TOKEN=github_pat_xxxxxxxx

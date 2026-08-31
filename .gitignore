@@ -1,34 +1,9 @@
-# 依存
-node_modules/
-
-# ビルド成果物
-.next/
-out/
-public/_opt/
-src/lib/images/manifest.json
-
-# 環境変数
-.env
-.env.local
+node_modules
+.next
+out
 .env*.local
 .dev.vars
-
-# Cloudflare
-.wrangler/
-worker-configuration.d.ts
-
-# エディタ / OS
-.vscode/*
-!.vscode/extensions.json
-.idea/
-.DS_Store
-Thumbs.db
-*:Zone.Identifier
-
-# ログ
-*.log
-npm-debug.log*
-
-# Next.js 生成物
+.wrangler
+public/images/optimized
+tsconfig.tsbuildinfo
 next-env.d.ts
-*.tsbuildinfo
