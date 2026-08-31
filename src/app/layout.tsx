@@ -2,6 +2,12 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Inter_Tight, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import SkipLink from "@/components/layout/SkipLink";
+import StickyCta from "@/components/layout/StickyCta";
+import JsonLd from "@/components/ui/JsonLd";
+import { organizationJsonLd } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 
 // ビルド時に取得してセルフホストする（外部リクエストなし・CLS なし）
@@ -20,7 +26,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja" className={`${interTight.variable} ${notoSansJP.variable}`}>
-      <body className="bg-bg text-fg-body antialiased">{children}</body>
+      <body className="bg-bg text-fg-body antialiased">
+        <JsonLd data={organizationJsonLd(SITE)} />
+        <SkipLink />
+        <Header />
+        <main id="main">{children}</main>
+        <Footer />
+        <StickyCta />
+      </body>
     </html>
   );
 }

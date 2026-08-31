@@ -1,18 +1,13 @@
+import NoticeBanner from "@/components/layout/NoticeBanner";
 import SectionHeading from "@/components/ui/SectionHeading";
-import Button from "@/components/ui/Button";
-import Marker from "@/components/ui/Marker";
 
 export default function HomePage() {
   return (
-    <main id="main" className="wrap section-pad">
-      <SectionHeading as="h1" en={"OFFICIAL\nCREATORS"} ja="見出しの確認" id="home-title" />
-      <p>
-        本文の<Marker>マーカー</Marker>確認。
-      </p>
-      <div className="mt-6 flex gap-3">
-        <Button href="/contact/" dot>お問い合わせ</Button>
-        <Button variant="line" href="/news/">すべて見る</Button>
-      </div>
-    </main>
+    <>
+      <NoticeBanner />
+      <section id="contact" aria-labelledby="contact-title" className="wrap section-pad">
+        <SectionHeading en="CONTACT" ja="お問い合わせ（Task 14 で実装）" id="contact-title" />
+      </section>
+    </>
   );
 }
