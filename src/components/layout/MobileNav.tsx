@@ -10,6 +10,9 @@ export default function MobileNav() {
   const [open, setOpen] = useState(false);
   const panelId = `mobile-menu-${useId()}`;
   const firstLink = useRef<HTMLAnchorElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const wasOpen = useRef(false);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -18,21 +21,46 @@ export default function MobileNav() {
       firstLink.current?.focus();
     } else {
       root.removeAttribute("data-menu-open");
+      // 初回マウント時（開いたことがない）はフォーカスを奪わない。閉じる操作の直後だけ復帰させる。
+      if (wasOpen.current) toggleRef.current?.focus();
     }
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
+    wasOpen.current = open;
     return () => {
-      window.removeEventListener("keydown", onKey);
       root.removeAttribute("data-menu-open");
     };
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const focusables = rootRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])');
+      if (!focusables || focusables.length === 0) return;
+      const list = Array.from(focusables);
+      const firstEl = list[0];
+      const lastEl = list[list.length - 1];
+      const active = document.activeElement;
+      if (e.shiftKey && active === firstEl) {
+        e.preventDefault();
+        lastEl.focus();
+      } else if (!e.shiftKey && active === lastEl) {
+        e.preventDefault();
+        firstEl.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   const bar = "absolute inset-x-[9px] h-[1.5px] bg-fg";
   return (
-    <div className="ml-auto hidden max-nav:block">
+    <div ref={rootRef} className="ml-auto hidden max-nav:block">
       <button
+        ref={toggleRef}
         type="button"
         aria-expanded={open}
         aria-controls={panelId}

@@ -8,6 +8,14 @@ export default function StickyCta() {
   const path = usePathname();
   const isHome = path === "/";
   const [hidden, setHidden] = useState(false);
+  // isHome が変わった（＝クライアント遷移した）瞬間にレンダー中で hidden をリセットする。
+  // useEffect 内で setState すると react-hooks/set-state-in-effect に抵触するため、
+  // 「prop 変化に合わせて state を調整する」公式パターンで対応する。
+  const [prevIsHome, setPrevIsHome] = useState(isHome);
+  if (isHome !== prevIsHome) {
+    setPrevIsHome(isHome);
+    setHidden(false);
+  }
 
   useEffect(() => {
     if (!isHome) return;
