@@ -1,134 +1,105 @@
 /* ============================================================
-   デザイントークン
-   参考サイトからのピクセル実測値。値を勝手に変更しないこと。
-   変更が必要な場合は CLAUDE.md の更新提案を先に出すこと。
+   デザイントークン（creator.dipsy.com/apply の実測値。2026-08-31 spec §5）
+   値の変更は CLAUDE.md の更新提案を先に出すこと。
    ============================================================ */
-
 @theme {
-  /* --- カラー：ベース ------------------------------------ */
+  /* --- ブレークポイント（Tailwind 既定の sm/md/lg は無効化）------------
+     max-sp: ≤600 / sp: ≥601 / max-nav: ≤720 / max-tab: ≤820
+     max-form: ≤900 / max-pc: ≤960 / pc: ≥961 */
+  --breakpoint-*: initial;
+  --breakpoint-sp: 601px;
+  --breakpoint-nav: 721px;
+  --breakpoint-tab: 821px;
+  --breakpoint-form: 901px;
+  --breakpoint-pc: 961px;
+
+  /* --- 色（有彩色は marker / required の 2 つだけ）------------------- */
   --color-bg: #ffffff;
   --color-bg-dark: #0a0a0a;
-  --color-bg-mid: #b3b3b3; /* スクロール遷移の中間色 */
-  --color-surface: #f9f9f9; /* カード背景 */
-  --color-surface-alt: #f5f5f4; /* 入力欄背景 */
-  --color-placeholder: #eaeaea; /* 画像プレースホルダ */
-
-  /* --- カラー：テキスト ----------------------------------- */
+  --color-bg-mid: #b3b3b3;
+  --color-surface: #f9f9f9;
+  --color-surface-alt: #f5f5f4;
+  --color-placeholder: #eaeaea;
   --color-fg: #0a0a0a;
   --color-fg-body: #444444;
   --color-fg-muted: #6b6b68;
   --color-fg-invert: #ffffff;
-
-  /* --- カラー：アクセント（唯一の有彩色） ------------------ */
+  --color-border: #e4e4e1;
+  --color-placeholder-text: #b5b5b2;
   --color-marker: #2e891e;
   --color-required: #ef3b59;
-
-  /* --- カラー：UI ---------------------------------------- */
   --color-disabled: #a9a9a9;
-  --color-border: #e5e5e5;
 
-  /* --- レイアウト ---------------------------------------- */
-  --spacing-pad-x: 35px; /* PC 左右パディング */
-  --spacing-pad-x-sp: 19px; /* SP 左右パディング */
-  --spacing-gap-service: 62px;
-  --spacing-gap-card: 20px;
-  --spacing-section-y: 160px;
-  --spacing-section-y-sp: 88px;
+  /* --- レイアウト ------------------------------------------------- */
+  --spacing-pad-x: 32px;
+  --spacing-pad-x-sp: 20px;
+  --spacing-header-h: 64px;
+  --spacing-section-t: clamp(80px, 10vw, 132px);
+  --spacing-section-b: clamp(92px, 11vw, 144px);
+  --spacing-fv-gap: clamp(110px, 11vw, 170px);
+  --spacing-head-mb: 40px;
+  --spacing-head-mb-sp: 32px;
+  --spacing-gap-service-row: clamp(48px, 6vw, 72px);
+  --spacing-gap-service-col: clamp(28px, 4vw, 56px);
+  --spacing-gap-card: 18px;
+  --spacing-gap-cols: 64px;
+  --spacing-mq-cell: clamp(148px, 20vw, 256px);
+  --spacing-mq-gap: clamp(20px, 2.8vw, 32px);
 
-  /* --- 角丸 ---------------------------------------------- */
-  --radius-card: 12px;
-  --radius-form: 20px;
-  --radius-input: 8px;
+  /* --- 角丸 ------------------------------------------------------- */
+  --radius-card: 8px;
+  --radius-visual: 10px;
+  --radius-form: 18px;
+  --radius-input: 6px;
+  --radius-btn: 8px;
+  --radius-pill: 999px;
 
-  /* --- タイポグラフィ ------------------------------------- */
-  --font-display: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
-  --font-body: "Inter Tight", "Noto Sans JP", sans-serif;
+  /* --- タイポグラフィ --------------------------------------------- */
+  --text-display: clamp(27px, 4.8vw, 46px);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.045em;
+  --text-display--font-weight: 700;
+  --text-display-sp: min(13vw, 60px);
+  --text-display-sp--line-height: 1;
+  --text-display-sp--letter-spacing: -0.045em;
+  --text-display-sp--font-weight: 700;
+  --text-sub: 14px;
+  --text-sub--line-height: 1.2;
+  --text-sub--letter-spacing: 0.05em;
+  --text-sub--font-weight: 500;
+  --text-sub-sp: 13px;
+  --text-sub-sp--line-height: 1.2;
+  --text-sub-sp--letter-spacing: 0.05em;
+  --text-sub-sp--font-weight: 500;
+  --text-body: 14px;
+  --text-body--line-height: 1.8;
+  --text-body-sp: 13px;
+  --text-body-sp--line-height: 1.8;
+  --text-caption: 12px;
+  --text-caption--line-height: 1.75;
+  --text-card-title: 20px;
+  --text-card-title--line-height: 1.45;
+  --text-card-title--letter-spacing: -0.01em;
+  --text-card-title--font-weight: 700;
+  --text-card-title-sp: 16px;
+  --text-card-title-sp--line-height: 1.5;
+  --text-card-title-sp--font-weight: 700;
+  --text-nav: 13px;
+  --text-nav--line-height: 1.5;
+  --text-nav--letter-spacing: 0.02em;
+  --text-nav--font-weight: 500;
 
-  --text-display: 38px;
-  --text-display--line-height: 1.05;
-  --text-display--letter-spacing: -0.02em;
-  --text-display--font-weight: 800;
-
-  --text-display-sp: 27px;
-  --text-display-sp--line-height: 1.1;
-  --text-display-sp--letter-spacing: -0.02em;
-
-  --text-sub: 11px;
-  --text-sub--line-height: 1.4;
-
-  --text-body: 15px;
-  --text-body--line-height: 1.9;
-
-  --text-body-sp: 14px;
-  --text-body-sp--line-height: 1.85;
-
-  --text-caption: 13px;
-
-  /* --- ブレークポイント ----------------------------------- */
-  --breakpoint-sp: 480px;
-  --breakpoint-tablet: 768px;
-  --breakpoint-pc: 1024px;
-
-  /* --- モーション ---------------------------------------- */
-  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
-  --duration-reveal: 700ms;
-  --duration-marker: 400ms;
+  /* --- モーション ------------------------------------------------- */
+  --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-sym: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 300ms;
+  --duration-base: 550ms;
+  --duration-slow: 900ms;
+  --duration-marker: 850ms;
 }
 
-/* ============================================================
-   フルブリードのコンテナ
-   max-width と mx-auto は使用禁止。左右パディングのみで制御する。
-   ============================================================ */
-.container-fluid {
-  padding-inline: var(--spacing-pad-x-sp);
-}
-
-@media (min-width: 1024px) {
-  .container-fluid {
-    padding-inline: var(--spacing-pad-x);
-  }
-}
-
-/* ============================================================
-   緑マーカー
-   スクロール発火で左から右へ描画される。
-   .is-active はブラウザ側で ScrollTrigger が付与する。
-   ============================================================ */
-.marker {
-  background-image: linear-gradient(
-    var(--color-marker),
-    var(--color-marker)
-  );
-  background-repeat: no-repeat;
-  background-position: 0 center;
-  background-size: 0% 100%;
-  padding-inline: 0.15em;
-  transition: background-size var(--duration-marker) var(--ease-out-quart);
-}
-
-.marker.is-active {
-  background-size: 100% 100%;
-}
-
-/* ============================================================
-   アクセシビリティ
-   ============================================================ */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  .marker {
-    background-size: 100% 100%;
-  }
-}
-
-:where(a, button, input, textarea, select, summary):focus-visible {
-  outline: 2px solid var(--color-fg);
-  outline-offset: 2px;
+/* next/font が <html> に付ける変数を参照するため inline で定義 */
+@theme inline {
+  --font-display: var(--font-inter-tight), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: var(--font-inter-tight), var(--font-noto), "Helvetica Neue", Helvetica, Arial, sans-serif;
 }

@@ -1,2 +1,107 @@
 @import "tailwindcss";
 @import "../styles/tokens.css";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg-body);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-feature-settings: "palt";
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (width < 601px) {
+    body {
+      font-size: var(--text-body-sp);
+    }
+  }
+  h1, h2, h3, h4 {
+    color: var(--color-fg);
+  }
+  :where(a, button, input, textarea, select, summary):focus-visible {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 2px;
+  }
+  /* MobileNav が開いている間はスクロールを止める */
+  [data-menu-open] body {
+    overflow: hidden;
+  }
+}
+
+/* フルブリード。max-width / mx-auto は使わない（CLAUDE.md §3-1） */
+@utility wrap {
+  padding-inline: var(--spacing-pad-x);
+  @media (width < 601px) {
+    padding-inline: var(--spacing-pad-x-sp);
+  }
+}
+
+@utility section-pad {
+  padding-block: var(--spacing-section-t) var(--spacing-section-b);
+}
+
+/* SP の横スワイプ（CSS scroll-snap）。子要素は幅 80% で中央スナップ、次カードが peek する */
+@utility carousel {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-inline: calc(var(--spacing-pad-x-sp) * -1);
+  padding: 4px var(--spacing-pad-x-sp);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  & > * {
+    flex: 0 0 80%;
+    scroll-snap-align: center;
+  }
+}
+
+/* 緑マーカー。左から右へ描画。フェーズ③で ScrollTrigger が .is-active を付ける（①は常時付与） */
+@utility marker {
+  background-image: linear-gradient(
+    transparent 40%,
+    color-mix(in srgb, var(--color-marker) 50%, transparent) 40% 94%,
+    transparent 94%
+  );
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 0% 100%;
+  transition: background-size var(--duration-marker) var(--ease-sym);
+  &.is-active {
+    background-size: 100% 100%;
+  }
+}
+
+/* マーキーと回転バッジ */
+@keyframes drift {
+  to { transform: translateX(-50%); }
+}
+@keyframes drift-rev {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .marker {
+    background-size: 100% 100%;
+  }
+}
