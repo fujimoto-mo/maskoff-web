@@ -1,0 +1,12 @@
+# 改行コードを LF に固定する。
+# Windows / WSL2 と GitHub Actions(ubuntu) の差分を防ぐため必須。
+* text=auto eol=lf
+
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.woff  binary
+*.woff2 binary
+*.ico  binary

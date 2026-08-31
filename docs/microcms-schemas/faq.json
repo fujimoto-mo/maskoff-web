@@ -1,0 +1,14 @@
+{
+  "apiName": "faq",
+  "apiType": "list",
+  "description": "よくあるご質問。FAQPage 構造化データの生成元",
+  "apiFields": [
+    { "fieldId": "question", "name": "質問", "kind": "text", "required": true, "description": "末尾に ? を付ける" },
+    { "fieldId": "answer", "name": "回答", "kind": "textArea", "required": true, "description": "構造化データに使うためリッチテキストではなくプレーンテキスト" },
+    { "fieldId": "note", "name": "注釈", "kind": "text", "required": false, "description": "※ で始まる補足。構造化データには含めません" },
+    { "fieldId": "category", "name": "カテゴリ", "kind": "select", "required": false, "selectItems": [
+      { "value": "service" }, { "value": "price" }, { "value": "flow" }, { "value": "recruit" }
+    ], "multipleSelect": false },
+    { "fieldId": "order", "name": "表示順", "kind": "number", "required": true }
+  ]
+}

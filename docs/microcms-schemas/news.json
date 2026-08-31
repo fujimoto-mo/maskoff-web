@@ -1,0 +1,17 @@
+{
+  "apiName": "news",
+  "apiType": "list",
+  "description": "プレスリリース・実績公開・メディア掲載・イベント出展",
+  "apiFields": [
+    { "fieldId": "title", "name": "タイトル", "kind": "text", "required": true },
+    { "fieldId": "slug", "name": "スラッグ", "kind": "text", "required": true, "description": "URLに使用。半角英数とハイフンのみ" },
+    { "fieldId": "category", "name": "カテゴリ", "kind": "select", "required": true, "multipleSelect": false, "selectItems": [
+      { "value": "press" }, { "value": "works" }, { "value": "media" }, { "value": "event" }
+    ] },
+    { "fieldId": "publishedDate", "name": "公開日", "kind": "date", "required": true, "description": "一覧の並び順に使用" },
+    { "fieldId": "thumbnail", "name": "サムネイル", "kind": "media", "required": true, "description": "1200x630 推奨。OGPにも使用" },
+    { "fieldId": "excerpt", "name": "抜粋", "kind": "textArea", "required": false, "description": "一覧とmeta descriptionに使用。80〜120字" },
+    { "fieldId": "body", "name": "本文", "kind": "richEditorV2", "required": true },
+    { "fieldId": "relatedNews", "name": "関連記事", "kind": "relationList", "required": false, "referenceDisplayItem": "title" }
+  ]
+}

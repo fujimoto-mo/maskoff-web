@@ -1,0 +1,23 @@
+{
+  "apiName": "jobs",
+  "apiType": "list",
+  "description": "採用募集要項。JobPosting 構造化データの生成元。項目名はGoogleしごと検索の要件に対応",
+  "apiFields": [
+    { "fieldId": "title", "name": "職種名", "kind": "text", "required": true, "description": "JobPosting.title。例: フロントエンドエンジニア" },
+    { "fieldId": "slug", "name": "スラッグ", "kind": "text", "required": true },
+    { "fieldId": "employmentType", "name": "雇用形態", "kind": "select", "required": true, "selectItems": [
+      { "value": "FULL_TIME" }, { "value": "PART_TIME" }, { "value": "CONTRACTOR" }, { "value": "INTERN" }
+    ], "multipleSelect": false, "description": "JobPosting.employmentType。schema.org の値をそのまま使用" },
+    { "fieldId": "description", "name": "仕事内容", "kind": "richEditorV2", "required": true, "description": "JobPosting.description" },
+    { "fieldId": "requirements", "name": "応募資格", "kind": "richEditorV2", "required": true },
+    { "fieldId": "preferred", "name": "歓迎スキル", "kind": "richEditorV2", "required": false },
+    { "fieldId": "salaryMin", "name": "想定年収(下限・万円)", "kind": "number", "required": false, "description": "JobPosting.baseSalary" },
+    { "fieldId": "salaryMax", "name": "想定年収(上限・万円)", "kind": "number", "required": false },
+    { "fieldId": "workLocation", "name": "勤務地", "kind": "text", "required": true, "description": "JobPosting.jobLocation" },
+    { "fieldId": "workHours", "name": "勤務時間", "kind": "text", "required": false },
+    { "fieldId": "benefits", "name": "待遇・福利厚生", "kind": "textArea", "required": false },
+    { "fieldId": "validThrough", "name": "募集終了日", "kind": "date", "required": false, "description": "JobPosting.validThrough。未指定だと構造化データで警告が出ます" },
+    { "fieldId": "isOpen", "name": "募集中", "kind": "boolean", "required": true, "description": "OFFにすると一覧から外れます" },
+    { "fieldId": "order", "name": "表示順", "kind": "number", "required": true }
+  ]
+}

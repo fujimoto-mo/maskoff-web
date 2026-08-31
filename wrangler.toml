@@ -1,0 +1,59 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "maskoff-web"
+main = "./worker/index.ts"
+compatibility_date = "2026-08-27"
+compatibility_flags = ["nodejs_compat"]
+
+# workers.dev のサブドメインは公開しない（本番は独自ドメインのみ）
+workers_dev = false
+
+# ------------------------------------------------------------
+# 静的アセット
+#
+#   directory          : next build（output: "export"）の出力先
+#   binding            : Worker から env.ASSETS.fetch() で参照する
+#   not_found_handling : 未マッチ時に out/404.html を返す
+#   html_handling      : out/company/index.html を /company/ で配信する
+#                        next.config.ts の trailingSlash: true と対応
+#
+#   ★ run_worker_first に /api/* だけを指定するのが最重要。
+#     省略すると全リクエストが Worker を経由し、課金対象になる。
+#     指定すれば静的アセットは Worker を通らず無制限・無課金で配信され、
+#     Worker を消費するのはフォーム送信と再ビルド通知だけになる。
+# ------------------------------------------------------------
+[assets]
+directory = "./out"
+binding = "ASSETS"
+not_found_handling = "404-page"
+html_handling = "auto-trailing-slash"
+run_worker_first = ["/api/*"]
+
+# ------------------------------------------------------------
+# KV: お問い合わせフォームのレート制限カウンタ
+#   事前に作成すること:
+#     npx wrangler kv namespace create RATE_LIMIT
+#     npx wrangler kv namespace create RATE_LIMIT --preview
+# ------------------------------------------------------------
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "＜本番の namespace id＞"
+preview_id = "＜プレビュー用の namespace id＞"
+
+# ------------------------------------------------------------
+# 環境変数（非シークレットのみ）
+#
+#   シークレットはここに書かない。CLI で登録する:
+#     npx wrangler secret put RESEND_API_KEY
+#     npx wrangler secret put TURNSTILE_SECRET_KEY
+#     npx wrangler secret put MICROCMS_WEBHOOK_SECRET
+#     npx wrangler secret put GITHUB_DISPATCH_TOKEN
+#     npx wrangler secret put SLACK_WEBHOOK_URL
+# ------------------------------------------------------------
+[vars]
+SITE_URL = "https://maskoff.co.jp"
+CONTACT_FROM_EMAIL = "noreply@maskoff.co.jp"
+CONTACT_TO_EMAIL = "info@maskoff.co.jp"
+GITHUB_REPO = "＜owner＞/maskoff-web"
+
+[observability]
+enabled = true

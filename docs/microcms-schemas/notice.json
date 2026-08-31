@@ -1,0 +1,16 @@
+{
+  "apiName": "notice",
+  "apiType": "list",
+  "description": "メンテナンス・休業案内・重要なお知らせ・お詫び",
+  "apiFields": [
+    { "fieldId": "title", "name": "タイトル", "kind": "text", "required": true },
+    { "fieldId": "slug", "name": "スラッグ", "kind": "text", "required": true },
+    { "fieldId": "level", "name": "重要度", "kind": "select", "required": true, "selectItems": [
+      { "value": "normal" }, { "value": "important" }, { "value": "urgent" }
+    ], "multipleSelect": false, "description": "urgent はトップに赤帯で表示" },
+    { "fieldId": "isPinned", "name": "トップに常時掲出", "kind": "boolean", "required": false, "description": "ONにするとHOME最上部に帯で表示されます" },
+    { "fieldId": "publishedDate", "name": "公開日", "kind": "date", "required": true },
+    { "fieldId": "expiresAt", "name": "掲出終了日", "kind": "date", "required": false, "description": "指定日を過ぎるとトップ掲出から自動的に外れます" },
+    { "fieldId": "body", "name": "本文", "kind": "richEditorV2", "required": true }
+  ]
+}

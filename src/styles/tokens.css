@@ -1,0 +1,134 @@
+/* ============================================================
+   デザイントークン
+   参考サイトからのピクセル実測値。値を勝手に変更しないこと。
+   変更が必要な場合は CLAUDE.md の更新提案を先に出すこと。
+   ============================================================ */
+
+@theme {
+  /* --- カラー：ベース ------------------------------------ */
+  --color-bg: #ffffff;
+  --color-bg-dark: #0a0a0a;
+  --color-bg-mid: #b3b3b3; /* スクロール遷移の中間色 */
+  --color-surface: #f9f9f9; /* カード背景 */
+  --color-surface-alt: #f5f5f4; /* 入力欄背景 */
+  --color-placeholder: #eaeaea; /* 画像プレースホルダ */
+
+  /* --- カラー：テキスト ----------------------------------- */
+  --color-fg: #0a0a0a;
+  --color-fg-body: #444444;
+  --color-fg-muted: #6b6b68;
+  --color-fg-invert: #ffffff;
+
+  /* --- カラー：アクセント（唯一の有彩色） ------------------ */
+  --color-marker: #2e891e;
+  --color-required: #ef3b59;
+
+  /* --- カラー：UI ---------------------------------------- */
+  --color-disabled: #a9a9a9;
+  --color-border: #e5e5e5;
+
+  /* --- レイアウト ---------------------------------------- */
+  --spacing-pad-x: 35px; /* PC 左右パディング */
+  --spacing-pad-x-sp: 19px; /* SP 左右パディング */
+  --spacing-gap-service: 62px;
+  --spacing-gap-card: 20px;
+  --spacing-section-y: 160px;
+  --spacing-section-y-sp: 88px;
+
+  /* --- 角丸 ---------------------------------------------- */
+  --radius-card: 12px;
+  --radius-form: 20px;
+  --radius-input: 8px;
+
+  /* --- タイポグラフィ ------------------------------------- */
+  --font-display: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Inter Tight", "Noto Sans JP", sans-serif;
+
+  --text-display: 38px;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 800;
+
+  --text-display-sp: 27px;
+  --text-display-sp--line-height: 1.1;
+  --text-display-sp--letter-spacing: -0.02em;
+
+  --text-sub: 11px;
+  --text-sub--line-height: 1.4;
+
+  --text-body: 15px;
+  --text-body--line-height: 1.9;
+
+  --text-body-sp: 14px;
+  --text-body-sp--line-height: 1.85;
+
+  --text-caption: 13px;
+
+  /* --- ブレークポイント ----------------------------------- */
+  --breakpoint-sp: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-pc: 1024px;
+
+  /* --- モーション ---------------------------------------- */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --duration-reveal: 700ms;
+  --duration-marker: 400ms;
+}
+
+/* ============================================================
+   フルブリードのコンテナ
+   max-width と mx-auto は使用禁止。左右パディングのみで制御する。
+   ============================================================ */
+.container-fluid {
+  padding-inline: var(--spacing-pad-x-sp);
+}
+
+@media (min-width: 1024px) {
+  .container-fluid {
+    padding-inline: var(--spacing-pad-x);
+  }
+}
+
+/* ============================================================
+   緑マーカー
+   スクロール発火で左から右へ描画される。
+   .is-active はブラウザ側で ScrollTrigger が付与する。
+   ============================================================ */
+.marker {
+  background-image: linear-gradient(
+    var(--color-marker),
+    var(--color-marker)
+  );
+  background-repeat: no-repeat;
+  background-position: 0 center;
+  background-size: 0% 100%;
+  padding-inline: 0.15em;
+  transition: background-size var(--duration-marker) var(--ease-out-quart);
+}
+
+.marker.is-active {
+  background-size: 100% 100%;
+}
+
+/* ============================================================
+   アクセシビリティ
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .marker {
+    background-size: 100% 100%;
+  }
+}
+
+:where(a, button, input, textarea, select, summary):focus-visible {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 2px;
+}
