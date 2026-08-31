@@ -1,4 +1,4 @@
-// docs/microcms-schemas/*.json と 1:1。フィールドを増やすときは JSON と同時に更新する。
+// docs/microcms-schemas/*.json に対応。ただし News.thumbnail はスキーマ上 required だが、フェーズ①は CMS 画像を使わずサンプルにも無いため意図的に optional にしている。フィールドを増やすときは JSON と同時に更新する。
 export type MicroImage = { url: string; width: number; height: number };
 
 type Base = { id: string; createdAt: string; updatedAt: string; publishedAt: string; revisedAt: string };
@@ -12,6 +12,7 @@ export type News = Base & {
   thumbnail?: MicroImage;
   excerpt?: string;
   body: string; // HTML
+  relatedNews?: News[];
 };
 
 export type NoticeLevel = "normal" | "important" | "urgent";

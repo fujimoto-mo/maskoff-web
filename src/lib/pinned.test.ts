@@ -32,3 +32,11 @@ test("複数あれば publishedDate が新しい方", () => {
 test("空配列は null", () => {
   assert.equal(selectPinned([], now), null);
 });
+
+test("将来の expiresAt は掲出する", () => {
+  assert.equal(selectPinned([item({ isPinned: true, id: "a", expiresAt: "2026-09-01T00:00:00Z" })], now)?.id, "a");
+});
+
+test("expiresAt がちょうど now なら除外する（厳密比較）", () => {
+  assert.equal(selectPinned([item({ isPinned: true, expiresAt: "2026-08-31T00:00:00Z" })], now), null);
+});
