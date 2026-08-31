@@ -1,8 +1,18 @@
+import SectionHeading from "@/components/ui/SectionHeading";
+import Button from "@/components/ui/Button";
+import Marker from "@/components/ui/Marker";
+
 export default function HomePage() {
   return (
     <main id="main" className="wrap section-pad">
-      <h1 className="font-display text-display max-sp:text-display-sp text-fg">MasKOFF</h1>
-      <p className="mt-1.5 text-sub text-fg-muted">HOME（構築中）</p>
+      <SectionHeading as="h1" en={"OFFICIAL\nCREATORS"} ja="見出しの確認" id="home-title" />
+      <p>
+        本文の<Marker>マーカー</Marker>確認。
+      </p>
+      <div className="mt-6 flex gap-3">
+        <Button href="/contact/" dot>お問い合わせ</Button>
+        <Button variant="line" href="/news/">すべて見る</Button>
+      </div>
     </main>
   );
 }
