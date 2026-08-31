@@ -25,7 +25,7 @@
 - `enum` / `namespace` / parameter property 禁止（`erasableSyntaxOnly`）。
 - 文言・画像はすべてサンプル。差し替え対象には `// SAMPLE:` コメントを付ける。参考サイト（dipsy）の文章・写真は流用しない。
 - コミットは日本語の `type: 要約` 形式（例 `feat: ヒーローのマーキーを追加`）。各 Task の最後に必ずコミット。
-- ブランチ: `feat/home-apply-lp`（Task 1 で作成）。
+- ブランチ: **`feature/make`**（ユーザー作成済み。main では作業しない。Task 1 で切り替えを確認する）。
 
 ---
 
@@ -70,11 +70,11 @@
 **Interfaces:**
 - Produces: `@/*` → `./src/*` のパスエイリアス、`npm run typecheck` / `npm test` / `npm run build` の 3 コマンド
 
-- [ ] **Step 1: ブランチを切る**
+- [ ] **Step 1: ブランチを確認する**
 
 ```bash
 cd /root/maskoff-web/maskoff-web
-git switch -c feat/home-apply-lp
+git branch --show-current   # feature/make であること。main なら git switch feature/make
 ```
 
 - [ ] **Step 2: root の旧実装を削除する**
@@ -192,6 +192,7 @@ public/images/optimized
 tsconfig.tsbuildinfo
 next-env.d.ts
 *:Zone.Identifier
+.superpowers/
 ```
 
 - [ ] **Step 7: 依存を再インストールして lock を作り直す**
@@ -360,7 +361,7 @@ npm run images
 node -e "const m=require('./src/lib/images/manifest.json'); const k=Object.keys(m); console.log(k.length, k[0], m[k[0]])"
 ```
 
-Expected: `63 /images/hero/hero-01.png { width: 720, height: 820, avif: '/images/optimized/hero/hero-01.avif', webp: ... }`（15 + 8 + 6 + 30 + 8 = 67 件に `logo.png` `ogp.png` を加えた 69 件前後。件数は `ls public/images -R | grep -c png` と一致すること）。
+Expected: `69 /images/hero/hero-01.png { width: 720, height: 820, avif: '/images/optimized/hero/hero-01.avif', webp: ... }`（15 + 8 + 6 + 30 + 8 = 67 件に `logo.png` `ogp.png` を加えた 69 件前後。件数は `ls public/images -R | grep -c png` と一致すること）。
 
 - [ ] **Step 4: `src/components/ui/Picture.tsx` を作る**
 
@@ -3594,7 +3595,7 @@ npm run dev > /tmp/claude-0/-root-maskoff-web-maskoff-web/1ae076a8-c9ed-4410-9bf
 
 - [ ] **Step 8: ブランチの扱いを確認する**
 
-`superpowers:finishing-a-development-branch` に従い、`feat/home-apply-lp` を `main` にマージするか PR にするかをユーザーに確認する。
+`superpowers:finishing-a-development-branch` に従い、`feature/make` を `main` にマージするか PR にするかをユーザーに確認する。
 
 ---
 
