@@ -402,6 +402,17 @@
     transition: background-color 0.4s ease;
     pointer-events: none;
   }
+  /* 幕のロゴ箱はマーキーのロゴセル内の箱（セル幅 × 62%）と同じ大きさ（参考サイトと同じ。拡大しない） */
+  .veil-logo {
+    width: calc(var(--spacing-mq-cell) * 0.62);
+    height: calc(var(--spacing-mq-cell) * 0.62);
+  }
+  @media (width <= 600px) {
+    .veil-logo {
+      width: calc(max(160px, (100svh - 176px) / 3) * 0.62);
+      height: calc(max(160px, (100svh - 176px) / 3) * 0.62);
+    }
+  }
   html.js .veil-logo {
     animation: veil-logo-in 0.35s var(--ease-mk) 0.1s both;
   }

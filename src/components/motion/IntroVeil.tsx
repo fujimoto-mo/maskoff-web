@@ -76,10 +76,10 @@ export default function IntroVeil() {
   if (phase === "gone") return null;
   return (
     <div className="intro-veil fixed inset-0 z-[100] flex items-center justify-center" data-phase={phase} aria-hidden>
-      {/* ロゴセルと同じ構成（黒角丸 + 12% 余白 + ロゴ）。黒幕上では箱が見えず、飛行中に箱として現れる */}
-      <div ref={boxRef} className="veil-logo flex size-[340px] flex-none items-center justify-center rounded-[22%] bg-fg max-sp:size-[260px]">
+      {/* ロゴセルと同じ構成・同じ大きさ（.veil-logo の CSS でセル幅の 62%）。黒幕上では箱が見えず、着地の移動中に箱として現れる */}
+      <div ref={boxRef} className="veil-logo flex flex-none items-center justify-center rounded-[22%] bg-fg">
         {/* p-[12%] は包含ブロック（画面幅）基準になるため、内側 76% の箱で余白を作る（ロゴセルと同比率） */}
-        <Picture src="/images/logo-wordmark.png" alt="" sizes="(max-width: 600px) 200px, 260px" priority className="block size-[76%]" imgClassName="block size-full object-contain" />
+        <Picture src="/images/logo-wordmark.png" alt="" sizes="(max-width: 600px) 30vw, 12vw" priority className="block size-[76%]" imgClassName="block size-full object-contain" />
       </div>
     </div>
   );
