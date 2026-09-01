@@ -156,6 +156,11 @@
       opacity var(--duration-reveal-fast) ease 0.28s,
       transform var(--duration-reveal-fast) var(--ease-out-quart) 0.28s;
   }
+
+  /* 反転中（data-on-vision）: 色は変数で自動追従。ヘッダー背景は透過にして本文の反転色を見せる */
+  html[data-on-vision] header {
+    background: transparent;
+  }
 }
 
 /* FAQ: ≥601px は常時展開（::details-content 対応ブラウザ。未対応はクリックで開ける）。≤600px はネイティブ開閉 */

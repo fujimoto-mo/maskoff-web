@@ -1,3 +1,4 @@
+import ScrollTheme from "@/components/motion/ScrollTheme";
 import Marker from "@/components/ui/Marker";
 import Picture from "@/components/ui/Picture";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -30,6 +31,7 @@ export default function VisionBlock() {
           </div>
         </div>
       </div>
+      <ScrollTheme />
     </section>
   );
 }
