@@ -277,7 +277,7 @@ FAQは `<details>/<summary>` を閉じた状態で SSR し、PCでは CSS の `:
 
 | 演出 | 対象 | 実装 |
 |---|---|---|
-| イントロ幕 | HOME 初回表示 | 黒幕 + 中央のロゴ箱を 900ms（SP 1100ms）表示 → FLIP（WAAPI 0.5s）でマーキーのロゴセル `[data-lead] [data-lead-box]` へ移動しながら、黒背景を clip-path でロゴセルの矩形へ縮める（ロゴに集まる）。着地で `data-boing` を付け `data-intro` を外し `kv:launch` を発火。HOME を開くたびに毎回表示（状態は保存しない）。reduced-motion / `saveData` / JS 無効ではスキップし `kv:launch` を即発火 |
+| イントロ幕 | HOME 表示のたび | 参考サイトの手順を再現: SSR の黒幕 → ハイドレーション後にロゴ箱をマーキーのロゴセル `[data-lead] [data-lead-box]` と同じ位置・大きさに置き 0.5s フェード + 12px 上昇で出現（ロゴは動かない）→ 450ms（SP 780ms）後に黒幕を clip-path でその矩形へ 0.75s で縮める（黒がロゴに集まる）→ 終了で `data-boing`・`data-intro` 除去・`kv:launch`、幕は 0.12s フェード。定数は `IntroVeil.tsx` 先頭。reduced-motion / `saveData` / JS 無効ではスキップし `kv:launch` を即発火 |
 | 横マーキー | HOMEヒーロー | 3行、行ごとに速度差。JS 駆動（rAF）でセルを中央から pop、ドラッグ慣性。配列を2倍に複製 |
 | 見出しの文字立ち上がり | 全 SectionHeading | 1 文字ずつ `.ch` に分割し skew 立ち上がり（0.68s、26ms/文字） |
 | 背景色遷移 | VISION | `ScrollTheme` が rAF でセクション位置から `<html>` の `--color-*` を白→黒へ補間。0.5 超で `data-on-vision` |

@@ -188,10 +188,12 @@ export const HANDWRITING = { viewBox: "0 0 640 160", label: "仮面を外して�
 - reduced-motion: 玉と波紋は `display: none`、脈動なし。
 
 ### 4-6. イントロ幕（G）
-- `IntroVeil`（client）: マウント時に `<html data-intro>`。幕 `fixed inset-0 z-[100]`（背景は components 層の `.intro-veil { background: var(--color-bg-dark) }`）+ 画面中央にロゴ箱 `.veil-logo`（マーキーのロゴセルと同じ構成: 黒角丸 `bg-fg` + `p-[12%]` + `/images/logo-wordmark.png`。大きさはロゴセル内の箱と同じ = セル幅 × 62%（PC `calc(var(--spacing-mq-cell) * 0.62)` / ≤600 `calc(max(160px, (100svh - 176px) / 3) * 0.62)`、拡大しない — 参考サイトと同じ）。黒幕上では箱が見えずロゴだけが見える）。ロゴは 0.1s 後に 0.35s（`--ease-mk`）で fade + scale .96→1 で現れる。位置は画面中央で計測しない。
-- 900ms（≤640 は 1100ms）後（`done`）: `.veil-logo` と `[data-lead] [data-lead-box]`（マーキーのロゴセル内の箱。`MarqueeDrag` がマウント時に中央へ寄せ、`kv:launch` までは静止）の rect を計測し、中心差 `dx/dy` と `scale = 目標幅 / 現在幅` を WAAPI で 0.5s `cubic-bezier(.22,1,.36,1)` `fill: forwards` で適用（FLIP）。同時に幕（黒背景）を WAAPI の `clip-path: inset(0 round 0)` → `inset(ロゴセル箱の矩形 round 22%)` で同じ 0.5s・同じ ease で縮める（黒がロゴに集まり、そのままロゴセルの黒い箱になる — 参考サイトと同じ。背景はフェードさせない）。
-- 着地（`onfinish`、保険で 0.7s のタイマー）: ロゴセルに `data-boing`（`lead-boing` 0.52s `cubic-bezier(.3,.6,.4,1)`）、`data-intro` 除去、`kv:launch` 発火、幕をアンマウント。ロゴセルは `[data-js]` 中 `opacity: 0` で隠し、`data-go`（launch）で表示する（二重に見えない）。
-- スキップ条件: reduced-motion（CSS でも `display:none`）、`navigator.connection?.saveData`、`html.js` でない。スキップ時も `kv:launch` は即発火する。
+- `IntroVeil`（client）— 参考サイトの `.intro-veil` の手順をそのまま再現する（2026-09-01 に実測: logo-in ≈ 0.45s → clip-path 0.75s → done で opacity 0.12s）:
+  1. SSR で黒幕 `fixed inset-0 z-[100]`（背景は components 層の `.intro-veil { background: var(--color-bg-dark) }`）だけを出す。ロゴ箱 `.veil-logo`（ロゴセル内の箱と同じ構成: `bg-fg` 角丸 22% + 内側 76% のロゴ `/images/logo-wordmark.png`）は `opacity 0; translateY(12px)` で非表示。
+  2. マウント（`useLayoutEffect`）で `<html data-intro>`。次フレームで `[data-lead] [data-lead-box]`（`MarqueeDrag` が中央寄せ済み）の rect を測り、ロゴ箱を `position: absolute` でその位置・大きさに置き、さらに次フレームで `data-logo-in` → opacity 0.5s / transform 0.6s `--ease-out-quart` でロゴが 12px 上昇しながら現れる。**ロゴは以後動かない**（ハイドレーション前は見えないので位置が飛ばない）。ロゴセルは幕の下で最初から表示（`[data-js] [data-lead] { opacity: 1 }`）。
+  3. `data-logo-in` から 450ms（≤640 は 780ms）後、幕を WAAPI で `clip-path: inset(0 round 0)` → `inset(ロゴ箱の矩形 round 22%)` へ 0.75s `cubic-bezier(.65,0,.35,1)` で縮める（黒がロゴに集まり、そのままロゴセルの黒い箱になる）。
+  4. 収縮終了（`onfinish`、保険で +100ms のタイマー）: ロゴセルに `data-boing`（`lead-boing` 0.52s）、`data-intro` 除去、`kv:launch` 発火、`data-phase="done"`（`opacity 0` 0.12s）→ 150ms 後にアンマウント。
+- スキップ条件: reduced-motion（CSS でも `display:none`）、`navigator.connection?.saveData`、`html.js` でない。スキップ時も `kv:launch` は即発火する。参照先（ロゴセル）が無い場合も幕を出さず即進める。
 - 幕表示中はスクロール可能なまま（スクロールジャック禁止）。HOME を開くたびに毎回表示する（ブラウザに状態を保存しない — CLAUDE.md §12）。
 - 注意（カスケード層）: マーキーの CSS アニメーションは utilities の `animate-*` ではなく components 層の `.mq-track { animation: drift … }` / `[data-reverse] .mq-track { animation-name: drift-rev }` で定義する。utilities 層だと `[data-marquee][data-js] .mq-track { animation: none }` が負けて JS 駆動（中央寄せ・ドラッグ）が描画に反映されない。
 
