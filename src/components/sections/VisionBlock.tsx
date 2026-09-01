@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import Handwriting from "@/components/motion/Handwriting";
 import MarkerLayer from "@/components/motion/MarkerLayer";
 import ScrollTheme from "@/components/motion/ScrollTheme";
-import Picture from "@/components/ui/Picture";
+import VisionDiagram from "@/components/motion/VisionDiagram";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { VISION_COPY } from "@/content/vision-copy";
 
@@ -41,9 +41,7 @@ export default function VisionBlock() {
               ))}
             </div>
           </div>
-          <div className="w-full max-w-[540px] justify-self-center max-tab:order-last max-tab:mt-2.5">
-            <Picture src="/images/company/vision-diagram.svg" alt="ブランド・アーティスト・クライアントを Web と EC がつなぐ関係図" width={540} height={420} className="block w-full" imgClassName="h-auto w-full" />
-          </div>
+          <VisionDiagram />
         </div>
       </div>
       <ScrollTheme />
