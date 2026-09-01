@@ -2,15 +2,15 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import Picture from "@/components/ui/Picture";
 
-const SHOW_MS_PC = 1400;
-const SHOW_MS_SP = 1600;
-const FLY_MS = 600;
+const SHOW_MS_PC = 900;
+const SHOW_MS_SP = 1100;
+const FLY_MS = 500;
 const FLY_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 /**
- * 初回表示のロゴ幕。黒幕の中央にロゴ（/images/logo-wordmark.png）を出し、1400ms（SP 1600ms）後に
+ * 初回表示のロゴ幕。黒幕の中央にロゴ（/images/logo-wordmark.png）を出し、900ms（SP 1100ms）後に
  * 幕の背景を 0.4s で透明にしながら、ロゴをマーキーのロゴセル（[data-lead] [data-lead-box]）の位置・大きさへ
- * 0.6s で飛ばす（FLIP）。着地でロゴセルに data-boing を付け kv:launch を発火する。
+ * 0.5s で飛ばす（FLIP）。着地でロゴセルに data-boing を付け kv:launch を発火する。
  * HOME を開くたびに毎回表示（ブラウザに状態は持たない）。
  * reduced-motion / saveData / html.js 無しではスキップ（kv:launch は即発火）。表示中は html[data-intro]。
  * @example <IntroVeil />（page.tsx の先頭）
