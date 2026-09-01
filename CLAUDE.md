@@ -284,7 +284,7 @@ FAQは `<details>/<summary>` を閉じた状態で SSR し、PCでは CSS の `:
 | 手書き線描画 | VISION | `Handwriting` が 1 文字ずつ読み順に輪郭を `stroke-dashoffset 1→0` で描き、続けて `fill-opacity 0→1`（合計 1.6s）。データは `scripts/handwriting-paths.py` で生成 |
 | 行フェード | VISION 本文 | PC は段落単位で行が順に、SP(≤640) は 1 行ずつ画面下 75% で点灯 |
 | マーカー描画 | VISION 本文 | `MarkerLayer` が文字位置を計測し背後の線を `clip-path` で左→右（0.85s）。他セクションは `background-size` 方式 |
-| 相関図 | VISION | リングをマスクで描画、ノードはぼかしから出現、点線は 80s で回転 |
+| 相関図 | VISION | リングをマスクで描画、ノードはぼかしから出現、点線は 80s で回転。2 つの玉が 18s で周回し、リング上の 3 ノードを通過する瞬間にノードが脈動して波紋が広がる（軌道・脈動・波紋は出現時に同時開始して位相を揃える。周期を変えるときは `VisionDiagram` の `ORBIT_S` と各ノードの `t0` を合わせる） |
 | スクロールリビール | SERVICE / PARTNERS / FAQ / NEWS / CONTACT | `data-reveal="blur"`（SERVICE、奥から blur 解除）/ `"up"`（fade + 18px）。stagger 80ms |
 | ホバー散布 | WORKS | 行ホバーでサムネ 5 枚が 3 パターンの配置で出現、他行は薄く。`(max-width: 820px)` または `(hover: none)`（タッチ主体端末含む）では画面中央の行がアクティブになる方式に切替 |
 | ホバーロール | WORKS の名前・ナビ | 同一テキストを2つ重ね、`overflow:hidden` + `translateY` で入れ替え |

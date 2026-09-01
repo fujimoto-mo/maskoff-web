@@ -21,7 +21,7 @@ creator.dipsy.com/apply のスクロール・ホバー・初回表示の演出�
 | C | 手書き見出し SVG の書き順どおりの線描画 | VISION |
 | D | 本文の行フェード（PC は段落単位、SP は 1 行ずつ点灯） | VISION |
 | E | 蛍光ペン風マーカーの左→右描画（別レイヤー） | VISION |
-| F | 相関図：リング描画 → ノード出現 → 常時回転 | VISION |
+| F | 相関図：リング描画 → ノード出現 → 常時回転 + 2 つの玉が周回しノード通過で脈動・波紋 | VISION |
 | G | イントロ幕（黒幕 + ロゴ → マーキー起動） | HOME 初回表示 |
 | H | マーキーのセル pop と JS 駆動 + ドラッグ | Hero |
 | I | SERVICE カードの blur 出現 + バッジ pop | SERVICE |
@@ -183,6 +183,9 @@ export const HANDWRITING = { viewBox: "0 0 640 160", label: "仮面を外して�
 
 ### 4-5. 相関図（F）
 - `in` 後: `vd-ringmask` `stroke-dashoffset 1 → 0` 1.5s `cubic-bezier(.65,0,.35,1)` 遅延 0.9s。ノード `opacity 0 / scale(.25) / blur(12px)` → 1、opacity 0.6s・transform 0.85s `.22,1,.36,1`・filter 0.95s、遅延 `0.38s + 0.12s × --ni`。キャプション 0.8s。`vd-ring` 80s linear 無限回転（reduced-motion で停止）。
+- 玉（`vd-sat` ×2、r 5.5、`currentColor`）: 3 ノードはリング上に 120° 間隔（上 / 30° / 150°）で置く。`[data-reveal-kind="diagram"]` で `vd-orbit`（リング中心を `transform-origin`、`transform-box: view-box`）18s linear 無限、2 つ目は `animation-delay: −9s`・opacity .55。出現後 2.4s / 2.8s でフェードイン。ノードの後ろを通る（DOM 順で先）。
+- 通過アクション（参考サイトの `vd-ripple` / `vd-pulse`）: 各ノードは `--t0`（0s / 6s / 12s）を持ち、`.vd-pulse`（ノード本体のラッパ）が 18s 周期で `t0` と `t0+9s` に `scale(1.07)` へ膨らんで戻る。波紋 `circle.vd-ripple`（stroke `var(--color-border)` 1.5、fill なし）を 2 つ置き、18s 周期の最初の 1.5s（8.33%）で opacity .85 → 0・scale 1 → 2.1、遅延 `t0` / `t0+9s`。軌道・脈動・波紋は同じ瞬間（出現時）に始めて位相を揃える。
+- reduced-motion: 玉と波紋は `display: none`、脈動なし。
 
 ### 4-6. イントロ幕（G）
 - `IntroVeil`（client）: マウント時に `<html data-intro>`。幕 `fixed inset-0 z-[100]`（背景は components 層の `.intro-veil { background: var(--color-bg-dark) }`）+ 画面中央にロゴ箱 `.veil-logo`（マーキーのロゴセルと同じ構成: 黒角丸 `bg-fg` + `p-[12%]` + `/images/logo-wordmark.png`。PC 340px / ≤600 260px。黒幕上では箱が見えずロゴだけが見える）。ロゴは 0.1s 後に 0.35s（`--ease-mk`）で fade + scale .96→1 で現れる。位置は画面中央で計測しない。

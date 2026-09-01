@@ -99,6 +99,20 @@
 @keyframes vd-spin {
   to { transform: rotate(360deg); }
 }
+@keyframes vd-orbit {
+  to { transform: rotate(360deg); }
+}
+/* 18s 周期のうち最初の 1.5s（8.33%）で 2.1 倍に広がって消え、残りは非表示 */
+@keyframes vd-ripple {
+  0% { opacity: 0.85; transform: scale(1); }
+  8.33% { opacity: 0; transform: scale(2.1); }
+  100% { opacity: 0; transform: scale(2.1); }
+}
+/* 通過の瞬間に 1.07 倍へ膨らんで戻る（0% と 50% = 2 つの玉） */
+@keyframes vd-pulse {
+  0%, 5%, 50%, 55%, 100% { transform: none; }
+  1.5%, 51.5% { transform: scale(1.07); }
+}
 @keyframes cell-pop {
   0% { opacity: 0; transform: scale(0.55); }
   100% { opacity: 1; transform: scale(1); }
@@ -280,6 +294,48 @@
   [data-reveal-kind="diagram"] .vd-cap {
     opacity: 1;
     transition: opacity 0.8s ease 0.8s;
+  }
+  /* 周回する玉（参考サイトの vd-sat）: リング中心を軸に 18s で 1 周。2 つ目は半周ずらす。出現後 2.4s で現れる */
+  .vd-sat {
+    transform-box: view-box;
+    transform-origin: 270px 210px;
+    opacity: 0;
+    transition: opacity 0.8s ease 2.4s;
+  }
+  .vd-sat2 {
+    transition-delay: 2.8s;
+  }
+  /* 軌道・脈動・波紋の 3 つのアニメは同じ瞬間（出現時）に始めて位相を揃える */
+  [data-reveal-kind="diagram"] .vd-sat {
+    opacity: 1;
+    animation: vd-orbit var(--orbit, 18s) linear infinite;
+  }
+  [data-reveal-kind="diagram"] .vd-sat2 {
+    opacity: 0.55;
+    animation-delay: calc(var(--orbit, 18s) / -2);
+  }
+  /* 玉がノードを通過する瞬間（t0 と t0 + 半周）にノードが脈動し、波紋が広がる。周期は玉と同じ */
+  .vd-pulse {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+  }
+  [data-reveal-kind="diagram"] .vd-pulse {
+    animation: vd-pulse var(--orbit, 18s) ease-out var(--t0, 0s) infinite;
+  }
+  .vd-ripple {
+    fill: none;
+    stroke: var(--color-border);
+    stroke-width: 1.5;
+    opacity: 0;
+    pointer-events: none;
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+  }
+  [data-reveal-kind="diagram"] .vd-ripple {
+    animation: vd-ripple var(--orbit, 18s) cubic-bezier(0.2, 0.6, 0.3, 1) var(--t0, 0s) infinite;
+  }
+  [data-reveal-kind="diagram"] .vd-ripple2 {
+    animation-delay: calc(var(--t0, 0s) + var(--orbit, 18s) / 2);
   }
 
   /* マーキー: JS 駆動時は CSS アニメを止め、セルを中央から順に pop（spec §4-6/4-7） */
@@ -767,6 +823,10 @@
   }
   html.js .write-stroke {
     fill-opacity: 1;
+  }
+  .vd-sat,
+  .vd-ripple {
+    display: none;
   }
   .cur {
     display: none;
