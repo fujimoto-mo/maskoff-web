@@ -12,11 +12,11 @@ export default function Header() {
       </Link>
       <nav aria-label="メイン" className="ml-auto flex items-center gap-[22px] max-nav:hidden">
         {NAV.map((n) => (
-          <Link key={n.href} href={n.href} className="text-nav text-fg transition-colors hover:text-fg-muted">
-            {n.label}
+          <Link key={n.href} href={n.href} data-text={n.label} className="nav-roll text-nav text-fg">
+            <span className="rl-t">{n.label}</span>
           </Link>
         ))}
-        <Button href="/contact/" dot>
+        <Button href="/contact/" variant="liquid">
           お問い合わせ
         </Button>
       </nav>

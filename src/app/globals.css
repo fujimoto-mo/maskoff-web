@@ -121,6 +121,9 @@
   0% { translate: 0 0; }
   100% { translate: 0 -4px; }
 }
+@keyframes sp-mk-swipe {
+  to { transform: scaleX(1); }
+}
 
 /* ============================================================
    演出（フェーズ③）。初期の隠し状態は html.js 配下だけ。
@@ -494,6 +497,150 @@
       transition: none;
       transform: none !important;
     }
+  }
+
+  /* ヘッダーナビのロール（spec §4-11） */
+  .nav-roll {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    line-height: 1.5;
+  }
+  .nav-roll .rl-t {
+    display: block;
+    transition: transform var(--duration-fast) var(--ease-sym);
+  }
+  .nav-roll::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    color: var(--color-fg-muted);
+    transform: translateY(100%);
+    transition: transform 0.35s var(--ease-sym);
+  }
+  @media (hover: hover) {
+    .nav-roll:hover .rl-t,
+    .nav-roll:focus-visible .rl-t {
+      transform: translateY(-100%);
+    }
+    .nav-roll:hover::after,
+    .nav-roll:focus-visible::after {
+      transform: translateY(0);
+    }
+  }
+  /* CTA の液体ホバー。bg-fg utility は使わない（utilities レイヤーが components レイヤーの
+     :hover より常に優先され、背景色が変わらなくなるため。components 層内で完結させる） */
+  .cta-liquid {
+    background-color: var(--color-fg);
+    transition: background-color 0.18s;
+  }
+  .cl-fill {
+    position: absolute;
+    top: calc(50% - 4px);
+    left: 18px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-fg-invert);
+    transform-origin: 50% 50%;
+    transition: transform 0.6s var(--ease-out-quart);
+    pointer-events: none;
+  }
+  .cl-txt {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    margin-left: 16px;
+    overflow: hidden;
+    transition: transform 0.5s var(--ease-out-quart);
+  }
+  .cl-lab {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    transition: transform 0.55s var(--ease-out-quart);
+  }
+  .cl-nxt {
+    position: absolute;
+    inset: 0;
+    justify-content: center;
+    transform: translateY(120%);
+  }
+  .cl-arw {
+    position: absolute;
+    top: 50%;
+    right: 13px;
+    width: 15px;
+    height: 15px;
+    opacity: 0;
+    transform: translate(7px, -50%);
+    transition:
+      opacity 0.3s 0.14s,
+      transform 0.45s var(--ease-out-quart) 0.14s;
+  }
+  @media (hover: hover) {
+    .cta-liquid:hover,
+    .cta-liquid:focus-visible {
+      background-color: var(--color-marker);
+      transition: background-color 0.12s 0.3s;
+    }
+    .cta-liquid:hover .cl-fill,
+    .cta-liquid:focus-visible .cl-fill {
+      background: var(--color-marker);
+      transform: scale(56);
+    }
+    .cta-liquid:hover .cl-cur,
+    .cta-liquid:focus-visible .cl-cur {
+      transform: translateY(-120%);
+    }
+    .cta-liquid:hover .cl-nxt,
+    .cta-liquid:focus-visible .cl-nxt {
+      transform: translateY(0);
+    }
+    .cta-liquid:hover .cl-txt,
+    .cta-liquid:focus-visible .cl-txt {
+      transform: translateX(-15px);
+    }
+    .cta-liquid:hover .cl-arw,
+    .cta-liquid:focus-visible .cl-arw {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+  }
+  @media (hover: none) {
+    .cta-liquid {
+      transition: transform 0.25s;
+    }
+    .cta-liquid:active {
+      transform: scale(0.97);
+    }
+  }
+  /* SP メニューのリンク帯 */
+  .mk {
+    position: absolute;
+    left: -3%;
+    bottom: 7%;
+    z-index: -1;
+    width: 106%;
+    height: 36%;
+    background: var(--color-marker);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  a[data-hit] .mk {
+    animation: sp-mk-swipe 0.45s var(--ease-mk) both;
+  }
+  /* 追従バッジ。animation は utilities の animate-[...] ではなくここで持たせる
+     （utilities レイヤーの animation shorthand は components レイヤーの
+     animation-play-state:paused より常に優先されてしまい、hover で止まらなくなるため） */
+  .sticky-ring {
+    animation: spin 18s linear infinite;
+  }
+  .sticky-cta:hover {
+    transform: scale(1.04);
+  }
+  .sticky-cta:hover .sticky-ring {
+    animation-play-state: paused;
   }
 }
 

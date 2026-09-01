@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import Button from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
@@ -7,6 +8,7 @@ import { NAV, SUB_NAV, SITE } from "@/lib/site";
 
 /** ≤720px のハンバーガー + 全画面オーバーレイ。Header から呼ぶ。 */
 export default function MobileNav() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const panelId = `mobile-menu-${useId()}`;
   const firstLink = useRef<HTMLAnchorElement>(null);
@@ -80,10 +82,22 @@ export default function MobileNav() {
               key={n.href}
               ref={i === 0 ? firstLink : undefined}
               href={n.href}
-              onClick={() => setOpen(false)}
-              className="font-display text-[min(11.5vw,54px)] font-semibold leading-[1.05] tracking-[-.04em] text-fg"
+              onClick={(e) => {
+                if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                  setOpen(false);
+                  return;
+                }
+                e.preventDefault();
+                e.currentTarget.setAttribute("data-hit", "");
+                window.setTimeout(() => {
+                  setOpen(false);
+                  router.push(n.href);
+                }, 450);
+              }}
+              className="relative z-0 font-display text-[min(11.5vw,54px)] font-semibold leading-[1.05] tracking-[-.04em] text-fg"
             >
               {n.label}
+              <span aria-hidden className="mk" />
             </Link>
           ))}
           <div className="mt-2 flex gap-5 text-caption text-fg-muted">

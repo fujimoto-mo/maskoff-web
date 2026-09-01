@@ -32,7 +32,7 @@ export default function StickyCta() {
     <a
       href={isHome ? "#contact" : "/contact/"}
       className={cn(
-        "fixed right-4 bottom-[max(16px,env(safe-area-inset-bottom))] z-[60] hidden size-20 rounded-full transition-[opacity,transform] duration-300 max-nav:block",
+        "sticky-cta fixed right-4 bottom-[max(16px,env(safe-area-inset-bottom))] z-[60] hidden size-20 rounded-full transition-[opacity,transform] duration-300 max-nav:block",
         hidden && "pointer-events-none scale-90 opacity-0",
       )}
     >
@@ -41,7 +41,7 @@ export default function StickyCta() {
         <circle cx="40" cy="40" r="40" className="fill-fg" />
         <path d="M40 31v18m-7-7 7 7 7-7" className="stroke-fg-invert" strokeWidth="2" fill="none" strokeLinecap="square" />
       </svg>
-      <svg viewBox="0 0 80 80" aria-hidden className="absolute inset-0 size-full animate-[spin_18s_linear_infinite]">
+      <svg viewBox="0 0 80 80" aria-hidden className="sticky-ring absolute inset-0 size-full">
         <defs>
           <path id="cta-ring" d="M40,40 m-27,0 a27,27 0 1,1 54,0 a27,27 0 1,1 -54,0" />
         </defs>
