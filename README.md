@@ -56,9 +56,18 @@ npm run preview            # build → wrangler dev（/api/* 含めて本番同�
 `src/styles/tokens.css` の `@theme` に集約（creator.dipsy.com/apply の実測値）。ブランドカラーは `--color-marker` / `--color-required`。
 フルブリード 32px（SP 20px）/ SERVICE 列 56px・FAQ 18px の個別ガター / SP で SERVICE・PARTNERS は scroll-snap カルーセル、FAQ はアコーディオン / SP 右下に回転バッジ CTA。
 
+## 演出（アニメーション）
+
+依存ライブラリなし。`src/components/motion/` の 7 つの client 部品（`RevealObserver` / `ScrollTheme` / `Handwriting` / `MarkerLayer` / `IntroVeil` / `MarqueeDrag` / `CustomCursor`）と `globals.css` の CSS で動きます。
+
+- 出現系は要素に `data-reveal="head|para|line|diagram|blur|up"` を付け、`RevealObserver` が画面に入ったとき `data-reveal="in"` に書き換えます（元の値は `data-reveal-kind`）。演出は CSS。
+- 初期の隠し状態は `html.js` 配下だけ。JS 無効・クローラは常に可視です。
+- `prefers-reduced-motion: reduce` では全演出が最終状態で静止し、イントロ幕も出ません。
+- 手書き見出しは `src/content/vision-handwriting.ts` に SVG の `<path d>` を書き順どおりに写します。
+
 ## 差し替えが必要なサンプル
 
 - `src/lib/site.ts`（住所・電話・SNS）
 - `src/lib/services.ts` `src/lib/works.ts` `src/lib/partners.ts`、`src/content/sample.ts`
-- `src/components/sections/VisionBlock.tsx` の本文と `public/images/company/*.svg`（手書き見出しはデザイナー入稿の SVG に差し替え）
+- `src/components/sections/VisionBlock.tsx` の本文と `src/content/vision-handwriting.ts`（手書き見出しはデザイナー入稿の SVG の `<path d>` に差し替え）
 - `public/images/`（`scripts/gen-sample-assets.mjs` で生成した仮画像。差し替え後 `npm run images`）

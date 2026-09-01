@@ -26,7 +26,7 @@ Next.js 16 (App Router) / TypeScript (strict)
   └ output: "export"（静的エクスポート）
 Tailwind CSS v4（CSS-first / @theme）
 microCMS Hobby（ヘッドレスCMS / API上限5本 / SDK は使わず生 fetch）
-GSAP + ScrollTrigger / Lenis（アニメーションはフェーズ③でまとめて実装）
+アニメーションは依存ゼロ（IntersectionObserver + rAF + Web Animations API）。GSAP はピン留めやスクラブのタイムラインが必要になった時点で導入する。Lenis は参考サイトも不使用のため導入しない
 Resend（メール送信）
 Cloudflare Workers（ホスティング）
   ├ Static Assets（out/ を無課金で配信）
@@ -166,6 +166,8 @@ SERVICEだけガターが広いのは、カードに背景色がないため間�
 
 `--color-marker` の緑は、本文中のキーフレーズ背景として使います。装飾で乱用しないでください。1セクションにつき2〜3箇所が上限です。
 
+暗転時（VISIONの`data-on-vision`のマーカー帯）は `color-mix(in srgb, var(--color-marker) 88%, white)`、CTAの液体ホバー塗り（暗色配色時）は `color-mix(in srgb, var(--color-marker) 88%, black)` を使い、いずれも文字とのコントラスト比4.5:1以上を確保します。トークンの値そのものは変更しません。
+
 ### 4-2. レイアウト
 
 ```css
@@ -215,7 +217,7 @@ SERVICE          ← 英字・大文字・極太・字間タイト
 **フォント**
 - 英字：Inter Tight（`next/font/google` でセルフホスト）。見出しは 700、字間 −0.045em。
 - 和文：Noto Sans JP。本文 400、見出し 700。`display: "optional"` で読み込む（初回訪問は OS の和文フォントで描画し、以降のキャッシュで Noto に切り替わる。46 スライス約 800KB の再レイアウトを避けるため）。
-- **手書き風の大見出し**（COMPANY用）は Web フォントで再現不可。**SVGまたはWebPで入稿**します。テキストで代替しないこと。`alt` 属性に必ず同じ文言を入れてSEO・スクリーンリーダー対応。
+- **手書き風の大見出し**（VISION / COMPANY用）は Web フォントで再現不可。**SVG で入稿**し、`<path d>` を書き順どおりに `src/content/vision-handwriting.ts` へ写す（`Handwriting` が `pathLength=1` で線描画する）。テキストで代替しないこと。`aria-label` に必ず同じ文言を入れてSEO・スクリーンリーダー対応。
 
 ---
 
@@ -269,18 +271,25 @@ FAQは `<details>/<summary>` を閉じた状態で SSR し、PCでは CSS の `:
 
 ## 7. アニメーション方針
 
-GSAP + ScrollTrigger を使用。**必ず `prefers-reduced-motion` を尊重すること。**
+依存ライブラリなし（IntersectionObserver + rAF + Web Animations API + CSS）。**必ず `prefers-reduced-motion` を尊重すること。** 初期の隠し状態は `html.js` 配下だけに適用し、JS 無効・クローラは常に可視にする。詳細は `docs/superpowers/specs/2026-09-01-phase3-animation-design.md`。
 
 ### 実装するもの
 
 | 演出 | 対象 | 実装 |
 |---|---|---|
-| 横マーキー | HOMEヒーロー | 3行、行ごとに速度差。透過PNGを不規則サイズで配置。シームレスループのため配列を2倍に複製 |
-| スクロールリビール | 各セクション本文 | fade + translateY(24px)。stagger 0.08s |
-| マーカー描画 | COMPANY本文のキーフレーズ | `background-size: 0% 100%` → `100% 100%`。左から右へ0.4s |
-| コラージュ出現 | 実績・メンバー一覧 | 各行に紐づく画像が不規則位置からfade+scale。行ごとに順次発火 |
-| 背景色遷移 | セクション境界 | ScrollTrigger で `--color-bg-dark` → `--color-bg` を補間 |
-| ホバーロール | メンバー名・ナビ | 同一テキストを2つ重ね、`overflow:hidden` + `translateY` で入れ替え |
+| イントロ幕 | HOME 初回表示 | 黒幕 + 中央のロゴ箱を 1400ms（SP 1600ms）表示 → FLIP（WAAPI 0.6s）でマーキーのロゴセル `[data-lead] [data-lead-box]` へ飛ばしながら幕を0.4sで透明化。着地で `data-boing` を付け `data-intro` を外し `kv:launch` を発火。HOME を開くたびに毎回表示（状態は保存しない）。reduced-motion / `saveData` / JS 無効ではスキップし `kv:launch` を即発火 |
+| 横マーキー | HOMEヒーロー | 3行、行ごとに速度差。JS 駆動（rAF）でセルを中央から pop、ドラッグ慣性。配列を2倍に複製 |
+| 見出しの文字立ち上がり | 全 SectionHeading | 1 文字ずつ `.ch` に分割し skew 立ち上がり（0.68s、26ms/文字） |
+| 背景色遷移 | VISION | `ScrollTheme` が rAF でセクション位置から `<html>` の `--color-*` を白→黒へ補間。0.5 超で `data-on-vision` |
+| 手書き線描画 | VISION | `Handwriting` が `stroke-dashoffset 1→0` を書き順どおり（合計 1.6s） |
+| 行フェード | VISION 本文 | PC は段落単位で行が順に、SP(≤640) は 1 行ずつ画面下 75% で点灯 |
+| マーカー描画 | VISION 本文 | `MarkerLayer` が文字位置を計測し背後の線を `clip-path` で左→右（0.85s）。他セクションは `background-size` 方式 |
+| 相関図 | VISION | リングをマスクで描画、ノードはぼかしから出現、点線は 80s で回転 |
+| スクロールリビール | SERVICE / PARTNERS / FAQ / NEWS / CONTACT | `data-reveal="blur"`（SERVICE、奥から blur 解除）/ `"up"`（fade + 18px）。stagger 80ms |
+| ホバー散布 | WORKS | 行ホバーでサムネ 5 枚が 3 パターンの配置で出現、他行は薄く。`(max-width: 820px)` または `(hover: none)`（タッチ主体端末含む）では画面中央の行がアクティブになる方式に切替 |
+| ホバーロール | WORKS の名前・ナビ | 同一テキストを2つ重ね、`overflow:hidden` + `translateY` で入れ替え |
+| CTA の液体ホバー | ヘッダー CTA | 白点が `scale(56)` で広がり `--color-marker` に塗り替わる |
+| カスタムカーソル | WORKS / SERVICE | `(hover:hover) and (pointer:fine)` のみ。円カーソルが追従し対象上で開く |
 
 ### 参考サイトで確認した演出（フェーズ③の spec で採否を確定）
 
@@ -288,8 +297,8 @@ GSAP + ScrollTrigger を使用。**必ず `prefers-reduced-motion` を尊重す�
 
 ### 実装順序
 
-**アニメーションは全ページのマークアップが完成してから、最後にまとめて実装します。**
-先に入れるとレイアウト変更のたびに発火位置の取り直しが発生します。
+**アニメーションはページのマークアップが完成してから実装します。**
+先に入れるとレイアウト変更のたびに発火位置の取り直しが発生します。フェーズ③は HOME のマークアップ完成後に HOME から着手し、下層ページはフェーズ②の移植後に同じ部品（`data-reveal` 契約）を適用します。
 
 ### 禁止事項
 
