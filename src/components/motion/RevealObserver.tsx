@@ -30,9 +30,10 @@ export function markRevealed(el: HTMLElement): void {
  */
 export default function RevealObserver() {
   useEffect(() => {
+    const stopActive = initActiveRows();
     (window as Window & { __revealReady?: boolean }).__revealReady = true;
     // 安全弁が発動済み（js クラスが外れている）なら、隠し状態も演出も使わずそのまま表示
-    if (!document.documentElement.classList.contains("js")) return;
+    if (!document.documentElement.classList.contains("js")) return stopActive;
 
     const root = document.documentElement;
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -41,7 +42,7 @@ export default function RevealObserver() {
 
     if (reduce) {
       pending().forEach(markRevealed);
-      return;
+      return stopActive;
     }
 
     const observers: IntersectionObserver[] = [];
@@ -92,7 +93,39 @@ export default function RevealObserver() {
       observers.forEach((io) => io.disconnect());
       document.removeEventListener("vision:written", onWritten);
       document.removeEventListener("kv:launch", start);
+      stopActive();
     };
   }, []);
   return null;
+}
+
+/** ≤820: 画面中央の [data-activate] 行を data-active にし、親に data-live を付ける。タップで中央へ / active ならリンク */
+export function initActiveRows(): () => void {
+  if (!matchMedia("(max-width: 820px)").matches) return () => {};
+  const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-activate]"));
+  if (rows.length === 0) return () => {};
+  const list = rows[0].parentElement;
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        rows.forEach((r) => r.removeAttribute("data-active"));
+        (e.target as HTMLElement).setAttribute("data-active", "");
+        list?.setAttribute("data-live", "");
+      }
+    },
+    { rootMargin: "-40% 0px -40% 0px", threshold: 0 },
+  );
+  rows.forEach((r) => io.observe(r));
+  const onClick = (ev: Event) => {
+    const row = (ev.target as HTMLElement).closest<HTMLElement>("[data-activate]");
+    if (!row || (ev.target as HTMLElement).closest("a")) return;
+    if (!row.hasAttribute("data-active")) row.scrollIntoView({ block: "center", behavior: "smooth" });
+    else if (row.dataset.url) window.open(row.dataset.url, "_blank", "noopener");
+  };
+  list?.addEventListener("click", onClick);
+  return () => {
+    io.disconnect();
+    list?.removeEventListener("click", onClick);
+  };
 }
