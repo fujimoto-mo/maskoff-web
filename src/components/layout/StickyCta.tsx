@@ -37,17 +37,17 @@ export default function StickyCta() {
       )}
     >
       <span className="sr-only">お問い合わせへ</span>
-      <svg viewBox="0 0 80 80" aria-hidden className="size-full">
+      <svg viewBox="0 0 80 80" aria-hidden className="absolute inset-0 size-full">
         <circle cx="40" cy="40" r="40" className="fill-fg" />
-        <g className="origin-center animate-[spin_18s_linear_infinite] [transform-box:fill-box]">
-          <defs>
-            <path id="cta-ring" d="M40,40 m-27,0 a27,27 0 1,1 54,0 a27,27 0 1,1 -54,0" />
-          </defs>
-          <text className="fill-fg-invert font-display text-[8.5px] font-bold tracking-[.18em]">
-            <textPath href="#cta-ring">CONTACT US · お問い合わせ · </textPath>
-          </text>
-        </g>
         <path d="M40 31v18m-7-7 7 7 7-7" className="stroke-fg-invert" strokeWidth="2" fill="none" strokeLinecap="square" />
+      </svg>
+      <svg viewBox="0 0 80 80" aria-hidden className="absolute inset-0 size-full animate-[spin_18s_linear_infinite]">
+        <defs>
+          <path id="cta-ring" d="M40,40 m-27,0 a27,27 0 1,1 54,0 a27,27 0 1,1 -54,0" />
+        </defs>
+        <text className="fill-fg-invert font-display text-[8.5px] font-bold tracking-[.18em]">
+          <textPath href="#cta-ring">CONTACT US · お問い合わせ · </textPath>
+        </text>
       </svg>
     </a>
   );
