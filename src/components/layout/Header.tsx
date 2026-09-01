@@ -12,8 +12,12 @@ export default function Header() {
       </Link>
       <nav aria-label="メイン" className="ml-auto flex items-center gap-[22px] max-nav:hidden">
         {NAV.map((n) => (
-          <Link key={n.href} href={n.href} data-text={n.label} className="nav-roll text-nav text-fg">
+          <Link key={n.href} href={n.href} className="nav-roll text-nav text-fg">
             <span className="rl-t">{n.label}</span>
+            {/* ロール後の文字。::after の生成コンテンツだとアクセシブルネームが二重になるため実 DOM で重ねる */}
+            <span className="rl-b" aria-hidden>
+              {n.label}
+            </span>
           </Link>
         ))}
         <Button href="/contact/" variant="liquid">

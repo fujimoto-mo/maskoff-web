@@ -3,10 +3,18 @@ import { useEffect } from "react";
 import { advance, clampFling, wrap, type RowState } from "@/components/motion/marquee-physics";
 import { cellPopDelay } from "@/components/motion/reveal-delay";
 
-type Row = { track: HTMLElement; state: RowState };
+type Row = { el: HTMLElement; track: HTMLElement; state: RowState };
+
+/** 行の 1 周分（複製前の幅）と基準速度をレイアウトから測る。リサイズのたびに測り直す */
+function measure(el: HTMLElement, track: HTMLElement): { half: number; v0: number } {
+  const half = track.scrollWidth / 2;
+  const duration = Number(el.dataset.duration || 60);
+  return { half, v0: (el.hasAttribute("data-reverse") ? 1 : -1) * (half / duration) };
+}
 
 /**
  * マーキーを JS 駆動にする: ロゴセルを中央に揃え、kv:launch でセルを pop させて rAF で流し、ドラッグで動かせる。
+ * リサイズ・画面回転では 1 周分（half）と基準速度・セル pop の遅延を測り直す（継ぎ目に空白が出ないように）。
  * reduced-motion では何もしない（CSS 側で静止）。
  * @example <Marquee rows={ROWS} /><MarqueeDrag />
  */
@@ -18,34 +26,63 @@ export default function MarqueeDrag() {
     const controller = new AbortController();
     const { signal } = controller;
 
+    let launched = false; // kv:launch 前は静止（幕のロゴが着地位置を計測できるように）
+
     const rows: Row[] = Array.from(root.querySelectorAll<HTMLElement>("[data-row]")).map((rowEl) => {
       const track = rowEl.querySelector<HTMLElement>(".mq-track")!;
-      const half = track.scrollWidth / 2;
-      const duration = Number(rowEl.dataset.duration || 60);
-      const v0 = (rowEl.hasAttribute("data-reverse") ? 1 : -1) * (half / duration);
-      return { track, state: { x: rowEl.hasAttribute("data-reverse") ? -half : 0, v: v0, v0, half } };
+      const { half, v0 } = measure(rowEl, track);
+      return { el: rowEl, track, state: { x: rowEl.hasAttribute("data-reverse") ? -half : 0, v: v0, v0, half } };
     });
     const apply = () => rows.forEach((r) => (r.track.style.transform = `translate3d(${r.state.x}px, 0, 0)`));
 
-    // ロゴセルを画面中央へ。セル pop の遅延は中央からの距離で決める
+    // セル pop の遅延は画面中央からの距離で決める。pop 済み（launched）なら 0 にして再 pop させない
+    const setDelays = () => {
+      const center = root.clientWidth / 2;
+      rows.forEach((r) => {
+        const cells = Array.from(r.track.querySelectorAll<HTMLElement>("[data-cell]"));
+        const w = cells[0]?.offsetWidth || 1;
+        cells.forEach((c) => c.style.setProperty("--ed", launched ? "0ms" : `${cellPopDelay(c.offsetLeft + c.offsetWidth / 2 + r.state.x - center, w)}ms`));
+      });
+    };
+
+    // ロゴセルを画面中央へ
     const lead = root.querySelector<HTMLElement>("[data-lead]");
     const leadRow = rows.find((r) => r.track.contains(lead));
-    const center = root.clientWidth / 2;
-    if (lead && leadRow) leadRow.state.x = wrap(center - (lead.offsetLeft + lead.offsetWidth / 2), leadRow.state.half);
-    rows.forEach((r) => {
-      const cells = Array.from(r.track.querySelectorAll<HTMLElement>("[data-cell]"));
-      const w = cells[0]?.offsetWidth || 1;
-      cells.forEach((c) => c.style.setProperty("--ed", `${cellPopDelay(c.offsetLeft + c.offsetWidth / 2 + r.state.x - center, w)}ms`));
-    });
+    if (lead && leadRow) leadRow.state.x = wrap(root.clientWidth / 2 - (lead.offsetLeft + lead.offsetWidth / 2), leadRow.state.half);
+    setDelays();
     root.setAttribute("data-js", "");
     apply();
+
+    // リサイズ・画面回転で 1 周分が変わる。測り直さないと周期がずれて継ぎ目に空白が流れる
+    const relayout = () => {
+      for (const r of rows) {
+        const { half, v0 } = measure(r.el, r.track);
+        if (half <= 0) continue;
+        r.state = { ...r.state, half, v0, x: wrap(r.state.x, half) };
+      }
+      setDelays();
+      apply();
+    };
+    let roRaf = 0;
+    let roFirst = true; // observe 直後の初回通知は初期計測と同じなので捨てる
+    const ro = new ResizeObserver(() => {
+      if (roFirst) {
+        roFirst = false;
+        return;
+      }
+      if (roRaf) return;
+      roRaf = requestAnimationFrame(() => {
+        roRaf = 0;
+        relayout();
+      });
+    });
+    ro.observe(root);
 
     // rAF ループ。画面外・非表示タブでは止める
     let raf = 0;
     let last = 0;
     let visible = true;
     let dragging = false;
-    let launched = false; // kv:launch 前は静止（幕のロゴが着地位置を計測できるように）
     const loop = (now: number) => {
       raf = 0;
       const dt = last ? Math.min(0.05, (now - last) / 1000) : 0;
@@ -124,6 +161,8 @@ export default function MarqueeDrag() {
     return () => {
       controller.abort();
       io.disconnect();
+      ro.disconnect();
+      if (roRaf) cancelAnimationFrame(roRaf);
       if (raf) cancelAnimationFrame(raf);
       root.removeAttribute("data-js");
       root.removeAttribute("data-go");

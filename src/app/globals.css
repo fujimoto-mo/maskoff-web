@@ -185,11 +185,6 @@
       transform var(--duration-reveal-fast) var(--ease-out-quart) 0.28s;
   }
 
-  /* 反転中（data-on-vision）: 色は変数で自動追従。ヘッダー背景は透過にして本文の反転色を見せる */
-  html[data-on-vision] header {
-    background: transparent;
-  }
-
   /* VISION 本文: PC は文ごとに 1 行、SP(≤640) は流し込み。行は in で順にフェード（spec §4-4） */
   .vln {
     display: block;
@@ -234,7 +229,9 @@
   .marker-target {
     position: relative;
   }
-  html[data-on-vision] .marker-target {
+  /* 黒文字にするのは帯が実際に引かれた（MarkerLayer が data-marked を付けた）ものだけ。
+     安全弁で js が外れた・color-mix 非対応などで帯が無い経路では黒背景に黒文字になってしまう */
+  html.js[data-on-vision] .marker-target[data-marked] {
     color: var(--color-bg-dark);
   }
 
@@ -367,6 +364,14 @@
   @media (width < 601px) {
     html.js [data-reveal="blur"] {
       transform: translateY(14px);
+    }
+  }
+  /* 未出現の translateZ(-420px) + 親の perspective が右へ約 37px はみ出して横スクロールが出る。
+     SP のカルーセル（overflow-x: auto, ≤600）には触れないよう 821px 以上だけ clip する
+     （hidden ではなく clip: overflow-y が visible のまま＝バッジ pop がはみ出せる） */
+  @media (width >= 821px) {
+    #service-track {
+      overflow-x: clip;
     }
   }
   html.js [data-reveal="blur"] .svf-badge {
@@ -510,8 +515,9 @@
     display: block;
     transition: transform var(--duration-fast) var(--ease-sym);
   }
-  .nav-roll::after {
-    content: attr(data-text);
+  /* ロール後の文字は実 DOM の aria-hidden な span（::after + attr(data-text) だと
+     生成コンテンツがアクセシブルネームに入り「COMPANYCOMPANY」と読まれる） */
+  .nav-roll .rl-b {
     position: absolute;
     inset: 0;
     color: var(--color-fg-muted);
@@ -523,8 +529,8 @@
     .nav-roll:focus-visible .rl-t {
       transform: translateY(-100%);
     }
-    .nav-roll:hover::after,
-    .nav-roll:focus-visible::after {
+    .nav-roll:hover .rl-b,
+    .nav-roll:focus-visible .rl-b {
       transform: translateY(0);
     }
   }
@@ -684,11 +690,13 @@
       display: none;
     }
   }
+  /* カーソルを隠すのは CustomCursor が実際に起動したときだけ（JS 無効・ハイドレーション失敗で
+     カーソルが消えたままにならないよう html[data-cursor] を条件にする） */
   @media (hover: hover) and (pointer: fine) {
-    .work-row,
-    .work-row *,
-    #service-track > li,
-    #service-track > li * {
+    html[data-cursor] .work-row,
+    html[data-cursor] .work-row *,
+    html[data-cursor] #service-track > li,
+    html[data-cursor] #service-track > li * {
       cursor: none;
     }
   }
@@ -722,6 +730,24 @@
   .marker {
     background-size: 100% 100%;
   }
+  /* ハイドレーション前でも隠れたままにしない（spec §2-1）。html.js 配下の初期隠し状態を
+     unlayered のここで打ち消す（@layer components / utilities のどれより常に優先される） */
+  html.js [data-reveal="head"] .ch,
+  html.js [data-reveal="head"] .sec-ja,
+  html.js .vlt,
+  html.js [data-reveal="blur"],
+  html.js [data-reveal="blur"] .svf-badge,
+  html.js [data-reveal="up"],
+  html.js [data-reveal="diagram"] .vd-node,
+  html.js [data-reveal="diagram"] .vd-cap {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  html.js .write-stroke,
+  html.js [data-reveal="diagram"] .vd-ringmask {
+    stroke-dashoffset: 0;
+  }
   .cur {
     display: none;
   }
@@ -738,8 +764,8 @@
   .nav-roll:focus-visible .rl-t {
     transform: none;
   }
-  .nav-roll:hover::after,
-  .nav-roll:focus-visible::after {
+  .nav-roll:hover .rl-b,
+  .nav-roll:focus-visible .rl-b {
     transform: translateY(100%);
   }
   .cta-liquid:hover,

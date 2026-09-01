@@ -14,14 +14,17 @@ type Props = {
   children: ReactNode;
 };
 
-const BASE = "inline-flex items-center justify-center gap-2 font-bold tracking-[.02em] transition-opacity hover:opacity-[.88] disabled:cursor-not-allowed disabled:opacity-35";
+// transition-opacity / hover:opacity は utilities レイヤーなので、components レイヤーの
+// .cta-liquid の transition・background-color に勝ってしまう。liquid には持たせず、各バリアント側で付ける。
+const BASE = "inline-flex items-center justify-center gap-2 font-bold tracking-[.02em] disabled:cursor-not-allowed disabled:opacity-35";
+const HOVER_FADE = "transition-opacity hover:opacity-[.88]";
 const VARIANTS: Record<Variant, string> = {
-  pill: "rounded-pill bg-fg px-[22px] py-2.5 text-[13px] text-fg-invert",
-  block: "w-full rounded-btn bg-fg px-[34px] py-[18px] text-[16px] text-fg-invert max-tab:text-[14px]",
-  line: "rounded-pill border border-fg px-[22px] py-2.5 text-[13px] text-fg",
+  pill: `${HOVER_FADE} rounded-pill bg-fg px-[22px] py-2.5 text-[13px] text-fg-invert`,
+  block: `${HOVER_FADE} w-full rounded-btn bg-fg px-[34px] py-[18px] text-[16px] text-fg-invert max-tab:text-[14px]`,
+  line: `${HOVER_FADE} rounded-pill border border-fg px-[22px] py-2.5 text-[13px] text-fg`,
   // bg-fg utility はここでは使わない: utilities レイヤーは components レイヤーの .cta-liquid:hover より
   // 常に優先されてしまい、hover で背景色が変わらなくなる（globals.css 側で背景色を持たせる）。
-  liquid: "cta-liquid relative overflow-hidden rounded-pill py-2.5 pl-[18px] pr-[34px] text-[13px] text-fg-invert hover:opacity-100",
+  liquid: "cta-liquid relative overflow-hidden rounded-pill py-2.5 pl-[18px] pr-[34px] text-[13px] text-fg-invert",
 };
 
 /**

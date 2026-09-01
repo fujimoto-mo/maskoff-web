@@ -54,6 +54,9 @@ export default function MarkerLayer() {
     const draw = (i: number) => {
       if (drawn.has(i)) return;
       drawn.add(i);
+      // 帯が引かれた印。反転中の黒文字（html.js[data-on-vision] .marker-target[data-marked]）は
+      // これが付いたものだけに効かせる（帯が無い経路で黒背景に黒文字にしないため）
+      targets[i]?.setAttribute("data-marked", "");
       layer.querySelectorAll<HTMLElement>(`.marker-line[data-target="${i}"]`).forEach((line, k) => {
         if (reduce) {
           line.style.clipPath = "inset(0px)";
@@ -102,6 +105,7 @@ export default function MarkerLayer() {
       ro.disconnect();
       document.removeEventListener("vision:written", rebuild);
       timers.forEach((id) => window.clearTimeout(id));
+      targets.forEach((t) => t.removeAttribute("data-marked"));
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);

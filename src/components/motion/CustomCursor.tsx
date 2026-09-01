@@ -5,6 +5,7 @@ const HOVER_TARGETS = ".work-row, #service-track > li";
 
 /**
  * ポインタに追従する円カーソル。(hover:hover) and (pointer:fine) の環境だけ動き、WORKS の行と SERVICE カード上で開く。
+ * 起動している間だけ html[data-cursor] を立て、CSS 側の cursor:none をその配下に限定する。
  * @example <CustomCursor />（layout.tsx）
  */
 export default function CustomCursor() {
@@ -13,6 +14,9 @@ export default function CustomCursor() {
   useEffect(() => {
     const el = ref.current;
     if (!el || !matchMedia("(hover: hover) and (pointer: fine)").matches || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // 実際に起動したときだけ印を付ける。globals.css の cursor:none はこの属性を条件にしているので、
+    // JS 無効・ハイドレーション失敗のときにネイティブカーソルが消えたままにならない
+    document.documentElement.setAttribute("data-cursor", "");
     let tx = -100;
     let ty = -100;
     let x = tx;
@@ -38,6 +42,7 @@ export default function CustomCursor() {
     document.addEventListener("pointerover", onOver, { passive: true });
     document.addEventListener("mouseout", onOut, { passive: true });
     return () => {
+      document.documentElement.removeAttribute("data-cursor");
       document.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerover", onOver);
       document.removeEventListener("mouseout", onOut);
