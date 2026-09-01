@@ -42,6 +42,30 @@ npm run dev                # Next.js のみ（フォーム送信は失敗する�
 npm run preview            # build → wrangler dev（/api/* 含めて本番同等）
 ```
 
+## 開発サーバーの起動・停止・再起動
+
+プロジェクトのディレクトリで実行する。開発サーバーは http://localhost:3000 。
+
+```bash
+# 起動（フォアグラウンド。Ctrl+C で停止）
+npm run dev
+
+# 起動（バックグラウンドで動かしたままにする。ログは /tmp/maskoff-dev.log）
+setsid nohup npm run dev -- -p 3000 > /tmp/maskoff-dev.log 2>&1 < /dev/null &
+
+# 停止（ポート 3000 を使っているプロセスを kill）
+kill $(ss -ltnp | grep ':3000 ' | grep -o 'pid=[0-9]*' | cut -d= -f2)
+
+# 再起動（停止 → 起動）
+kill $(ss -ltnp | grep ':3000 ' | grep -o 'pid=[0-9]*' | cut -d= -f2); sleep 1; npm run dev
+
+# 本番と同じ静的ビルドで確認（http://localhost:3999）
+npm run build && npx serve out -l 3999
+```
+
+- `next dev` は同じディレクトリで 2 つ起動できない（ロックが掛かる）。「already running」と出たら上の停止コマンドで先に止める
+- 画像を追加・差し替えたときは `npm run build`（`prebuild` で最適化スクリプトが走る）か `node scripts/optimize-images.mjs` を実行してから確認する
+
 ## デプロイ
 
 1. Cloudflare: KV Namespace 作成 → `wrangler.toml` の `id` を置換。Turnstile ウィジェット作成。
