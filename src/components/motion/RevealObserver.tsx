@@ -1,4 +1,5 @@
 "use client";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 type Kind = "head" | "para" | "line" | "diagram" | "blur" | "up";
@@ -26,10 +27,15 @@ export function markRevealed(el: HTMLElement): void {
  * - para は vision:written 以降にしか in にしない（PC）。SP(≤640) では para を監視せず line を監視する
  * - write は Handwriting が自前で扱う
  * - reduced-motion なら全部即 in
+ * - layout に常駐するのでクライアント遷移では再マウントされない。pathname を依存にして
+ *   ルートごとに監視・ゲート・リスナーを作り直す（作り直さないと遷移先が永久に隠れたままになる）
  * @example <RevealObserver />（layout.tsx）
  */
 export default function RevealObserver() {
+  const path = usePathname();
+
   useEffect(() => {
+    if (path === null) return; // ルートが決まってから組み立てる
     const stopActive = initActiveRows();
     (window as Window & { __revealReady?: boolean }).__revealReady = true;
     // 安全弁が発動済み（js クラスが外れている）なら、隠し状態も演出も使わずそのまま表示
@@ -95,7 +101,7 @@ export default function RevealObserver() {
       document.removeEventListener("kv:launch", start);
       stopActive();
     };
-  }, []);
+  }, [path]);
   return null;
 }
 
