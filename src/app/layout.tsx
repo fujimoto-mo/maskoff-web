@@ -12,7 +12,7 @@ import { SITE } from "@/lib/site";
 
 // ビルド時に取得してセルフホストする（外部リクエストなし・CLS なし）
 const interTight = Inter_Tight({ subsets: ["latin"], variable: "--font-inter-tight", display: "swap" });
-const notoSansJP = Noto_Sans_JP({ subsets: ["latin"], variable: "--font-noto", display: "swap", preload: false });
+const notoSansJP = Noto_Sans_JP({ subsets: ["latin"], variable: "--font-noto", display: "optional", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),

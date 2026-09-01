@@ -214,7 +214,7 @@ SERVICE          ← 英字・大文字・極太・字間タイト
 
 **フォント**
 - 英字：Inter Tight（`next/font/google` でセルフホスト）。見出しは 700、字間 −0.045em。
-- 和文：Noto Sans JP。本文 400、見出し 700。
+- 和文：Noto Sans JP。本文 400、見出し 700。`display: "optional"` で読み込む（初回訪問は OS の和文フォントで描画し、以降のキャッシュで Noto に切り替わる。46 スライス約 800KB の再レイアウトを避けるため）。
 - **手書き風の大見出し**（COMPANY用）は Web フォントで再現不可。**SVGまたはWebPで入稿**します。テキストで代替しないこと。`alt` 属性に必ず同じ文言を入れてSEO・スクリーンリーダー対応。
 
 ---
@@ -330,7 +330,7 @@ components/
 - **`next/image` は使わない。** `components/ui/Picture.tsx` を使う（§2参照）。
 - `<img>` の直書きも禁止。SVG は `Picture` に `width` / `height` を渡す（manifest に載らないため必須）。
 - `sizes` を必ず指定する。指定漏れは全幅読み込みになる。
-- マーキーヒーローでは、初期表示で見える先頭行の先頭 3 枚のみ `loading="eager"` + `fetchPriority="high"`（`Marquee` の `eagerCount`、既定 3）。それ以外は遅延。
+- マーキーヒーローでは、**各行の初期表示セル**の先頭 3 枚のみ `loading="eager"` + `fetchPriority="high"`（`Marquee` の `eagerCount`、既定 3。逆方向行は複製側が初期表示なので判定が変わる）。それ以外は遅延。
 - `width` / `height` は `Picture` がマニフェストから常に `<img>` に出力する（呼び出し側は渡さない）。SVG だけは props で必須（§2 参照）。未指定の `<img>` は遅延読み込み時にセクションの高さが潰れる（参考サイトで実際に起きている疑いのある不具合）。
 - 透過PNGは `public/images/hero/` 配下に置く。最適化スクリプトがアルファを保持する。
 
