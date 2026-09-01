@@ -1,10 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { z } from "zod";
 import Button from "@/components/ui/Button";
 import Field, { INPUT_CLASS } from "@/components/ui/Field";
-import { CATEGORY_LABELS, contactSchema } from "@/lib/schema/contact";
+import { CATEGORY_LABELS } from "@/lib/schema/contact-labels";
+import type { ContactInput } from "@/lib/schema/contact";
 
 declare global {
   interface Window {
@@ -49,7 +49,7 @@ export default function ContactForm() {
     setServerError("");
     const fd = new FormData(e.currentTarget);
     const str = (k: string) => String(fd.get(k) ?? "");
-    const raw = {
+    const raw: Record<keyof ContactInput, string | boolean> = {
       company: str("company"),
       name: str("name"),
       email: str("email"),
@@ -60,6 +60,7 @@ export default function ContactForm() {
       website: str("website"),
       turnstileToken: SITE_KEY ? token : "local",
     };
+    const [{ contactSchema }, { z }] = await Promise.all([import("@/lib/schema/contact"), import("zod")]);
     const parsed = contactSchema.safeParse(raw);
     if (!parsed.success) {
       const f = z.flattenError(parsed.error).fieldErrors;
@@ -78,7 +79,11 @@ export default function ContactForm() {
       }
       router.push("/contact/thanks/");
     } catch (err) {
-      setServerError(err instanceof Error ? err.message : "送信に失敗しました。");
+      if (err instanceof TypeError) {
+        setServerError("通信に失敗しました。ネットワーク環境をご確認ください。");
+      } else {
+        setServerError(err instanceof Error ? err.message : "送信に失敗しました。");
+      }
       window.turnstile?.reset();
       setToken("");
     } finally {
@@ -94,16 +99,16 @@ export default function ContactForm() {
         <input id="company" name="company" autoComplete="organization" maxLength={100} className={INPUT_CLASS} placeholder="株式会社○○" {...aria("company")} />
       </Field>
       <Field label="お名前" htmlFor="name" required error={errors.name}>
-        <input id="name" name="name" autoComplete="name" maxLength={50} className={INPUT_CLASS} placeholder="山田 太郎" {...aria("name")} />
+        <input id="name" name="name" autoComplete="name" required maxLength={50} className={INPUT_CLASS} placeholder="山田 太郎" {...aria("name")} />
       </Field>
       <Field label="メールアドレス" htmlFor="email" required error={errors.email}>
-        <input id="email" name="email" type="email" autoComplete="email" maxLength={254} className={INPUT_CLASS} placeholder="you@example.com" {...aria("email")} />
+        <input id="email" name="email" type="email" autoComplete="email" required maxLength={254} className={INPUT_CLASS} placeholder="you@example.com" {...aria("email")} />
       </Field>
       <Field label="電話番号" htmlFor="tel" error={errors.tel}>
         <input id="tel" name="tel" type="tel" autoComplete="tel" maxLength={20} className={INPUT_CLASS} placeholder="03-0000-0000" {...aria("tel")} />
       </Field>
       <Field label="お問い合わせ種別" htmlFor="category" required error={errors.category}>
-        <select id="category" name="category" defaultValue="" className={INPUT_CLASS} {...aria("category")}>
+        <select id="category" name="category" defaultValue="" required className={INPUT_CLASS} {...aria("category")}>
           <option value="" disabled>
             選択してください
           </option>
@@ -120,19 +125,19 @@ export default function ContactForm() {
         required
         error={errors.message}
         hint={
-          <p className="text-right text-caption text-placeholder-text">
+          <p className="text-right text-caption text-fg-muted">
             {message.length}/{MAX}
           </p>
         }
       >
-        <textarea id="message" name="message" rows={6} maxLength={MAX} value={message} onChange={(e) => setMessage(e.target.value)} className={INPUT_CLASS} placeholder="ご相談内容をご記入ください" {...aria("message")} />
+        <textarea id="message" name="message" rows={6} required maxLength={MAX} value={message} onChange={(e) => setMessage(e.target.value)} className={INPUT_CLASS} placeholder="ご相談内容をご記入ください" {...aria("message")} />
       </Field>
 
       {/* ハニーポット: 人間には見えない。値が入っていたら Bot */}
       <input name="website" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px]" />
 
       <label className="mt-1 flex items-start justify-center gap-2 text-caption text-fg">
-        <input type="checkbox" name="consent" className="mt-1 accent-fg" aria-invalid={errors.consent ? true : undefined} aria-describedby={errors.consent ? "consent-error" : undefined} />
+        <input type="checkbox" name="consent" required className="mt-1 accent-fg" aria-invalid={errors.consent ? true : undefined} aria-describedby={errors.consent ? "consent-error" : undefined} />
         <span>
           <a href="/privacy-policy/" target="_blank" rel="noopener" className="underline underline-offset-2">
             プライバシーポリシー

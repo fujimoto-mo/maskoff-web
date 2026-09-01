@@ -58,10 +58,5 @@ export const contactSchema = z.object({
 
 export type ContactInput = z.infer<typeof contactSchema>;
 
-export const CATEGORY_LABELS: Record<ContactInput["category"], string> = {
-  web: "ホームページ制作・デザイン",
-  apparel: "アパレル・OEM",
-  artist: "アーティスト活動支援",
-  recruit: "採用について",
-  other: "その他",
-};
+/** @deprecated select の描画には `@/lib/schema/contact-labels` から直接 import すること（zod を初期バンドルに含めないため）。 */
+export { CATEGORY_LABELS } from "./contact-labels.ts";

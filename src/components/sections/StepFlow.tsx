@@ -7,7 +7,7 @@ type Step = { title: string; text: string };
 export default function StepFlow({ heading, steps }: { heading: string; steps: readonly Step[] }) {
   return (
     <div className="pt-2.5">
-      <h4 className="mb-[26px] text-[16.5px] font-bold leading-[1.55] tracking-[.01em] text-fg max-tab:text-[16px]">[ {heading} ]</h4>
+      <h3 className="mb-[26px] text-[16.5px] font-bold leading-[1.55] tracking-[.01em] text-fg max-tab:text-[16px]">[ {heading} ]</h3>
       <ol className="list-none">
         {steps.map((s, i) => (
           <li

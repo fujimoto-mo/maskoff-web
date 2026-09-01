@@ -12,7 +12,7 @@ type Props = {
 
 /**
  * SP カルーセルのドット。IntersectionObserver で現在位置を追い、クリックでスナップ移動する。
- * ≥601px では非表示（グリッド表示のため）。
+ * ≥601px では非表示（グリッド表示のため）。ボタンは 24px の当たり判定を確保し、中央に 8px の点を描く。
  * @example <ul id="service-track" className="max-sp:carousel">…</ul><CarouselDots trackId="service-track" count={6} label="事業カード" />
  */
 export default function CarouselDots({ trackId, count, label }: Props) {
@@ -45,8 +45,10 @@ export default function CarouselDots({ trackId, count, label }: Props) {
           aria-current={i === active ? true : undefined}
           aria-label={`${i + 1}枚目`}
           onClick={() => go(i)}
-          className={cn("size-2 rounded-full transition-colors", i === active ? "bg-fg" : "bg-border")}
-        />
+          className="flex size-6 items-center justify-center"
+        >
+          <span aria-hidden className={cn("size-2 rounded-full transition-colors", i === active ? "bg-fg" : "bg-border")} />
+        </button>
       ))}
     </div>
   );
