@@ -22,11 +22,11 @@
 ## 2. 技術スタック
 
 ```
-Next.js 15 (App Router) / TypeScript (strict)
+Next.js 16 (App Router) / TypeScript (strict)
   └ output: "export"（静的エクスポート）
 Tailwind CSS v4（CSS-first / @theme）
-microCMS Hobby（ヘッドレスCMS / API上限5本）
-GSAP + ScrollTrigger / Lenis / Swiper
+microCMS Hobby（ヘッドレスCMS / API上限5本 / SDK は使わず生 fetch）
+GSAP + ScrollTrigger / Lenis（アニメーションはフェーズ③でまとめて実装）
 Resend（メール送信）
 Cloudflare Workers（ホスティング）
   ├ Static Assets（out/ を無課金で配信）
@@ -58,7 +58,7 @@ Worker のコードは Web 標準 API（fetch / crypto.subtle / TextEncoder）�
 最適化サーバーが動かない。代わりに `components/ui/Picture.tsx` を使う。
 `scripts/optimize-images.mjs` がビルド前に AVIF / WebP を生成し、
 `src/lib/images/manifest.json` に width / height を書き出す。
-**Picture には必ず width / height を渡すこと。** 省くと CLS が悪化する。
+**`Picture` はマニフェストから width / height を常に `<img>` に出力する**（呼び出し側は渡さない）。SVG だけはマニフェストに載らないため `width` / `height` props が必須。省くと CLS が悪化する。
 
 **3. microCMS の API は5本まで。**
 `news` / `notice` / `members` / `faq` / `jobs` の5本で確定。
@@ -74,9 +74,9 @@ Hobby プランは転送量が月20GBを超えると API が停止する。
 **6. リダイレクトは `public/_redirects` に書く。**
 静的エクスポートでは `next.config.ts` の `redirects()` が効かない。
 
-**7. `worker/contact.ts` の `validate()` と `src/lib/schema/contact.ts` の
-zod スキーマは常に同じ条件に保つ。**
-片方だけ変更すると、開発者ツールから入力制限を回避できてしまう。
+**7. フォームの検証ルールは `src/lib/schema/contact.ts` の zod スキーマだけに書く。**
+`worker/contact.ts` はこのスキーマを import して `safeParse` する。Worker 側に手書きの
+検証を足さない。二重管理にすると開発者ツールから入力制限を回避できてしまう。
 
 追加ライブラリを入れる前に必ず確認を取ること。UIライブラリ（MUI, Chakra,
 shadcn/ui 等）は使わない。全て Tailwind で書く。
@@ -97,8 +97,8 @@ AIが無意識に破りやすい項目です。コードを書く前に毎回読
 
 このデザインは**フルブリード**です。画面幅がいくら広くても中央に寄せません。左右パディングのみで制御します。
 
-- PC: `35px`
-- SP: `19px`
+- PC: `32px`
+- SP: `20px`
 
 `mx-auto` `max-w-screen-xl` `container` クラスは使用禁止です。
 
@@ -108,9 +108,9 @@ AIが無意識に破りやすい項目です。コードを書く前に毎回読
 
 | セクション | 列数(PC) | ガター |
 |---|---|---|
-| SERVICE | 3 | **62px** |
-| FAQ | 3 | **20px** |
-| 実績・パートナー | 4 | **20px** |
+| SERVICE | 3 | **列 clamp(28px,4vw,56px) / 行 clamp(48px,6vw,72px)** |
+| FAQ | 3 | **18px** |
+| 実績・パートナー | 4 | **18px** |
 
 SERVICEだけガターが広いのは、カードに背景色がないため間隔で区切りを作っているからです。勝手に揃えないこと。
 
@@ -143,6 +143,8 @@ SERVICEだけガターが広いのは、カードに背景色がないため間�
   --color-surface:     #F9F9F9;  /* カード背景 */
   --color-surface-alt: #F5F5F4;  /* 入力欄背景 */
   --color-placeholder: #EAEAEA;  /* 画像プレースホルダ */
+  --color-border:      #E4E4E1;  /* 罫線 */
+  --color-placeholder-text: #B5B5B2; /* 入力欄プレースホルダ文字 */
 
   /* テキスト */
   --color-fg:          #0A0A0A;  /* 見出し */
@@ -168,15 +170,22 @@ SERVICEだけガターが広いのは、カードに背景色がないため間�
 
 ```css
 @theme {
-  --pad-x:      35px;   /* PC 左右パディング */
-  --pad-x-sp:   19px;   /* SP 左右パディング */
+  --spacing-pad-x:     32px;   /* PC 左右パディング */
+  --spacing-pad-x-sp:  20px;   /* SP 左右パディング */
+  --spacing-header-h:  64px;
+  --spacing-section-t: clamp(80px, 10vw, 132px);   /* セクション上 */
+  --spacing-section-b: clamp(92px, 11vw, 144px);   /* セクション下 */
+  --spacing-fv-gap:    clamp(110px, 11vw, 170px);  /* ヒーロー直後の間隔 */
 
-  --gap-service: 62px;
-  --gap-card:    20px;
+  --spacing-gap-service-row: clamp(48px, 6vw, 72px);
+  --spacing-gap-service-col: clamp(28px, 4vw, 56px);
+  --spacing-gap-card:  18px;   /* FAQ / 実績・パートナー */
+  --spacing-gap-cols:  64px;   /* VISION / CONTACT の 2 カラム間 */
 
-  --radius-card:  12px;
-  --radius-form:  20px;
-  --radius-input:  8px;
+  --radius-card:    8px;   /* FAQ / パートナー */
+  --radius-visual: 10px;   /* SERVICE ビジュアル */
+  --radius-form:   18px;
+  --radius-input:   6px;
 }
 ```
 
@@ -193,17 +202,18 @@ SERVICE          ← 英字・大文字・極太・字間タイト
 
 ```css
 @theme {
-  --text-display:    38px;  /* セクション見出し PC */
-  --text-display-sp: 27px;  /* セクション見出し SP */
-  --text-sub:        11px;  /* 見出し下の和文 */
-  --text-body:       15px;
-  --text-body-sp:    14px;
-  --text-caption:    13px;
+  --text-display:    clamp(27px, 4.8vw, 46px);  /* セクション見出し PC。700 / 字間 -0.045em */
+  --text-display-sp: min(13vw, 60px);           /* セクション見出し SP（PC より大きい） */
+  --text-sub:        14px;  /* 見出し下の和文。500 / SP 13px */
+  --text-body:       14px;  /* lh 1.8。VISION 本文は lh 2 */
+  --text-body-sp:    13px;
+  --text-caption:    12px;  /* カード説明・注記・フッター */
+  --text-card-title: 20px;  /* SERVICE カード h3。SP 16px */
 }
 ```
 
 **フォント**
-- 英字：可変ウェイトのグロテスク系（Helvetica Now / Inter Tight 等）。見出しは 800〜900。
+- 英字：Inter Tight（`next/font/google` でセルフホスト）。見出しは 700、字間 −0.045em。
 - 和文：Noto Sans JP。本文 400、見出し 700。
 - **手書き風の大見出し**（COMPANY用）は Web フォントで再現不可。**SVGまたはWebPで入稿**します。テキストで代替しないこと。`alt` 属性に必ず同じ文言を入れてSEO・スクリーンリーダー対応。
 
@@ -234,9 +244,10 @@ NOTICEのうち `isPinned: true` のものだけ、HOMEの最上部に帯で常�
 ## 6. ブレークポイント仕様
 
 ```
-sp:      〜767px
-tablet:  768px 〜 1023px
-pc:      1024px 〜
+sp:      〜600px      （Tailwind: max-sp:）
+tablet:  601px 〜 960px（max-pc:）
+pc:      961px 〜      （pc:）
+ヘッダーのハンバーガー切替は 720px（max-nav:）。Tailwind 既定の sm/md/lg は無効化している。
 ```
 
 **列数だけでなく挙動が変わる箇所があります。**
@@ -244,15 +255,15 @@ pc:      1024px 〜
 | コンポーネント | PC | SP |
 |---|---|---|
 | ヘッダーナビ | インライン + CTAボタン | ハンバーガー + 全画面オーバーレイ |
-| SERVICE | 3列グリッド（gap 62px） | **横スワイプカルーセル**（Swiper / カード幅70% / 次カードpeek / ドット表示） |
+| SERVICE | 3列グリッド（列 gap 56px） | **横スワイプカルーセル**（CSS scroll-snap / カード幅80% / gap 14px / 次カードpeek / ドット表示） |
 | FAQ | 3列グリッド・**全問展開固定** | 1列・**アコーディオン**（`<details>` ベース） |
-| 実績・パートナー | 4列グリッド | 2列グリッド |
+| 実績・パートナー | 4列グリッド（gap 18px） | **横スワイプカルーセル**（SERVICE と同じ部品） |
 | メンバー一覧 | 2カラム（名前 / 本文） | 縦積み |
 | CONTACT | 2カラム（フロー / フォーム） | 縦積み |
-| 追従CTA | 非表示 | 画面下部に固定表示 |
+| 追従CTA | 非表示 | **右下固定の円形バッジ 80px**（回転テキスト。CONTACT が見えたら消える） |
 | 見出し | 1行 | 2行折り返しを許容 |
 
-FAQは `<details>/<summary>` で実装し、PCでは CSS で常時 `open` 相当の見た目にします。JSでの出し分けは避けてください（CLSの原因になります）。
+FAQは `<details>/<summary>` を閉じた状態で SSR し、PCでは CSS の `::details-content` で常時展開の見た目にします（未対応ブラウザはクリックで開ける）。JSでの出し分けは避けてください（CLSの原因になります）。
 
 ---
 
@@ -270,6 +281,10 @@ GSAP + ScrollTrigger を使用。**必ず `prefers-reduced-motion` を尊重す�
 | コラージュ出現 | 実績・メンバー一覧 | 各行に紐づく画像が不規則位置からfade+scale。行ごとに順次発火 |
 | 背景色遷移 | セクション境界 | ScrollTrigger で `--color-bg-dark` → `--color-bg` を補間 |
 | ホバーロール | メンバー名・ナビ | 同一テキストを2つ重ね、`overflow:hidden` + `translateY` で入れ替え |
+
+### 参考サイトで確認した演出（フェーズ③の spec で採否を確定）
+
+イントロ幕 / マーキーのセル pop + ドラッグ / 見出しの 1 文字ずつ立ち上がり / VISION の手書きストローク描画と段落フェード / SERVICE の blur 出現 + バッジ pop / WORKS のホバーでサムネ散布・名前ロール・カスタムカーソル / PARTNERS・FAQ の stagger / ヘッダーナビのロール / CTA の液体ホバー / Lenis。
 
 ### 実装順序
 
@@ -313,9 +328,9 @@ components/
 ## 9. 画像
 
 - **`next/image` は使わない。** `components/ui/Picture.tsx` を使う（§2参照）。
-- `<img>` の直書きも禁止。
+- `<img>` の直書きも禁止。SVG は `Picture` に `width` / `height` を渡す（manifest に載らないため必須）。
 - `sizes` を必ず指定する。指定漏れは全幅読み込みになる。
-- ヒーローの最初の1枚のみ `loading="eager"` + `fetchPriority="high"`。それ以外は遅延。
+- マーキーヒーローでは、初期表示で見える先頭行の先頭 3 枚のみ `loading="eager"` + `fetchPriority="high"`（`Marquee` の `eagerCount`、既定 3）。それ以外は遅延。
 - **`width` / `height` を必ず指定する。** マニフェストから取得できる。
   未指定だと遅延読み込み時にセクションの高さが潰れる（参考サイトで実際に
   起きている疑いのある不具合）。

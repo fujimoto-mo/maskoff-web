@@ -1,5 +1,10 @@
 # ディレクトリ構成・コンポーネント設計
 
+> **2026-08-31 注記:** 本書の ISR / Vercel / `/api/revalidate` / Upstash に関する記述は廃止。
+> 現行の構成は CLAUDE.md（Cloudflare Workers + 静的エクスポート）と
+> `docs/superpowers/specs/2026-08-31-home-apply-lp-design.md` を正とする。
+> ディレクトリ構成は `src/` 配下（§1）のみ有効で、`api/` は存在しない。
+
 ## 1. ディレクトリ構成
 
 ```
