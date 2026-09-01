@@ -15,6 +15,7 @@ export default function MobileNav() {
   const toggleRef = useRef<HTMLButtonElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const wasOpen = useRef(false);
+  const hitTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -25,10 +26,22 @@ export default function MobileNav() {
       root.removeAttribute("data-menu-open");
       // 初回マウント時（開いたことがない）はフォーカスを奪わない。閉じる操作の直後だけ復帰させる。
       if (wasOpen.current) toggleRef.current?.focus();
+      // MobileNav はページ遷移をまたいで再マウントされない。Escape・背景タップ等、タップ演出の
+      // 遷移タイマーが満了する前に閉じた場合は必ずキャンセルし、data-hit も剥がしておかないと
+      // 次に開いたときにマーカーが最初から帯を敷いた状態（既発火扱い）で残ってしまう。
+      if (hitTimerRef.current !== null) {
+        window.clearTimeout(hitTimerRef.current);
+        hitTimerRef.current = null;
+      }
+      rootRef.current?.querySelectorAll<HTMLElement>("a[data-hit]").forEach((el) => el.removeAttribute("data-hit"));
     }
     wasOpen.current = open;
     return () => {
       root.removeAttribute("data-menu-open");
+      if (hitTimerRef.current !== null) {
+        window.clearTimeout(hitTimerRef.current);
+        hitTimerRef.current = null;
+      }
     };
   }, [open]);
 
@@ -83,13 +96,16 @@ export default function MobileNav() {
               ref={i === 0 ? firstLink : undefined}
               href={n.href}
               onClick={(e) => {
+                // 修飾キー・中クリックはブラウザ標準の動作（新規タブ等）に委ね、横取りしない
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
                 if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
                   setOpen(false);
                   return;
                 }
                 e.preventDefault();
                 e.currentTarget.setAttribute("data-hit", "");
-                window.setTimeout(() => {
+                hitTimerRef.current = window.setTimeout(() => {
+                  hitTimerRef.current = null;
                   setOpen(false);
                   router.push(n.href);
                 }, 450);

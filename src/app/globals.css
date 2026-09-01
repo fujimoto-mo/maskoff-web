@@ -636,11 +636,15 @@
   .sticky-ring {
     animation: spin 18s linear infinite;
   }
-  .sticky-cta:hover {
-    transform: scale(1.04);
-  }
-  .sticky-cta:hover .sticky-ring {
-    animation-play-state: paused;
+  /* SP 専用（タッチ）なので hover:hover でくくり、タップ後に hover が残る iOS などで
+     scale/一時停止が張り付かないようにする */
+  @media (hover: hover) {
+    .sticky-cta:hover {
+      transform: scale(1.04);
+    }
+    .sticky-cta:hover .sticky-ring {
+      animation-play-state: paused;
+    }
   }
   /* カスタムカーソル（spec §4-12） */
   .cur {
@@ -726,5 +730,42 @@
   #service-track > li,
   #service-track > li * {
     cursor: auto;
+  }
+  /* ナビロール・CTA の液体ホバーは reduced-motion では「速くする」のではなく演出そのものを止め、
+     opacity のみで hover を示す（this block is unlayered: @layer components / utilities の
+     どのルールより常に優先されるので、ここに書けば確実に上書きできる） */
+  .nav-roll:hover .rl-t,
+  .nav-roll:focus-visible .rl-t {
+    transform: none;
+  }
+  .nav-roll:hover::after,
+  .nav-roll:focus-visible::after {
+    transform: translateY(100%);
+  }
+  .cta-liquid:hover,
+  .cta-liquid:focus-visible {
+    background-color: var(--color-fg);
+    opacity: 0.85;
+  }
+  .cta-liquid:hover .cl-fill,
+  .cta-liquid:focus-visible .cl-fill {
+    transform: none;
+  }
+  .cta-liquid:hover .cl-cur,
+  .cta-liquid:focus-visible .cl-cur {
+    transform: none;
+  }
+  .cta-liquid:hover .cl-nxt,
+  .cta-liquid:focus-visible .cl-nxt {
+    transform: translateY(120%);
+  }
+  .cta-liquid:hover .cl-txt,
+  .cta-liquid:focus-visible .cl-txt {
+    transform: none;
+  }
+  .cta-liquid:hover .cl-arw,
+  .cta-liquid:focus-visible .cl-arw {
+    opacity: 0;
+    transform: translate(7px, -50%);
   }
 }
