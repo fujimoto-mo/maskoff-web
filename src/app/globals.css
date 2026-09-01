@@ -381,10 +381,15 @@
     transform-origin: 50% 50%;
     animation: lead-boing 0.52s var(--ease-boing) backwards; /* both だと終了後もホバーの transform が効かない */
   }
-  /* イントロ幕（参考サイトの intro-veil と同じ）: 黒幕は SSR、ロゴはハイドレーション後にロゴセルの位置へ
-     0.5s フェード + 12px 上昇で出現（data-logo-in）。done で 0.12s フェード。収縮は IntroVeil の WAAPI（clip-path） */
-  .intro-veil {
-    background-color: var(--color-bg-dark); /* utilities の bg-* だと上書きできないため components 層で指定 */
+  /* イントロ幕（参考サイトの intro-veil と同じ）: 黒幕（.veil-curtain）は SSR、ロゴはハイドレーション後にロゴセルの位置へ
+     0.5s フェード + 12px 上昇で出現（data-logo-in）。done で 0.12s フェード。収縮は IntroVeil の WAAPI（transform: scale） */
+  .veil-curtain {
+    /* 画面中央に置いた巨大な角丸正方形。内接円の半径 ≈ 0.44 × 一辺 なので 300vmax なら画面のどのコーナーも覆う */
+    left: 50%;
+    top: 50%;
+    width: 300vmax;
+    height: 300vmax;
+    transform: translate(-50%, -50%);
   }
   html:not(.js) .intro-veil {
     display: none;

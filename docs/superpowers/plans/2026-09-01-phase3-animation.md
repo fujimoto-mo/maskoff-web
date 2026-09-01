@@ -1718,7 +1718,7 @@ grep -n '"/images/logo-wordmark.png"' src/lib/images/manifest.json   # width / h
 
 トリム後の画像は横長（おおよそ 300×260 前後）になる。アルファは保持されること（`file public/images/optimized/logo-wordmark*.webp` で確認しなくてよいが、Playwright のスクショで黒幕上に白ロゴが抜けて見えればよい）。
 
-> **実装後の確定仕様（コントローラ修正 — 本文のコードより優先）:** 幕の手順は spec §4-6（2026-09-01 の参考サイト実測に基づく最終版）を正とする: SSR 黒幕 → 次フレームでロゴセルの箱を計測しロゴ箱を同位置・同サイズに置いて 0.5s フェード + 12px 上昇 → 450ms（SP 780ms）後に clip-path で 0.75s 収縮 → done で 0.12s フェード。FLIP（ロゴの移動）は行わない。`Marquee.tsx` のロゴ箱に `data-lead-box`、`[data-marquee][data-js] [data-lead]` は `opacity: 1`。`MarqueeDrag` は `launched` フラグで `kv:launch` まで rAF を回さない。マーキーの CSS アニメーションは components 層に置く（utilities だと `[data-js] .mq-track { animation:none }` が負ける）。実装は `src/components/motion/IntroVeil.tsx` を正とする。
+> **実装後の確定仕様（コントローラ修正 — 本文のコードより優先）:** 幕の手順は spec §4-6（2026-09-01 の参考サイト実測に基づく最終版）を正とする: SSR 黒幕 → 次フレームでロゴセルの箱を計測しロゴ箱を同位置・同サイズに置いて 0.5s フェード + 12px 上昇 → 450ms（SP 780ms）後に黒幕 `.veil-curtain` を transform: scale で 0.75s 収縮（clip-path は使わない） → done で 0.12s フェード。FLIP（ロゴの移動）は行わない。`Marquee.tsx` のロゴ箱に `data-lead-box`、`[data-marquee][data-js] [data-lead]` は `opacity: 1`。`MarqueeDrag` は `launched` フラグで `kv:launch` まで rAF を回さない。マーキーの CSS アニメーションは components 層に置く（utilities だと `[data-js] .mq-track { animation:none }` が負ける）。実装は `src/components/motion/IntroVeil.tsx` を正とする。
 
 - [ ] **Step 7: `IntroVeil.tsx`（client。SSR でも幕を出す — `html.js` でないときは CSS で非表示）**
 
