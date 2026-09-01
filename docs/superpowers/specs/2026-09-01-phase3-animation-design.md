@@ -201,6 +201,9 @@ export const HANDWRITING = { viewBox: "0 0 640 160", label: "仮面を外して�
 - `kv:launch` 以降 `.mqs[data-js]`: `.mq-row { animation: none }`、rAF で `translateX(x)`。基準速度 `v0 = half / duration`（`half` = 1 周分の幅、`duration` は行の `--d`）、逆方向行は負。
 - セル pop: `--ed = |中央からの距離| / セル幅 × 35ms`（`cellPopDelay`）、`cell-pop` 0.45s `cubic-bezier(.34,1.56,.64,1)`。ロゴセルは `--ed: 0`。
 - ドラッグ: `pointerdown` → `data-dragging`、`pointermove` の Δx を、触れた行には +Δx、進行方向が逆の行には −Δx として加算（例: 中段を左へスワイプすると上下段は右へ動く — 参考サイトと同じ）、`pointerup` で直前速度を `[-900, 900]` px/s にクランプし同じ符号で慣性、1.2s で `v0` へ指数減衰（`advance(x, v, dt, half, v0)`）。`touch-action: pan-y`。`setPointerCapture`。
+- ホバー追従（`(hover:hover) and (pointer:fine)`、参考サイト実測 2026-09-01）: ボタンを押さずにマーキー上でマウスを動かすと、各行の速度を `v = v0 + clamp(マウス水平速度 × 0.15, ±600) × (逆方向行は −1)` に更新し、`advance()` が基準速度へ減衰させる（参考: 静止 −27/+22/−25 px/s → 右→左に動かすと −218/+290/−216、止めると数百 ms で戻る）。位置だけ（静止ホバー）では速度は変わらない。
+- 行の傾き: `.mq-track` の transform に `skewX(clamp(v × 0.0045, ±5)deg)` を付ける（参考: 静止時 0.11°）。
+- ホバーしたセル: 1.12 倍に拡大し、セル内のカーソル位置に応じて最大 18px 寄る（`--hx/--hy/--hs` を lerp 0.18 で更新。離れたら戻してから変数を外す）。
 - 画面外（IO threshold 0.3 で不可視）では rAF 停止。reduced-motion: JS 駆動しない（CSS 停止のまま静止）、ドラッグ無効。
 
 ### 4-8. SERVICE（I）

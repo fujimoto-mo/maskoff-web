@@ -14,7 +14,8 @@ function measure(el: HTMLElement, track: HTMLElement): { half: number; v0: numbe
 
 /**
  * マーキーを JS 駆動にする: ロゴセルを中央に揃え、kv:launch でセルを pop させて rAF で流し、ドラッグで動かせる。
- * PC ではホバーしたセルが 1.12 倍に拡大してカーソル方向へ最大 18px 寄る。動画セルは launch 後に再生し画面外で止める。
+ * PC ではホバーしたセルが 1.12 倍に拡大してカーソル方向へ最大 18px 寄り、ホバー中にマウスを動かすと行がその速度の
+ * 15% で追従して止めると減衰する（参考サイトと同じ）。行は速度に比例して少し skew する。動画セルは launch 後に再生し画面外で止める。
  * リサイズ・画面回転では 1 周分（half）と基準速度・セル pop の遅延を測り直す（継ぎ目に空白が出ないように）。
  * reduced-motion では何もしない（CSS 側で静止）。
  * @example <Marquee rows={ROWS} /><MarqueeDrag />
@@ -34,7 +35,14 @@ export default function MarqueeDrag() {
       const { half, v0 } = measure(rowEl, track);
       return { el: rowEl, track, state: { x: rowEl.hasAttribute("data-reverse") ? -half : 0, v: v0, v0, half } };
     });
-    const apply = () => rows.forEach((r) => (r.track.style.transform = `translate3d(${r.state.x}px, 0, 0)`));
+    // 行の速度に比例して少し傾ける（参考サイト: 静止時 0.11°、速いほど大きく。上限 ±5°）
+    const SKEW_PER_PXS = 0.0045;
+    const SKEW_MAX = 5;
+    const apply = () =>
+      rows.forEach((r) => {
+        const skew = Math.max(-SKEW_MAX, Math.min(SKEW_MAX, r.state.v * SKEW_PER_PXS));
+        r.track.style.transform = `translate3d(${r.state.x}px, 0, 0) skewX(${skew.toFixed(3)}deg)`;
+      });
 
     // セル pop の遅延は画面中央からの距離で決める。pop 済み（launched）なら 0 にして再 pop させない
     const setDelays = () => {
@@ -94,6 +102,11 @@ export default function MarqueeDrag() {
     const HOVER_LERP = 0.18;
     let hov: Hover | null = null;
     const leaving: Hover[] = [];
+    // ホバー中にマウスを動かすと（ボタンなし）、行がその速度の 15% で追従し、止めると基準速度へ減衰（参考サイトと同じ）
+    const HOVER_FOLLOW = 0.15;
+    const HOVER_VMAX = 600; // px/s
+    let lastHoverX = 0;
+    let lastHoverT = 0;
     const clearHoverVars = (h: Hover) => {
       h.el.style.removeProperty("--hx");
       h.el.style.removeProperty("--hy");
@@ -193,6 +206,7 @@ export default function MarqueeDrag() {
         "pointerleave",
         () => {
           dropHover();
+          lastHoverT = 0;
           run();
         },
         { signal },
@@ -220,6 +234,7 @@ export default function MarqueeDrag() {
           }, undefined);
         dragSign = Math.sign(hit?.state.v0 ?? 1) || 1;
         dropHover();
+        lastHoverT = 0;
         dragging = true;
         lastX = e.clientX;
         lastT = performance.now();
@@ -236,6 +251,18 @@ export default function MarqueeDrag() {
           const b = hov.el.getBoundingClientRect();
           hov.tx = Math.max(-1, Math.min(1, (e.clientX - (b.left + b.width / 2)) / (b.width / 2))) * HOVER_SHIFT;
           hov.ty = Math.max(-1, Math.min(1, (e.clientY - (b.top + b.height / 2)) / (b.height / 2))) * HOVER_SHIFT;
+        }
+        if (!dragging && hoverOk && launched) {
+          const now = performance.now();
+          if (lastHoverT) {
+            const dt = Math.max(1, now - lastHoverT) / 1000;
+            const boost = Math.max(-HOVER_VMAX, Math.min(HOVER_VMAX, ((e.clientX - lastHoverX) / dt) * HOVER_FOLLOW));
+            // 通常行はマウスと同じ向き、逆方向行（data-reverse）は反対へ。advance() が基準速度へ減衰させる
+            rows.forEach((r) => (r.state = { ...r.state, v: r.state.v0 + boost * (r.el.hasAttribute("data-reverse") ? -1 : 1) }));
+            run();
+          }
+          lastHoverX = e.clientX;
+          lastHoverT = now;
         }
         if (!dragging) return;
         const now = performance.now();
