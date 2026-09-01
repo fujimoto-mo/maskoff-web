@@ -190,7 +190,8 @@
     stroke-dashoffset: 1;
   }
 
-  /* 蛍光ペン: 別レイヤーの線を clip-path で左→右に描く（spec §3-5）。反転中は不透明の緑 + 黒文字 */
+  /* 蛍光ペン: 別レイヤーの線を clip-path で左→右に描く（spec §3-5）。反転中は不透明の緑 + 黒文字
+     （緑を白へ 12% 寄せて黒文字とのコントラストを 5.4:1 に確保。純色だと 4.44:1 で AA 未満） */
   .marker-line {
     position: absolute;
     border-radius: 2px;
@@ -200,7 +201,7 @@
     -webkit-clip-path: inset(0px 100% 0px 0px);
   }
   html[data-on-vision] .marker-line {
-    background: var(--color-marker);
+    background: color-mix(in srgb, var(--color-marker) 88%, white);
   }
   .marker-target {
     position: relative;
