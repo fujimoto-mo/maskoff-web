@@ -469,14 +469,14 @@
       transform: translateY(-100%);
     }
   }
-  @media (width < 821px) {
+  @media (width < 821px), (hover: none) { /* SP + タッチ主体（iPad 横など）でアクティブ行方式 */
     .work-row {
       transition: opacity 0.45s ease;
     }
-    .work-list[data-live] .work-row {
+    html.js .work-list[data-live] .work-row { /* html.js 配下: 安全弁で js が外れたら減光も解除 */
       opacity: 0.05;
     }
-    .work-list[data-live] .work-row[data-active] {
+    html.js .work-list[data-live] .work-row[data-active] {
       opacity: 1;
     }
     .work-row[data-active] .work-sc {
@@ -581,12 +581,12 @@
   @media (hover: hover) {
     .cta-liquid:hover,
     .cta-liquid:focus-visible {
-      background-color: var(--color-marker);
+      background-color: color-mix(in srgb, var(--color-marker) 88%, black); /* 白文字とのコントラスト 5.5:1（純色は 4.45:1） */
       transition: background-color 0.12s 0.3s;
     }
     .cta-liquid:hover .cl-fill,
     .cta-liquid:focus-visible .cl-fill {
-      background: var(--color-marker);
+      background: color-mix(in srgb, var(--color-marker) 88%, black);
       transform: scale(56);
     }
     .cta-liquid:hover .cl-cur,

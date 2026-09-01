@@ -99,9 +99,9 @@ export default function RevealObserver() {
   return null;
 }
 
-/** ≤820: 画面中央の [data-activate] 行を data-active にし、親に data-live を付ける。タップで中央へ / active ならリンク */
+/** ≤820 またはタッチ主体: 画面中央の [data-activate] 行を data-active にし、親に data-live を付ける。タップで中央へ / active ならリンク */
 export function initActiveRows(): () => void {
-  if (!matchMedia("(max-width: 820px)").matches) return () => {};
+  if (!matchMedia("(max-width: 820px), (hover: none)").matches) return () => {}; // SP + タッチ主体（iPad 横）
   const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-activate]"));
   if (rows.length === 0) return () => {};
   const list = rows[0].parentElement;
