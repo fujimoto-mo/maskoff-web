@@ -45,6 +45,7 @@ export default function MarqueeDrag() {
     let last = 0;
     let visible = true;
     let dragging = false;
+    let launched = false; // kv:launch 前は静止（幕のロゴが着地位置を計測できるように）
     const loop = (now: number) => {
       raf = 0;
       const dt = last ? Math.min(0.05, (now - last) / 1000) : 0;
@@ -54,7 +55,7 @@ export default function MarqueeDrag() {
       if (visible && !document.hidden) raf = requestAnimationFrame(loop);
     };
     const run = () => {
-      if (!raf) {
+      if (launched && !raf) {
         last = 0;
         raf = requestAnimationFrame(loop);
       }
@@ -113,6 +114,7 @@ export default function MarqueeDrag() {
     root.addEventListener("pointercancel", release, { signal });
 
     const launch = () => {
+      launched = true;
       root.setAttribute("data-go", "");
       run();
     };

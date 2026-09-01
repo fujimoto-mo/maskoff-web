@@ -1,7 +1,6 @@
 import type { CSSProperties } from "react";
 import { duplicate, type MarqueeCell, type MarqueeRow } from "@/components/motion/marquee-cells";
 import Picture from "@/components/ui/Picture";
-import { cn } from "@/lib/cn";
 
 type Props = {
   rows: MarqueeRow[];
@@ -25,12 +24,13 @@ function Cell({ cell, priority }: { cell: MarqueeCell; priority: boolean }) {
   if (cell.type === "logo") {
     return (
       <div className="flex size-full items-center justify-center">
-        <div className="flex size-[62%] items-center justify-center rounded-[22%] bg-fg p-[12%]">
+        <div data-lead-box className="flex size-[62%] items-center justify-center rounded-[22%] bg-fg">
           <Picture
             src="/images/logo-wordmark.png"
             alt="MasKOFF"
             sizes="(max-width: 600px) 30vw, 12vw"
             priority={priority}
+            className="block size-[76%]"
             imgClassName="block size-full object-contain"
           />
         </div>
@@ -68,10 +68,7 @@ export default function Marquee({ rows, eagerCount = 3 }: Props) {
             className="overflow-hidden"
           >
             <div
-              className={cn(
-                "mq-track flex w-max gap-mq-gap max-sp:gap-5",
-                row.reverse ? "animate-[drift-rev_var(--d)_linear_infinite]" : "animate-[drift_var(--d)_linear_infinite]",
-              )}
+              className="mq-track flex w-max gap-mq-gap max-sp:gap-5"
               style={{ "--d": `${row.duration ?? 60}s` } as CSSProperties}
             >
               {duplicate(row.cells).map((cell, i) => {

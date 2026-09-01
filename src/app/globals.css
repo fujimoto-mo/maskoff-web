@@ -284,6 +284,13 @@
   [data-marquee][data-dragging] {
     cursor: grabbing;
   }
+  /* CSS 駆動（JS 前 / JS 無効 / reduced-motion）。utilities 層の animate-* だと下の animation:none に勝ってしまうため components 層に置く */
+  .mq-track {
+    animation: drift var(--d, 60s) linear infinite;
+  }
+  [data-reverse] .mq-track {
+    animation-name: drift-rev;
+  }
   [data-marquee][data-js] .mq-track {
     animation: none;
     will-change: transform;
@@ -292,7 +299,7 @@
     opacity: 0;
   }
   [data-marquee][data-js] [data-lead] {
-    opacity: 1;
+    opacity: 0; /* 幕のロゴが着地（data-go）するまで隠す */
   }
   [data-marquee][data-go] [data-cell] {
     opacity: 1;
@@ -305,7 +312,10 @@
     transform-origin: 50% 50%;
     animation: lead-boing 0.52s var(--ease-boing) both;
   }
-  /* イントロ幕: 黒幕中央のロゴが 0.1s 後に 0.35s で現れ、done で幕 0.3s フェード + ロゴ縮小（spec §4-6） */
+  /* イントロ幕: 黒幕中央のロゴが 0.1s 後に 0.35s で現れ、done で背景 0.4s 透明化 + ロゴはロゴセルへ FLIP（WAAPI, spec §4-6） */
+  .intro-veil {
+    background-color: var(--color-bg-dark); /* utilities の bg-* だと done の transparent に勝つため components 層で指定 */
+  }
   html:not(.js) .intro-veil {
     display: none;
   }
@@ -315,17 +325,15 @@
     }
   }
   .intro-veil[data-phase="done"] {
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    background-color: transparent;
+    transition: background-color 0.4s ease;
     pointer-events: none;
   }
   html.js .veil-logo {
     animation: veil-logo-in 0.35s var(--ease-mk) 0.1s both;
   }
   .intro-veil[data-phase="done"] .veil-logo {
-    animation: none;
-    transform: scale(0.94);
-    transition: transform 0.3s ease-in;
+    animation: none; /* 以降の transform は IntroVeil の WAAPI が駆動 */
   }
 
   /* SERVICE: blur + 奥からの出現、バッジは遅れて pop（spec §4-8）。≤820 は blur なし、≤600 は fade+14px */
@@ -385,6 +393,8 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    animation-delay: 0s !important; /* backwards フィル + 長い delay で要素が隠れ続けないように */
+    transition-delay: 0s !important;
   }
   .marker {
     background-size: 100% 100%;
