@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import SkipLink from "@/components/layout/SkipLink";
 import StickyCta from "@/components/layout/StickyCta";
+import CustomCursor from "@/components/motion/CustomCursor";
 import RevealObserver from "@/components/motion/RevealObserver";
 import JsonLd from "@/components/ui/JsonLd";
 import { organizationJsonLd } from "@/lib/jsonld";
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Footer />
         <StickyCta />
         <RevealObserver />
+        <CustomCursor />
       </body>
     </html>
   );

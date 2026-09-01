@@ -642,6 +642,52 @@
   .sticky-cta:hover .sticky-ring {
     animation-play-state: paused;
   }
+  /* カスタムカーソル（spec §4-12） */
+  .cur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 80;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .cur-t {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin: -36px 0 0 -36px;
+    border: 1.5px solid var(--color-fg);
+    border-radius: 50%;
+    color: var(--color-fg);
+    opacity: 0;
+    transform: scale(0.5);
+    transition:
+      opacity 0.22s,
+      transform 0.3s var(--ease-out-quart);
+  }
+  .cur[data-on] .cur-t {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .cur-t svg {
+    width: 26px;
+    height: 26px;
+  }
+  @media not ((hover: hover) and (pointer: fine)) {
+    .cur {
+      display: none;
+    }
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .work-row,
+    .work-row *,
+    #service-track > li,
+    #service-track > li * {
+      cursor: none;
+    }
+  }
 }
 
 /* FAQ: ≥601px は常時展開（::details-content 対応ブラウザ。未対応はクリックで開ける）。≤600px はネイティブ開閉 */
@@ -671,5 +717,14 @@
   }
   .marker {
     background-size: 100% 100%;
+  }
+  .cur {
+    display: none;
+  }
+  .work-row,
+  .work-row *,
+  #service-track > li,
+  #service-track > li * {
+    cursor: auto;
   }
 }
