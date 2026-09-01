@@ -1421,8 +1421,8 @@ git commit -m "feat: 相関図をインライン SVG 化して出現アニメー
 ### Task 8: イントロ幕とマーキーの JS 駆動（`IntroVeil` / `MarqueeDrag`）
 
 **Files:**
-- Create: `src/components/motion/marquee-physics.ts` `src/components/motion/marquee-physics.test.ts` `src/components/motion/MarqueeDrag.tsx` `src/components/motion/IntroVeil.tsx`
-- Modify: `src/components/motion/Marquee.tsx`（全面書き換え）`src/components/sections/Hero.tsx` `src/app/page.tsx` `src/app/globals.css`
+- Create: `src/components/motion/marquee-physics.ts` `src/components/motion/marquee-physics.test.ts` `src/components/motion/MarqueeDrag.tsx` `src/components/motion/IntroVeil.tsx` `public/images/logo-wordmark.png`（`docs/maskoff.png` の透過余白をトリムして生成。`docs/` の元ファイルは触らない）
+- Modify: `src/components/motion/Marquee.tsx`（全面書き換え）`src/components/sections/Hero.tsx` `src/app/page.tsx` `src/app/globals.css` `src/lib/images/manifest.json` + `public/images/optimized/`（最適化スクリプトが再生成）
 
 **Interfaces:**
 - Produces: `RowState = { x: number; v: number; v0: number; half: number }`、`wrap(x, half)`（`(-half, 0]` に正規化）、`advance(s, dt)`、`clampFling(v)`、`MAX_FLING = 900`、`TAU = 0.4`
@@ -1517,7 +1517,9 @@ function Cell({ cell, priority }: { cell: MarqueeCell; priority: boolean }) {
   if (cell.type === "logo") {
     return (
       <div className="flex size-full items-center justify-center">
-        <div className="flex size-[62%] items-center justify-center rounded-[22%] bg-fg font-display text-[min(3.4vw,28px)] font-extrabold tracking-[-.04em] text-fg-invert">MasKOFF</div>
+        <div className="flex size-[62%] items-center justify-center rounded-[22%] bg-fg p-[12%]">
+          <Picture src="/images/logo-wordmark.png" alt="MasKOFF" sizes="(max-width: 600px) 30vw, 12vw" priority={priority} imgClassName="block size-full object-contain" />
+        </div>
       </div>
     );
   }
@@ -1704,46 +1706,60 @@ export default function MarqueeDrag() {
 }
 ```
 
+- [ ] **Step 6.5: ロゴ画像を用意する（`docs/maskoff.png` → `public/images/logo-wordmark.png`）**
+
+`docs/maskoff.png`（白ロゴ・透過・500×500）は周囲に透過余白が多いので、sharp でトリムしてから配置する。`docs/` の元ファイルは移動も削除もしない。
+
+```bash
+node -e "require('sharp')('docs/maskoff.png').trim().png().toFile('public/images/logo-wordmark.png').then(i=>console.log(i.width,i.height))"
+node scripts/optimize-images.mjs
+grep -n '"/images/logo-wordmark.png"' src/lib/images/manifest.json   # width / height が載っていること
+```
+
+トリム後の画像は横長（おおよそ 300×260 前後）になる。アルファは保持されること（`file public/images/optimized/logo-wordmark*.webp` で確認しなくてよいが、Playwright のスクショで黒幕上に白ロゴが抜けて見えればよい）。
+
 - [ ] **Step 7: `IntroVeil.tsx`（client。SSR でも幕を出す — `html.js` でないときは CSS で非表示）**
+
+ロゴは常に画面中央（`flex` センタリング）に置き、DOM の計測はしない。ハイドレーション前後で位置がジャンプしないため。幕が消えるとき、マーキーのロゴセル（同じロゴ画像）が `lead-boing` で弾んで受け継ぐ。
 
 ```tsx
 "use client";
-import { useLayoutEffect, useState, type CSSProperties } from "react";
+import { useLayoutEffect, useState } from "react";
+import Picture from "@/components/ui/Picture";
 
-const SHOW_MS_PC = 980;
-const SHOW_MS_SP = 1310;
+const SHOW_MS_PC = 1400;
+const SHOW_MS_SP = 1600;
+const FADE_MS = 300;
 
 /**
- * 初回表示の黒幕。マーキーのロゴセルの位置にワードマークを重ね、980ms（SP 1310ms）で消えて kv:launch を発火する。
- * reduced-motion / saveData ではスキップ（kv:launch は即発火）。表示中は html[data-intro]。
+ * 初回表示のロゴ幕。黒幕の中央にロゴ（/images/logo-wordmark.png）を出し、1400ms（SP 1600ms）後に
+ * 0.3s でフェードアウトして kv:launch を発火する。HOME を開くたびに毎回表示（ブラウザに状態は持たない）。
+ * reduced-motion / saveData / html.js 無しではスキップ（kv:launch は即発火）。表示中は html[data-intro]。
  * @example <IntroVeil />（page.tsx の先頭）
  */
 export default function IntroVeil() {
   const [phase, setPhase] = useState<"show" | "done" | "gone">("show");
-  const [logoStyle, setLogoStyle] = useState<CSSProperties>();
 
   useLayoutEffect(() => {
     const root = document.documentElement;
-    const skip = matchMedia("(prefers-reduced-motion: reduce)").matches || (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
+    const skip =
+      !root.classList.contains("js") ||
+      matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
     if (skip) {
       setPhase("gone");
       queueMicrotask(() => document.dispatchEvent(new CustomEvent("kv:launch")));
       return;
     }
     root.setAttribute("data-intro", "");
-    const lead = document.querySelector<HTMLElement>("[data-lead]");
-    if (lead) {
-      const r = lead.getBoundingClientRect();
-      setLogoStyle({ left: r.left + r.width / 2, top: r.top + r.height / 2, width: r.width * 0.62, height: r.width * 0.62 });
-    }
     const ms = matchMedia("(max-width: 640px)").matches ? SHOW_MS_SP : SHOW_MS_PC;
     const t1 = window.setTimeout(() => {
       setPhase("done");
-      lead?.setAttribute("data-boing", "");
+      document.querySelector("[data-lead]")?.setAttribute("data-boing", "");
       root.removeAttribute("data-intro");
       document.dispatchEvent(new CustomEvent("kv:launch"));
     }, ms);
-    const t2 = window.setTimeout(() => setPhase("gone"), ms + 200);
+    const t2 = window.setTimeout(() => setPhase("gone"), ms + FADE_MS);
     return () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
@@ -1753,17 +1769,21 @@ export default function IntroVeil() {
 
   if (phase === "gone") return null;
   return (
-    <div className="intro-veil fixed inset-0 z-[100] bg-bg-dark" data-phase={phase} aria-hidden>
-      <span
-        className="veil-logo absolute left-1/2 top-1/2 flex size-[140px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[22%] bg-fg font-display text-[28px] font-extrabold tracking-[-.04em] text-fg-invert"
-        style={logoStyle}
-      >
-        MasKOFF
-      </span>
+    <div className="intro-veil fixed inset-0 z-[100] flex items-center justify-center bg-bg-dark" data-phase={phase} aria-hidden>
+      <Picture
+        src="/images/logo-wordmark.png"
+        alt=""
+        sizes="(max-width: 600px) 200px, 260px"
+        priority
+        className="veil-logo block w-[260px] max-sp:w-[200px]"
+        imgClassName="block size-full"
+      />
     </div>
   );
 }
 ```
+
+`Picture` の `priority` で `loading="eager"` + `fetchPriority="high"` になる。幕は `<main>` 先頭付近に SSR されるのでプリロードスキャナが最初に拾う（`<link rel="preload">` は追加しない）。
 
 - [ ] **Step 8: `Hero.tsx` と `page.tsx` に組み込む**
 
@@ -1804,17 +1824,27 @@ export default function IntroVeil() {
     transform-origin: 50% 50%;
     animation: lead-boing 0.52s var(--ease-boing) both;
   }
-  /* イントロ幕 */
+  /* イントロ幕: 黒幕中央のロゴが 0.1s 後に 0.35s で現れ、done で幕 0.3s フェード + ロゴ縮小（spec §4-6） */
   html:not(.js) .intro-veil {
     display: none;
   }
+  @media (prefers-reduced-motion: reduce) {
+    .intro-veil {
+      display: none;
+    }
+  }
   .intro-veil[data-phase="done"] {
     opacity: 0;
-    transition: opacity 0.12s ease;
+    transition: opacity 0.3s ease;
     pointer-events: none;
   }
-  .veil-logo {
-    transition: transform 0.18s ease-in;
+  html.js .veil-logo {
+    animation: veil-logo-in 0.35s var(--ease-mk) 0.1s both;
+  }
+  .intro-veil[data-phase="done"] .veil-logo {
+    animation: none;
+    transform: scale(0.94);
+    transition: transform 0.3s ease-in;
   }
 ```
 
@@ -1829,6 +1859,10 @@ export default function IntroVeil() {
   74% { transform: scale(0.988); }
   100% { transform: none; }
 }
+@keyframes veil-logo-in {
+  0% { opacity: 0; transform: scale(0.96); }
+  100% { opacity: 1; transform: scale(1); }
+}
 ```
 
 - [ ] **Step 10: 確認**
@@ -1837,15 +1871,16 @@ export default function IntroVeil() {
 npm run typecheck && npm run lint && npm test && npm run build
 grep -o 'data-lead' out/index.html | wc -l         # 1
 grep -o 'class="intro-veil' out/index.html | wc -l  # 1
+grep -o 'logo-wordmark' out/index.html | wc -l       # 2 以上（幕 + マーキーのロゴセル。<picture> の source 分で増える）
 ```
 
 Playwright（PC 1440）:
-1. 読み込み直後 0.3s のスクショ: 黒幕とワードマーク。`document.documentElement.hasAttribute('data-intro')` true、`#service [data-reveal]` の値が `head`（幕中は未発火）。
-2. 1.5s 後: 幕が消え（`.intro-veil` が無い）、`[data-marquee]` に `data-js` と `data-go`、`[data-lead]` に `data-boing`。セルが見えるスクショ。
+1. 読み込み直後 0.6s のスクショ: 黒幕の中央に白いロゴ画像（`.veil-logo img` の `complete` が true・`naturalWidth > 0`、`getComputedStyle` の `opacity` が 1）。`document.documentElement.hasAttribute('data-intro')` true、`#service [data-reveal]` の値が `head`（幕中は未発火）。SP 390 でも同じくロゴが中央に見えるスクショ。
+2. 2.0s 後: 幕が消え（`.intro-veil` が無い）、`[data-marquee]` に `data-js` と `data-go`、`[data-lead]` に `data-boing`、ロゴセルに同じロゴ画像（黒角丸に白抜き）。セルが見えるスクショ。
 3. `mouse.move(720, 300); mouse.down(); mouse.move(420, 300, { steps: 10 }); mouse.up()` → 直後の `.mq-track` の `transform` が変わっていること、2.5s 後にも動き続けている（2 回の `transform` 取得値が異なる）。
 4. SP 390（`hasTouch`）: `touchscreen.tap` のあと `mouse.wheel(0, 600)` で縦スクロールが効く。
 5. reduced-motion コンテキスト: `.intro-veil` は非表示、`[data-marquee]` に `data-js` が無く、セルは静止。
-6. LCP 確認: `npx serve out -l 3999` + Lighthouse で LCP が Task 7 時点から 0.5s 以上悪化していない（悪化していれば `SHOW_MS_PC` を 700 に下げて再計測し、報告する）。
+6. LCP 確認: `npx serve out -l 3999` + Lighthouse で LCP が Task 7 時点から 0.5s 以上悪化していない（悪化していれば原因を報告する。`SHOW_MS_PC` は 1400 のまま — ロゴ幕の長さはユーザー指定）。
 
 - [ ] **Step 11: コミット**
 
@@ -2672,7 +2707,7 @@ rep("""| 演出 | 対象 | 実装 |
 | ホバーロール | メンバー名・ナビ | 同一テキストを2つ重ね、`overflow:hidden` + `translateY` で入れ替え |""",
 """| 演出 | 対象 | 実装 |
 |---|---|---|
-| イントロ幕 | HOME 初回表示 | 黒幕 + ワードマークをマーキーのロゴセルに重ね、980ms（SP 1310ms）で消して `kv:launch` |
+| イントロ幕 | HOME 表示のたび | 黒幕の中央にロゴ画像（`/images/logo-wordmark.png`）、1400ms（SP 1600ms）で消してマーキーのロゴセルへ引き継ぎ `kv:launch` |
 | 横マーキー | HOMEヒーロー | 3行、行ごとに速度差。JS 駆動（rAF）でセルを中央から pop、ドラッグ慣性。配列を2倍に複製 |
 | 見出しの文字立ち上がり | 全 SectionHeading | 1 文字ずつ `.ch` に分割し skew 立ち上がり（0.68s、26ms/文字） |
 | 背景色遷移 | VISION | `ScrollTheme` が rAF でセクション位置から `<html>` の `--color-*` を白→黒へ補間。0.5 超で `data-on-vision` |

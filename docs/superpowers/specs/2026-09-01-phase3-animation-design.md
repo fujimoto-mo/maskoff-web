@@ -185,10 +185,10 @@ export const HANDWRITING = { viewBox: "0 0 640 160", label: "仮面を外して�
 - `in` 後: `vd-ringmask` `stroke-dashoffset 1 → 0` 1.5s `cubic-bezier(.65,0,.35,1)` 遅延 0.9s。ノード `opacity 0 / scale(.25) / blur(12px)` → 1、opacity 0.6s・transform 0.85s `.22,1,.36,1`・filter 0.95s、遅延 `0.38s + 0.12s × --ni`。キャプション 0.8s。`vd-ring` 80s linear 無限回転（reduced-motion で停止）。
 
 ### 4-6. イントロ幕（G）
-- `IntroVeil`（client）: マウント時に `<html data-intro>`。幕 `fixed inset-0 z-[100] bg-bg-dark` + 中央ワードマーク（マーキー中段のロゴセルと同じ位置・大きさになるよう `MarqueeDrag` から `--lead-x/--lead-y/--lead-size` を受ける。取得できなければ画面中央）。
-- 980ms（≤640 は 1310ms）後: 幕 `opacity 0`（0.12s）→ `display:none`、ロゴセルに `lead-boing`（0.52s `cubic-bezier(.3,.6,.4,1)`）、`kv:launch` 発火、`data-intro` 除去。
-- スキップ条件: reduced-motion、`navigator.connection?.saveData`、`html.js` でない。スキップ時も `kv:launch` は即発火する。
-- 幕表示中はスクロール可能なまま（スクロールジャック禁止）。
+- `IntroVeil`（client）: マウント時に `<html data-intro>`。幕 `fixed inset-0 z-[100] bg-bg-dark` + 画面中央にロゴ画像 `/images/logo-wordmark.png`（`docs/maskoff.png` の透過余白をトリムしたもの。`Picture` の `priority`、幅 PC 260px / ≤600 200px）。ロゴは 0.1s 後に 0.35s（`--ease-mk`）で fade + scale .96→1 で現れる。位置は計測に依存しない画面中央（ハイドレーション前後でジャンプしない）。
+- 1400ms（≤640 は 1600ms）後: 幕 `opacity 0`（0.3s）+ ロゴ scale .94 → `display:none`、マーキーのロゴセル（同じロゴ画像を黒角丸 `bg-fg` に白抜き）に `lead-boing`（0.52s `cubic-bezier(.3,.6,.4,1)`）、`kv:launch` 発火、`data-intro` 除去。
+- スキップ条件: reduced-motion（CSS でも `display:none`）、`navigator.connection?.saveData`、`html.js` でない。スキップ時も `kv:launch` は即発火する。
+- 幕表示中はスクロール可能なまま（スクロールジャック禁止）。HOME を開くたびに毎回表示する（ブラウザに状態を保存しない — CLAUDE.md §12）。
 
 ### 4-7. マーキー（H）
 - `kv:launch` 以降 `.mqs[data-js]`: `.mq-row { animation: none }`、rAF で `translateX(x)`。基準速度 `v0 = half / duration`（`half` = 1 周分の幅、`duration` は行の `--d`）、逆方向行は負。
