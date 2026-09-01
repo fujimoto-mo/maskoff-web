@@ -20,12 +20,23 @@ async function verifyTurnstile(token: string, secret: string, ip: string | null,
 }
 
 async function sendMail(env: Env, fetchFn: typeof fetch, payload: { to: string; subject: string; html: string; text: string; replyTo?: string }) {
+  const { replyTo, ...rest } = payload;
   const r = await fetchFn("https://api.resend.com/emails", {
     method: "POST",
     headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
-    body: JSON.stringify({ from: env.CONTACT_FROM_EMAIL, reply_to: payload.replyTo, ...payload }),
+    body: JSON.stringify({ from: env.CONTACT_FROM_EMAIL, reply_to: replyTo, ...rest }),
   });
   if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
+}
+
+/** Origin は完全一致のみ許可（前方一致だと maskoff.co.jp.evil.com が通る）。localhost はポート不問 */
+export function isAllowedOrigin(origin: string, siteUrl: string): boolean {
+  try {
+    const o = new URL(origin).origin;
+    return o === new URL(siteUrl).origin || /^http:\/\/localhost(:\d+)?$/.test(o);
+  } catch {
+    return false;
+  }
 }
 
 async function notifySlack(env: Env, fetchFn: typeof fetch, text: string) {
@@ -49,8 +60,7 @@ function rowsOf(d: ContactInput) {
  * 検証ルールは src/lib/schema/contact.ts のみ。ここに手書きの検証を足さない（CLAUDE.md §2-7）。
  */
 export async function handleContact(req: Request, env: Env, ctx: ExecutionContext, deps: Deps = { fetchFn: fetch }): Promise<Response> {
-  const origin = req.headers.get("origin") ?? "";
-  if (!origin.startsWith(env.SITE_URL) && !origin.startsWith("http://localhost")) return json({ ok: false, error: "Forbidden" }, 403);
+  if (!isAllowedOrigin(req.headers.get("origin") ?? "", env.SITE_URL)) return json({ ok: false, error: "Forbidden" }, 403);
 
   const ip = req.headers.get("cf-connecting-ip");
   if (ip) {

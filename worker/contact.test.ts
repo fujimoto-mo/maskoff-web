@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { handleContact } from "./contact.ts";
+import { handleContact, RATE_LIMIT_MAX } from "./contact.ts";
 import type { Env } from "./index.ts";
 
 function makeEnv(kv: Map<string, string>): Env {
@@ -61,7 +61,7 @@ test("Origin が違えば 403", async () => {
 });
 
 test("同一 IP 5 件目以降は 429", async () => {
-  const kv = new Map([["contact:203.0.113.1", "5"]]);
+  const kv = new Map([["contact:203.0.113.1", String(RATE_LIMIT_MAX)]]);
   const res = await handleContact(req(valid), makeEnv(kv), ctx, fakeFetch());
   assert.equal(res.status, 429);
 });
@@ -92,5 +92,15 @@ test("正常系は Resend を 2 回呼んで 200", async () => {
 test("JSON でない body は 400", async () => {
   const r = new Request("https://maskoff.co.jp/api/contact", { method: "POST", headers: { origin: "https://maskoff.co.jp" }, body: "not json" });
   const res = await handleContact(r, makeEnv(new Map()), ctx, fakeFetch());
+  assert.equal(res.status, 400);
+});
+
+test("サブドメイン偽装の Origin は 403", async () => {
+  const res = await handleContact(req(valid, "https://maskoff.co.jp.evil.com"), makeEnv(new Map()), ctx, fakeFetch());
+  assert.equal(res.status, 403);
+});
+
+test("localhost はポート付きでも通る（検証エラーの 400 まで進む）", async () => {
+  const res = await handleContact(req({ ...valid, name: "" }, "http://localhost:3000"), makeEnv(new Map()), ctx, fakeFetch());
   assert.equal(res.status, 400);
 });
