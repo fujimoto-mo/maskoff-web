@@ -308,6 +308,12 @@
   }
   [data-marquee][data-js] [data-cell] {
     opacity: 0;
+    position: relative;
+    /* ホバー追従・拡大（MarqueeDrag が --hx/--hy/--hs を lerp で更新） */
+    transform: translate3d(var(--hx, 0px), var(--hy, 0px), 0) scale(var(--hs, 1));
+  }
+  [data-marquee][data-js] [data-cell][data-hover] {
+    z-index: 1;
   }
   [data-marquee][data-js] [data-lead] {
     opacity: 0; /* 幕のロゴが着地（data-go）するまで隠す */
@@ -321,7 +327,7 @@
   }
   [data-marquee][data-go] [data-lead][data-boing] {
     transform-origin: 50% 50%;
-    animation: lead-boing 0.52s var(--ease-boing) both;
+    animation: lead-boing 0.52s var(--ease-boing) backwards; /* both だと終了後もホバーの transform が効かない */
   }
   /* イントロ幕: 黒幕中央のロゴが 0.1s 後に 0.35s で現れ、done で背景 0.4s 透明化 + ロゴはロゴセルへ FLIP（WAAPI, spec §4-6） */
   .intro-veil {

@@ -69,5 +69,6 @@ npm run preview            # build → wrangler dev（/api/* 含めて本番同�
 
 - `src/lib/site.ts`（住所・電話・SNS）
 - `src/lib/services.ts` `src/lib/works.ts` `src/lib/partners.ts`、`src/content/sample.ts`
+- `public/videos/hero/sample-01.mp4` と `public/images/hero/sample-01-poster.png`（マーキーの動画セルの仮素材。`Hero.tsx` の `VIDEO` を実素材に差し替える。正方形・音なし・数秒ループ・500KB 以下の MP4）
 - `src/components/sections/VisionBlock.tsx` の本文と `src/content/vision-handwriting.ts`（手書き見出しの文言・フォントを確定したら `scripts/handwriting-paths.py` で再生成、またはデザイナー入稿 SVG の `<path d>` に差し替え）
 - `public/images/`（`scripts/gen-sample-assets.mjs` で生成した仮画像。差し替え後 `npm run images`）

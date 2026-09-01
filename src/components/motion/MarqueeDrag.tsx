@@ -14,6 +14,7 @@ function measure(el: HTMLElement, track: HTMLElement): { half: number; v0: numbe
 
 /**
  * マーキーを JS 駆動にする: ロゴセルを中央に揃え、kv:launch でセルを pop させて rAF で流し、ドラッグで動かせる。
+ * PC ではホバーしたセルが 1.12 倍に拡大してカーソル方向へ最大 18px 寄る。動画セルは launch 後に再生し画面外で止める。
  * リサイズ・画面回転では 1 周分（half）と基準速度・セル pop の遅延を測り直す（継ぎ目に空白が出ないように）。
  * reduced-motion では何もしない（CSS 側で静止）。
  * @example <Marquee rows={ROWS} /><MarqueeDrag />
@@ -83,12 +84,64 @@ export default function MarqueeDrag() {
     let last = 0;
     let visible = true;
     let dragging = false;
+
+    // ホバー: (hover:hover) and (pointer:fine) のとき、触れたセルを拡大しカーソルの方向へ寄せる（参考サイトと同じ）。
+    // 値は rAF ループ内で lerp し、離れたセルは元の位置・大きさへ戻ってから変数を外す
+    const hoverOk = matchMedia("(hover: hover) and (pointer: fine)").matches;
+    type Hover = { el: HTMLElement; tx: number; ty: number; ts: number; cx: number; cy: number; cs: number };
+    const HOVER_SCALE = 1.12;
+    const HOVER_SHIFT = 18; // px。セル中心からの相対位置（−1..1）× SHIFT
+    const HOVER_LERP = 0.18;
+    let hov: Hover | null = null;
+    const leaving: Hover[] = [];
+    const clearHoverVars = (h: Hover) => {
+      h.el.style.removeProperty("--hx");
+      h.el.style.removeProperty("--hy");
+      h.el.style.removeProperty("--hs");
+    };
+    const dropHover = () => {
+      if (!hov) return;
+      hov.tx = 0;
+      hov.ty = 0;
+      hov.ts = 1;
+      hov.el.removeAttribute("data-hover");
+      leaving.push(hov);
+      hov = null;
+    };
+    const tickHover = () => {
+      const items = hov ? [hov, ...leaving] : leaving;
+      for (const h of items) {
+        h.cx += (h.tx - h.cx) * HOVER_LERP;
+        h.cy += (h.ty - h.cy) * HOVER_LERP;
+        h.cs += (h.ts - h.cs) * HOVER_LERP;
+        h.el.style.setProperty("--hx", `${h.cx.toFixed(2)}px`);
+        h.el.style.setProperty("--hy", `${h.cy.toFixed(2)}px`);
+        h.el.style.setProperty("--hs", h.cs.toFixed(4));
+      }
+      for (let i = leaving.length - 1; i >= 0; i--) {
+        const h = leaving[i];
+        if (Math.abs(h.cx) < 0.05 && Math.abs(h.cy) < 0.05 && Math.abs(h.cs - 1) < 0.0005) {
+          clearHoverVars(h);
+          leaving.splice(i, 1);
+        }
+      }
+    };
+
+    // 動画セル: launch 後に再生し、画面外・非表示タブでは止める。React は SSR で muted を出さないため明示する
+    const videos = Array.from(root.querySelectorAll<HTMLVideoElement>("video[data-mq-video]"));
+    const playVideos = () => videos.forEach((v) => {
+      v.muted = true;
+      v.play().catch(() => {});
+    });
+    const pauseVideos = () => videos.forEach((v) => v.pause());
+
     const loop = (now: number) => {
       raf = 0;
       const dt = last ? Math.min(0.05, (now - last) / 1000) : 0;
       last = now;
       if (!dragging) rows.forEach((r) => (r.state = advance(r.state, dt)));
       apply();
+      tickHover();
       if (visible && !document.hidden) raf = requestAnimationFrame(loop);
     };
     const run = () => {
@@ -101,11 +154,50 @@ export default function MarqueeDrag() {
       (e) => {
         visible = e[0].isIntersecting;
         if (visible) run();
+        if (launched) (visible ? playVideos : pauseVideos)();
       },
       { threshold: 0.3 },
     );
     io.observe(root);
-    document.addEventListener("visibilitychange", () => !document.hidden && run(), { signal });
+    document.addEventListener(
+      "visibilitychange",
+      () => {
+        if (document.hidden) pauseVideos();
+        else {
+          run();
+          if (launched && visible) playVideos();
+        }
+      },
+      { signal },
+    );
+
+    if (hoverOk) {
+      root.addEventListener(
+        "pointerover",
+        (e) => {
+          if (dragging) return;
+          const cell = e.target instanceof Element ? e.target.closest<HTMLElement>("[data-cell]") : null;
+          if (cell === (hov?.el ?? null)) return;
+          dropHover();
+          if (cell) {
+            const back = leaving.findIndex((h) => h.el === cell);
+            const prev = back >= 0 ? leaving.splice(back, 1)[0] : undefined;
+            hov = { el: cell, tx: 0, ty: 0, ts: HOVER_SCALE, cx: prev?.cx ?? 0, cy: prev?.cy ?? 0, cs: prev?.cs ?? 1 };
+            cell.setAttribute("data-hover", "");
+          }
+          run();
+        },
+        { signal },
+      );
+      root.addEventListener(
+        "pointerleave",
+        () => {
+          dropHover();
+          run();
+        },
+        { signal },
+      );
+    }
 
     // ドラッグ: 触れた行は指に追従、逆方向の行は反対側へ動く（参考サイトと同じ）。離したら慣性 → 各行の基準速度へ
     let lastX = 0;
@@ -127,6 +219,7 @@ export default function MarqueeDrag() {
             return d < bd ? r : best;
           }, undefined);
         dragSign = Math.sign(hit?.state.v0 ?? 1) || 1;
+        dropHover();
         dragging = true;
         lastX = e.clientX;
         lastT = performance.now();
@@ -139,6 +232,11 @@ export default function MarqueeDrag() {
     root.addEventListener(
       "pointermove",
       (e) => {
+        if (hov && !dragging) {
+          const b = hov.el.getBoundingClientRect();
+          hov.tx = Math.max(-1, Math.min(1, (e.clientX - (b.left + b.width / 2)) / (b.width / 2))) * HOVER_SHIFT;
+          hov.ty = Math.max(-1, Math.min(1, (e.clientY - (b.top + b.height / 2)) / (b.height / 2))) * HOVER_SHIFT;
+        }
         if (!dragging) return;
         const now = performance.now();
         const dx = e.clientX - lastX;
@@ -166,6 +264,7 @@ export default function MarqueeDrag() {
       launched = true;
       root.setAttribute("data-go", "");
       run();
+      if (visible) playVideos();
     };
     if (document.documentElement.hasAttribute("data-intro")) document.addEventListener("kv:launch", launch, { once: true, signal });
     else launch();
@@ -176,6 +275,9 @@ export default function MarqueeDrag() {
       ro.disconnect();
       if (roRaf) cancelAnimationFrame(roRaf);
       if (raf) cancelAnimationFrame(raf);
+      pauseVideos();
+      if (hov) clearHoverVars(hov);
+      leaving.forEach(clearHoverVars);
       root.removeAttribute("data-js");
       root.removeAttribute("data-go");
       rows.forEach((r) => r.track.style.removeProperty("transform"));

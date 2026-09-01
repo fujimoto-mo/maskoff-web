@@ -89,6 +89,12 @@
     "avif": "/images/optimized/hero/hero-15.avif",
     "webp": "/images/optimized/hero/hero-15.webp"
   },
+  "/images/hero/sample-01-poster.png": {
+    "width": 480,
+    "height": 480,
+    "avif": "/images/optimized/hero/sample-01-poster.avif",
+    "webp": "/images/optimized/hero/sample-01-poster.webp"
+  },
   "/images/logo-wordmark.png": {
     "width": 289,
     "height": 253,

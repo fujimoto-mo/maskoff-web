@@ -21,6 +21,16 @@ function Cell({ cell, priority }: { cell: MarqueeCell; priority: boolean }) {
       />
     );
   }
+  if (cell.type === "video") {
+    // React は SSR で muted 属性を出さないため、再生前に MarqueeDrag が v.muted = true を設定する
+    return (
+      <div className="mq-vid size-full overflow-hidden rounded-[22%] bg-surface">
+        <video data-mq-video className="block size-full object-cover" poster={cell.poster} muted loop playsInline preload="metadata" aria-label={cell.alt} tabIndex={-1}>
+          <source src={cell.src} type="video/mp4" />
+        </video>
+      </div>
+    );
+  }
   if (cell.type === "logo") {
     return (
       <div className="flex size-full items-center justify-center">

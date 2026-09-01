@@ -345,6 +345,7 @@ components/
 - マーキーヒーローでは、**各行の初期表示セル**の先頭 3 枚のみ `loading="eager"` + `fetchPriority="high"`（`Marquee` の `eagerCount`、既定 3。逆方向行は複製側が初期表示なので判定が変わる）。それ以外は遅延。
 - `width` / `height` は `Picture` がマニフェストから常に `<img>` に出力する（呼び出し側は渡さない）。SVG だけは props で必須（§2 参照）。未指定の `<img>` は遅延読み込み時にセクションの高さが潰れる（参考サイトで実際に起きている疑いのある不具合）。
 - 透過PNGは `public/images/hero/` 配下に置く。最適化スクリプトがアルファを保持する。
+- マーキーの**動画セル**（`{ type: "video", src, poster }`）は `public/videos/hero/` に MP4（H.264、正方形、音なし、数秒ループ、**500KB 以下**）、`poster` は `public/images/hero/` の静止画を指定する。`<video muted loop playsInline preload="metadata">` で SSR し、`MarqueeDrag` が `kv:launch` 後に再生・画面外で停止する（reduced-motion / JS 無効では poster のまま）。複製分も含め要素数が倍になるため**1 行 1 本まで**。参考サイトは各行 1 つをアニメーション WebP にしている。
 
 ## 10. SEO / 構造化データ
 
