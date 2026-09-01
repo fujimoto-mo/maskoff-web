@@ -1,4 +1,5 @@
 import NoticeBanner from "@/components/layout/NoticeBanner";
+import ContactSection from "@/components/sections/ContactSection";
 import FaqList from "@/components/sections/FaqList";
 import Hero from "@/components/sections/Hero";
 import NewsStrip from "@/components/sections/NewsStrip";
@@ -6,7 +7,6 @@ import PartnerGrid from "@/components/sections/PartnerGrid";
 import ServiceGrid from "@/components/sections/ServiceGrid";
 import VisionBlock from "@/components/sections/VisionBlock";
 import WorksList from "@/components/sections/WorksList";
-import SectionHeading from "@/components/ui/SectionHeading";
 import { getFaq, getNews, getNotice } from "@/lib/microcms";
 
 export default async function HomePage() {
@@ -21,9 +21,7 @@ export default async function HomePage() {
       <PartnerGrid />
       <NewsStrip news={news} notice={notice} />
       <FaqList items={faq} />
-      <section id="contact" aria-labelledby="contact-title" className="wrap section-pad">
-        <SectionHeading en="CONTACT" ja="お問い合わせ（Task 14 で実装）" id="contact-title" />
-      </section>
+      <ContactSection />
     </>
   );
 }
