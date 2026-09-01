@@ -195,7 +195,7 @@ export const HANDWRITING = { viewBox: "0 0 640 160", label: "仮面を外して�
 ### 4-7. マーキー（H）
 - `kv:launch` 以降 `.mqs[data-js]`: `.mq-row { animation: none }`、rAF で `translateX(x)`。基準速度 `v0 = half / duration`（`half` = 1 周分の幅、`duration` は行の `--d`）、逆方向行は負。
 - セル pop: `--ed = |中央からの距離| / セル幅 × 35ms`（`cellPopDelay`）、`cell-pop` 0.45s `cubic-bezier(.34,1.56,.64,1)`。ロゴセルは `--ed: 0`。
-- ドラッグ: `pointerdown` → `data-dragging`、`pointermove` の Δx を全行の x に加算（逆方向行は同方向に動かす）、`pointerup` で直前速度を `[-900, 900]` px/s にクランプして慣性、1.2s で `v0` へ指数減衰（`advance(x, v, dt, half, v0)`）。`touch-action: pan-y`。`setPointerCapture`。
+- ドラッグ: `pointerdown` → `data-dragging`、`pointermove` の Δx を、触れた行には +Δx、進行方向が逆の行には −Δx として加算（例: 中段を左へスワイプすると上下段は右へ動く — 参考サイトと同じ）、`pointerup` で直前速度を `[-900, 900]` px/s にクランプし同じ符号で慣性、1.2s で `v0` へ指数減衰（`advance(x, v, dt, half, v0)`）。`touch-action: pan-y`。`setPointerCapture`。
 - 画面外（IO threshold 0.3 で不可視）では rAF 停止。reduced-motion: JS 駆動しない（CSS 停止のまま静止）、ドラッグ無効。
 
 ### 4-8. SERVICE（I）

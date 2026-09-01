@@ -107,14 +107,26 @@ export default function MarqueeDrag() {
     io.observe(root);
     document.addEventListener("visibilitychange", () => !document.hidden && run(), { signal });
 
-    // ドラッグ: 全行を指に追従させ、離したら慣性 → 基準速度へ
+    // ドラッグ: 触れた行は指に追従、逆方向の行は反対側へ動く（参考サイトと同じ）。離したら慣性 → 各行の基準速度へ
     let lastX = 0;
     let lastT = 0;
     let vInst = 0;
+    let dragSign = 1; // 触れた行の進行方向（v0 の符号）
+    const rel = (r: Row) => Math.sign(r.state.v0) * dragSign || 1;
     root.addEventListener(
       "pointerdown",
       (e) => {
         if (e.button !== 0) return;
+        const target = e.target instanceof Element ? e.target.closest<HTMLElement>("[data-row]") : null;
+        const hit =
+          rows.find((r) => r.el === target) ??
+          rows.reduce<Row | undefined>((best, r) => {
+            const b = r.el.getBoundingClientRect();
+            const d = Math.abs(e.clientY - (b.top + b.height / 2));
+            const bd = best ? Math.abs(e.clientY - (best.el.getBoundingClientRect().top + best.el.getBoundingClientRect().height / 2)) : Infinity;
+            return d < bd ? r : best;
+          }, undefined);
+        dragSign = Math.sign(hit?.state.v0 ?? 1) || 1;
         dragging = true;
         lastX = e.clientX;
         lastT = performance.now();
@@ -134,7 +146,7 @@ export default function MarqueeDrag() {
         vInst = dx / dt;
         lastX = e.clientX;
         lastT = now;
-        rows.forEach((r) => (r.state = { ...r.state, x: wrap(r.state.x + dx, r.state.half) }));
+        rows.forEach((r) => (r.state = { ...r.state, x: wrap(r.state.x + dx * rel(r), r.state.half) }));
         apply();
       },
       { signal, passive: true },
@@ -144,7 +156,7 @@ export default function MarqueeDrag() {
       dragging = false;
       root.removeAttribute("data-dragging");
       const fling = clampFling(vInst);
-      rows.forEach((r) => (r.state = { ...r.state, v: fling }));
+      rows.forEach((r) => (r.state = { ...r.state, v: fling * rel(r) }));
       run();
     };
     root.addEventListener("pointerup", release, { signal });
