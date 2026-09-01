@@ -271,7 +271,7 @@ FAQは `<details>/<summary>` を閉じた状態で SSR し、PCでは CSS の `:
 
 ## 7. アニメーション方針
 
-依存ライブラリなし（IntersectionObserver + rAF + Web Animations API + CSS）。**必ず `prefers-reduced-motion` を尊重すること。** 初期の隠し状態は `html.js` 配下だけに適用し、JS 無効・クローラは常に可視にする。詳細は `docs/superpowers/specs/2026-09-01-phase3-animation-design.md`。
+依存ライブラリなし（IntersectionObserver + rAF + Web Animations API + CSS）。**必ず `prefers-reduced-motion` を尊重すること。** 初期の隠し状態は `html.js` 配下だけに適用し、JS 無効・クローラは常に可視にする。詳細は `docs/superpowers/specs/2026-09-01-phase3-animation-design.md`。（`docs/` は git 管理外・ローカル参照のみ）
 
 ### 実装するもの
 
