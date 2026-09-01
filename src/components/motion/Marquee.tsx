@@ -5,7 +5,7 @@ import { cn } from "@/lib/cn";
 
 type Props = {
   rows: MarqueeRow[];
-  /** 先頭行の先頭から何枚を eager / fetchPriority=high にするか（LCP 対策） */
+  /** 各行の初期表示セルの先頭から何枚を eager / fetchPriority=high にするか（LCP 対策） */
   eagerCount?: number;
 };
 
@@ -50,26 +50,30 @@ function Cell({ cell, priority }: { cell: MarqueeCell; priority: boolean }) {
 export default function Marquee({ rows, eagerCount = 3 }: Props) {
   return (
     <div className="flex flex-col gap-mq-gap overflow-hidden max-sp:gap-5">
-      {rows.map((row, r) => (
-        <div key={r} className="overflow-hidden">
-          <div
-            className={cn(
-              "flex w-max gap-mq-gap max-sp:gap-5",
-              row.reverse ? "animate-[drift-rev_var(--d)_linear_infinite]" : "animate-[drift_var(--d)_linear_infinite]",
-            )}
-            style={{ "--d": `${row.duration ?? 60}s` } as CSSProperties}
-          >
-            {duplicate(row.cells).map((cell, i) => {
-              const clone = i >= row.cells.length;
-              return (
-                <div key={i} aria-hidden={clone || undefined} className="size-mq-cell flex-none max-sp:size-[max(160px,calc((100svh-176px)/3))]">
-                  <Cell cell={cell} priority={r === 0 && !clone && i < eagerCount && cell.type === "image"} />
-                </div>
-              );
-            })}
+      {rows.map((row, r) => {
+        const start = row.reverse ? row.cells.length : 0;
+        return (
+          <div key={r} className="overflow-hidden">
+            <div
+              className={cn(
+                "flex w-max gap-mq-gap max-sp:gap-5",
+                row.reverse ? "animate-[drift-rev_var(--d)_linear_infinite]" : "animate-[drift_var(--d)_linear_infinite]",
+              )}
+              style={{ "--d": `${row.duration ?? 60}s` } as CSSProperties}
+            >
+              {duplicate(row.cells).map((cell, i) => {
+                const clone = i >= row.cells.length;
+                const priority = i >= start && i < start + eagerCount && cell.type === "image";
+                return (
+                  <div key={i} aria-hidden={clone || undefined} className="size-mq-cell flex-none max-sp:size-[max(160px,calc((100svh-176px)/3))]">
+                    <Cell cell={cell} priority={priority} />
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
