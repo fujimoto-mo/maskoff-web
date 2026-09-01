@@ -1,29 +1,41 @@
+import type { CSSProperties } from "react";
 import ScrollTheme from "@/components/motion/ScrollTheme";
-import Marker from "@/components/ui/Marker";
 import Picture from "@/components/ui/Picture";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { VISION_COPY } from "@/content/vision-copy";
 
-/** VISION。黒背景遷移・手書きストローク描画・段落フェードはフェーズ③。 */
+/**
+ * VISION。本文は行構造で出力し、RevealObserver が PC では段落単位・SP では行単位で in にする。
+ * 背景反転は ScrollTheme、手書き線は Handwriting、マーカーは MarkerLayer、相関図は VisionDiagram。
+ */
 export default function VisionBlock() {
   return (
     <section id="vision" aria-labelledby="vision-title" className="section-pad">
       <div className="wrap">
         <SectionHeading en="VISION" ja="私たちの想い" id="vision-title" />
         <div className="grid grid-cols-2 gap-gap-cols max-tab:grid-cols-1 max-tab:gap-[76px]">
-          <div>
-            <Picture src="/images/company/vision-handwriting.svg" alt="仮面を外して、素の自分で。" width={640} height={160} className="mb-10 block w-full max-w-[560px]" imgClassName="h-auto w-full" />
-            {/* SAMPLE: 本文は仮。マーカーは 1 セクション 3 箇所まで */}
-            <div className="space-y-[22px] text-body leading-[2] text-fg max-sp:text-body-sp [&>p]:max-w-[560px]">
-              <p>「MASK OFF」には、仮面を外す、素の自分という意味があります。誰かに合わせるために被った仮面は、いつのまにか自分の輪郭を曖昧にしていく。</p>
-              <p>
-                私たちはファッションブランドの企画から始まった会社です。服は、着る人の「素」を隠すためではなく、<Marker>引き出すためにある</Marker>。その考え方は、アーティストの活動支援にも、ホームページ制作にも通じています。
-              </p>
-              <p>
-                領域は違っても、やっていることは同じです。人や企業が本来持っている個性を見つけ、形にして、届ける。<Marker>進化したこの時代で、新たな個性をさらけ出す</Marker>。
-              </p>
-              <p>
-                MasKOFFは、そのための仕組みと仲間をつくる会社です。<Marker>素の自分で立てる場所</Marker>が、ここから増えていくことを願って。
-              </p>
+          <div className="marker-block relative" data-marker-block>
+            <Picture src="/images/company/vision-handwriting.svg" alt="仮面を外して、素の自分で。" width={640} height={160} className="relative z-[1] mb-10 block w-full max-w-[560px]" imgClassName="h-auto w-full" />
+            <div className="relative z-[1] space-y-[22px] text-body leading-[2] text-fg max-sp:text-body-sp [&>p]:max-w-[560px]">
+              {VISION_COPY.map((paragraph, pi) => (
+                <p key={pi} data-reveal="para">
+                  {paragraph.map((line, li) => (
+                    <span key={li} className="vln">
+                      <span className="vlt" data-reveal="line" style={{ "--li": li } as CSSProperties}>
+                        {line.map((seg, si) =>
+                          typeof seg === "string" ? (
+                            seg
+                          ) : (
+                            <span key={si} className="marker-target">
+                              {seg.marker}
+                            </span>
+                          ),
+                        )}
+                      </span>
+                    </span>
+                  ))}
+                </p>
+              ))}
             </div>
           </div>
           <div className="w-full max-w-[540px] justify-self-center max-tab:order-last max-tab:mt-2.5">

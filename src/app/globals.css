@@ -161,6 +161,28 @@
   html[data-on-vision] header {
     background: transparent;
   }
+
+  /* VISION 本文: PC は文ごとに 1 行、SP(≤640) は流し込み。行は in で順にフェード（spec §4-4） */
+  .vln {
+    display: block;
+  }
+  html.js .vlt {
+    display: block;
+    opacity: 0;
+  }
+  html.js .vlt[data-reveal-kind="line"] {
+    opacity: 1;
+    transition: opacity var(--duration-reveal) ease calc(50ms + var(--li, 0) * 70ms);
+  }
+  @media (width < 641px) {
+    .vln,
+    html.js .vlt {
+      display: inline;
+    }
+    html.js .vlt[data-reveal-kind="line"] {
+      transition: opacity 0.5s ease 0s;
+    }
+  }
 }
 
 /* FAQ: ≥601px は常時展開（::details-content 対応ブラウザ。未対応はクリックで開ける）。≤600px はネイティブ開閉 */
