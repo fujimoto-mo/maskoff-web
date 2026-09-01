@@ -217,7 +217,7 @@ SERVICE          ← 英字・大文字・極太・字間タイト
 **フォント**
 - 英字：Inter Tight（`next/font/google` でセルフホスト）。見出しは 700、字間 −0.045em。
 - 和文：Noto Sans JP。本文 400、見出し 700。`display: "optional"` で読み込む（初回訪問は OS の和文フォントで描画し、以降のキャッシュで Noto に切り替わる。46 スライス約 800KB の再レイアウトを避けるため）。
-- **手書き風の大見出し**（VISION / COMPANY用）は Web フォントで再現不可。**SVG で入稿**し、`<path d>` を書き順どおりに `src/content/vision-handwriting.ts` へ写す（`Handwriting` が `pathLength=1` で線描画する）。テキストで代替しないこと。`aria-label` に必ず同じ文言を入れてSEO・スクリーンリーダー対応。
+- **手書き風の大見出し**（VISION / COMPANY用）は Web フォントで再現不可。文字の輪郭パスを `scripts/handwriting-paths.py` で 手書き系フォント（Zen Kurenaido、SIL OFL）から生成して `src/content/vision-handwriting.ts` に書き出す（1 文字 = 1 ストローク、生成物のみコミット。デザイナー入稿の SVG がある場合は同じ形式で `<path d>` を写す）。`Handwriting` が輪郭を描いてから塗りを入れる。テキストで代替しないこと。`aria-label` に必ず同じ文言を入れて SEO・スクリーンリーダー対応。
 
 ---
 
@@ -281,7 +281,7 @@ FAQは `<details>/<summary>` を閉じた状態で SSR し、PCでは CSS の `:
 | 横マーキー | HOMEヒーロー | 3行、行ごとに速度差。JS 駆動（rAF）でセルを中央から pop、ドラッグ慣性。配列を2倍に複製 |
 | 見出しの文字立ち上がり | 全 SectionHeading | 1 文字ずつ `.ch` に分割し skew 立ち上がり（0.68s、26ms/文字） |
 | 背景色遷移 | VISION | `ScrollTheme` が rAF でセクション位置から `<html>` の `--color-*` を白→黒へ補間。0.5 超で `data-on-vision` |
-| 手書き線描画 | VISION | `Handwriting` が `stroke-dashoffset 1→0` を書き順どおり（合計 1.6s） |
+| 手書き線描画 | VISION | `Handwriting` が 1 文字ずつ読み順に輪郭を `stroke-dashoffset 1→0` で描き、続けて `fill-opacity 0→1`（合計 1.6s）。データは `scripts/handwriting-paths.py` で生成 |
 | 行フェード | VISION 本文 | PC は段落単位で行が順に、SP(≤640) は 1 行ずつ画面下 75% で点灯 |
 | マーカー描画 | VISION 本文 | `MarkerLayer` が文字位置を計測し背後の線を `clip-path` で左→右（0.85s）。他セクションは `background-size` 方式 |
 | 相関図 | VISION | リングをマスクで描画、ノードはぼかしから出現、点線は 80s で回転 |

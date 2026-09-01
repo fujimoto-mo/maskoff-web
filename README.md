@@ -63,11 +63,11 @@ npm run preview            # build → wrangler dev（/api/* 含めて本番同�
 - 出現系は要素に `data-reveal="head|para|line|write|diagram|blur|up"` を付け、`RevealObserver` が画面に入ったとき `data-reveal="in"` に書き換えます（元の値は `data-reveal-kind`）。演出は CSS。
 - 初期の隠し状態は `html.js` 配下だけ。JS 無効・クローラは常に可視です。
 - `prefers-reduced-motion: reduce` では全演出が最終状態で静止し、イントロ幕も出ません。
-- 手書き見出しは `src/content/vision-handwriting.ts` に SVG の `<path d>` を書き順どおりに写します。
+- 手書き見出しは `scripts/handwriting-paths.py`（要 `pip install fonttools`）で手書き系フォントの輪郭から `src/content/vision-handwriting.ts` を生成します（文言は同スクリプトの `LINES`）。デザイナー入稿の SVG がある場合は同じ形式で `<path d>` を写します。
 
 ## 差し替えが必要なサンプル
 
 - `src/lib/site.ts`（住所・電話・SNS）
 - `src/lib/services.ts` `src/lib/works.ts` `src/lib/partners.ts`、`src/content/sample.ts`
-- `src/components/sections/VisionBlock.tsx` の本文と `src/content/vision-handwriting.ts`（手書き見出しはデザイナー入稿の SVG の `<path d>` に差し替え）
+- `src/components/sections/VisionBlock.tsx` の本文と `src/content/vision-handwriting.ts`（手書き見出しの文言・フォントを確定したら `scripts/handwriting-paths.py` で再生成、またはデザイナー入稿 SVG の `<path d>` に差し替え）
 - `public/images/`（`scripts/gen-sample-assets.mjs` で生成した仮画像。差し替え後 `npm run images`）

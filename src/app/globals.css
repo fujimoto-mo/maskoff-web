@@ -207,10 +207,14 @@
     }
   }
 
-  /* 手書き線: JS 環境では未描画から始める（Handwriting が animate する） */
+  /* 手書き見出し: 文字の輪郭を描いてから塗る。JS 環境では未描画・未塗りから始める（Handwriting が animate する） */
+  .write-stroke {
+    fill: currentColor;
+  }
   html.js .write-stroke {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
+    fill-opacity: 0;
   }
 
   /* 蛍光ペン: 別レイヤーの線を clip-path で左→右に描く（spec §3-5）。反転中は不透明の緑 + 黒文字
@@ -754,6 +758,9 @@
   html.js .write-stroke,
   html.js [data-reveal="diagram"] .vd-ringmask {
     stroke-dashoffset: 0;
+  }
+  html.js .write-stroke {
+    fill-opacity: 1;
   }
   .cur {
     display: none;
