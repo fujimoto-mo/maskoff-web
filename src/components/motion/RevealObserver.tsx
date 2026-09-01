@@ -1,0 +1,94 @@
+"use client";
+import { useEffect } from "react";
+
+type Kind = "head" | "para" | "line" | "diagram" | "blur" | "up";
+const OPTIONS: Record<Kind, IntersectionObserverInit> = {
+  head: { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+  para: { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+  line: { rootMargin: "0px 0px -25% 0px", threshold: 0 },
+  diagram: { rootMargin: "0px 0px -20% 0px", threshold: 0.3 },
+  blur: { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+  up: { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+};
+
+/** 要素を「出現済み」にする。元の種別は data-reveal-kind に退避。段落は配下の行も一緒に */
+export function markRevealed(el: HTMLElement): void {
+  const kind = el.dataset.reveal;
+  if (!kind || kind === "in") return;
+  el.dataset.revealKind = kind;
+  el.dataset.reveal = "in";
+  if (kind === "para") el.querySelectorAll<HTMLElement>('[data-reveal="line"]').forEach(markRevealed);
+}
+
+/**
+ * ページに 1 つ。[data-reveal] を IntersectionObserver で監視し、入ったら data-reveal="in" にする。
+ * - html[data-intro] があれば kv:launch を待ってから監視を始める
+ * - para は vision:written 以降にしか in にしない（PC）。SP(≤640) では para を監視せず line を監視する
+ * - write は Handwriting が自前で扱う
+ * - reduced-motion なら全部即 in
+ * @example <RevealObserver />（layout.tsx）
+ */
+export default function RevealObserver() {
+  useEffect(() => {
+    const root = document.documentElement;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const sp = matchMedia("(max-width: 640px)").matches;
+    const pending = () => Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]")).filter((el) => el.dataset.reveal !== "in");
+
+    if (reduce) {
+      pending().forEach(markRevealed);
+      return;
+    }
+
+    const observers: IntersectionObserver[] = [];
+    // 手書き（data-reveal="write"）が無いページでは待たない
+    let written = !document.querySelector('[data-reveal="write"]');
+    const waitingParas = new Set<HTMLElement>();
+    const onWritten = () => {
+      written = true;
+      waitingParas.forEach(markRevealed);
+      waitingParas.clear();
+    };
+    document.addEventListener("vision:written", onWritten);
+
+    const start = () => {
+      const groups = new Map<Kind, HTMLElement[]>();
+      for (const el of pending()) {
+        const kind = el.dataset.reveal as Kind | "write";
+        if (kind === "write") continue;
+        if (kind === "line" && !sp) continue;
+        if (kind === "para" && sp) continue;
+        if (!(kind in OPTIONS)) continue;
+        const list = groups.get(kind) ?? [];
+        list.push(el);
+        groups.set(kind, list);
+      }
+      for (const [kind, els] of groups) {
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            const el = e.target as HTMLElement;
+            io.unobserve(el);
+            if (kind === "para" && !written) {
+              waitingParas.add(el);
+              continue;
+            }
+            markRevealed(el);
+          }
+        }, OPTIONS[kind]);
+        els.forEach((el) => io.observe(el));
+        observers.push(io);
+      }
+    };
+
+    if (root.hasAttribute("data-intro")) document.addEventListener("kv:launch", start, { once: true });
+    else start();
+
+    return () => {
+      observers.forEach((io) => io.disconnect());
+      document.removeEventListener("vision:written", onWritten);
+      document.removeEventListener("kv:launch", start);
+    };
+  }, []);
+  return null;
+}

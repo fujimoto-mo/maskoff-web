@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import SkipLink from "@/components/layout/SkipLink";
 import StickyCta from "@/components/layout/StickyCta";
+import RevealObserver from "@/components/motion/RevealObserver";
 import JsonLd from "@/components/ui/JsonLd";
 import { organizationJsonLd } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
@@ -27,12 +28,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja" className={`${interTight.variable} ${notoSansJP.variable}`}>
       <body className="bg-bg text-fg-body antialiased">
+        {/* JS が動く環境だけ演出の初期状態（opacity:0 等）を適用する。JS 無効・クローラは常に可視 */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
         <JsonLd data={organizationJsonLd(SITE)} />
         <SkipLink />
         <Header />
         <main id="main">{children}</main>
         <Footer />
         <StickyCta />
+        <RevealObserver />
       </body>
     </html>
   );

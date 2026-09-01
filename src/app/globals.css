@@ -92,6 +92,31 @@
   to { transform: rotate(360deg); }
 }
 
+/* ============================================================
+   演出（フェーズ③）。初期の隠し状態は html.js 配下だけ。
+   reduced-motion では末尾のブロックで最終状態を強制する。
+   ============================================================ */
+@layer components {
+  /* 汎用 up: fade + 上昇。FAQ カードは 16px */
+  html.js [data-reveal="up"] {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  html.js .faq-card[data-reveal="up"] {
+    transform: translateY(16px);
+  }
+  [data-reveal-kind="up"] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--duration-reveal-fast) ease var(--rd, 0s),
+      transform var(--duration-reveal-fast) var(--ease-out-quart) var(--rd, 0s);
+  }
+  .faq-card[data-reveal-kind="up"] {
+    transition-duration: var(--duration-reveal-fast), var(--duration-reveal);
+  }
+}
+
 /* FAQ: ≥601px は常時展開（::details-content 対応ブラウザ。未対応はクリックで開ける）。≤600px はネイティブ開閉 */
 @media (width >= 601px) {
   @supports selector(::details-content) {

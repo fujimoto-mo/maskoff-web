@@ -30,6 +30,14 @@
   --color-required: #ef3b59;
   --color-disabled: #a9a9a9;
 
+  /* --- 暗色パレット（VISION の背景反転先。spec §4-1）------------------ */
+  --color-dark-bg: #0a0a0a;
+  --color-dark-fg: #f2f2f0;
+  --color-dark-fg-body: #c6c6c3;
+  --color-dark-fg-muted: #9a9a97;
+  --color-dark-surface: #151514;
+  --color-dark-border: #2c2c2a;
+
   /* --- レイアウト ------------------------------------------------- */
   --spacing-pad-x: 32px;
   --spacing-pad-x-sp: 20px;
@@ -96,6 +104,15 @@
   --duration-base: 550ms;
   --duration-slow: 900ms;
   --duration-marker: 850ms;
+  --duration-reveal-fast: 550ms;
+  --duration-reveal: 800ms;
+  --duration-reveal-slow: 900ms;
+  --duration-write: 1600ms;
+  --duration-marker-draw: 850ms;
+  --delay-reveal-step: 80ms;
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-boing: cubic-bezier(0.3, 0.6, 0.4, 1);
+  --ease-mk: cubic-bezier(0.6, 0, 0.2, 1);
 }
 
 /* next/font が <html> に付ける変数を参照するため inline で定義 */
