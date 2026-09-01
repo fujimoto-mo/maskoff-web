@@ -280,16 +280,19 @@
 
   /* マーキー: JS 駆動時は CSS アニメを止め、セルを中央から順に pop（spec §4-6/4-7） */
   [data-marquee] {
-    cursor: grab;
     touch-action: pan-y;
     user-select: none;
     -webkit-user-select: none;
+  }
+  [data-marquee][data-js] {
+    cursor: grab; /* ドラッグできるのは JS 駆動のときだけ */
   }
   [data-marquee][data-dragging] {
     cursor: grabbing;
   }
   /* CSS 駆動（JS 前 / JS 無効 / reduced-motion）。utilities 層の animate-* だと下の animation:none に勝ってしまうため components 層に置く */
   .mq-track {
+    position: relative; /* セルの offsetLeft をトラック基準にする（MarqueeDrag の中央合わせ・--ed 計算） */
     animation: drift var(--d, 60s) linear infinite;
   }
   [data-reverse] .mq-track {
@@ -442,8 +445,12 @@
     .work-row {
       transition: opacity var(--duration-fast) ease;
     }
-    .work-list:hover .work-row,
+    /* キーボード操作では周辺の行も読めるよう減光を弱める（hover は 0.05 のまま）。
+       hover を後に置き、両方成立するときはポインタの意図を優先する */
     .work-list:focus-within .work-row {
+      opacity: 0.35;
+    }
+    .work-list:hover .work-row {
       opacity: 0.05;
     }
     .work-list:hover .work-row:hover,

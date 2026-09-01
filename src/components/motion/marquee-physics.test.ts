@@ -27,3 +27,8 @@ test("clampFling は ±MAX_FLING に収める", () => {
   assert.equal(clampFling(-5000), -MAX_FLING);
   assert.equal(clampFling(120), 120);
 });
+
+test("dt = 0 なら x も v も変わらない", () => {
+  const before = { x: -123.5, v: 400, v0: -100, half: 1000 };
+  assert.deepEqual(advance(before, 0), before);
+});

@@ -27,3 +27,12 @@ test("既定値は total 1600 / gap 40 / min 80", () => {
     { delay: 840, duration: 800 },
   ]);
 });
+
+test("全長 0（すべて長さ 0 の線）でも min の等分と gap で進む", () => {
+  const s = strokeSchedule([0, 0, 0], 1600, 40, 80);
+  assert.deepEqual(s, [
+    { delay: 0, duration: 80 },
+    { delay: 120, duration: 80 },
+    { delay: 240, duration: 80 },
+  ]);
+});

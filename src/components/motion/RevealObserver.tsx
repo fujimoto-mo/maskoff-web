@@ -3,6 +3,8 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 type Kind = "head" | "para" | "line" | "diagram" | "blur" | "up";
+/** 手書き完了（vision:written）が来なくても、交差からこの時間で para を解放する */
+const PARA_RELEASE_MS = 2500;
 const OPTIONS: Record<Kind, IntersectionObserverInit> = {
   head: { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
   para: { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
@@ -24,7 +26,7 @@ export function markRevealed(el: HTMLElement): void {
 /**
  * ページに 1 つ。[data-reveal] を IntersectionObserver で監視し、入ったら data-reveal="in" にする。
  * - html[data-intro] があれば kv:launch を待ってから監視を始める
- * - para は vision:written 以降にしか in にしない（PC）。SP(≤640) では para を監視せず line を監視する
+ * - para は vision:written 以降にしか in にしない（PC）。ただし交差から 2.5s で解放する。SP(≤640) では para を監視せず line を監視する
  * - write は Handwriting が自前で扱う
  * - reduced-motion なら全部即 in
  * - layout に常駐するのでクライアント遷移では再マウントされない。pathname を依存にして
@@ -55,6 +57,7 @@ export default function RevealObserver() {
     // 手書き（data-reveal="write"）が無いページでは待たない
     let written = !document.querySelector('[data-reveal="write"]');
     const waitingParas = new Set<HTMLElement>();
+    const paraTimers = new Set<number>();
     const onWritten = () => {
       written = true;
       waitingParas.forEach(markRevealed);
@@ -82,6 +85,13 @@ export default function RevealObserver() {
             io.unobserve(el);
             if (kind === "para" && !written) {
               waitingParas.add(el);
+              // 手書きが完了しない（描画に失敗した・SVG が無い等）ときも段落が永久に隠れないよう解放する
+              paraTimers.add(
+                window.setTimeout(() => {
+                  waitingParas.delete(el);
+                  markRevealed(el);
+                }, PARA_RELEASE_MS),
+              );
               continue;
             }
             markRevealed(el);
@@ -97,6 +107,7 @@ export default function RevealObserver() {
 
     return () => {
       observers.forEach((io) => io.disconnect());
+      paraTimers.forEach((id) => window.clearTimeout(id));
       document.removeEventListener("vision:written", onWritten);
       document.removeEventListener("kv:launch", start);
       stopActive();

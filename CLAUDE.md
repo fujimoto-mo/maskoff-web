@@ -314,7 +314,10 @@ FAQは `<details>/<summary>` を閉じた状態で SSR し、PCでは CSS の `:
 components/
 ├ layout/    Header, Footer, MobileNav, StickyCta, Breadcrumb
 ├ ui/        SectionHeading, Button, Marker, Field, Card, Pagination
-├ motion/    Marquee, ScrollReveal, ScrollBgSection, Collage, RollText
+├ motion/    RevealObserver, ScrollTheme, IntroVeil, Marquee, MarqueeDrag,
+│            SplitChars, Handwriting, MarkerLayer, VisionDiagram, CustomCursor
+│            葉モジュール（純粋関数・node:test 対象）: reveal-delay, scroll-theme-math,
+│            split-chars, handwriting-timing, marker-rects, marquee-cells, marquee-physics
 └ sections/  Hero, VisionBlock, ServiceGrid, MemberList, FaqList,
              NewsList, ContactForm, StepFlow
 ```

@@ -19,6 +19,8 @@ export default function VisionDiagram() {
     <div data-reveal="diagram" className="w-full max-w-[540px] justify-self-center max-tab:order-last max-tab:mt-2.5">
       <svg viewBox="0 0 540 420" role="img" aria-label="ブランド・アーティスト・クライアントを Web と EC がつなぐ関係図" className="vd block h-auto w-full font-display font-bold text-fg">
         <defs>
+          {/* mask 内の stroke="#fff" はマスクの輝度値（白 = 透過させる）であり色指定ではない。
+              反転テーマでも変えないこと（変えるとリングが消える） */}
           <mask id="vd-mask">
             <circle className="vd-ringmask" cx="270" cy="210" r="150" fill="none" stroke="#fff" strokeWidth="6" pathLength={1} />
           </mask>
