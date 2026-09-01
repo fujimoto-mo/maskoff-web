@@ -1,4 +1,5 @@
 import Marquee from "@/components/motion/Marquee";
+import MarqueeDrag from "@/components/motion/MarqueeDrag";
 import type { MarqueeRow } from "@/components/motion/marquee-cells";
 import { SITE } from "@/lib/site";
 
@@ -25,6 +26,7 @@ export default function Hero() {
         </h1>
         <div aria-hidden>
           <Marquee rows={ROWS} />
+          <MarqueeDrag />
         </div>
       </section>
       <div aria-hidden className="h-fv-gap" />

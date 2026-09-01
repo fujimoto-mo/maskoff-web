@@ -99,6 +99,20 @@
 @keyframes vd-spin {
   to { transform: rotate(360deg); }
 }
+@keyframes cell-pop {
+  0% { opacity: 0; transform: scale(0.55); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes lead-boing {
+  0% { transform: scale(0.97, 0.91); }
+  44% { transform: scale(1.045); }
+  74% { transform: scale(0.988); }
+  100% { transform: none; }
+}
+@keyframes veil-logo-in {
+  0% { opacity: 0; transform: scale(0.96); }
+  100% { opacity: 1; transform: scale(1); }
+}
 
 /* ============================================================
    演出（フェーズ③）。初期の隠し状態は html.js 配下だけ。
@@ -254,6 +268,60 @@
   [data-reveal-kind="diagram"] .vd-cap {
     opacity: 1;
     transition: opacity 0.8s ease 0.8s;
+  }
+
+  /* マーキー: JS 駆動時は CSS アニメを止め、セルを中央から順に pop（spec §4-6/4-7） */
+  [data-marquee] {
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  [data-marquee][data-dragging] {
+    cursor: grabbing;
+  }
+  [data-marquee][data-js] .mq-track {
+    animation: none;
+    will-change: transform;
+  }
+  [data-marquee][data-js] [data-cell] {
+    opacity: 0;
+  }
+  [data-marquee][data-js] [data-lead] {
+    opacity: 1;
+  }
+  [data-marquee][data-go] [data-cell] {
+    opacity: 1;
+    animation: cell-pop 0.45s var(--ease-pop) var(--ed, 0s) backwards;
+  }
+  [data-marquee][data-go] [data-lead] {
+    animation: none;
+  }
+  [data-marquee][data-go] [data-lead][data-boing] {
+    transform-origin: 50% 50%;
+    animation: lead-boing 0.52s var(--ease-boing) both;
+  }
+  /* イントロ幕: 黒幕中央のロゴが 0.1s 後に 0.35s で現れ、done で幕 0.3s フェード + ロゴ縮小（spec §4-6） */
+  html:not(.js) .intro-veil {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .intro-veil {
+      display: none;
+    }
+  }
+  .intro-veil[data-phase="done"] {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  html.js .veil-logo {
+    animation: veil-logo-in 0.35s var(--ease-mk) 0.1s both;
+  }
+  .intro-veil[data-phase="done"] .veil-logo {
+    animation: none;
+    transform: scale(0.94);
+    transition: transform 0.3s ease-in;
   }
 }
 

@@ -8,6 +8,7 @@ import PartnerGrid from "@/components/sections/PartnerGrid";
 import ServiceGrid from "@/components/sections/ServiceGrid";
 import VisionBlock from "@/components/sections/VisionBlock";
 import WorksList from "@/components/sections/WorksList";
+import IntroVeil from "@/components/motion/IntroVeil";
 import { getFaq, getNews, getNotice } from "@/lib/microcms";
 import { SITE } from "@/lib/site";
 
@@ -21,6 +22,7 @@ export default async function HomePage() {
   const [news, notice, faq] = await Promise.all([getNews(), getNotice(), getFaq()]);
   return (
     <>
+      <IntroVeil />
       <NoticeBanner />
       <Hero />
       <VisionBlock />
