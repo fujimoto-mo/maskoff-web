@@ -15,12 +15,9 @@ id = "REPLACE_WITH_KV_NAMESPACE_ID"
 
 [vars]
 SITE_URL = "https://maskoff.co.jp"
-MAIL_FROM = "MasKOFF <noreply@maskoff.co.jp>"
-MAIL_TO = "info@maskoff.co.jp"
-GITHUB_REPO = "maskoff/maskoff-site"
+CONTACT_FROM_EMAIL = "MasKOFF <noreply@maskoff.co.jp>"
+CONTACT_TO_EMAIL = "info@maskoff.co.jp"
+GITHUB_REPO = "fujimoto-mio/maskoff-web"
 
 # Secrets（wrangler secret put で登録 / ローカルは .dev.vars）
-#   RESEND_API_KEY
-#   TURNSTILE_SECRET_KEY
-#   MICROCMS_WEBHOOK_SECRET
-#   GITHUB_TOKEN  (repo scope / workflow_dispatch 用 fine-grained token)
+#   RESEND_API_KEY / TURNSTILE_SECRET_KEY / MICROCMS_WEBHOOK_SECRET / GITHUB_DISPATCH_TOKEN / SLACK_WEBHOOK_URL

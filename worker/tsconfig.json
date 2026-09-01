@@ -6,7 +6,12 @@
     "moduleResolution": "bundler",
     "strict": true,
     "noEmit": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
     "types": ["@cloudflare/workers-types"]
   },
-  "include": ["./**/*.ts"]
+  "include": ["./**/*.ts", "../src/lib/schema/**/*.ts"],
+  "exclude": ["./**/*.test.ts"]
 }

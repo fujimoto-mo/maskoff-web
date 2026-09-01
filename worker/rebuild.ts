@@ -1,5 +1,5 @@
-import type { Env } from "./index";
-import { json } from "./index";
+import type { Env } from "./index.ts";
+import { json } from "./lib/json.ts";
 
 /**
  * microCMS Webhook → GitHub Actions workflow_dispatch
@@ -27,7 +27,7 @@ export async function handleRebuild(req: Request, env: Env): Promise<Response> {
   const r = await fetch(`https://api.github.com/repos/${env.GITHUB_REPO}/actions/workflows/deploy.yml/dispatches`, {
     method: "POST",
     headers: {
-      authorization: `Bearer ${env.GITHUB_TOKEN}`,
+      authorization: `Bearer ${env.GITHUB_DISPATCH_TOKEN}`,
       accept: "application/vnd.github+json",
       "user-agent": "maskoff-site-worker",
       "content-type": "application/json",
