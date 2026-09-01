@@ -8,8 +8,17 @@ export type Deps = { fetchFn: typeof fetch };
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
-async function verifyTurnstile(token: string, secret: string, ip: string | null, fetchFn: typeof fetch) {
-  if (!secret) return true; // ローカル開発（.dev.vars 未設定）では検証をスキップ
+/**
+ * Turnstile を検証する。secret が未設定の場合は fail-closed（本番相当の Origin では null を
+ * 返し、呼び出し側が 500 にする）。localhost からのローカル開発だけ例外的に通す。
+ * @returns 検証成功なら true、失敗なら false、secret 未設定かつ本番相当の Origin なら null
+ */
+async function verifyTurnstile(token: string, secret: string, ip: string | null, origin: string, fetchFn: typeof fetch): Promise<boolean | null> {
+  if (!secret) {
+    if (/^http:\/\/localhost(:\d+)?$/.test(origin)) return true; // ローカル開発（.dev.vars 未設定）では検証をスキップ
+    console.error("TURNSTILE_SECRET_KEY が未設定です");
+    return null;
+  }
   const r = await fetchFn("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -60,7 +69,8 @@ function rowsOf(d: ContactInput) {
  * 検証ルールは src/lib/schema/contact.ts のみ。ここに手書きの検証を足さない（CLAUDE.md §2-7）。
  */
 export async function handleContact(req: Request, env: Env, ctx: ExecutionContext, deps: Deps = { fetchFn: fetch }): Promise<Response> {
-  if (!isAllowedOrigin(req.headers.get("origin") ?? "", env.SITE_URL)) return json({ ok: false, error: "Forbidden" }, 403);
+  const origin = req.headers.get("origin") ?? "";
+  if (!isAllowedOrigin(origin, env.SITE_URL)) return json({ ok: false, error: "Forbidden" }, 403);
 
   const ip = req.headers.get("cf-connecting-ip");
   if (ip) {
@@ -88,7 +98,11 @@ export async function handleContact(req: Request, env: Env, ctx: ExecutionContex
   }
   const data = parsed.data;
 
-  if (!(await verifyTurnstile(data.turnstileToken, env.TURNSTILE_SECRET_KEY, ip, deps.fetchFn))) {
+  const turnstileResult = await verifyTurnstile(data.turnstileToken, env.TURNSTILE_SECRET_KEY, ip, origin, deps.fetchFn);
+  if (turnstileResult === null) {
+    return json({ ok: false, error: "サーバー設定エラーです。時間をおいて再度お試しください。" }, 500);
+  }
+  if (!turnstileResult) {
     return json({ ok: false, error: "スパム対策の確認に失敗しました。ページを再読み込みしてお試しください。" }, 400);
   }
 
@@ -98,7 +112,13 @@ export async function handleContact(req: Request, env: Env, ctx: ExecutionContex
 
   try {
     await Promise.all([
-      sendMail(env, deps.fetchFn, { to: env.CONTACT_TO_EMAIL, subject: `【お問い合わせ】${data.name} 様${data.company ? `（${data.company}）` : ""}`, html, text, replyTo: data.email }),
+      sendMail(env, deps.fetchFn, {
+        to: env.CONTACT_TO_EMAIL,
+        subject: `【お問い合わせ】${data.name.replace(/[\r\n]+/g, " ")} 様${data.company ? `（${data.company.replace(/[\r\n]+/g, " ")}）` : ""}`,
+        html,
+        text,
+        replyTo: data.email,
+      }),
       sendMail(env, deps.fetchFn, {
         to: data.email,
         subject: "【株式会社MasKOFF】お問い合わせを受け付けました",

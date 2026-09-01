@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { handleContact, RATE_LIMIT_MAX } from "./contact.ts";
 import type { Env } from "./index.ts";
 
-function makeEnv(kv: Map<string, string>): Env {
+function makeEnv(kv: Map<string, string>, overrides: Record<string, unknown> = {}): Env {
   const RATE_LIMIT = {
     get: async (k: string) => kv.get(k) ?? null,
     put: async (k: string, v: string) => {
@@ -18,9 +18,10 @@ function makeEnv(kv: Map<string, string>): Env {
     CONTACT_TO_EMAIL: "info@maskoff.co.jp",
     GITHUB_REPO: "x/y",
     RESEND_API_KEY: "re_test",
-    TURNSTILE_SECRET_KEY: "", // 空 = 検証スキップ
+    TURNSTILE_SECRET_KEY: "test-secret",
     MICROCMS_WEBHOOK_SECRET: "s",
     GITHUB_DISPATCH_TOKEN: "t",
+    ...overrides,
   } as unknown as Env;
 }
 
@@ -46,10 +47,17 @@ function req(body: unknown, origin = "https://maskoff.co.jp", ip = "203.0.113.1"
   });
 }
 
-function fakeFetch() {
+function fakeFetch({ turnstile = true, resendStatus = 200 }: { turnstile?: boolean; resendStatus?: number } = {}) {
   const calls: string[] = [];
   const fetchFn = (async (input: RequestInfo | URL) => {
-    calls.push(String(input));
+    const url = String(input);
+    calls.push(url);
+    if (url.includes("challenges.cloudflare.com")) {
+      return new Response(JSON.stringify({ success: turnstile }), { status: 200 });
+    }
+    if (url.includes("api.resend.com")) {
+      return new Response(resendStatus >= 200 && resendStatus < 300 ? "{}" : "Resend error", { status: resendStatus });
+    }
     return new Response("{}", { status: 200 });
   }) as typeof fetch;
   return { calls, fetchFn };
@@ -102,5 +110,25 @@ test("サブドメイン偽装の Origin は 403", async () => {
 
 test("localhost はポート付きでも通る（検証エラーの 400 まで進む）", async () => {
   const res = await handleContact(req({ ...valid, name: "" }, "http://localhost:3000"), makeEnv(new Map()), ctx, fakeFetch());
+  assert.equal(res.status, 400);
+});
+
+test("Turnstile が success:false なら 400", async () => {
+  const res = await handleContact(req(valid), makeEnv(new Map()), ctx, fakeFetch({ turnstile: false }));
+  assert.equal(res.status, 400);
+});
+
+test("Resend が 500 を返せば 502", async () => {
+  const res = await handleContact(req(valid), makeEnv(new Map()), ctx, fakeFetch({ resendStatus: 500 }));
+  assert.equal(res.status, 502);
+});
+
+test("secret 未設定 + 本番 origin は 500", async () => {
+  const res = await handleContact(req(valid), makeEnv(new Map(), { TURNSTILE_SECRET_KEY: "" }), ctx, fakeFetch());
+  assert.equal(res.status, 500);
+});
+
+test("secret 未設定 + localhost origin は通る（検証 400 まで進む）", async () => {
+  const res = await handleContact(req({ ...valid, name: "" }, "http://localhost:3000"), makeEnv(new Map(), { TURNSTILE_SECRET_KEY: "" }), ctx, fakeFetch());
   assert.equal(res.status, 400);
 });
