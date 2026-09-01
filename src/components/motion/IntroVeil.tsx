@@ -5,18 +5,19 @@ import Picture from "@/components/ui/Picture";
 const SHOW_MS_PC = 900;
 const SHOW_MS_SP = 1100;
 const FLY_MS = 500;
-const FLY_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
+const FLY_EASE = "cubic-bezier(0.65, 0, 0.35, 1)"; // 幕の収縮とロゴの移動を同じ ease-in-out で同時に終える
 
 /**
  * 初回表示のロゴ幕。黒幕の中央にロゴ（/images/logo-wordmark.png）を出し、900ms（SP 1100ms）後に
- * 幕の背景を 0.4s で透明にしながら、ロゴをマーキーのロゴセル（[data-lead] [data-lead-box]）の位置・大きさへ
- * 0.5s で飛ばす（FLIP）。着地でロゴセルに data-boing を付け kv:launch を発火する。
+ * 黒い背景を clip-path でマーキーのロゴセル（[data-lead] [data-lead-box]）の矩形まで 0.5s で縮め（ロゴに集まる）、
+ * 同時にロゴをその位置・大きさへ移動する（FLIP）。着地でロゴセルに data-boing を付け kv:launch を発火する。
  * HOME を開くたびに毎回表示（ブラウザに状態は持たない）。
  * reduced-motion / saveData / html.js 無しではスキップ（kv:launch は即発火）。表示中は html[data-intro]。
  * @example <IntroVeil />（page.tsx の先頭）
  */
 export default function IntroVeil() {
   const [phase, setPhase] = useState<"show" | "done" | "gone">("show");
+  const veilRef = useRef<HTMLDivElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -48,15 +49,26 @@ export default function IntroVeil() {
     };
     const t1 = window.setTimeout(() => {
       // 計測は setPhase("done") の DOM 反映前（show の見た目）に行う
+      const veil = veilRef.current;
       const box = boxRef.current;
       const target = document.querySelector<HTMLElement>("[data-lead] [data-lead-box]");
       setPhase("done");
-      if (box && target) {
+      if (veil && box && target) {
         const a = box.getBoundingClientRect();
         const b = target.getBoundingClientRect();
         const dx = b.left + b.width / 2 - (a.left + a.width / 2);
         const dy = b.top + b.height / 2 - (a.top + a.height / 2);
         const s = b.width / a.width;
+        // 黒い背景をロゴセルの矩形（角丸 22%）まで縮めて「ロゴに集まる」ように見せる（参考サイトと同じ）
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        veil.animate(
+          [
+            { clipPath: "inset(0px 0px 0px 0px round 0px)" },
+            { clipPath: `inset(${b.top}px ${vw - b.right}px ${vh - b.bottom}px ${b.left}px round ${b.width * 0.22}px)` },
+          ],
+          { duration: FLY_MS, easing: FLY_EASE, fill: "forwards" },
+        );
         const anim = box.animate([{ transform: "none" }, { transform: `translate(${dx}px, ${dy}px) scale(${s})` }], {
           duration: FLY_MS,
           easing: FLY_EASE,
@@ -75,7 +87,7 @@ export default function IntroVeil() {
 
   if (phase === "gone") return null;
   return (
-    <div className="intro-veil fixed inset-0 z-[100] flex items-center justify-center" data-phase={phase} aria-hidden>
+    <div ref={veilRef} className="intro-veil fixed inset-0 z-[100] flex items-center justify-center" data-phase={phase} aria-hidden>
       {/* ロゴセルと同じ構成・同じ大きさ（.veil-logo の CSS でセル幅の 62%）。黒幕上では箱が見えず、着地の移動中に箱として現れる */}
       <div ref={boxRef} className="veil-logo flex flex-none items-center justify-center rounded-[22%] bg-fg">
         {/* p-[12%] は包含ブロック（画面幅）基準になるため、内側 76% の箱で余白を作る（ロゴセルと同比率） */}

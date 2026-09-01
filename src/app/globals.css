@@ -385,7 +385,7 @@
     transform-origin: 50% 50%;
     animation: lead-boing 0.52s var(--ease-boing) backwards; /* both だと終了後もホバーの transform が効かない */
   }
-  /* イントロ幕: 黒幕中央のロゴが 0.1s 後に 0.35s で現れ、done で背景 0.4s 透明化 + ロゴはロゴセルへ FLIP（WAAPI, spec §4-6） */
+  /* イントロ幕: 黒幕中央のロゴが 0.1s 後に 0.35s で現れ、done で黒背景がロゴセルの矩形へ縮み + ロゴはロゴセルへ FLIP（WAAPI, spec §4-6） */
   .intro-veil {
     background-color: var(--color-bg-dark); /* utilities の bg-* だと done の transparent に勝つため components 層で指定 */
   }
@@ -398,9 +398,7 @@
     }
   }
   .intro-veil[data-phase="done"] {
-    background-color: transparent;
-    transition: background-color 0.4s ease;
-    pointer-events: none;
+    pointer-events: none; /* 背景は消さない: IntroVeil が clip-path でロゴセルの矩形まで縮める */
   }
   /* 幕のロゴ箱はマーキーのロゴセル内の箱（セル幅 × 62%）と同じ大きさ（参考サイトと同じ。拡大しない） */
   .veil-logo {

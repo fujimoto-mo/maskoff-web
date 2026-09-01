@@ -189,7 +189,7 @@ export const HANDWRITING = { viewBox: "0 0 640 160", label: "仮面を外して�
 
 ### 4-6. イントロ幕（G）
 - `IntroVeil`（client）: マウント時に `<html data-intro>`。幕 `fixed inset-0 z-[100]`（背景は components 層の `.intro-veil { background: var(--color-bg-dark) }`）+ 画面中央にロゴ箱 `.veil-logo`（マーキーのロゴセルと同じ構成: 黒角丸 `bg-fg` + `p-[12%]` + `/images/logo-wordmark.png`。大きさはロゴセル内の箱と同じ = セル幅 × 62%（PC `calc(var(--spacing-mq-cell) * 0.62)` / ≤600 `calc(max(160px, (100svh - 176px) / 3) * 0.62)`、拡大しない — 参考サイトと同じ）。黒幕上では箱が見えずロゴだけが見える）。ロゴは 0.1s 後に 0.35s（`--ease-mk`）で fade + scale .96→1 で現れる。位置は画面中央で計測しない。
-- 900ms（≤640 は 1100ms）後（`done`）: `.veil-logo` と `[data-lead] [data-lead-box]`（マーキーのロゴセル内の箱。`MarqueeDrag` がマウント時に中央へ寄せ、`kv:launch` までは静止）の rect を計測し、中心差 `dx/dy` と `scale = 目標幅 / 現在幅` を WAAPI で 0.5s `cubic-bezier(.22,1,.36,1)` `fill: forwards` で適用（FLIP）。同時に幕の背景を 0.4s で透明にする（ページが現れながらロゴがスライドのロゴセルへ飛ぶ）。
+- 900ms（≤640 は 1100ms）後（`done`）: `.veil-logo` と `[data-lead] [data-lead-box]`（マーキーのロゴセル内の箱。`MarqueeDrag` がマウント時に中央へ寄せ、`kv:launch` までは静止）の rect を計測し、中心差 `dx/dy` と `scale = 目標幅 / 現在幅` を WAAPI で 0.5s `cubic-bezier(.22,1,.36,1)` `fill: forwards` で適用（FLIP）。同時に幕（黒背景）を WAAPI の `clip-path: inset(0 round 0)` → `inset(ロゴセル箱の矩形 round 22%)` で同じ 0.5s・同じ ease で縮める（黒がロゴに集まり、そのままロゴセルの黒い箱になる — 参考サイトと同じ。背景はフェードさせない）。
 - 着地（`onfinish`、保険で 0.7s のタイマー）: ロゴセルに `data-boing`（`lead-boing` 0.52s `cubic-bezier(.3,.6,.4,1)`）、`data-intro` 除去、`kv:launch` 発火、幕をアンマウント。ロゴセルは `[data-js]` 中 `opacity: 0` で隠し、`data-go`（launch）で表示する（二重に見えない）。
 - スキップ条件: reduced-motion（CSS でも `display:none`）、`navigator.connection?.saveData`、`html.js` でない。スキップ時も `kv:launch` は即発火する。
 - 幕表示中はスクロール可能なまま（スクロールジャック禁止）。HOME を開くたびに毎回表示する（ブラウザに状態を保存しない — CLAUDE.md §12）。
