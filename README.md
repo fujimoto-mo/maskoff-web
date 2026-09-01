@@ -1,6 +1,6 @@
 # MasKOFF Corporate Site
 
-Cloudflare Workers (Static Assets) + Next.js 15 static export + microCMS Hobby + Resend + Turnstile + KV + GitHub Actions — **月額 ¥0**。
+Cloudflare Workers (Static Assets) + Next.js 16 static export + microCMS Hobby + Resend + Turnstile + KV + GitHub Actions — **月額 ¥0**。
 
 ## ページ構成
 
