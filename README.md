@@ -60,7 +60,7 @@ npm run preview            # build → wrangler dev（/api/* 含めて本番同�
 
 依存ライブラリなし。`src/components/motion/` の 7 つの client 部品（`RevealObserver` / `ScrollTheme` / `Handwriting` / `MarkerLayer` / `IntroVeil` / `MarqueeDrag` / `CustomCursor`）と `globals.css` の CSS で動きます。
 
-- 出現系は要素に `data-reveal="head|para|line|diagram|blur|up"` を付け、`RevealObserver` が画面に入ったとき `data-reveal="in"` に書き換えます（元の値は `data-reveal-kind`）。演出は CSS。
+- 出現系は要素に `data-reveal="head|para|line|write|diagram|blur|up"` を付け、`RevealObserver` が画面に入ったとき `data-reveal="in"` に書き換えます（元の値は `data-reveal-kind`）。演出は CSS。
 - 初期の隠し状態は `html.js` 配下だけ。JS 無効・クローラは常に可視です。
 - `prefers-reduced-motion: reduce` では全演出が最終状態で静止し、イントロ幕も出ません。
 - 手書き見出しは `src/content/vision-handwriting.ts` に SVG の `<path d>` を書き順どおりに写します。

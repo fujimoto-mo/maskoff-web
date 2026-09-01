@@ -291,9 +291,9 @@ FAQは `<details>/<summary>` を閉じた状態で SSR し、PCでは CSS の `:
 | CTA の液体ホバー | ヘッダー CTA | 白点が `scale(56)` で広がり `--color-marker` に塗り替わる |
 | カスタムカーソル | WORKS / SERVICE | `(hover:hover) and (pointer:fine)` のみ。円カーソルが追従し対象上で開く |
 
-### 参考サイトで確認した演出（フェーズ③の spec で採否を確定）
+### 参考サイトで確認した演出（フェーズ③で採否を確定済み — 上表が実装結果）
 
-イントロ幕 / マーキーのセル pop + ドラッグ / 見出しの 1 文字ずつ立ち上がり / VISION の手書きストローク描画と段落フェード / SERVICE の blur 出現 + バッジ pop / WORKS のホバーでサムネ散布・名前ロール・カスタムカーソル / PARTNERS・FAQ の stagger / ヘッダーナビのロール / CTA の液体ホバー / Lenis。
+イントロ幕 / マーキーのセル pop + ドラッグ / 見出しの 1 文字ずつ立ち上がり / VISION の手書きストローク描画と段落フェード / SERVICE の blur 出現 + バッジ pop / WORKS のホバーでサムネ散布・名前ロール・カスタムカーソル / PARTNERS・FAQ の stagger / ヘッダーナビのロール / CTA の液体ホバー。（Lenis のような慣性スクロールは採用しない）
 
 ### 実装順序
 
@@ -320,7 +320,7 @@ components/
 ```
 
 - **1ファイル1コンポーネント。** default export。
-- **Server Component を既定とする。** `"use client"` はGSAPやフォーム等、必要な葉ノードにのみ付けます。ページ全体をクライアント化しないこと。
+- **Server Component を既定とする。** `"use client"` は演出のドライバ（`RevealObserver` / `MarqueeDrag` など）やフォーム等、必要な葉ノードにのみ付けます。ページ全体をクライアント化しないこと。
 - Props に必須の引数を作る場合、Storybook等はないので**呼び出し例をJSDocに残す**こと。
 - スタイルは Tailwind ユーティリティで書く。`.module.css` は複雑なキーフレームが必要な場合のみ許可。
 
