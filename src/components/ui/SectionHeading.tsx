@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import SplitChars from "@/components/motion/SplitChars";
 import { cn } from "@/lib/cn";
 
 type Props = {
@@ -16,19 +16,17 @@ type Props = {
 
 /**
  * 全セクション共通の見出し。英字が主・和文が従の序列をここで担保する。
+ * 英字は 1 文字ずつ分割され、RevealObserver が data-reveal="in" にすると skew 立ち上がりで出現する。
  * @example <SectionHeading en="SERVICE" ja="事業内容" id="service-title" />
  */
 export default function SectionHeading({ en, ja, as = "h2", id, invert = false, className }: Props) {
   const Tag = as;
-  const nodes: ReactNode[] = en
-    .split("\n")
-    .flatMap((line, i) => (i === 0 ? [line] : [<br key={`br-${i}`} className="hidden max-sp:inline" />, line]));
   return (
-    <div className={cn("mb-head-mb max-sp:mb-head-mb-sp", className)}>
-      <Tag id={id} className={cn("-ml-[0.045em] font-display text-display max-sp:text-display-sp", invert ? "text-fg-invert" : "text-fg")}>
-        {nodes}
+    <div data-reveal="head" className={cn("mb-head-mb max-sp:mb-head-mb-sp", className)}>
+      <Tag id={id} aria-label={en} className={cn("-ml-[0.045em] font-display text-display max-sp:text-display-sp", invert ? "text-fg-invert" : "text-fg")}>
+        <SplitChars text={en} />
       </Tag>
-      <p className={cn("mt-1.5 ml-[3px] text-sub max-sp:text-sub-sp", invert ? "text-fg-invert/70" : "text-fg-muted")}>{ja}</p>
+      <p className={cn("sec-ja mt-1.5 ml-[3px] text-sub max-sp:text-sub-sp", invert ? "text-fg-invert/70" : "text-fg-muted")}>{ja}</p>
     </div>
   );
 }

@@ -91,6 +91,11 @@
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+@keyframes sec-en-skew-rise {
+  0% { transform: translateY(118%) skewY(6deg) scaleY(1.05); }
+  62% { transform: translateY(-2.5%) skewY(-1.6deg) scaleY(1); }
+  100% { transform: none; }
+}
 
 /* ============================================================
    演出（フェーズ③）。初期の隠し状態は html.js 配下だけ。
@@ -114,6 +119,42 @@
   }
   .faq-card[data-reveal-kind="up"] {
     transition-duration: var(--duration-reveal-fast), var(--duration-reveal);
+  }
+
+  /* 見出し: 1 文字ずつ skew 立ち上がり（spec §4-2） */
+  .ch-clip {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    white-space: pre;
+    line-height: 1;
+    padding: 0.07em 0.08em 0.03em;
+    margin: -0.07em -0.08em -0.03em;
+  }
+  .ch-space {
+    display: inline-block;
+    white-space: pre;
+  }
+  .ch {
+    display: inline-block;
+    white-space: pre;
+  }
+  html.js [data-reveal="head"] .ch {
+    transform: translateY(115%);
+  }
+  [data-reveal-kind="head"] .ch {
+    animation: sec-en-skew-rise 0.68s var(--ease-out-quart) calc(50ms + var(--ci, 0) * 26ms) both;
+  }
+  html.js [data-reveal="head"] .sec-ja {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  [data-reveal-kind="head"] .sec-ja {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--duration-reveal-fast) ease 0.28s,
+      transform var(--duration-reveal-fast) var(--ease-out-quart) 0.28s;
   }
 }
 
