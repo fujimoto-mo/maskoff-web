@@ -1354,9 +1354,12 @@ export default function VisionDiagram() {
     transform-origin: 50% 50%;
     animation: vd-spin 80s linear infinite;
   }
-  html.js .vd-ringmask {
+  html.js [data-reveal="diagram"] .vd-ringmask {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
+  }
+  .vd-ringmask {
+    stroke-dasharray: 1;
   }
   [data-reveal-kind="diagram"] .vd-ringmask {
     stroke-dashoffset: 0;
@@ -1366,7 +1369,7 @@ export default function VisionDiagram() {
     transform-box: fill-box;
     transform-origin: 50% 50%;
   }
-  html.js .vd-node {
+  html.js [data-reveal="diagram"] .vd-node {
     opacity: 0;
     filter: blur(12px);
     transform: scale(0.25);
@@ -1380,7 +1383,7 @@ export default function VisionDiagram() {
       transform 0.85s var(--ease-out-quart) calc(0.38s + var(--ni, 0) * 0.12s),
       filter 0.95s ease calc(0.38s + var(--ni, 0) * 0.12s);
   }
-  html.js .vd-cap {
+  html.js [data-reveal="diagram"] .vd-cap {
     opacity: 0;
   }
   [data-reveal-kind="diagram"] .vd-cap {
