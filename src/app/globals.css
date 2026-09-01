@@ -189,6 +189,25 @@
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
   }
+
+  /* 蛍光ペン: 別レイヤーの線を clip-path で左→右に描く（spec §3-5）。反転中は不透明の緑 + 黒文字 */
+  .marker-line {
+    position: absolute;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--color-marker) 50%, transparent);
+    transform-origin: left center;
+    clip-path: inset(0px 100% 0px 0px);
+    -webkit-clip-path: inset(0px 100% 0px 0px);
+  }
+  html[data-on-vision] .marker-line {
+    background: var(--color-marker);
+  }
+  .marker-target {
+    position: relative;
+  }
+  html[data-on-vision] .marker-target {
+    color: var(--color-bg-dark);
+  }
 }
 
 /* FAQ: ≥601px は常時展開（::details-content 対応ブラウザ。未対応はクリックで開ける）。≤600px はネイティブ開閉 */
