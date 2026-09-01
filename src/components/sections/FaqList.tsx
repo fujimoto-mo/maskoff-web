@@ -1,5 +1,7 @@
+import type { CSSProperties } from "react";
 import JsonLd from "@/components/ui/JsonLd";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { revealDelay } from "@/components/motion/reveal-delay";
 import { faqPageJsonLd } from "@/lib/jsonld";
 import type { Faq } from "@/types/microcms";
 
@@ -15,8 +17,8 @@ export default function FaqList({ items }: { items: Faq[] }) {
       <div className="wrap">
         <SectionHeading en="FAQ" ja="よくあるご質問" id="faq-title" />
         <ul className="grid grid-cols-3 gap-gap-card max-pc:grid-cols-2 max-sp:grid-cols-1 max-sp:gap-3">
-          {items.map((f) => (
-            <li key={f.id} className="faq-card rounded-card bg-surface px-[22px] py-6">
+          {items.map((f, i) => (
+            <li key={f.id} className="faq-card rounded-card bg-surface px-[22px] py-6" data-reveal="up" style={{ "--rd": `${revealDelay(i)}ms` } as CSSProperties}>
               <details className="group">
                 <summary className="flex cursor-default list-none items-baseline gap-2.5 text-[16px] font-bold leading-[1.55] tracking-[.01em] text-fg max-sp:cursor-pointer max-sp:text-[14.5px] [&::-webkit-details-marker]:hidden">
                   <span aria-hidden className="font-display text-[17px] max-sp:text-[15.5px]">

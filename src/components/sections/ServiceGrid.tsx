@@ -1,8 +1,10 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 import CarouselDots from "@/components/ui/CarouselDots";
 import Picture from "@/components/ui/Picture";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { revealDelay } from "@/components/motion/reveal-delay";
 import { SERVICES, type Service } from "@/lib/services";
 
 type Props = {
@@ -22,9 +24,9 @@ export default function ServiceGrid({ services = SERVICES, limit = 6 }: Props) {
     <section id="service" aria-labelledby="service-title" className="section-pad">
       <div className="wrap">
         <SectionHeading en="SERVICE" ja="事業内容" id="service-title" />
-        <ul id="service-track" className="mt-[clamp(56px,7vw,88px)] grid grid-cols-3 gap-x-gap-service-col gap-y-gap-service-row max-pc:grid-cols-2 max-sp:carousel">
-          {items.map((s) => (
-            <li key={s.slug}>
+        <ul id="service-track" className="mt-[clamp(56px,7vw,88px)] grid grid-cols-3 gap-x-gap-service-col gap-y-gap-service-row [perspective:1200px] max-pc:grid-cols-2 max-sp:carousel">
+          {items.map((s, i) => (
+            <li key={s.slug} data-reveal="blur" style={{ "--rd": `${revealDelay(i)}ms` } as CSSProperties}>
               <Link href={`/service/${s.slug}/`} className="group block">
                 <div className="relative aspect-square overflow-hidden rounded-visual bg-surface">
                   <Picture
@@ -36,7 +38,7 @@ export default function ServiceGrid({ services = SERVICES, limit = 6 }: Props) {
                   />
                   <span
                     aria-hidden
-                    className="absolute top-[10%] right-[8%] flex size-[86px] items-center justify-center rounded-full bg-fg text-[14px] font-bold text-fg-invert max-sp:size-[74px] max-sp:text-[13px]"
+                    className="svf-badge absolute top-[10%] right-[8%] flex size-[86px] items-center justify-center rounded-full bg-fg text-[14px] font-bold text-fg-invert max-sp:size-[74px] max-sp:text-[13px]"
                   >
                     {s.verb}
                   </span>

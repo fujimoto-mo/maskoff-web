@@ -113,6 +113,10 @@
   0% { opacity: 0; transform: scale(0.96); }
   100% { opacity: 1; transform: scale(1); }
 }
+@keyframes badge-pop {
+  0% { opacity: 0; transform: scale(0.4); }
+  100% { opacity: 1; transform: scale(1); }
+}
 
 /* ============================================================
    演出（フェーズ③）。初期の隠し状態は html.js 配下だけ。
@@ -322,6 +326,40 @@
     animation: none;
     transform: scale(0.94);
     transition: transform 0.3s ease-in;
+  }
+
+  /* SERVICE: blur + 奥からの出現、バッジは遅れて pop（spec §4-8）。≤820 は blur なし、≤600 は fade+14px */
+  html.js [data-reveal="blur"] {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateZ(-420px);
+  }
+  [data-reveal-kind="blur"] {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition:
+      transform var(--duration-reveal-slow) var(--ease-out-quart) var(--rd, 0s),
+      opacity var(--duration-reveal-fast) ease var(--rd, 0s),
+      filter var(--duration-reveal-slow) ease calc(var(--rd, 0s) + 0.1s);
+  }
+  @media (width < 821px) {
+    html.js [data-reveal="blur"] {
+      filter: none;
+      transform: none;
+    }
+  }
+  @media (width < 601px) {
+    html.js [data-reveal="blur"] {
+      transform: translateY(14px);
+    }
+  }
+  html.js [data-reveal="blur"] .svf-badge {
+    opacity: 0;
+  }
+  [data-reveal-kind="blur"] .svf-badge {
+    opacity: 1;
+    animation: badge-pop 0.55s var(--ease-out-quart) calc(var(--rd, 0s) * 3 + 0.3s) backwards;
   }
 }
 

@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import ContactForm from "@/components/sections/ContactForm";
 import StepFlow from "@/components/sections/StepFlow";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -17,14 +18,16 @@ export default function ContactSection() {
       <div className="wrap grid grid-cols-2 items-stretch gap-gap-cols max-form:grid-cols-1 max-form:gap-12">
         <div>
           <SectionHeading en="CONTACT" ja="お問い合わせ・ご相談" id="contact-title" className="mb-[34px]" />
-          <p className="mb-10 text-body leading-[1.9] text-fg-body max-sp:text-body-sp">
+          <p data-reveal="up" style={{ "--rd": "0ms" } as CSSProperties} className="mb-10 text-body leading-[1.9] text-fg-body max-sp:text-body-sp">
             まず、話すことから。
             <br />
             事業のご相談、採用、取材のご依頼はこちらから。
           </p>
-          <StepFlow heading="ご相談の流れ" steps={STEPS} />
+          <div data-reveal="up" style={{ "--rd": "80ms" } as CSSProperties}>
+            <StepFlow heading="ご相談の流れ" steps={STEPS} />
+          </div>
         </div>
-        <div className="rounded-form bg-bg px-[34px] py-12 shadow-[0_0_120px_currentColor] shadow-fg/4 max-sp:px-5 max-sp:py-[38px] max-sp:shadow-[0_0_96px_currentColor] max-sp:shadow-fg/7">
+        <div data-reveal="up" style={{ "--rd": "160ms" } as CSSProperties} className="rounded-form bg-bg px-[34px] py-12 shadow-[0_0_120px_currentColor] shadow-fg/4 max-sp:px-5 max-sp:py-[38px] max-sp:shadow-[0_0_96px_currentColor] max-sp:shadow-fg/7">
           <ContactForm />
         </div>
       </div>

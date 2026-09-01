@@ -1,6 +1,8 @@
+import type { CSSProperties } from "react";
 import CarouselDots from "@/components/ui/CarouselDots";
 import Picture from "@/components/ui/Picture";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { revealDelay } from "@/components/motion/reveal-delay";
 import { PARTNERS, type Partner } from "@/lib/partners";
 
 /**
@@ -19,8 +21,8 @@ export default function PartnerGrid({ partners = PARTNERS }: { partners?: readon
           表現者が輝く場所に寄り添い、その未来を共につくる仲間であり続けます。
         </p>
         <ul id="partner-track" className="grid grid-cols-4 gap-gap-card max-pc:grid-cols-2 max-sp:carousel">
-          {partners.map((p) => (
-            <li key={p.id} className="group">
+          {partners.map((p, i) => (
+            <li key={p.id} className="group" data-reveal="up" style={{ "--rd": `${revealDelay(i)}ms` } as CSSProperties}>
               <div className="relative mb-4 aspect-[21/13] overflow-hidden rounded-card bg-surface">
                 <Picture
                   src={p.image}
