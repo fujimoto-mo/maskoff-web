@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="160" viewBox="0 0 640 160" fill="none" stroke="#0a0a0a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
-  <!-- SAMPLE: 「仮面を外して、素の自分で。」を想定した手書き風ストローク。alt は Picture 側で渡す -->
-  <path d="M28 40c22-18 48-16 62 4s-6 52-30 60 18 18 44 4M120 34c30 4 60 4 88 0M132 60c22 30 40 44 70 58M210 30c10 40 6 80 0 100M250 44c22-16 48-14 60 8s-8 46-34 52M330 36c20 0 44 2 66 6M338 62c20 28 32 44 62 62M410 40c18-10 44-10 58 4s-2 42-28 52M480 30c8 40 4 80 0 104M512 56c18-8 40-6 52 8s-2 40-26 46M580 60c14 20 22 40 26 62"/>
-  <path d="M60 130c14 2 30 2 46 0" stroke-width="5"/>
-</svg>

@@ -30,6 +30,10 @@ export function markRevealed(el: HTMLElement): void {
  */
 export default function RevealObserver() {
   useEffect(() => {
+    (window as Window & { __revealReady?: boolean }).__revealReady = true;
+    // 安全弁が発動済み（js クラスが外れている）なら、隠し状態も演出も使わずそのまま表示
+    if (!document.documentElement.classList.contains("js")) return;
+
     const root = document.documentElement;
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const sp = matchMedia("(max-width: 640px)").matches;

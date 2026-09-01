@@ -183,6 +183,12 @@
       transition: opacity 0.5s ease 0s;
     }
   }
+
+  /* 手書き線: JS 環境では未描画から始める（Handwriting が animate する） */
+  html.js .write-stroke {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
 }
 
 /* FAQ: ≥601px は常時展開（::details-content 対応ブラウザ。未対応はクリックで開ける）。≤600px はネイティブ開閉 */

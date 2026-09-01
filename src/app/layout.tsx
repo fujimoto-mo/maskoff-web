@@ -26,10 +26,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ja" className={`${interTight.variable} ${notoSansJP.variable}`}>
+    <html lang="ja" className={`${interTight.variable} ${notoSansJP.variable}`} suppressHydrationWarning>
       <body className="bg-bg text-fg-body antialiased">
         {/* JS が動く環境だけ演出の初期状態（opacity:0 等）を適用する。JS 無効・クローラは常に可視 */}
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        {/* 4 秒以内にハイドレーションが来なければ js を外し、必ずコンテンツを表示する（安全弁） */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "document.documentElement.classList.add('js');setTimeout(function(){if(!window.__revealReady){document.documentElement.classList.remove('js')}},4000)",
+          }}
+        />
         <JsonLd data={organizationJsonLd(SITE)} />
         <SkipLink />
         <Header />

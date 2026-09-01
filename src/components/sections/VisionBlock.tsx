@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import Handwriting from "@/components/motion/Handwriting";
 import ScrollTheme from "@/components/motion/ScrollTheme";
 import Picture from "@/components/ui/Picture";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -15,7 +16,7 @@ export default function VisionBlock() {
         <SectionHeading en="VISION" ja="私たちの想い" id="vision-title" />
         <div className="grid grid-cols-2 gap-gap-cols max-tab:grid-cols-1 max-tab:gap-[76px]">
           <div className="marker-block relative" data-marker-block>
-            <Picture src="/images/company/vision-handwriting.svg" alt="仮面を外して、素の自分で。" width={640} height={160} className="relative z-[1] mb-10 block w-full max-w-[560px]" imgClassName="h-auto w-full" />
+            <Handwriting />
             <div className="relative z-[1] space-y-[22px] text-body leading-[2] text-fg max-sp:text-body-sp [&>p]:max-w-[560px]">
               {VISION_COPY.map((paragraph, pi) => (
                 <p key={pi} data-reveal="para">
