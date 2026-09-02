@@ -215,7 +215,7 @@ SERVICE          ← 英字・大文字・極太・字間タイト
 ```
 
 **フォント**
-- 英字：Inter Tight（`next/font/google` でセルフホスト）。見出しは 700、字間 −0.045em。
+- 英字：Inter Tight。`scripts/mirror-fonts.mjs` が Google Fonts の css2 出力を `public/fonts/` + `src/styles/fonts.css` にミラーしてセルフホストする（`next/font` は不使用 — ビルド毎のダウンロードが遅い回線でタイムアウトしフォールバックに落ちるため）。見出しは 700、字間 −0.045em。
 - 和文：Noto Sans JP。本文 400、見出し 700。`display: "optional"` で読み込む（初回訪問は OS の和文フォントで描画し、以降のキャッシュで Noto に切り替わる。46 スライス約 800KB の再レイアウトを避けるため）。
 - **手書き風の大見出し**（VISION / COMPANY用）は Web フォントで再現不可。文字の輪郭パスを `scripts/handwriting-paths.py` で 手書き系フォント（Zen Kurenaido、SIL OFL）から生成して `src/content/vision-handwriting.ts` に書き出す（1 文字 = 1 ストローク、生成物のみコミット。デザイナー入稿の SVG がある場合は同じ形式で `<path d>` を写す）。`Handwriting` が輪郭を描いてから塗りを入れる。テキストで代替しないこと。`aria-label` に必ず同じ文言を入れて SEO・スクリーンリーダー対応。
 

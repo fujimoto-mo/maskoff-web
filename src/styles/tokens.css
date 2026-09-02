@@ -122,6 +122,6 @@
 
 /* next/font が <html> に付ける変数を参照するため inline で定義 */
 @theme inline {
-  --font-display: var(--font-inter-tight), "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-body: var(--font-inter-tight), var(--font-noto), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "Inter Tight", "Noto Sans JP", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
