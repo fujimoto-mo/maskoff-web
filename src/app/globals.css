@@ -228,8 +228,7 @@
     fill-opacity: 0;
   }
 
-  /* 蛍光ペン: 別レイヤーの線を clip-path で左→右に描く（spec §3-5）。反転中は不透明のアクセント色 + 黒文字
-     （白へ 12% 寄せて黒文字とのコントラストを確保。#FF302F では約 5.9:1） */
+  /* 蛍光ペン: 別レイヤーの線を clip-path で左→右に描く（spec §3-5）。反転中は半透明のまま黒地に重なり、文字が白に切り替わる */
   .marker-line {
     position: absolute;
     border-radius: 2px;
@@ -239,16 +238,15 @@
     -webkit-clip-path: inset(0px 100% 0px 0px);
   }
   html[data-on-vision] .marker-line {
-    background: color-mix(in srgb, var(--color-marker) 88%, white);
+    /* 暗転中は半透明のまま黒地に重ねる（参考サイトと同じ）。白文字とのコントラスト ≈ 9:1 */
+    background: color-mix(in srgb, var(--color-marker) 60%, transparent);
   }
   .marker-target {
     position: relative;
   }
   /* 黒文字にするのは帯が実際に引かれた（MarkerLayer が data-marked を付けた）ものだけ。
      安全弁で js が外れた・color-mix 非対応などで帯が無い経路では黒背景に黒文字になってしまう */
-  html.js[data-on-vision] .marker-target[data-marked] {
-    color: var(--color-bg-dark);
-  }
+  /* 暗転中も対象文字は本文と同じ白のまま（色は変えない — 参考サイトと同じ）。帯は半透明で黒地に重なる */
 
   /* 相関図（spec §4-5）: リングはマスクで描画、ノードはぼかしから出現、点線は常時回転 */
   .vd-ring {
