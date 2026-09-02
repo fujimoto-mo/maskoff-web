@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { organizationJsonLd, faqPageJsonLd } from "./jsonld.ts";
+import { breadcrumbJsonLd, organizationJsonLd, faqPageJsonLd } from "./jsonld.ts";
 
 test("Organization に PostalAddress と sameAs が入る", () => {
   const j = organizationJsonLd({
@@ -21,4 +21,11 @@ test("FAQPage は Question/Answer の配列", () => {
   assert.equal(j.mainEntity.length, 1);
   assert.equal(j.mainEntity[0].name, "Q1?");
   assert.equal(j.mainEntity[0].acceptedAnswer.text, "A1");
+});
+
+test("breadcrumbJsonLd は position 連番と絶対 URL を出す", () => {
+  const b = breadcrumbJsonLd([{ name: "HOME", path: "/" }, { name: "会社情報", path: "/company/" }], "https://maskoff.co.jp");
+  assert.equal(b.itemListElement.length, 2);
+  assert.equal(b.itemListElement[1].position, 2);
+  assert.equal(b.itemListElement[1].item, "https://maskoff.co.jp/company/");
 });

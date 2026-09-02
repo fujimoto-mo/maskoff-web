@@ -25,3 +25,17 @@ export function faqPageJsonLd(items: ReadonlyArray<{ question: string; answer: s
     })),
   };
 }
+
+/** 下層ページのパンくず（CLAUDE.md §10）。items は HOME を含めた順序どおり */
+export function breadcrumbJsonLd(items: ReadonlyArray<{ name: string; path: string }>, siteUrl: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      item: `${siteUrl}${it.path}`,
+    })),
+  };
+}
