@@ -105,7 +105,7 @@ export default function ContactForm() {
         <input id="email" name="email" type="email" autoComplete="email" required maxLength={254} className={INPUT_CLASS} placeholder="you@example.com" {...aria("email")} />
       </Field>
       <Field label="電話番号" htmlFor="tel" error={errors.tel}>
-        <input id="tel" name="tel" type="tel" autoComplete="tel" maxLength={20} className={INPUT_CLASS} placeholder="03-0000-0000" {...aria("tel")} />
+        <input id="tel" name="tel" type="tel" autoComplete="tel" maxLength={20} className={INPUT_CLASS} placeholder="09000000000" {...aria("tel")} />
       </Field>
       <Field label="お問い合わせ種別" htmlFor="category" required error={errors.category}>
         <select id="category" name="category" defaultValue="" required className={INPUT_CLASS} {...aria("category")}>
@@ -139,7 +139,7 @@ export default function ContactForm() {
       <label className="mt-1 flex items-start justify-center gap-2 text-caption text-fg">
         <input type="checkbox" name="consent" required className="mt-1 accent-fg" aria-invalid={errors.consent ? true : undefined} aria-describedby={errors.consent ? "consent-error" : undefined} />
         <span>
-          <a href="/privacy-policy/" target="_blank" rel="noopener" className="underline underline-offset-2">
+          <a href="/PRIVACYPOLICY/" target="_blank" rel="noopener" className="underline underline-offset-2">
             プライバシーポリシー
           </a>
           に同意します

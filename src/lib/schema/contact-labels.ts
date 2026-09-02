@@ -6,9 +6,9 @@ import type { ContactInput } from "./contact.ts";
  * ContactForm から静的 import しても zod を初期バンドルに含めないようにする。
  */
 export const CATEGORY_LABELS: Record<ContactInput["category"], string> = {
+  recruit: "採用について",
   web: "ホームページ制作・デザイン",
   apparel: "アパレル・OEM",
   artist: "アーティスト活動支援",
-  recruit: "採用について",
   other: "その他",
 };
