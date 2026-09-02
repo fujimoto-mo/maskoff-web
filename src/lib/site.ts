@@ -3,7 +3,7 @@ export const SITE = {
   name: "株式会社MasKOFF",
   nameEn: "MasKOFF Inc.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://maskoff.co.jp",
-  tagline: "TAKE THE MASK OFF",
+  tagline: "TAKE THE MASKOFF",
   description:
     "MASK OFF には「仮面を外す」「素の自分」という意味があります。株式会社MasKOFFは、アパレル企画・製造販売、アーティスト活動支援、ホームページ制作を通じて、人と企業の「素」を引き出します。",
   address: "〒150-0021 東京都渋谷区恵比寿西1-33-6-216",
@@ -19,7 +19,8 @@ export const SITE = {
 export const NAV = [
   { href: "/company/", label: "COMPANY", ja: "会社情報" },
   { href: "/service/", label: "SERVICE", ja: "事業内容" },
-  { href: "/news/", label: "NEWS", ja: "ニュース" },
+  { href: "/#news", label: "NEWS", ja: "ニュース" }, // HOME の NEWS セクションへスムーズスクロール
+  { href: "/#notice", label: "NOTICE", ja: "お知らせ" }, // HOME の NOTICE 列へスムーズスクロール
   { href: "/contact/", label: "CONTACT", ja: "お問い合わせ" },
 ] as const;
 

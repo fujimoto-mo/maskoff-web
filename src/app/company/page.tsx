@@ -68,7 +68,7 @@ export default function CompanyPage() {
         <div className="inline-flex w-max animate-[drift_26s_linear_infinite]">
           {[0, 1].map((k) => (
             <span key={k} className="pr-6 font-display text-[20px] font-bold tracking-[.06em] text-fg">
-              {Array.from({ length: 4 }, () => "MASK OFF — 素顔で生きろ。").join("　")}　
+              {Array.from({ length: 4 }, () => "MasKOFF — 素顔で生きろ。").join("　")}　
             </span>
           ))}
         </div>

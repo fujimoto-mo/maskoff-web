@@ -57,7 +57,7 @@ export default function VisionDiagram() {
           </g>
         ))}
         <text className="vd-cap" x="270" y="400" textAnchor="middle" fontSize="17" letterSpacing="-0.5" fill="currentColor">
-          TAKE THE MASK OFF
+          TAKE THE MASKOFF
         </text>
       </svg>
     </div>

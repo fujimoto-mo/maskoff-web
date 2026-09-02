@@ -44,7 +44,7 @@ export default function NewsStrip({ news, notice }: Props) {
             </Button>
           </p>
         </div>
-        <div>
+        <div id="notice" aria-labelledby="notice-title" className="scroll-mt-header-h">
           <SectionHeading en="NOTICE" ja="お知らせ" id="notice-title" />
           <ul className="border-t border-border">
             {notice.slice(0, 3).map((n, i) => (
