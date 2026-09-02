@@ -4,7 +4,6 @@
  * 画像は microCMS から直接配信しない（CLAUDE.md §2-4）。HOME では CMS 画像を使わない。
  */
 import { SAMPLE } from "@/content/sample";
-import { selectPinned } from "@/lib/pinned";
 import type { News, Notice, Faq, Member, Job, NewsCategory } from "@/types/microcms";
 
 const DOMAIN = process.env.MICROCMS_SERVICE_DOMAIN;
@@ -28,11 +27,6 @@ export const getNotice = () => list<Notice>("notice", SAMPLE.notice, { orders: "
 export const getFaq = () => list<Faq>("faq", SAMPLE.faq, { orders: "order" });
 export const getMembers = () => list<Member>("members", SAMPLE.members, { orders: "order" });
 export const getJobs = () => list<Job>("jobs", SAMPLE.jobs, { orders: "order", filters: "isOpen[equals]true" });
-
-/** HOME 最上部の帯に出す NOTICE（無ければ null） */
-export async function getPinnedNotice(): Promise<Notice | null> {
-  return selectPinned(await getNotice());
-}
 
 export const NEWS_CATEGORY_LABELS: Record<NewsCategory, string> = {
   press: "プレスリリース",

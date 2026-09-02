@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import NoticeBanner from "@/components/layout/NoticeBanner";
 import ContactSection from "@/components/sections/ContactSection";
 import FaqList from "@/components/sections/FaqList";
 import Hero from "@/components/sections/Hero";
@@ -23,7 +22,6 @@ export default async function HomePage() {
   return (
     <>
       <IntroVeil />
-      <NoticeBanner />
       <Hero />
       <VisionBlock />
       <ServiceGrid />

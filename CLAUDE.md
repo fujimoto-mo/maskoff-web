@@ -239,7 +239,7 @@ SERVICE          ← 英字・大文字・極太・字間タイト
 - **NEWS**: プレスリリース、実績公開、メディア掲載、イベント出展
 - **NOTICE**: システムメンテナンス、年末年始休業、重要なお知らせ、お詫び
 
-NOTICEのうち `isPinned: true` のものだけ、HOMEの最上部に帯で常時掲出します。
+HOME 最上部の「お知らせ」帯（`isPinned` の NOTICE 掲出）は 2026-09-02 にクライアント指示で廃止した（復活させる場合は git 履歴の `NoticeBanner.tsx` / `lib/pinned.ts` を参照）。
 
 ---
 
