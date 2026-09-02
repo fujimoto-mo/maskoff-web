@@ -20,7 +20,7 @@ export const NAV = [
   { href: "/company/", label: "COMPANY", ja: "会社情報" },
   { href: "/service/", label: "SERVICE", ja: "事業内容" },
   { href: "/news/", label: "NEWS", ja: "ニュース" },
-  { href: "/recruit/", label: "RECRUIT", ja: "採用情報" },
+  { href: "/contact/", label: "CONTACT", ja: "お問い合わせ" },
 ] as const;
 
 export const SUB_NAV = [

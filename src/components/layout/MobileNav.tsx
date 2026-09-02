@@ -123,8 +123,8 @@ export default function MobileNav() {
               </Link>
             ))}
           </div>
-          <Button href="/contact/" dot className="mt-4 w-full py-[22px] text-[18px]">
-            お問い合わせ
+          <Button href="/recruit/" dot className="mt-4 w-full py-[22px] text-[18px]">
+            RECRUIT
           </Button>
           <div className="mt-6 flex gap-6 text-caption font-medium tracking-[.06em] text-fg-muted">
             <a href={SITE.sns.instagram} target="_blank" rel="noopener">INSTAGRAM ↗</a>

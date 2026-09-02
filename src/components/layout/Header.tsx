@@ -22,8 +22,8 @@ export default function Header() {
             </span>
           </Link>
         ))}
-        <Button href="/contact/" variant="liquid">
-          お問い合わせ
+        <Button href="/recruit/" variant="liquid">
+          RECRUIT
         </Button>
       </nav>
       <MobileNav />
