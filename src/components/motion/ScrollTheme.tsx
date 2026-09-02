@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { hexToRgb, isOn, mix, progress, THEME_VARS, type Rgb } from "@/components/motion/scroll-theme-math";
+import { DARK_FALLBACK, hexToRgb, isOn, mix, progress, THEME_VARS, type Rgb } from "@/components/motion/scroll-theme-math";
 
 /**
  * target の位置に応じて <html> の --color-* を白系→黒系に補間する（ページ全体が反転する）。
@@ -19,7 +19,7 @@ export default function ScrollTheme({ target = "#vision" }: { target?: string })
     const dark: Record<string, Rgb> = {};
     for (const v of THEME_VARS) {
       light[v] = hexToRgb(cs.getPropertyValue(`--color-${v}`) || "#ffffff");
-      dark[v] = hexToRgb(cs.getPropertyValue(`--color-dark-${v === "fg-invert" ? "bg" : v}`) || "#0a0a0a");
+      dark[v] = hexToRgb(cs.getPropertyValue(`--color-dark-${v === "fg-invert" ? "bg" : v}`).trim() || DARK_FALLBACK[v]);
     }
     let raf = 0;
     let applied = false;

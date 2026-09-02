@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { progress, mix, hexToRgb, isOn } from "./scroll-theme-math.ts";
+import { progress, mix, hexToRgb, isOn, THEME_VARS, DARK_FALLBACK } from "./scroll-theme-math.ts";
 
 const vh = 900;
 
@@ -36,4 +36,11 @@ test("hexToRgb", () => {
 test("isOn は 0.5 を超えたら true", () => {
   assert.equal(isOn(0.5), false);
   assert.equal(isOn(0.51), true);
+});
+
+test("DARK_FALLBACK は THEME_VARS 全部を白系（bg/fg-invert 以外）で持つ", () => {
+  for (const v of THEME_VARS) assert.match(DARK_FALLBACK[v], /^#[0-9a-f]{6}$/);
+  assert.equal(DARK_FALLBACK.bg, "#0a0a0a");
+  assert.equal(DARK_FALLBACK.fg, "#f2f2f0");
+  assert.notEqual(DARK_FALLBACK.fg, DARK_FALLBACK.bg);
 });

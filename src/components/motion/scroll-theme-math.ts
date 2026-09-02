@@ -3,6 +3,17 @@ export type Rgb = [number, number, number];
 /** 補間する変数名（--color-<name>）。fg-invert の暗側は dark-bg を使う */
 export const THEME_VARS = ["bg", "fg", "fg-body", "fg-muted", "surface", "border", "fg-invert"] as const;
 
+/** 暗色パレットのフォールバック（tokens.css の --color-dark-* と同値。CSS が読めない環境でも白文字を保証） */
+export const DARK_FALLBACK: Record<(typeof THEME_VARS)[number], string> = {
+  bg: "#0a0a0a",
+  fg: "#f2f2f0",
+  "fg-body": "#c6c6c3",
+  "fg-muted": "#9a9a97",
+  surface: "#151514",
+  border: "#2c2c2a",
+  "fg-invert": "#0a0a0a",
+};
+
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
 /**

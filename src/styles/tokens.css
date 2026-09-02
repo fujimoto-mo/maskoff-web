@@ -30,13 +30,6 @@
   --color-required: #ef3b59;
   --color-disabled: #a9a9a9;
 
-  /* --- 暗色パレット（VISION の背景反転先。spec §4-1）------------------ */
-  --color-dark-bg: #0a0a0a;
-  --color-dark-fg: #f2f2f0;
-  --color-dark-fg-body: #c6c6c3;
-  --color-dark-fg-muted: #9a9a97;
-  --color-dark-surface: #151514;
-  --color-dark-border: #2c2c2a;
 
   /* --- レイアウト ------------------------------------------------- */
   --spacing-pad-x: 32px;
@@ -114,6 +107,18 @@
   --ease-boing: cubic-bezier(0.3, 0.6, 0.4, 1);
   --ease-mk: cubic-bezier(0.6, 0, 0.2, 1);
 }
+
+/* 暗色パレット（VISION の背景反転先。spec §4-1）。CSS からは参照されず ScrollTheme が JS で読むため、
+   未使用でも必ず出力されるよう @theme static にする（通常の @theme は未使用変数を出力しない） */
+@theme static {
+  --color-dark-bg: #0a0a0a;
+  --color-dark-fg: #f2f2f0;
+  --color-dark-fg-body: #c6c6c3;
+  --color-dark-fg-muted: #9a9a97;
+  --color-dark-surface: #151514;
+  --color-dark-border: #2c2c2a;
+}
+
 
 /* next/font が <html> に付ける変数を参照するため inline で定義 */
 @theme inline {
