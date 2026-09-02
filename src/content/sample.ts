@@ -9,7 +9,7 @@ const news: News[] = [
     title: "コーポレートサイトをリニューアルしました",
     slug: "renewal-2026",
     category: ["press"],
-    publishedDate: "2026-09-02T00:00:00.000Z",
+    publishedDate: "2026-09-09T00:00:00.000Z",
     body:
       "<p>株式会社MasKOFFのコーポレートサイトをリニューアルしました。</p>" +
       "<p>ブランドの世界観を体験いただけるトップページ、会社情報・採用情報の拡充など、コンテンツを一新しています。<br>今後も新ブランドやインタビューなどの情報を随時発信してまいります。引き続きよろしくお願いいたします。</p>",
@@ -20,7 +20,7 @@ const news: News[] = [
     title: "MasKOFFカリキュラム生 鳥海さんインタビュー",
     slug: "interview-toriumi",
     category: ["interview"],
-    publishedDate: "2026-07-15T00:00:00.000Z",
+    publishedDate: "2025-10-01T00:00:00.000Z",
     thumbnail: { url: "/images/news/interview-toriumi.png", width: 1280, height: 670 },
     body:
       "<p>MasKOFFのカリキュラム生である鳥海さんにインタビューしました！</p>" +
@@ -37,7 +37,7 @@ const news: News[] = [
       "<p>MasKOFF カリキュラム生　鳥海 結衣</p>",
   },
   {
-    ...base("n102", "2026-05-01T00:00:00.000Z"),
+    ...base("n102", "2025-11-21T00:00:00.000Z"),
     title: "DotHyphen -Hang Out- Collection “DotHyphen” World wide shipping",
     slug: "dothyphen-hang-out-collection",
     category: ["brand"],
