@@ -113,6 +113,18 @@
     "avif": "/images/optimized/logo.avif",
     "webp": "/images/optimized/logo.webp"
   },
+  "/images/news/dothyphen-hang-out.jpg": {
+    "width": 1200,
+    "height": 1000,
+    "avif": "/images/optimized/news/dothyphen-hang-out.avif",
+    "webp": "/images/optimized/news/dothyphen-hang-out.webp"
+  },
+  "/images/news/interview-toriumi.png": {
+    "width": 1280,
+    "height": 670,
+    "avif": "/images/optimized/news/interview-toriumi.avif",
+    "webp": "/images/optimized/news/interview-toriumi.webp"
+  },
   "/images/ogp.png": {
     "width": 1200,
     "height": 630,

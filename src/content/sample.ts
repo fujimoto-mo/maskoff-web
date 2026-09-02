@@ -21,6 +21,7 @@ const news: News[] = [
     slug: "interview-toriumi",
     category: ["interview"],
     publishedDate: "2026-07-15T00:00:00.000Z",
+    thumbnail: { url: "/images/news/interview-toriumi.png", width: 1280, height: 670 },
     body:
       "<p>MasKOFFのカリキュラム生である鳥海さんにインタビューしました！</p>" +
       "<p><strong>【鳥海さん、自己紹介をお願いします！】</strong></p>" +
@@ -41,6 +42,7 @@ const news: News[] = [
     slug: "dothyphen-hang-out-collection",
     category: ["brand"],
     publishedDate: "2026-05-01T00:00:00.000Z",
+    thumbnail: { url: "/images/news/dothyphen-hang-out.jpg", width: 1200, height: 1000 },
     body:
       "<p><strong>DotHyphen</strong><br>-Hang Out-Collection-<br>“DotHyphen” World wide shipping</p>" +
       '<p><a href="https://dothyphen.store/" target="_blank" rel="noopener">DotHyphen Online Store</a><br>' +

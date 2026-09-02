@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Picture from "@/components/ui/Picture";
 import Button from "@/components/ui/Button";
 import JsonLd from "@/components/ui/JsonLd";
 import { formatDate } from "@/lib/date";
@@ -42,6 +43,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<Param
           mainEntityOfPage: `${SITE.url}/news/${slug}/`,
           author: { "@type": "Organization", name: SITE.name, url: `${SITE.url}/` },
           publisher: { "@type": "Organization", name: SITE.name, logo: { "@type": "ImageObject", url: `${SITE.url}/images/logo.png` } },
+          ...(item.thumbnail ? { image: [`${SITE.url}${item.thumbnail.url}`] } : {}),
         }}
       />
       <JsonLd
@@ -60,6 +62,9 @@ export default async function NewsDetailPage({ params }: { params: Promise<Param
           {formatDate(item.publishedDate)}
         </time>
         <h1 className="mt-2 max-w-[860px] text-[clamp(22px,3vw,34px)] font-bold leading-[1.5] tracking-[-.02em] text-fg">{item.title}</h1>
+        {item.thumbnail ? (
+          <Picture src={item.thumbnail.url} alt="" sizes="(max-width: 900px) 92vw, 720px" className="mt-10 block max-w-[720px]" imgClassName="h-auto w-full" />
+        ) : null}
         <div
           className="mt-10 max-w-[720px] text-body leading-[2.1] text-fg-body [&_p]:mt-4 [&_p:first-child]:mt-0 [&_strong]:font-bold [&_strong]:text-fg [&_a]:underline [&_a]:underline-offset-4 [&_a]:text-marker"
           dangerouslySetInnerHTML={{ __html: item.body }}
