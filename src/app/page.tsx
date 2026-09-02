@@ -6,7 +6,6 @@ import NewsStrip from "@/components/sections/NewsStrip";
 import PartnerGrid from "@/components/sections/PartnerGrid";
 import ServiceGrid from "@/components/sections/ServiceGrid";
 import VisionBlock from "@/components/sections/VisionBlock";
-import WorksList from "@/components/sections/WorksList";
 import IntroVeil from "@/components/motion/IntroVeil";
 import { getFaq, getNews, getNotice } from "@/lib/microcms";
 import { SITE } from "@/lib/site";
@@ -25,7 +24,7 @@ export default async function HomePage() {
       <Hero />
       <VisionBlock />
       <ServiceGrid />
-      <WorksList />
+      {/* WORKS はクライアント指示で非表示（2026-09-02）。復活時は WorksList を import して <WorksList /> を戻す */}
       <PartnerGrid />
       <NewsStrip news={news} notice={notice} />
       <FaqList items={faq} />
