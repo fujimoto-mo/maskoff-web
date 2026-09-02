@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ContactSection from "@/components/sections/ContactSection";
+import ContactCta from "@/components/sections/ContactCta";
 import FaqList from "@/components/sections/FaqList";
 import Hero from "@/components/sections/Hero";
 import NewsStrip from "@/components/sections/NewsStrip";
@@ -28,7 +28,7 @@ export default async function HomePage() {
       <PartnerGrid />
       <NewsStrip news={news} notice={notice} />
       <FaqList items={faq} />
-      <ContactSection />
+      <ContactCta />
     </>
   );
 }
