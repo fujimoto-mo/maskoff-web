@@ -6,7 +6,7 @@ import { NAV, SITE } from "@/lib/site";
 /** 全ページ共通ヘッダー。ナビはサイト共通（HOME 内アンカーではない）。 */
 export default function Header() {
   return (
-    <header className="wrap sticky top-0 z-50 flex h-header-h items-center gap-7 bg-bg">
+    <header className="wrap sticky top-0 z-50 flex h-header-h items-center gap-7">
       <Link href="/" aria-label={`${SITE.name} ホーム`} className="font-display text-[20px] font-extrabold leading-none tracking-[-.04em] text-fg">
         MasKOFF
       </Link>
