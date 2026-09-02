@@ -6,8 +6,8 @@ export const SITE = {
   tagline: "TAKE THE MASK OFF",
   description:
     "MASK OFF には「仮面を外す」「素の自分」という意味があります。株式会社MasKOFFは、アパレル企画・製造販売、アーティスト活動支援、ホームページ制作を通じて、人と企業の「素」を引き出します。",
-  address: "〒000-0000 東京都○○区○○ 1-2-3 ○○ビル 5F",
-  tel: "03-0000-0000",
+  address: "〒150-0021 東京都渋谷区恵比寿西1-33-6-216",
+  tel: "090-0000-0000",
   email: "info@maskoff.co.jp",
   sns: {
     instagram: "https://www.instagram.com/",

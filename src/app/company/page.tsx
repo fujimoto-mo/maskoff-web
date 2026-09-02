@@ -17,9 +17,9 @@ export const metadata: Metadata = {
 const PROFILE = [
   { dt: "社名", dd: ["株式会社MasKOFF（マスクオフ）"] },
   { dt: "設立", dd: ["2025年4月"] },
-  { dt: "代表者", dd: ["代表取締役 真崎 翔"] },
-  { dt: "所在地", dd: ["〒150-0001 東京都渋谷区神宮前 ○-○-○"] },
-  { dt: "事業内容", dd: ["アパレル製品の企画・製造・販売", "デザイン及びコンサルタント業務", "アーティストの活動支援"] },
+  { dt: "代表者", dd: ["代表取締役 藤本 ツヨシ"] },
+  { dt: "所在地", dd: ["〒150-0021 東京都渋谷区恵比寿西1-33-6-216"] },
+  { dt: "事業内容", dd: ["ホームページ制作、デザインの制作", "キャリア支援事業", "Bアパレル製品の企画・製造・販売", "デザイン及びコンサルタント業務", "アーティストの活動支援"] },
   { dt: "資本金", dd: ["3,000,000円"] },
 ];
 const HISTORY = [
@@ -42,10 +42,10 @@ export default function CompanyPage() {
           url: `${SITE.url}/`,
           address: {
             "@type": "PostalAddress",
-            postalCode: "150-0001",
+            postalCode: "150-0021",
             addressRegion: "東京都",
             addressLocality: "渋谷区",
-            streetAddress: "神宮前 ○-○-○ ○○ビル 3F",
+            streetAddress: "東京都渋谷区恵比寿西1-33-6-216",
           },
         }}
       />
@@ -110,7 +110,7 @@ export default function CompanyPage() {
             </p>
             <p data-reveal="up" style={rd(3)} className="mt-9 text-[13px] text-fg-muted">株式会社MasKOFF 代表取締役</p>
             <p data-reveal="up" style={rd(3)} className="mt-1.5 text-[20px] font-bold text-fg">
-              真崎 翔<span className="ml-3 font-display text-caption font-normal tracking-[.1em] text-fg-muted">SHO MASAKI</span>
+              藤本 ツヨシ<span className="ml-3 font-display text-caption font-normal tracking-[.1em] text-fg-muted">TSUYOSHI FUJIMOTO</span>
             </p>
           </div>
         </div>
@@ -149,19 +149,27 @@ export default function CompanyPage() {
       <section className="wrap section-pad pt-0">
         <SectionHeading en="ACCESS" ja="アクセス" />
         <div className="grid gap-12 pc:grid-cols-2">
-          {/* SAMPLE: 地図（画像 or 埋め込みに差し替え） */}
-          <div data-reveal="up" className="flex h-80 items-center justify-center bg-placeholder font-display text-caption text-fg-muted">MAP</div>
+          <div data-reveal="up">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d240.97967914897538!2d139.70419425656917!3d35.646872776174085!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b000ae3df1b%3A0x3b1830550a4f4bea!2zSlAgbm9pZSDmgbXmr5Tlr7_opb8!5e0!3m2!1sja!2sjp!4v1788333407248!5m2!1sja!2sjp"
+              title="株式会社MasKOFF の地図（Google マップ）"
+              className="h-80 w-full border-0"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+          </div>
           <div data-reveal="up" style={rd(1)} className="text-body leading-[2.1] text-fg-body">
             <p className="text-[16px] font-bold text-fg">株式会社MasKOFF</p>
             <p className="mt-4">
-              〒150-0001
+              〒150-0021
               <br />
-              東京都渋谷区神宮前 ○-○-○ ○○ビル 3F
+              東京都渋谷区恵比寿西1-33-6-216
             </p>
             <p className="mt-4">
-              東京メトロ「明治神宮前」駅 徒歩5分
+              東京メトロ「恵比寿」駅 徒歩5分
               <br />
-              JR「原宿」駅 徒歩8分
+              JR「恵比寿」駅 徒歩8分
             </p>
           </div>
         </div>
