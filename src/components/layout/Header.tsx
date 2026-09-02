@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Picture from "@/components/ui/Picture";
 import MobileNav from "@/components/layout/MobileNav";
 import Button from "@/components/ui/Button";
 import { NAV, SITE } from "@/lib/site";
@@ -7,7 +8,8 @@ import { NAV, SITE } from "@/lib/site";
 export default function Header() {
   return (
     <header className="wrap sticky top-0 z-50 flex h-header-h items-center gap-7">
-      <Link href="/" aria-label={`${SITE.name} ホーム`} className="font-display text-[20px] font-extrabold leading-none tracking-[-.04em] text-fg">
+      <Link href="/" aria-label={`${SITE.name} ホーム`} className="flex items-center gap-2 font-display text-[20px] font-extrabold leading-none tracking-[-.04em] text-fg">
+        <Picture src="/images/logo-mark.png" alt="" sizes="28px" priority className="block size-7 flex-none overflow-hidden rounded-[22%]" imgClassName="block size-full object-cover" />
         MasKOFF
       </Link>
       <nav aria-label="メイン" className="ml-auto flex items-center gap-[22px] max-nav:hidden">
