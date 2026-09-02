@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+.env*.local
+.dev.vars
+.wrangler
+public/images/optimized
+tsconfig.tsbuildinfo
+next-env.d.ts
+*:Zone.Identifier
+.superpowers/
+
+# docs/ はローカル参照用（仕様書・計画・参考画像）。リポジトリには含めない
+docs/

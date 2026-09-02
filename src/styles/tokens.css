@@ -1,0 +1,127 @@
+/* ============================================================
+   デザイントークン（creator.dipsy.com/apply の実測値。2026-08-31 spec §5）
+   値の変更は CLAUDE.md の更新提案を先に出すこと。
+   ============================================================ */
+@theme {
+  /* --- ブレークポイント（Tailwind 既定の sm/md/lg は無効化）------------
+     max-sp: ≤600 / sp: ≥601 / max-nav: ≤720 / max-tab: ≤820
+     max-form: ≤900 / max-pc: ≤960 / pc: ≥961 */
+  --breakpoint-*: initial;
+  --breakpoint-sp: 601px;
+  --breakpoint-nav: 721px;
+  --breakpoint-tab: 821px;
+  --breakpoint-form: 901px;
+  --breakpoint-pc: 961px;
+
+  /* --- 色（有彩色は marker / required の 2 つだけ）------------------- */
+  --color-bg: #ffffff;
+  --color-bg-dark: #0a0a0a;
+  --color-bg-mid: #b3b3b3;
+  --color-surface: #f9f9f9;
+  --color-surface-alt: #f5f5f4;
+  --color-placeholder: #eaeaea;
+  --color-fg: #0a0a0a;
+  --color-fg-body: #444444;
+  --color-fg-muted: #6b6b68;
+  --color-fg-invert: #ffffff;
+  --color-border: #e4e4e1;
+  --color-placeholder-text: #b5b5b2;
+  --color-marker: #ff302f;
+  --color-required: #ef3b59;
+  --color-disabled: #a9a9a9;
+
+
+  /* --- レイアウト ------------------------------------------------- */
+  --spacing-pad-x: 32px;
+  --spacing-pad-x-sp: 20px;
+  --spacing-header-h: 64px;
+  --spacing-section-t: clamp(80px, 10vw, 132px);
+  --spacing-section-b: clamp(92px, 11vw, 144px);
+  --spacing-fv-gap: clamp(110px, 11vw, 170px);
+  --spacing-head-mb: 40px;
+  --spacing-head-mb-sp: 32px;
+  --spacing-gap-service-row: clamp(48px, 6vw, 72px);
+  --spacing-gap-service-col: clamp(28px, 4vw, 56px);
+  --spacing-gap-card: 18px;
+  --spacing-gap-cols: 64px;
+  --spacing-mq-cell: clamp(148px, 20vw, 256px);
+  --spacing-mq-gap: clamp(20px, 2.8vw, 32px);
+
+  /* --- 角丸 ------------------------------------------------------- */
+  --radius-card: 8px;
+  --radius-visual: 10px;
+  --radius-form: 18px;
+  --radius-input: 6px;
+  --radius-btn: 8px;
+  --radius-pill: 999px;
+
+  /* --- タイポグラフィ --------------------------------------------- */
+  --text-display: clamp(27px, 4.8vw, 46px);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.045em;
+  --text-display--font-weight: 700;
+  --text-display-sp: min(13vw, 60px);
+  --text-display-sp--line-height: 1;
+  --text-display-sp--letter-spacing: -0.045em;
+  --text-display-sp--font-weight: 700;
+  --text-sub: 14px;
+  --text-sub--line-height: 1.2;
+  --text-sub--letter-spacing: 0.05em;
+  --text-sub--font-weight: 500;
+  --text-sub-sp: 13px;
+  --text-sub-sp--line-height: 1.2;
+  --text-sub-sp--letter-spacing: 0.05em;
+  --text-sub-sp--font-weight: 500;
+  --text-body: 14px;
+  --text-body--line-height: 1.8;
+  --text-body-sp: 13px;
+  --text-body-sp--line-height: 1.8;
+  --text-caption: 12px;
+  --text-caption--line-height: 1.75;
+  --text-card-title: 20px;
+  --text-card-title--line-height: 1.45;
+  --text-card-title--letter-spacing: -0.01em;
+  --text-card-title--font-weight: 700;
+  --text-card-title-sp: 16px;
+  --text-card-title-sp--line-height: 1.5;
+  --text-card-title-sp--font-weight: 700;
+  --text-nav: 13px;
+  --text-nav--line-height: 1.5;
+  --text-nav--letter-spacing: 0.02em;
+  --text-nav--font-weight: 500;
+
+  /* --- モーション ------------------------------------------------- */
+  --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-sym: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 300ms;
+  --duration-base: 550ms;
+  --duration-slow: 900ms;
+  --duration-marker: 850ms;
+  --duration-reveal-fast: 550ms;
+  --duration-reveal: 800ms;
+  --duration-reveal-slow: 900ms;
+  --duration-write: 1600ms;
+  --duration-marker-draw: 850ms;
+  --delay-reveal-step: 80ms;
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-boing: cubic-bezier(0.3, 0.6, 0.4, 1);
+  --ease-mk: cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+/* 暗色パレット（VISION の背景反転先。spec §4-1）。CSS からは参照されず ScrollTheme が JS で読むため、
+   未使用でも必ず出力されるよう @theme static にする（通常の @theme は未使用変数を出力しない） */
+@theme static {
+  --color-dark-bg: #0a0a0a;
+  --color-dark-fg: #f2f2f0;
+  --color-dark-fg-body: #c6c6c3;
+  --color-dark-fg-muted: #9a9a97;
+  --color-dark-surface: #151514;
+  --color-dark-border: #2c2c2a;
+}
+
+
+/* next/font が <html> に付ける変数を参照するため inline で定義 */
+@theme inline {
+  --font-display: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "Inter Tight", "Noto Sans JP", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

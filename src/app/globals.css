@@ -1,0 +1,886 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+@import "../styles/fonts.css";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg-body);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-feature-settings: "palt";
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (width < 601px) {
+    body {
+      font-size: var(--text-body-sp);
+    }
+  }
+  h1, h2, h3, h4 {
+    color: var(--color-fg);
+  }
+  :where(a, button, input, textarea, select, summary):focus-visible {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 2px;
+  }
+  /* MobileNav が開いている間はスクロールを止める */
+  [data-menu-open] body {
+    overflow: hidden;
+  }
+}
+
+/* フルブリード。max-width / mx-auto は使わない（CLAUDE.md §3-1） */
+@utility wrap {
+  padding-inline: var(--spacing-pad-x);
+  @media (width < 601px) {
+    padding-inline: var(--spacing-pad-x-sp);
+  }
+}
+
+@utility section-pad {
+  padding-block: var(--spacing-section-t) var(--spacing-section-b);
+}
+
+/* SP の横スワイプ（CSS scroll-snap）。子要素は幅 80% で中央スナップ、次カードが peek する */
+@utility carousel {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-inline: calc(var(--spacing-pad-x-sp) * -1);
+  padding: 4px var(--spacing-pad-x-sp);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  & > * {
+    flex: 0 0 80%;
+    scroll-snap-align: center;
+  }
+}
+
+/* 緑マーカー。左から右へ描画。フェーズ③で ScrollTrigger が .is-active を付ける（①は常時付与） */
+@utility marker {
+  background-image: linear-gradient(
+    transparent 40%,
+    color-mix(in srgb, var(--color-marker) 50%, transparent) 40% 94%,
+    transparent 94%
+  );
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 0% 100%;
+  transition: background-size var(--duration-marker) var(--ease-sym);
+  &.is-active {
+    background-size: 100% 100%;
+  }
+}
+
+/* マーキーと回転バッジ */
+@keyframes drift {
+  to { transform: translateX(-50%); }
+}
+@keyframes drift-rev {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes sec-en-skew-rise {
+  0% { transform: translateY(118%) skewY(6deg) scaleY(1.05); }
+  62% { transform: translateY(-2.5%) skewY(-1.6deg) scaleY(1); }
+  100% { transform: none; }
+}
+@keyframes vd-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes vd-orbit {
+  to { transform: rotate(360deg); }
+}
+/* 18s 周期のうち最初の 1.5s（8.33%）で 2.1 倍に広がって消え、残りは非表示 */
+@keyframes vd-ripple {
+  0% { opacity: 0.85; transform: scale(1); }
+  8.33% { opacity: 0; transform: scale(2.1); }
+  100% { opacity: 0; transform: scale(2.1); }
+}
+/* 通過の瞬間に 1.07 倍へ膨らんで戻る（0% と 50% = 2 つの玉） */
+@keyframes vd-pulse {
+  0%, 5%, 50%, 55%, 100% { transform: none; }
+  1.5%, 51.5% { transform: scale(1.07); }
+}
+@keyframes cell-pop {
+  0% { opacity: 0; transform: scale(0.55); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes lead-boing {
+  0% { transform: scale(0.97, 0.91); }
+  44% { transform: scale(1.045); }
+  74% { transform: scale(0.988); }
+  100% { transform: none; }
+}
+@keyframes badge-pop {
+  0% { opacity: 0; transform: scale(0.4); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes crl-breath {
+  0% { translate: 0 0; }
+  100% { translate: 0 -4px; }
+}
+@keyframes sp-mk-swipe {
+  to { transform: scaleX(1); }
+}
+
+/* ============================================================
+   演出（フェーズ③）。初期の隠し状態は html.js 配下だけ。
+   reduced-motion では末尾のブロックで最終状態を強制する。
+   ============================================================ */
+@layer components {
+  /* 汎用 up: fade + 上昇。FAQ カードは 16px */
+  html.js [data-reveal="up"] {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  html.js .faq-card[data-reveal="up"] {
+    transform: translateY(16px);
+  }
+  [data-reveal-kind="up"] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--duration-reveal-fast) ease var(--rd, 0s),
+      transform var(--duration-reveal-fast) var(--ease-out-quart) var(--rd, 0s);
+  }
+  .faq-card[data-reveal-kind="up"] {
+    transition-duration: var(--duration-reveal-fast), var(--duration-reveal);
+  }
+
+  /* 見出し: 1 文字ずつ skew 立ち上がり（spec §4-2） */
+  .ch-clip {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    white-space: pre;
+    line-height: 1;
+    padding: 0.07em 0.08em 0.03em;
+    margin: -0.07em -0.08em -0.03em;
+  }
+  .ch-space {
+    display: inline-block;
+    white-space: pre;
+  }
+  .ch {
+    display: inline-block;
+    white-space: pre;
+  }
+  html.js [data-reveal="head"] .ch {
+    transform: translateY(115%);
+  }
+  [data-reveal-kind="head"] .ch {
+    animation: sec-en-skew-rise 0.68s var(--ease-out-quart) calc(50ms + var(--ci, 0) * 26ms) both;
+  }
+  html.js [data-reveal="head"] .sec-ja {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  [data-reveal-kind="head"] .sec-ja {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--duration-reveal-fast) ease 0.28s,
+      transform var(--duration-reveal-fast) var(--ease-out-quart) 0.28s;
+  }
+
+  /* VISION 本文: PC は文ごとに 1 行、SP(≤640) は流し込み。行は in で順にフェード（spec §4-4） */
+  .vln {
+    display: block;
+  }
+  html.js .vlt {
+    display: block;
+    opacity: 0;
+  }
+  html.js .vlt[data-reveal-kind="line"] {
+    opacity: 1;
+    transition: opacity var(--duration-reveal) ease calc(50ms + var(--li, 0) * 70ms);
+  }
+  @media (width < 641px) {
+    .vln,
+    html.js .vlt {
+      display: inline;
+    }
+    html.js .vlt[data-reveal-kind="line"] {
+      transition: opacity 0.5s ease 0s;
+    }
+  }
+
+  /* 手書き見出し: 文字の輪郭を描いてから塗る。JS 環境では未描画・未塗りから始める（Handwriting が animate する） */
+  .write-stroke {
+    fill: currentColor;
+  }
+  html.js .write-stroke {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    fill-opacity: 0;
+  }
+
+  /* 蛍光ペン: 別レイヤーの線を clip-path で左→右に描く（spec §3-5）。反転中は半透明のまま黒地に重なり、文字が白に切り替わる */
+  .marker-line {
+    position: absolute;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--color-marker) 50%, transparent);
+    transform-origin: left center;
+    clip-path: inset(0px 100% 0px 0px);
+    -webkit-clip-path: inset(0px 100% 0px 0px);
+  }
+  html[data-on-vision] .marker-line {
+    /* 暗転中は半透明のまま黒地に重ねる（参考サイトと同じ）。白文字とのコントラスト ≈ 9:1 */
+    background: color-mix(in srgb, var(--color-marker) 60%, transparent);
+  }
+  .marker-target {
+    position: relative;
+  }
+  /* 黒文字にするのは帯が実際に引かれた（MarkerLayer が data-marked を付けた）ものだけ。
+     安全弁で js が外れた・color-mix 非対応などで帯が無い経路では黒背景に黒文字になってしまう */
+  /* 暗転中も対象文字は本文と同じ白のまま（色は変えない — 参考サイトと同じ）。帯は半透明で黒地に重なる */
+
+  /* 相関図（spec §4-5）: リングはマスクで描画、ノードはぼかしから出現、点線は常時回転 */
+  .vd-ring {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation: vd-spin 80s linear infinite;
+  }
+  html.js [data-reveal="diagram"] .vd-ringmask {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  .vd-ringmask {
+    stroke-dasharray: 1;
+  }
+  [data-reveal-kind="diagram"] .vd-ringmask {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1.5s var(--ease-sym) 0.9s;
+  }
+  .vd-node {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+  }
+  html.js [data-reveal="diagram"] .vd-node {
+    opacity: 0;
+    filter: blur(12px);
+    transform: scale(0.25);
+  }
+  [data-reveal-kind="diagram"] .vd-node {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition:
+      opacity 0.6s ease calc(0.38s + var(--ni, 0) * 0.12s),
+      transform 0.85s var(--ease-out-quart) calc(0.38s + var(--ni, 0) * 0.12s),
+      filter 0.95s ease calc(0.38s + var(--ni, 0) * 0.12s);
+  }
+  html.js [data-reveal="diagram"] .vd-cap {
+    opacity: 0;
+  }
+  [data-reveal-kind="diagram"] .vd-cap {
+    opacity: 1;
+    transition: opacity 0.8s ease 0.8s;
+  }
+  /* 周回する玉（参考サイトの vd-sat）: リング中心を軸に 18s で 1 周。2 つ目は半周ずらす。出現後 2.4s で現れる */
+  .vd-sat {
+    transform-box: view-box;
+    transform-origin: 270px 210px;
+    opacity: 0;
+    transition: opacity 0.8s ease 2.4s;
+  }
+  .vd-sat2 {
+    transition-delay: 2.8s;
+  }
+  /* 軌道・脈動・波紋の 3 つのアニメは同じ瞬間（出現時）に始めて位相を揃える */
+  [data-reveal-kind="diagram"] .vd-sat {
+    opacity: 1;
+    animation: vd-orbit var(--orbit, 18s) linear infinite;
+  }
+  [data-reveal-kind="diagram"] .vd-sat2 {
+    opacity: 0.55;
+    animation-delay: calc(var(--orbit, 18s) / -2);
+  }
+  /* 玉がノードを通過する瞬間（t0 と t0 + 半周）にノードが脈動し、波紋が広がる。周期は玉と同じ */
+  .vd-pulse {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+  }
+  [data-reveal-kind="diagram"] .vd-pulse {
+    animation: vd-pulse var(--orbit, 18s) ease-out var(--t0, 0s) infinite;
+  }
+  .vd-ripple {
+    fill: none;
+    stroke: var(--color-border);
+    stroke-width: 1.5;
+    opacity: 0;
+    pointer-events: none;
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+  }
+  [data-reveal-kind="diagram"] .vd-ripple {
+    animation: vd-ripple var(--orbit, 18s) cubic-bezier(0.2, 0.6, 0.3, 1) var(--t0, 0s) infinite;
+  }
+  [data-reveal-kind="diagram"] .vd-ripple2 {
+    animation-delay: calc(var(--t0, 0s) + var(--orbit, 18s) / 2);
+  }
+
+  /* マーキー: JS 駆動時は CSS アニメを止め、セルを中央から順に pop（spec §4-6/4-7） */
+  [data-marquee] {
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  [data-marquee][data-js] {
+    cursor: grab; /* ドラッグできるのは JS 駆動のときだけ */
+  }
+  [data-marquee][data-dragging] {
+    cursor: grabbing;
+  }
+  /* CSS 駆動（JS 前 / JS 無効 / reduced-motion）。utilities 層の animate-* だと下の animation:none に勝ってしまうため components 層に置く */
+  .mq-track {
+    position: relative; /* セルの offsetLeft をトラック基準にする（MarqueeDrag の中央合わせ・--ed 計算） */
+    animation: drift var(--d, 60s) linear infinite;
+  }
+  [data-reverse] .mq-track {
+    animation-name: drift-rev;
+  }
+  [data-marquee][data-js] .mq-track {
+    animation: none;
+    will-change: transform;
+  }
+  [data-marquee][data-js] [data-cell] {
+    opacity: 0;
+    position: relative;
+    /* ホバー追従・拡大（MarqueeDrag が --hx/--hy/--hs を lerp で更新） */
+    transform: translate3d(var(--hx, 0px), var(--hy, 0px), 0) scale(var(--hs, 1));
+  }
+  [data-marquee][data-js] [data-cell][data-hover] {
+    z-index: 1;
+  }
+  [data-marquee][data-js] [data-lead] {
+    opacity: 1; /* 幕の下でも表示（幕が縮んで消えると同じ位置の箱がそのまま残る） */
+  }
+  [data-marquee][data-go] [data-cell] {
+    opacity: 1;
+    animation: cell-pop 0.45s var(--ease-pop) var(--ed, 0s) backwards;
+  }
+  [data-marquee][data-go] [data-lead] {
+    animation: none;
+  }
+  [data-marquee][data-go] [data-lead][data-boing] {
+    transform-origin: 50% 50%;
+    animation: lead-boing 0.52s var(--ease-boing) backwards; /* both だと終了後もホバーの transform が効かない */
+  }
+  /* イントロ幕（参考サイトの intro-veil と同じ）: 黒幕（.veil-curtain）は SSR、ロゴはハイドレーション後にロゴセルの位置へ
+     0.5s フェード + 12px 上昇で出現（data-logo-in）。done で 0.12s フェード。収縮は IntroVeil の WAAPI（transform: scale） */
+  .veil-curtain {
+    /* 画面中央に置いた巨大な角丸正方形。内接円の半径 ≈ 0.44 × 一辺 なので 300vmax なら画面のどのコーナーも覆う */
+    left: 50%;
+    top: 50%;
+    width: 300vmax;
+    height: 300vmax;
+    transform: translate(-50%, -50%);
+  }
+  html:not(.js) .intro-veil {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .intro-veil {
+      display: none;
+    }
+  }
+  .intro-veil[data-phase="done"] {
+    opacity: 0;
+    transition: opacity 0.12s ease;
+    pointer-events: none;
+  }
+  .veil-logo {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 0.5s ease,
+      transform 0.6s var(--ease-out-quart);
+  }
+  .intro-veil[data-logo-in] .veil-logo {
+    opacity: 1;
+    transform: none;
+  }
+  .intro-veil[data-phase="done"] .veil-logo {
+    animation: none; /* 以降の transform は IntroVeil の WAAPI が駆動 */
+  }
+
+  /* SERVICE: blur + 奥からの出現、バッジは遅れて pop（spec §4-8）。≤820 は blur なし、≤600 は fade+14px */
+  html.js [data-reveal="blur"] {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateZ(-420px);
+  }
+  [data-reveal-kind="blur"] {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition:
+      transform var(--duration-reveal-slow) var(--ease-out-quart) var(--rd, 0s),
+      opacity var(--duration-reveal-fast) ease var(--rd, 0s),
+      filter var(--duration-reveal-slow) ease calc(var(--rd, 0s) + 0.1s);
+  }
+  @media (width < 821px) {
+    html.js [data-reveal="blur"] {
+      filter: none;
+      transform: none;
+    }
+  }
+  @media (width < 601px) {
+    html.js [data-reveal="blur"] {
+      transform: translateY(14px);
+    }
+  }
+  /* 未出現の translateZ(-420px) + 親の perspective が右へ約 37px はみ出して横スクロールが出る。
+     SP のカルーセル（overflow-x: auto, ≤600）には触れないよう 821px 以上だけ clip する
+     （hidden ではなく clip: overflow-y が visible のまま＝バッジ pop がはみ出せる） */
+  @media (width >= 821px) {
+    #service-track {
+      overflow-x: clip;
+    }
+  }
+  html.js [data-reveal="blur"] .svf-badge {
+    opacity: 0;
+  }
+  [data-reveal-kind="blur"] .svf-badge {
+    opacity: 1;
+    animation: badge-pop 0.55s var(--ease-out-quart) calc(var(--rd, 0s) * 3 + 0.3s) backwards;
+  }
+
+  /* WORKS（spec §4-10）: PC はホバーでサムネ散布、SP は中央の行がアクティブ */
+  .work-nm {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .work-nm .nm-a,
+  .work-nm .nm-b {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: transform var(--duration-reveal-fast) var(--ease-sym);
+  }
+  .work-nm .nm-b {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+  }
+  .work-thumbs {
+    display: contents;
+  }
+  .work-sc {
+    position: absolute;
+    z-index: 7;
+    aspect-ratio: 1;
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(26px) scale(0.94);
+    transition:
+      opacity var(--duration-fast) ease,
+      transform var(--duration-reveal-slow) var(--ease-out-quart);
+  }
+  .work-sc[data-size="L"] { width: 240px; }
+  .work-sc[data-size="M"] { width: 184px; z-index: 6; }
+  .work-sc[data-size="S"] { width: 152px; z-index: 8; }
+  .work-sc[data-size="M2"] { width: 168px; z-index: 6; }
+  .work-sc[data-size="S2"] { width: 126px; z-index: 8; }
+  .work-row[data-pat="p1"] .work-sc[data-size="L"] { bottom: calc(100% + 8px); right: 5%; }
+  .work-row[data-pat="p1"] .work-sc[data-size="M"] { top: calc(100% + 12px); left: 24%; }
+  .work-row[data-pat="p1"] .work-sc[data-size="S"] { bottom: calc(100% + 40px); left: 12%; }
+  .work-row[data-pat="p1"] .work-sc[data-size="M2"] { top: calc(100% + 34px); right: 20%; }
+  .work-row[data-pat="p1"] .work-sc[data-size="S2"] { bottom: calc(100% + 14px); left: 40%; }
+  .work-row[data-pat="p2"] .work-sc[data-size="L"] { bottom: calc(100% + 8px); left: 14%; }
+  .work-row[data-pat="p2"] .work-sc[data-size="M"] { top: calc(100% + 12px); right: 7%; }
+  .work-row[data-pat="p2"] .work-sc[data-size="S"] { bottom: calc(100% + 40px); right: 27%; }
+  .work-row[data-pat="p2"] .work-sc[data-size="M2"] { top: calc(100% + 30px); left: 36%; }
+  .work-row[data-pat="p2"] .work-sc[data-size="S2"] { bottom: calc(100% + 16px); right: 5%; }
+  .work-row[data-pat="p0"] .work-sc[data-size="L"] { top: calc(100% + 6px); right: 24%; }
+  .work-row[data-pat="p0"] .work-sc[data-size="M"] { bottom: calc(100% + 16px); left: 12%; }
+  .work-row[data-pat="p0"] .work-sc[data-size="S"] { bottom: calc(100% + 42px); right: 5%; }
+  .work-row[data-pat="p0"] .work-sc[data-size="M2"] { top: calc(100% + 26px); left: 14%; }
+  .work-row[data-pat="p0"] .work-sc[data-size="S2"] { bottom: calc(100% + 10px); left: 46%; }
+  @media (hover: hover) and (pointer: fine) {
+    .work-row {
+      transition: opacity var(--duration-fast) ease;
+    }
+    /* キーボード操作では周辺の行も読めるよう減光を弱める（hover は 0.05 のまま）。
+       hover を後に置き、両方成立するときはポインタの意図を優先する */
+    .work-list:focus-within .work-row {
+      opacity: 0.35;
+    }
+    .work-list:hover .work-row {
+      opacity: 0.05;
+    }
+    .work-list:hover .work-row:hover,
+    .work-list:focus-within .work-row:focus-within {
+      opacity: 1;
+    }
+    .work-row:hover .work-sc,
+    .work-row:focus-within .work-sc {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .work-row:hover .work-sc[data-size="M"], .work-row:focus-within .work-sc[data-size="M"] { transition-delay: 70ms; animation: crl-breath 5.2s ease-in-out 1s infinite alternate; }
+    .work-row:hover .work-sc[data-size="S"], .work-row:focus-within .work-sc[data-size="S"] { transition-delay: 130ms; animation: crl-breath 3.8s ease-in-out 0.9s infinite alternate; }
+    .work-row:hover .work-sc[data-size="L"], .work-row:focus-within .work-sc[data-size="L"] { animation: crl-breath 4.5s ease-in-out 0.8s infinite alternate; }
+    .work-row:hover .work-sc[data-size="M2"], .work-row:focus-within .work-sc[data-size="M2"] { transition-delay: 100ms; animation: crl-breath 4.9s ease-in-out 1.1s infinite alternate; }
+    .work-row:hover .work-sc[data-size="S2"], .work-row:focus-within .work-sc[data-size="S2"] { transition-delay: 160ms; animation: crl-breath 4.1s ease-in-out 0.95s infinite alternate; }
+    .work-row:hover .work-av img,
+    .work-row:focus-within .work-av img {
+      transform: scale(1.07);
+    }
+    .work-av img {
+      transition: transform var(--duration-base) var(--ease-out-quart);
+    }
+    .work-row:hover .nm-a,
+    .work-row:hover .nm-b,
+    .work-row:focus-within .nm-a,
+    .work-row:focus-within .nm-b {
+      transform: translateY(-100%);
+    }
+  }
+  @media (width < 821px), (hover: none) { /* SP + タッチ主体（iPad 横など）でアクティブ行方式 */
+    .work-row {
+      transition: opacity 0.45s ease;
+    }
+    html.js .work-list[data-live] .work-row { /* html.js 配下: 安全弁で js が外れたら減光も解除 */
+      opacity: 0.05;
+    }
+    html.js .work-list[data-live] .work-row[data-active] {
+      opacity: 1;
+    }
+    .work-row[data-active] .work-sc {
+      opacity: 1;
+      transform: none;
+    }
+    .work-row[data-active] .work-sc[data-size="S2"] { transition-delay: 60ms; }
+    .work-row[data-active] .work-sc[data-size="M"] { transition-delay: 90ms; }
+    .work-row[data-active] .work-sc[data-size="S"] { transition-delay: 130ms; }
+    .work-row[data-active] .work-sc[data-size="M2"] { transition-delay: 170ms; }
+    .work-sc[data-size="L"] { inset: auto -4% calc(100% + 14px) auto; width: min(34vw, 136px); }
+    .work-sc[data-size="S2"] { inset: auto auto calc(100% + 128px) 2%; width: min(18vw, 72px); }
+    .work-sc[data-size="M"] { inset: calc(100% + 22px) auto auto -4%; width: min(31vw, 124px); }
+    .work-sc[data-size="S"] { inset: auto auto calc(100% + 70px) 30%; width: min(24vw, 96px); }
+    .work-sc[data-size="M2"] { inset: calc(100% + 74px) 2% auto auto; width: min(28vw, 112px); }
+    .work-nm .nm-a,
+    .work-nm .nm-b {
+      transition: none;
+      transform: none !important;
+    }
+  }
+
+  /* ヘッダーナビのロール（spec §4-11） */
+  .nav-roll {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    line-height: 1.5;
+  }
+  .nav-roll .rl-t {
+    display: block;
+    transition: transform var(--duration-fast) var(--ease-sym);
+  }
+  /* ロール後の文字は実 DOM の aria-hidden な span（::after + attr(data-text) だと
+     生成コンテンツがアクセシブルネームに入り「COMPANYCOMPANY」と読まれる） */
+  .nav-roll .rl-b {
+    position: absolute;
+    inset: 0;
+    color: var(--color-fg-muted);
+    transform: translateY(100%);
+    transition: transform 0.35s var(--ease-sym);
+  }
+  @media (hover: hover) {
+    .nav-roll:hover .rl-t,
+    .nav-roll:focus-visible .rl-t {
+      transform: translateY(-100%);
+    }
+    .nav-roll:hover .rl-b,
+    .nav-roll:focus-visible .rl-b {
+      transform: translateY(0);
+    }
+  }
+  /* CTA の液体ホバー。bg-fg utility は使わない（utilities レイヤーが components レイヤーの
+     :hover より常に優先され、背景色が変わらなくなるため。components 層内で完結させる） */
+  .cta-liquid {
+    background-color: var(--color-fg);
+    transition: background-color 0.18s;
+  }
+  .cl-fill {
+    position: absolute;
+    top: calc(50% - 4px);
+    left: 18px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-fg-invert);
+    transform-origin: 50% 50%;
+    transition: transform 0.6s var(--ease-out-quart);
+    pointer-events: none;
+  }
+  .cl-txt {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    margin-left: 16px;
+    overflow: hidden;
+    transition: transform 0.5s var(--ease-out-quart);
+  }
+  .cl-lab {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    transition: transform 0.55s var(--ease-out-quart);
+  }
+  .cl-nxt {
+    position: absolute;
+    inset: 0;
+    justify-content: center;
+    transform: translateY(120%);
+  }
+  .cl-arw {
+    position: absolute;
+    top: 50%;
+    right: 13px;
+    width: 15px;
+    height: 15px;
+    opacity: 0;
+    transform: translate(7px, -50%);
+    transition:
+      opacity 0.3s 0.14s,
+      transform 0.45s var(--ease-out-quart) 0.14s;
+  }
+  @media (hover: hover) {
+    .cta-liquid:hover,
+    .cta-liquid:focus-visible {
+      background-color: color-mix(in srgb, var(--color-marker) 88%, black); /* 白文字とのコントラストを確保（#FF302F では 4.6:1。純色は 3.7:1 で AA 未満） */
+      transition: background-color 0.12s 0.3s;
+    }
+    .cta-liquid:hover .cl-fill,
+    .cta-liquid:focus-visible .cl-fill {
+      background: color-mix(in srgb, var(--color-marker) 88%, black);
+      transform: scale(56);
+    }
+    .cta-liquid:hover .cl-cur,
+    .cta-liquid:focus-visible .cl-cur {
+      transform: translateY(-120%);
+    }
+    .cta-liquid:hover .cl-nxt,
+    .cta-liquid:focus-visible .cl-nxt {
+      transform: translateY(0);
+    }
+    .cta-liquid:hover .cl-txt,
+    .cta-liquid:focus-visible .cl-txt {
+      transform: translateX(-15px);
+    }
+    .cta-liquid:hover .cl-arw,
+    .cta-liquid:focus-visible .cl-arw {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+  }
+  @media (hover: none) {
+    .cta-liquid {
+      transition: transform 0.25s;
+    }
+    .cta-liquid:active {
+      transform: scale(0.97);
+    }
+  }
+  /* SP メニューのリンク帯 */
+  .mk {
+    position: absolute;
+    left: -3%;
+    bottom: 7%;
+    z-index: -1;
+    width: 106%;
+    height: 36%;
+    background: var(--color-marker);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  a[data-hit] .mk {
+    animation: sp-mk-swipe 0.45s var(--ease-mk) both;
+  }
+  /* 追従バッジ。animation は utilities の animate-[...] ではなくここで持たせる
+     （utilities レイヤーの animation shorthand は components レイヤーの
+     animation-play-state:paused より常に優先されてしまい、hover で止まらなくなるため） */
+  .sticky-ring {
+    animation: spin 18s linear infinite;
+  }
+  /* SP 専用（タッチ）なので hover:hover でくくり、タップ後に hover が残る iOS などで
+     scale/一時停止が張り付かないようにする */
+  @media (hover: hover) {
+    .sticky-cta:hover {
+      transform: scale(1.04);
+    }
+    .sticky-cta:hover .sticky-ring {
+      animation-play-state: paused;
+    }
+  }
+  /* カスタムカーソル（spec §4-12） */
+  .cur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 80;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .cur-t {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin: -36px 0 0 -36px;
+    border: 1.5px solid var(--color-fg);
+    border-radius: 50%;
+    color: var(--color-fg);
+    opacity: 0;
+    transform: scale(0.5);
+    transition:
+      opacity 0.22s,
+      transform 0.3s var(--ease-out-quart);
+  }
+  .cur[data-on] .cur-t {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .cur-t svg {
+    width: 26px;
+    height: 26px;
+  }
+  @media not ((hover: hover) and (pointer: fine)) {
+    .cur {
+      display: none;
+    }
+  }
+  /* カーソルを隠すのは CustomCursor が実際に起動したときだけ（JS 無効・ハイドレーション失敗で
+     カーソルが消えたままにならないよう html[data-cursor] を条件にする） */
+  @media (hover: hover) and (pointer: fine) {
+    html[data-cursor] .work-row,
+    html[data-cursor] .work-row *,
+    html[data-cursor] #service-track > li,
+    html[data-cursor] #service-track > li * {
+      cursor: none;
+    }
+  }
+}
+
+/* FAQ: ≥601px は常時展開（::details-content 対応ブラウザ。未対応はクリックで開ける）。≤600px はネイティブ開閉 */
+@media (width >= 601px) {
+  @supports selector(::details-content) {
+    .faq-card summary {
+      pointer-events: none;
+    }
+    .faq-card details::details-content {
+      display: block;
+      content-visibility: visible;
+      height: auto;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    animation-delay: 0s !important; /* backwards フィル + 長い delay で要素が隠れ続けないように */
+    transition-delay: 0s !important;
+  }
+  .marker {
+    background-size: 100% 100%;
+  }
+  /* ハイドレーション前でも隠れたままにしない（spec §2-1）。html.js 配下の初期隠し状態を
+     unlayered のここで打ち消す（@layer components / utilities のどれより常に優先される） */
+  html.js [data-reveal="head"] .ch,
+  html.js [data-reveal="head"] .sec-ja,
+  html.js .vlt,
+  html.js [data-reveal="blur"],
+  html.js [data-reveal="blur"] .svf-badge,
+  html.js [data-reveal="up"],
+  html.js [data-reveal="diagram"] .vd-node,
+  html.js [data-reveal="diagram"] .vd-cap {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  html.js .write-stroke,
+  html.js [data-reveal="diagram"] .vd-ringmask {
+    stroke-dashoffset: 0;
+  }
+  html.js .write-stroke {
+    fill-opacity: 1;
+  }
+  .vd-sat,
+  .vd-ripple {
+    display: none;
+  }
+  .cur {
+    display: none;
+  }
+  .work-row,
+  .work-row *,
+  #service-track > li,
+  #service-track > li * {
+    cursor: auto;
+  }
+  /* ナビロール・CTA の液体ホバーは reduced-motion では「速くする」のではなく演出そのものを止め、
+     opacity のみで hover を示す（this block is unlayered: @layer components / utilities の
+     どのルールより常に優先されるので、ここに書けば確実に上書きできる） */
+  .nav-roll:hover .rl-t,
+  .nav-roll:focus-visible .rl-t {
+    transform: none;
+  }
+  .nav-roll:hover .rl-b,
+  .nav-roll:focus-visible .rl-b {
+    transform: translateY(100%);
+  }
+  .cta-liquid:hover,
+  .cta-liquid:focus-visible {
+    background-color: var(--color-fg);
+    opacity: 0.85;
+  }
+  .cta-liquid:hover .cl-fill,
+  .cta-liquid:focus-visible .cl-fill {
+    transform: none;
+  }
+  .cta-liquid:hover .cl-cur,
+  .cta-liquid:focus-visible .cl-cur {
+    transform: none;
+  }
+  .cta-liquid:hover .cl-nxt,
+  .cta-liquid:focus-visible .cl-nxt {
+    transform: translateY(120%);
+  }
+  .cta-liquid:hover .cl-txt,
+  .cta-liquid:focus-visible .cl-txt {
+    transform: none;
+  }
+  .cta-liquid:hover .cl-arw,
+  .cta-liquid:focus-visible .cl-arw {
+    opacity: 0;
+    transform: translate(7px, -50%);
+  }
+}

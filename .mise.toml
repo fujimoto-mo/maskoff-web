@@ -1,0 +1,5 @@
+# Node のバージョンは .node-version を単一の情報源とする。
+# mise / GitHub Actions / Volta のいずれもこのファイルを読むため、
+# ローカルと CI がズレない。
+[tools]
+node = "24.17.0"
