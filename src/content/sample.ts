@@ -4,11 +4,50 @@ import type { News, Notice, Faq, Member, Job } from "@/types/microcms";
 const base = (id: string, date: string) => ({ id, createdAt: date, updatedAt: date, publishedAt: date, revisedAt: date });
 
 const news: News[] = [
-  { ...base("n001", "2026-08-31T00:00:00.000Z"), title: "コーポレートサイトをリニューアルしました", slug: "renewal-2026", category: ["press"], publishedDate: "2026-08-31T00:00:00.000Z", excerpt: "事業内容と採用情報を整理し、お問い合わせ導線を改善しました。", body: "<p>株式会社MasKOFFは本日、コーポレートサイトを全面リニューアルしました。</p>" },
-  { ...base("n002", "2026-07-15T00:00:00.000Z"), title: "自社ブランドの 2026 秋冬コレクションを発表", slug: "aw2026", category: ["works"], publishedDate: "2026-07-15T00:00:00.000Z", body: "<p>サンプル本文。</p>" },
-  { ...base("n003", "2026-06-02T00:00:00.000Z"), title: "業界誌にアパレル OEM の取り組みが掲載されました", slug: "media-2026-06", category: ["media"], publishedDate: "2026-06-02T00:00:00.000Z", body: "<p>サンプル本文。</p>" },
-  { ...base("n004", "2026-04-10T00:00:00.000Z"), title: "アーティスト支援プログラム第 2 期の参加者を募集", slug: "artist-program-2", category: ["event"], publishedDate: "2026-04-10T00:00:00.000Z", body: "<p>サンプル本文。</p>" },
+  {
+    ...base("n100", "2026-09-02T00:00:00.000Z"),
+    title: "コーポレートサイトをリニューアルしました",
+    slug: "renewal-2026",
+    category: ["press"],
+    publishedDate: "2026-09-02T00:00:00.000Z",
+    body:
+      "<p>株式会社MasKOFFのコーポレートサイトをリニューアルしました。</p>" +
+      "<p>ブランドの世界観を体験いただけるトップページ、会社情報・採用情報の拡充など、コンテンツを一新しています。<br>今後も新ブランドやインタビューなどの情報を随時発信してまいります。引き続きよろしくお願いいたします。</p>",
+  },
+  // 現行サイト https://maskoff.co.jp/news の実データ（2026-09-02 取得。日付は仮 — 現行に表記なし）
+  {
+    ...base("n101", "2026-07-15T00:00:00.000Z"),
+    title: "MasKOFFカリキュラム生 鳥海さんインタビュー",
+    slug: "interview-toriumi",
+    category: ["interview"],
+    publishedDate: "2026-07-15T00:00:00.000Z",
+    body:
+      "<p>MasKOFFのカリキュラム生である鳥海さんにインタビューしました！</p>" +
+      "<p><strong>【鳥海さん、自己紹介をお願いします！】</strong></p>" +
+      "<p>京都出身で、現在23歳です。<br>趣味はファッションと音楽です。旅行に行くのも好きです！<br>高校卒業後は、ずっとアパレルショップの店員として働いていました。<br>昔からファッションが大好きで、「東京でファッションに関わる仕事がしたい」と思い、求人を探していたときにMasKOFFを見つけました。<br>現在は、自分のオリジナルブランドを立ち上げることを目標に、働きながら学べるカリキュラム生として日々勉強しています。</p>" +
+      "<p><strong>【MasKOFFを知ったキッカケは？】</strong></p>" +
+      "<p>ずっとファッション業界で働いてきたので、この先もファッションに関わる仕事がしたいと思っていました。<br>もともとSNSでファッションを発信することが好きだったので、「SNSを通じてファッションの魅力を伝える仕事」に興味を持つようになりました。<br>そんなときに「エン転職」でSNSマーケターの求人を探していて、MasKOFFを見つけました。<br>求人を見て、「カッコいい！」「おしゃれな会社だな」と一番に思いました！<br>特に“新たな個性をさらけだす”という言葉に惹かれ、「ここで働きたい！」と強く思い、気付いたら応募してました（笑）</p>" +
+      "<p><strong>【MasKOFFのメンバーの印象は？】</strong></p>" +
+      "<p>とにかく皆さん、おしゃれでカッコいいです！（笑）<br>見た目だけでなく、考え方や仕事に対する姿勢も本当に素敵で、清潔感があってファッションへのこだわりもすごいんです。<br>SNSマーケターやファッションデザイナーの方々がテキパキ仕事をこなしている姿を見ると、「私もこうなりたい！」と憧れがどんどん増していく一方です…！</p>" +
+      "<p><strong>【将来の目標を教えてください！】</strong></p>" +
+      "<p>先日、プレゼンの機会をいただき、アドバイスを参考にしながら企画を磨くのはとても楽しかったです！<br>将来的にはMasKOFFでオリジナルブランドを立ち上げ、DotHyphenのように海外の方にも愛されるブランドを運営していきたいです！</p>" +
+      "<p><strong>【最後にひとこと】</strong></p>" +
+      "<p>MasKOFFは勢いがある会社だと、入社をして感じました。<br>刺激的な環境の中で、周りに負けないよう日々成長を意識しています！<br>MasKOFFの目指すビジョンにも素敵だなと感じていて、私自身もいつかブランドを立ち上げ、SNSを通じて発信していけるように努力していきたいです。<br>これからも全力でがんばります！！</p>" +
+      "<p>MasKOFF カリキュラム生　鳥海 結衣</p>",
+  },
+  {
+    ...base("n102", "2026-05-01T00:00:00.000Z"),
+    title: "DotHyphen -Hang Out- Collection “DotHyphen” World wide shipping",
+    slug: "dothyphen-hang-out-collection",
+    category: ["brand"],
+    publishedDate: "2026-05-01T00:00:00.000Z",
+    body:
+      "<p><strong>DotHyphen</strong><br>-Hang Out-Collection-<br>“DotHyphen” World wide shipping</p>" +
+      '<p><a href="https://dothyphen.store/" target="_blank" rel="noopener">DotHyphen Online Store</a><br>' +
+      '<a href="https://www.instagram.com/dhh._officialstore" target="_blank" rel="noopener">Instagram（@dhh._officialstore）</a></p>',
+  },
 ];
+
 
 const notice: Notice[] = [
   // 現行サイト https://maskoff.co.jp/topic/kvnIjUYw の実データ（2026-09-02 取得）

@@ -29,10 +29,10 @@ export const getMembers = () => list<Member>("members", SAMPLE.members, { orders
 export const getJobs = () => list<Job>("jobs", SAMPLE.jobs, { orders: "order", filters: "isOpen[equals]true" });
 
 export const NEWS_CATEGORY_LABELS: Record<NewsCategory, string> = {
-  press: "プレスリリース",
-  works: "実績",
-  media: "メディア掲載",
-  event: "イベント",
+  press: "お知らせ",
+  brand: "NEW BRAND",
+  interview: "インタビュー",
+  blog: "Blog",
 };
 
 /** microCMS のセレクト（配列）から先頭を取る */

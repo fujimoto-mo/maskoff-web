@@ -3,7 +3,7 @@ export type MicroImage = { url: string; width: number; height: number };
 
 type Base = { id: string; createdAt: string; updatedAt: string; publishedAt: string; revisedAt: string };
 
-export type NewsCategory = "press" | "works" | "media" | "event";
+export type NewsCategory = "press" | "brand" | "interview" | "blog";
 export type News = Base & {
   title: string;
   slug: string;
