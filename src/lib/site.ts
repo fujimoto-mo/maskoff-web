@@ -25,6 +25,6 @@ export const NAV = [
 
 export const SUB_NAV = [
   { href: "/notice/", label: "お知らせ" },
-  { href: "/privacy-policy/", label: "プライバシーポリシー" },
+  { href: "/PRIVACYPOLICY/", label: "プライバシーポリシー" },
   { href: "/TRANSACTIONACT/", label: "TRANSACTION ACT" },
 ] as const;
