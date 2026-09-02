@@ -153,7 +153,7 @@ SERVICEだけガターが広いのは、カードに背景色がないため間�
   --color-fg-invert:   #FFFFFF;  /* 反転セクションの文字 */
 
   /* アクセント（唯一の有彩色） */
-  --color-marker:      #2E891E;  /* 本文中のマーカーハイライト */
+  --color-marker:      #FF302F;  /* 本文中のマーカーハイライト */
   --color-required:    #EF3B59;  /* 必須マーク */
 
   /* UI */
@@ -164,7 +164,7 @@ SERVICEだけガターが広いのは、カードに背景色がないため間�
 **有彩色は `--color-marker` と `--color-required` の2つだけです。**
 色は写真とコンテンツに持たせ、UIは徹底して無彩色にします。この規律がデザインの核心です。
 
-`--color-marker` の緑は、本文中のキーフレーズ背景として使います。装飾で乱用しないでください。1セクションにつき2〜3箇所が上限です。
+`--color-marker` の赤は、本文中のキーフレーズ背景として使います。装飾で乱用しないでください。1セクションにつき2〜3箇所が上限です。
 
 暗転時（VISIONの`data-on-vision`のマーカー帯）は `color-mix(in srgb, var(--color-marker) 88%, white)`、CTAの液体ホバー塗り（暗色配色時）は `color-mix(in srgb, var(--color-marker) 88%, black)` を使い、いずれも文字とのコントラスト比4.5:1以上を確保します。トークンの値そのものは変更しません。JS からしか読まないトークン（VISION 反転先の `--color-dark-*` など）は **`@theme static`** で定義すること（通常の `@theme` は CSS 未参照の変数を出力しないため、`getComputedStyle` が空になり文字が黒のまま背景に沈む）。
 

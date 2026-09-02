@@ -228,8 +228,8 @@
     fill-opacity: 0;
   }
 
-  /* 蛍光ペン: 別レイヤーの線を clip-path で左→右に描く（spec §3-5）。反転中は不透明の緑 + 黒文字
-     （緑を白へ 12% 寄せて黒文字とのコントラストを 5.4:1 に確保。純色だと 4.44:1 で AA 未満） */
+  /* 蛍光ペン: 別レイヤーの線を clip-path で左→右に描く（spec §3-5）。反転中は不透明のアクセント色 + 黒文字
+     （白へ 12% 寄せて黒文字とのコントラストを確保。#FF302F では約 5.9:1） */
   .marker-line {
     position: absolute;
     border-radius: 2px;
@@ -671,7 +671,7 @@
   @media (hover: hover) {
     .cta-liquid:hover,
     .cta-liquid:focus-visible {
-      background-color: color-mix(in srgb, var(--color-marker) 88%, black); /* 白文字とのコントラスト 5.5:1（純色は 4.45:1） */
+      background-color: color-mix(in srgb, var(--color-marker) 88%, black); /* 白文字とのコントラストを確保（#FF302F では 4.6:1。純色は 3.7:1 で AA 未満） */
       transition: background-color 0.12s 0.3s;
     }
     .cta-liquid:hover .cl-fill,

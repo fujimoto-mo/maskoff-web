@@ -7,7 +7,7 @@ const pad = (n) => String(n).padStart(2, "0");
 const svgToPng = async (svg, path) => sharp(Buffer.from(svg)).png().toFile(path);
 
 // --- ヒーロー: 透過 PNG 15 枚（不揃いなサイズ・シルエット） -------------------
-const HERO_COLORS = ["#0a0a0a", "#2e891e", "#6b6b68", "#b3b3b3", "#444444"];
+const HERO_COLORS = ["#0a0a0a", "#ff302f", "#6b6b68", "#b3b3b3", "#444444"];
 const heroShape = (i, w, h) => {
   const c = HERO_COLORS[i % HERO_COLORS.length];
   const shapes = [
