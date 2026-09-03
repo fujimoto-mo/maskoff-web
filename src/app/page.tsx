@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import ContactCta from "@/components/sections/ContactCta";
-import FaqList from "@/components/sections/FaqList";
 import Hero from "@/components/sections/Hero";
 import NewsStrip from "@/components/sections/NewsStrip";
 import PartnerGrid from "@/components/sections/PartnerGrid";
+import ProductBlock from "@/components/sections/ProductBlock";
 import ServiceGrid from "@/components/sections/ServiceGrid";
 import VisionBlock from "@/components/sections/VisionBlock";
 import IntroVeil from "@/components/motion/IntroVeil";
-import { getFaq, getNews, getNotice } from "@/lib/microcms";
+import { getNews, getNotice } from "@/lib/microcms";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -17,17 +17,18 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [news, notice, faq] = await Promise.all([getNews(), getNotice(), getFaq()]);
+  const [news, notice] = await Promise.all([getNews(), getNotice()]);
   return (
     <>
       <IntroVeil />
       <Hero />
       <VisionBlock />
+      <ProductBlock />
       <ServiceGrid />
       {/* WORKS はクライアント指示で非表示（2026-09-02）。復活時は WorksList を import して <WorksList /> を戻す */}
       <PartnerGrid />
       <NewsStrip news={news} notice={notice} />
-      <FaqList items={faq} />
+      {/* FAQ はクライアント指示で非表示（2026-09-03）。復活時は FaqList と getFaq を import して <FaqList items={faq} /> を戻す */}
       <ContactCta />
     </>
   );
