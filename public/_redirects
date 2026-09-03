@@ -1,4 +1,9 @@
 # Cloudflare Workers Static Assets の _redirects。
 # 例: /old-path  /company/  301
-/privacy-policy/  /PRIVACYPOLICY/  301
-/privacy-policy  /PRIVACYPOLICY/  301
+# 旧サイト（大文字 URL）と旧表記からの 301
+/PRIVACYPOLICY/  /privacypolicy/  301
+/PRIVACYPOLICY  /privacypolicy/  301
+/privacy-policy/  /privacypolicy/  301
+/privacy-policy  /privacypolicy/  301
+/TRANSACTIONACT/  /transaction/  301
+/TRANSACTIONACT  /transaction/  301

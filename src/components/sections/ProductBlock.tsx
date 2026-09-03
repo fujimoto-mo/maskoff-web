@@ -3,9 +3,10 @@ import { revealDelay } from "@/components/motion/reveal-delay";
 import Button from "@/components/ui/Button";
 import Picture from "@/components/ui/Picture";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { SITE } from "@/lib/site";
 
 const COPY = [
-  "techMasKLabは、未経験の方でも即戦力のエンジニアを目指せるプログラミングスクールです。",
+  `${SITE.product}は、未経験の方でも即戦力のエンジニアを目指せるプログラミングスクールです。`,
   "PHP、HTML/CSS、JavaScript、インフラを学べ、オンラインとオフラインの両方でアクセス可能です。",
   "現役エンジニアのサポート、カスタマイズ可能なカリキュラムなどスキルアップ環境が充実しています。",
 ] as const;
@@ -13,7 +14,7 @@ const COPY = [
 const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as CSSProperties;
 
 /**
- * HOME の PRODUCT（VISION と SERVICE の間）。自社プロダクト techMasKLab の紹介。
+ * HOME の PRODUCT（VISION と SERVICE の間）。自社プロダクト（SITE.product）の紹介。
  * PC は左に画面イメージ・右に文章の 2 カラム、960px 以下は縦積み（画像 → 文章）。
  * @example <ProductBlock />
  */
@@ -41,7 +42,7 @@ export default function ProductBlock() {
               data-reveal="up"
               className="font-display text-[clamp(28px,3.4vw,40px)] font-extrabold leading-[1.1] tracking-[-.04em] text-fg"
             >
-              techMasKLab
+              {SITE.product}
             </h3>
             <div className="mt-6 space-y-2 text-body leading-[2.1] text-fg-body">
               {COPY.map((line, i) => (

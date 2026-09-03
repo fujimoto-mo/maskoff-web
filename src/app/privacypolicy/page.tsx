@@ -7,10 +7,10 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
   description: "株式会社MasKOFFのプライバシーポリシー。個人情報の第三者提供・取扱いの委託・Cookie の使用について。",
-  alternates: { canonical: "/PRIVACYPOLICY/" },
+  alternates: { canonical: "/privacypolicy/" },
 };
 
-// 現行サイト https://maskoff.co.jp/PRIVACYPOLICY の内容を移植（2026-09-02 取得）
+// 現行サイト https://maskoff.co.jp/PRIVACYPOLICY の内容を移植（URL は /privacypolicy/ に変更、旧 URL は _redirects で 301）（2026-09-02 取得）
 const SECTIONS: { h: string; ps: string[] }[] = [
   {
     h: "個人情報の第三者提供について",
@@ -44,7 +44,7 @@ const SECTIONS: { h: string; ps: string[] }[] = [
 export default function PrivacyPolicyPage() {
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd([{ name: "HOME", path: "/" }, { name: "プライバシーポリシー", path: "/PRIVACYPOLICY/" }], SITE.url)} />
+      <JsonLd data={breadcrumbJsonLd([{ name: "HOME", path: "/" }, { name: "プライバシーポリシー", path: "/privacypolicy/" }], SITE.url)} />
       <section className="wrap section-pad">
         <SectionHeading en="PRIVACY POLICY" ja="プライバシーポリシー" />
         <div className="max-w-[720px]">

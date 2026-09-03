@@ -1,3 +1,5 @@
+import { SITE } from "./site.ts"; // node:test でも解決できるよう相対 + 拡張子付き
+
 // 8 事業（docs/design_handoff_service_page 由来）。HOME の SERVICE グリッド、/service/、/service/[slug]/ が共有する単一のデータ。
 // SAMPLE: 本文（description）は仮文言、画像は仮画像。実データ確定時に差し替える。
 export type Service = {
@@ -24,11 +26,11 @@ export const SERVICES: readonly Service[] = [
     slug: "tech-education",
     num: "01",
     en: "TECH EDUCATION",
-    title: "techMaskLab エンジニアカリキュラム",
+    title: `${SITE.product} エンジニアカリキュラム`,
     verb: "そだてる",
     lead: "未経験から現場で通用するエンジニアへ。実案件ベースの実践型カリキュラムです。",
     description:
-      "未経験からエンジニアを目指す実践型カリキュラム「techMaskLab」を運営。実案件ベースの課題と現役エンジニアのメンタリングで、現場で通用するスキルを育てます。",
+      `未経験からエンジニアを目指す実践型カリキュラム「${SITE.product}」を運営。実案件ベースの課題と現役エンジニアのメンタリングで、現場で通用するスキルを育てます。`,
     tags: ["プログラミング教育", "実案件ベース", "メンタリング"],
     image: "/images/service/svc-01.png",
   },
@@ -64,7 +66,7 @@ export const SERVICES: readonly Service[] = [
     verb: "ささえる",
     lead: "キャリア面談・人材紹介・研修で、一人ひとりの「らしさ」を活かした働き方へ。",
     description:
-      "キャリア面談・人材紹介・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。techMaskLab修了生のキャリアサポートとも連動しています。",
+      `キャリア面談・人材紹介・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。${SITE.product}修了生のキャリアサポートとも連動しています。`,
     tags: ["キャリア面談", "人材紹介", "研修"],
     image: "/images/service/svc-04.png",
   },

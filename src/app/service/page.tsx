@@ -14,7 +14,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "事業内容",
   description:
-    "株式会社MasKOFFの8つの事業。techMaskLab エンジニアカリキュラム、求人広告代理店、WEBアプリ開発、キャリア支援、BPO、アパレルコンサルティング、海外越境EC導入支援、中小向けIT導入支援。",
+    `株式会社MasKOFFの8つの事業。${SITE.product} エンジニアカリキュラム、求人広告代理店、WEBアプリ開発、キャリア支援、BPO、アパレルコンサルティング、海外越境EC導入支援、中小向けIT導入支援。`,
   alternates: { canonical: "/service/" },
 };
 

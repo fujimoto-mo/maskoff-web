@@ -7,10 +7,10 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "特定商取引法に基づく表記",
   description: "株式会社MasKOFFの特定商取引法に基づく表記。販売業者・所在地・支払方法・返品に関する特約など。",
-  alternates: { canonical: "/TRANSACTIONACT/" },
+  alternates: { canonical: "/transaction/" },
 };
 
-// 現行サイト https://maskoff.co.jp/TRANSACTIONACT の内容を移植（2026-09-02 取得）
+// 現行サイト https://maskoff.co.jp/TRANSACTIONACT の内容を移植（URL は /transaction/ に変更、旧 URL は _redirects で 301）（2026-09-02 取得）
 const ROWS: { dt: string; dd: string[] }[] = [
   { dt: "販売業者", dd: ["株式会社MasKOFF"] },
   { dt: "代表責任者", dd: ["代表取締役　藤本剛"] },
@@ -31,7 +31,7 @@ const ROWS: { dt: string; dd: string[] }[] = [
 export default function TransactionActPage() {
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd([{ name: "HOME", path: "/" }, { name: "特定商取引法に基づく表記", path: "/TRANSACTIONACT/" }], SITE.url)} />
+      <JsonLd data={breadcrumbJsonLd([{ name: "HOME", path: "/" }, { name: "特定商取引法に基づく表記", path: "/transaction/" }], SITE.url)} />
       <section className="wrap section-pad">
         <SectionHeading en="TRANSACTION ACT" ja="特定商取引法に基づく表記" />
         <dl className="border-t border-border">

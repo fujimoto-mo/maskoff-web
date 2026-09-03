@@ -239,7 +239,7 @@ SERVICE          ← 英字・大文字・極太・字間タイト
 | `/notice` `/notice/[slug]` | NOTICE | microCMS `notice` |
 | `/contact` `/contact/thanks` | CONTACT | 静的 + API Route |
 | `/recruit` `/recruit/[slug]` | RECRUIT | microCMS `jobs` |
-| `/PRIVACYPOLICY` | プライバシーポリシー | 静的（現行サイトの URL を踏襲。/privacy-policy は _redirects で 301） |
+| `/privacypolicy` `/transaction` | プライバシーポリシー / 特定商取引法に基づく表記 | 静的（現行サイトの大文字 URL `/PRIVACYPOLICY` `/TRANSACTIONACT` と `/privacy-policy` は _redirects で 301） |
 
 ### NEWS と NOTICE の使い分け（運用ルール）
 
