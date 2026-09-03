@@ -97,22 +97,15 @@
   62% { transform: translateY(-2.5%) skewY(-1.6deg) scaleY(1); }
   100% { transform: none; }
 }
-@keyframes vd-spin {
-  to { transform: rotate(360deg); }
+/* 相関図: 面が順に明るくなる（--tone が基準の透明度）。3 面を -3s ずつずらして 9s で一巡 */
+@keyframes vd-glow {
+  0%, 100% { fill-opacity: var(--tone, 0.2); }
+  50% { fill-opacity: calc(var(--tone, 0.2) + 0.16); }
 }
-@keyframes vd-orbit {
-  to { transform: rotate(360deg); }
-}
-/* 18s 周期のうち最初の 1.5s（8.33%）で 2.1 倍に広がって消え、残りは非表示 */
-@keyframes vd-ripple {
-  0% { opacity: 0.85; transform: scale(1); }
-  8.33% { opacity: 0; transform: scale(2.1); }
-  100% { opacity: 0; transform: scale(2.1); }
-}
-/* 通過の瞬間に 1.07 倍へ膨らんで戻る（0% と 50% = 2 つの玉） */
-@keyframes vd-pulse {
-  0%, 5%, 50%, 55%, 100% { transform: none; }
-  1.5%, 51.5% { transform: scale(1.07); }
+/* 相関図: 斜めの光が立方体を左→右に横切り（〜3s）、残りは右端で待つ */
+@keyframes vd-sheen {
+  0% { transform: translateX(0) skewX(-24deg); }
+  45%, 100% { transform: translateX(760px) skewX(-24deg); }
 }
 @keyframes cell-pop {
   0% { opacity: 0; transform: scale(0.55); }
@@ -248,22 +241,59 @@
      安全弁で js が外れた・color-mix 非対応などで帯が無い経路では黒背景に黒文字になってしまう */
   /* 暗転中も対象文字は本文と同じ白のまま（色は変えない — 参考サイトと同じ）。帯は半透明で黒地に重なる */
 
-  /* 相関図（spec §4-5）: リングはマスクで描画、ノードはぼかしから出現、点線は常時回転 */
-  .vd-ring {
+  /* 相関図（立方体）: 面が順にフェード → 中央から Y 字の稜線を線描画 → 面ラベルがぼかしから出現 →
+     引き出し線を描いて事業名がフェード。JS 無効・reduced-motion は最終状態 */
+  .vd-face {
     transform-box: fill-box;
     transform-origin: 50% 50%;
-    animation: vd-spin 80s linear infinite;
   }
-  html.js [data-reveal="diagram"] .vd-ringmask {
+  html.js [data-reveal="diagram"] .vd-face {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  [data-reveal-kind="diagram"] .vd-face {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.7s ease calc(var(--ni, 0) * 0.14s),
+      transform 0.9s var(--ease-out-quart) calc(var(--ni, 0) * 0.14s);
+    animation: vd-glow 9s ease-in-out calc(var(--ni, 0) * -3s) infinite;
+  }
+  .vd-sheen {
+    transform-box: view-box;
+    opacity: 0;
+    transition: opacity 0.8s ease 1.6s;
+  }
+  [data-reveal-kind="diagram"] .vd-sheen {
+    opacity: 1;
+    animation: vd-sheen 7s cubic-bezier(0.4, 0, 0.2, 1) 1.6s infinite;
+  }
+  /* 写真: 面より先にフェードイン。ラベルには影を敷いて明るい部分でも読めるようにする */
+  html.js [data-reveal="diagram"] .vd-photo {
+    opacity: 0;
+  }
+  [data-reveal-kind="diagram"] .vd-photo {
+    opacity: 1;
+    transition: opacity 0.9s ease;
+  }
+  .vd-shadow {
+    filter: drop-shadow(0 2px 10px color-mix(in srgb, var(--color-dark-bg) 55%, transparent));
+  }
+  .vd-edge,
+  .vd-lead {
     stroke-dasharray: 1;
+  }
+  html.js [data-reveal="diagram"] .vd-edge,
+  html.js [data-reveal="diagram"] .vd-lead {
     stroke-dashoffset: 1;
   }
-  .vd-ringmask {
-    stroke-dasharray: 1;
-  }
-  [data-reveal-kind="diagram"] .vd-ringmask {
+  [data-reveal-kind="diagram"] .vd-edge {
     stroke-dashoffset: 0;
-    transition: stroke-dashoffset 1.5s var(--ease-sym) 0.9s;
+    transition: stroke-dashoffset 1s var(--ease-sym) 0.55s;
+  }
+  [data-reveal-kind="diagram"] .vd-lead {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.7s var(--ease-sym) calc(1.5s + var(--ni, 0) * 0.15s);
   }
   .vd-node {
     transform-box: fill-box;
@@ -283,54 +313,16 @@
       transform 0.85s var(--ease-out-quart) calc(0.38s + var(--ni, 0) * 0.12s),
       filter 0.95s ease calc(0.38s + var(--ni, 0) * 0.12s);
   }
-  html.js [data-reveal="diagram"] .vd-cap {
+  html.js [data-reveal="diagram"] .vd-lbl {
     opacity: 0;
+    transform: translateY(6px);
   }
-  [data-reveal-kind="diagram"] .vd-cap {
+  [data-reveal-kind="diagram"] .vd-lbl {
     opacity: 1;
-    transition: opacity 0.8s ease 0.8s;
-  }
-  /* 周回する玉（参考サイトの vd-sat）: リング中心を軸に 18s で 1 周。2 つ目は半周ずらす。出現後 2.4s で現れる */
-  .vd-sat {
-    transform-box: view-box;
-    transform-origin: 270px 210px;
-    opacity: 0;
-    transition: opacity 0.8s ease 2.4s;
-  }
-  .vd-sat2 {
-    transition-delay: 2.8s;
-  }
-  /* 軌道・脈動・波紋の 3 つのアニメは同じ瞬間（出現時）に始めて位相を揃える */
-  [data-reveal-kind="diagram"] .vd-sat {
-    opacity: 1;
-    animation: vd-orbit var(--orbit, 18s) linear infinite;
-  }
-  [data-reveal-kind="diagram"] .vd-sat2 {
-    opacity: 0.55;
-    animation-delay: calc(var(--orbit, 18s) / -2);
-  }
-  /* 玉がノードを通過する瞬間（t0 と t0 + 半周）にノードが脈動し、波紋が広がる。周期は玉と同じ */
-  .vd-pulse {
-    transform-box: fill-box;
-    transform-origin: 50% 50%;
-  }
-  [data-reveal-kind="diagram"] .vd-pulse {
-    animation: vd-pulse var(--orbit, 18s) ease-out var(--t0, 0s) infinite;
-  }
-  .vd-ripple {
-    fill: none;
-    stroke: var(--color-border);
-    stroke-width: 1.5;
-    opacity: 0;
-    pointer-events: none;
-    transform-box: fill-box;
-    transform-origin: 50% 50%;
-  }
-  [data-reveal-kind="diagram"] .vd-ripple {
-    animation: vd-ripple var(--orbit, 18s) cubic-bezier(0.2, 0.6, 0.3, 1) var(--t0, 0s) infinite;
-  }
-  [data-reveal-kind="diagram"] .vd-ripple2 {
-    animation-delay: calc(var(--t0, 0s) + var(--orbit, 18s) / 2);
+    transform: none;
+    transition:
+      opacity 0.6s ease calc(1.9s + var(--ni, 0) * 0.15s),
+      transform 0.6s var(--ease-out-quart) calc(1.9s + var(--ni, 0) * 0.15s);
   }
 
   /* マーキー: JS 駆動時は CSS アニメを止め、セルを中央から順に pop（spec §4-6/4-7） */
@@ -821,20 +813,25 @@
   html.js [data-reveal="blur"] .svf-badge,
   html.js [data-reveal="up"],
   html.js [data-reveal="diagram"] .vd-node,
-  html.js [data-reveal="diagram"] .vd-cap {
+  html.js [data-reveal="diagram"] .vd-face,
+  html.js [data-reveal="diagram"] .vd-photo,
+  html.js [data-reveal="diagram"] .vd-lbl {
     opacity: 1;
     transform: none;
     filter: none;
   }
   html.js .write-stroke,
-  html.js [data-reveal="diagram"] .vd-ringmask {
+  html.js [data-reveal="diagram"] .vd-edge,
+  html.js [data-reveal="diagram"] .vd-lead {
     stroke-dashoffset: 0;
   }
   html.js .write-stroke {
     fill-opacity: 1;
   }
-  .vd-sat,
-  .vd-ripple {
+  .vd-face {
+    animation: none;
+  }
+  .vd-sheen {
     display: none;
   }
   .cur {

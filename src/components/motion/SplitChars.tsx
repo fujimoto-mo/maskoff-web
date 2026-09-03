@@ -9,7 +9,14 @@ export default function SplitChars({ text }: { text: string }) {
   return (
     <>
       {splitChars(text).map((t, i) => {
-        if (t.kind === "br") return <br key={i} className="hidden max-sp:inline" />;
+        // "\n": PC では単語間のスペース、SP では改行
+        if (t.kind === "br")
+          return (
+            <span key={i} aria-hidden>
+              <span className="ch-space max-sp:hidden"> </span>
+              <br className="hidden max-sp:inline" />
+            </span>
+          );
         if (t.kind === "space") return <span key={i} aria-hidden className="ch-space"> </span>;
         return (
           <span key={i} aria-hidden className="ch-clip">

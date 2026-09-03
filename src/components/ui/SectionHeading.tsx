@@ -2,7 +2,7 @@ import SplitChars from "@/components/motion/SplitChars";
 import { cn } from "@/lib/cn";
 
 type Props = {
-  /** 英字見出し。"OFFICIAL\nCREATORS" のように \n を入れると SP でだけ改行する */
+  /** 英字見出し。"OFFICIAL\nCREATORS" のように \n を入れると PC ではスペース、SP では改行になる */
   en: string;
   /** 和文の従見出し */
   ja: string;
@@ -23,7 +23,7 @@ export default function SectionHeading({ en, ja, as = "h2", id, invert = false, 
   const Tag = as;
   return (
     <div data-reveal="head" className={cn("mb-head-mb max-sp:mb-head-mb-sp", className)}>
-      <Tag id={id} aria-label={en} className={cn("-ml-[0.045em] font-display text-display max-sp:text-display-sp", invert ? "text-fg-invert" : "text-fg")}>
+      <Tag id={id} aria-label={en.replace(/\n/g, " ")} className={cn("-ml-[0.045em] font-display text-display max-sp:text-display-sp", invert ? "text-fg-invert" : "text-fg")}>
         <SplitChars text={en} />
       </Tag>
       <p className={cn("sec-ja mt-1.5 ml-[3px] text-sub max-sp:text-sub-sp", invert ? "text-fg-invert/70" : "text-fg-muted")}>{ja}</p>

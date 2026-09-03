@@ -96,3 +96,28 @@ npm run build && npx serve out -l 3999
 - `public/videos/hero/sample-01.mp4` と `public/images/hero/sample-01-poster.png`（マーキーの動画セルの仮素材。`Hero.tsx` の `VIDEO` を実素材に差し替える。正方形・音なし・数秒ループ・500KB 以下の MP4）
 - `src/components/sections/VisionBlock.tsx` の本文と `src/content/vision-handwriting.ts`（手書き見出しの文言・フォントを確定したら `scripts/handwriting-paths.py` で再生成、またはデザイナー入稿 SVG の `<path d>` に差し替え）
 - `public/images/`（`scripts/gen-sample-assets.mjs` で生成した仮画像。差し替え後 `npm run images`）
+
+## メンテナンスモード
+
+`wrangler.toml` の `[vars] MAINTENANCE` がスイッチ。`"1"` で全ページが 503 のメンテ画面（`worker/maintenance.ts`）になり、`/api/contact` も 503 で止まる。`/api/rebuild`（microCMS → 再ビルド）はメンテ中も動く。
+
+```bash
+# ON
+git checkout main && git pull
+sed -i 's/^MAINTENANCE = "0"/MAINTENANCE = "1"/' wrangler.toml
+git commit -am "メンテナンス開始" && git push
+
+# OFF
+git checkout main && git pull
+sed -i 's/^MAINTENANCE = "1"/MAINTENANCE = "0"/' wrangler.toml
+git commit -am "メンテナンス終了" && git push
+
+# 反映確認（メンテ中は 503、通常は 200）。push から 3〜5 分
+curl -sI https://maskoff.co.jp/ | head -1
+
+# ローカルでメンテ画面を確認
+npm run build && npx wrangler dev --var MAINTENANCE:1
+```
+
+- 緊急時は Cloudflare ダッシュボード（Workers → Settings → Variables）で `MAINTENANCE` を直接書き換えれば数秒で反映される。ただし次の push で `wrangler.toml` の値に戻る
+- 文言・連絡先を変えるときは `worker/maintenance.ts`（連絡先は `CONTACT_TO_EMAIL`）

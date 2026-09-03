@@ -12,8 +12,8 @@
     "webp": "/images/optimized/hero/hero-02.webp"
   },
   "/images/hero/hero-03.png": {
-    "width": 860,
-    "height": 700,
+    "width": 720,
+    "height": 590,
     "avif": "/images/optimized/hero/hero-03.avif",
     "webp": "/images/optimized/hero/hero-03.webp"
   },
@@ -72,8 +72,8 @@
     "webp": "/images/optimized/hero/hero-12.webp"
   },
   "/images/hero/hero-13.png": {
-    "width": 700,
-    "height": 700,
+    "width": 818,
+    "height": 818,
     "avif": "/images/optimized/hero/hero-13.avif",
     "webp": "/images/optimized/hero/hero-13.webp"
   },
@@ -84,8 +84,8 @@
     "webp": "/images/optimized/hero/hero-14.webp"
   },
   "/images/hero/hero-15.png": {
-    "width": 640,
-    "height": 680,
+    "width": 674,
+    "height": 716,
     "avif": "/images/optimized/hero/hero-15.avif",
     "webp": "/images/optimized/hero/hero-15.webp"
   },
@@ -179,6 +179,12 @@
     "avif": "/images/optimized/partners/p04.avif",
     "webp": "/images/optimized/partners/p04.webp"
   },
+  "/images/product/techmasklab.png": {
+    "width": 1600,
+    "height": 942,
+    "avif": "/images/optimized/product/techmasklab.avif",
+    "webp": "/images/optimized/product/techmasklab.webp"
+  },
   "/images/service/svc-01.png": {
     "width": 800,
     "height": 800,
@@ -226,6 +232,12 @@
     "height": 800,
     "avif": "/images/optimized/service/svc-08.avif",
     "webp": "/images/optimized/service/svc-08.webp"
+  },
+  "/images/vision/cube.jpg": {
+    "width": 800,
+    "height": 923,
+    "avif": "/images/optimized/vision/cube.avif",
+    "webp": "/images/optimized/vision/cube.webp"
   },
   "/images/works/logo-01.png": {
     "width": 400,

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import Button from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
@@ -9,6 +9,7 @@ import { NAV, SUB_NAV, SITE } from "@/lib/site";
 /** ≤720px のハンバーガー + 全画面オーバーレイ。Header から呼ぶ。 */
 export default function MobileNav() {
   const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const panelId = `mobile-menu-${useId()}`;
   const firstLink = useRef<HTMLAnchorElement>(null);
@@ -16,6 +17,11 @@ export default function MobileNav() {
   const rootRef = useRef<HTMLDivElement>(null);
   const wasOpen = useRef(false);
   const hitTimerRef = useRef<number | null>(null);
+
+  // 安全弁: どの経路でページが変わっても必ず閉じる（MobileNav は遷移をまたいで再マウントされないため）
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -123,7 +129,7 @@ export default function MobileNav() {
               </Link>
             ))}
           </div>
-          <Button href="/recruit/" dot className="mt-4 w-full py-[22px] text-[18px]">
+          <Button href="/recruit/" dot onClick={() => setOpen(false)} className="mt-4 w-full py-[22px] text-[18px]">
             RECRUIT
           </Button>
           <div className="mt-6 flex gap-6 text-caption font-medium tracking-[.06em] text-fg-muted">

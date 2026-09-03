@@ -6,14 +6,17 @@ compatibility_date = "2025-06-01"
 directory = "./out"
 binding = "ASSETS"
 not_found_handling = "404-page"
-# 静的アセットは Worker を経由せず配信。/api/* のみ Worker を起動（無料枠を温存）
-run_worker_first = ["/api/*"]
+# /api/* と HTML ページは Worker を通す（メンテナンス時に 503 を返すため）。
+# _next / images / fonts / videos 等の静的アセットは除外し、Worker を経由せず無課金で配信（無料枠を温存）
+run_worker_first = ["/*", "!/_next/*", "!/images/*", "!/fonts/*", "!/videos/*", "!/favicon.ico", "!/robots.txt", "!/sitemap.xml"]
 
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
 id = "REPLACE_WITH_KV_NAMESPACE_ID"
 
 [vars]
+# メンテナンス切替。"1" にして push すると全ページが 503 のメンテ画面（worker/maintenance.ts）。戻すときは "0"
+MAINTENANCE = "1"
 SITE_URL = "https://maskoff.co.jp"
 CONTACT_FROM_EMAIL = "MasKOFF <noreply@maskoff.co.jp>"
 CONTACT_TO_EMAIL = "info@maskoff.co.jp"

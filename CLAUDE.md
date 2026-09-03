@@ -30,7 +30,7 @@ microCMS Hobby（ヘッドレスCMS / API上限5本 / SDK は使わず生 fetch�
 Resend（メール送信）
 Cloudflare Workers（ホスティング）
   ├ Static Assets（out/ を無課金で配信）
-  ├ worker/index.ts（/api/* のみ実行）
+  ├ worker/index.ts（/api/* と HTML ページで実行。静的アセットは除外）
   ├ KV（レート制限）
   └ Turnstile（Bot対策）
 GitHub Actions（CI / デプロイ）
@@ -50,9 +50,16 @@ Worker のコードは Web 標準 API（fetch / crypto.subtle / TextEncoder）�
 静的エクスポートでは `src/app/api/` が動かない。サーバー側の処理は
 すべて `worker/` に書き、`worker/index.ts` でルーティングする。
 
-**1-b. `wrangler.toml` の `run_worker_first = ["/api/*"]` を消さない。**
-この1行で、静的アセットが Worker を通らず無課金で配信される。
-消すと全リクエストが課金対象になり、無料枠を即座に超える。
+**1-b. `wrangler.toml` の `run_worker_first` の除外パターン（`!/_next/*` `!/images/*` `!/fonts/*` `!/videos/*` 等）を消さない。**
+`/api/*` と HTML ページだけを Worker に通し（メンテナンス時に 503 を返すため）、静的アセットは
+Worker を通らず無課金で配信される。除外を消したり `true` にしたりすると全リクエストが課金対象になり、
+無料枠を即座に超える。HTML 1 表示 = Worker 1 リクエスト（無料枠 10 万/日）。
+
+**1-c. メンテナンスモードは `wrangler.toml` の `[vars] MAINTENANCE` で切り替える。**
+`"1"` にして push すると `worker/maintenance.ts` が `/api/rebuild` 以外の全リクエストに
+503 + `Retry-After` を返す（Google は一時停止と解釈しインデックスを保つ）。メンテ画面は Next の
+ビルドに依存しない自己完結 HTML（ビルドが壊れている時にも出せる）。`src/` 側にメンテ分岐を書かない。
+手順は README「メンテナンスモード」。
 
 **2. `next/image` を使わない。**
 最適化サーバーが動かない。代わりに `components/ui/Picture.tsx` を使う。
@@ -227,7 +234,7 @@ SERVICE          ← 英字・大文字・極太・字間タイト
 |---|---|---|
 | `/` | HOME | 静的 + news / notice 最新3件 |
 | `/company` | COMPANY | 静的 |
-| `/service` | SERVICE | 静的（将来 service API に移行可） |
+| `/service` `/service/[slug]` | SERVICE | 静的（`src/lib/services.ts` の 8 事業。将来 service API に移行可） |
 | `/news` `/news/[slug]` | NEWS | microCMS `news` |
 | `/notice` `/notice/[slug]` | NOTICE | microCMS `notice` |
 | `/contact` `/contact/thanks` | CONTACT | 静的 + API Route |
@@ -284,7 +291,7 @@ FAQは `<details>/<summary>` を閉じた状態で SSR し、PCでは CSS の `:
 | 手書き線描画 | VISION | `Handwriting` が 1 文字ずつ読み順に輪郭を `stroke-dashoffset 1→0` で描き、続けて `fill-opacity 0→1`（合計 1.6s）。データは `scripts/handwriting-paths.py` で生成 |
 | 行フェード | VISION 本文 | PC は段落単位で行が順に、SP(≤640) は 1 行ずつ画面下 75% で点灯 |
 | マーカー描画 | VISION 本文 | `MarkerLayer` が文字位置を計測し背後の線を `clip-path` で左→右（0.85s）。他セクションは `background-size` 方式 |
-| 相関図 | VISION | リングをマスクで描画、ノードはぼかしから出現、点線は 80s で回転。2 つの玉が 18s で周回し、リング上の 3 ノードを通過する瞬間にノードが脈動して波紋が広がる（軌道・脈動・波紋は出現時に同時開始して位相を揃える。周期を変えるときは `VisionDiagram` の `ORBIT_S` と各ノードの `t0` を合わせる） |
+| 相関図 | VISION | 等角の立方体（HR / IT / RC の 3 面。座標は `cube-geometry`）。面の中は写真 `public/images/vision/cube.jpg`（外接矩形 260:300 で切り抜き。`Picture` を六角形の `clip-path` で切り、上に明るい膜・白い稜線・ラベルを重ねる）。面が順にフェード → 中央から Y 字の稜線を線描画 → 面ラベルがぼかしから出現 → 引き出し線を描いて事業名がフェード。出現後は 3 面が 9s 周期で順に明るくなり、7s ごとに斜めの光が立方体を横切る（`vd-glow` / `vd-sheen`、reduced-motion では停止）。事業名は HTML（`src/content/vision-diagram.ts`）で、PC は `@container` の cqw 単位で立方体と同率に拡縮させ引き出し線とずらさない。SP は引き出し線を消し立方体の下に縦積み |
 | スクロールリビール | SERVICE / PARTNERS / FAQ / NEWS / CONTACT | `data-reveal="blur"`（SERVICE、奥から blur 解除）/ `"up"`（fade + 18px）。stagger 80ms |
 | ホバー散布 | WORKS | 行ホバーでサムネ 5 枚が 3 パターンの配置で出現、他行は薄く。`(max-width: 820px)` または `(hover: none)`（タッチ主体端末含む）では画面中央の行がアクティブになる方式に切替 |
 | ホバーロール | WORKS の名前・ナビ | 同一テキストを2つ重ね、`overflow:hidden` + `translateY` で入れ替え |
@@ -317,7 +324,7 @@ components/
 ├ motion/    RevealObserver, ScrollTheme, IntroVeil, Marquee, MarqueeDrag,
 │            SplitChars, Handwriting, MarkerLayer, VisionDiagram, CustomCursor
 │            葉モジュール（純粋関数・node:test 対象）: reveal-delay, scroll-theme-math,
-│            split-chars, handwriting-timing, marker-rects, marquee-cells, marquee-physics
+│            split-chars, handwriting-timing, marker-rects, marquee-cells, marquee-physics, cube-geometry
 └ sections/  Hero, VisionBlock, ServiceGrid, MemberList, FaqList,
              NewsList, ContactForm, StepFlow
 ```
@@ -409,7 +416,7 @@ Core Web Vitals
 
 ### wrangler.toml `[vars]`（非機密・Worker実行時）
 ```
-SITE_URL / CONTACT_FROM_EMAIL / CONTACT_TO_EMAIL / GITHUB_REPO
+SITE_URL / CONTACT_FROM_EMAIL / CONTACT_TO_EMAIL / GITHUB_REPO / MAINTENANCE
 ```
 
 ### Cloudflare Secrets（機密・Worker実行時）

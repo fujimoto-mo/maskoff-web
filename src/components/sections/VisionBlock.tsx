@@ -15,7 +15,8 @@ export default function VisionBlock() {
     <section id="vision" aria-labelledby="vision-title" className="section-pad">
       <div className="wrap">
         <SectionHeading en="VISION" ja="私たちの想い" id="vision-title" />
-        <div className="grid grid-cols-2 gap-gap-cols max-tab:grid-cols-1 max-tab:gap-[76px]">
+        {/* 右カラムを 1.35 倍取り、相関図（max 756px）が 1440px で列いっぱいに入るようにする */}
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] gap-gap-cols max-tab:grid-cols-1 max-tab:gap-[76px]">
           <div className="marker-block relative" data-marker-block>
             <MarkerLayer />
             <Handwriting />

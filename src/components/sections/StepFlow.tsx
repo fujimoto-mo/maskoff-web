@@ -2,7 +2,7 @@ type Step = { title: string; text: string };
 
 /**
  * 番号バッジ + 縦線の手順リスト。
- * @example <StepFlow heading="ご相談の流れ" steps={[{ title: "フォームの送信", text: "1 分ほどで完了します。" }]} />
+ * @example <StepFlow heading="ご面談希望の流れ" steps={[{ title: "フォームの送信", text: "1 分ほどで完了します。" }]} />
  */
 export default function StepFlow({ heading, steps }: { heading: string; steps: readonly Step[] }) {
   return (
