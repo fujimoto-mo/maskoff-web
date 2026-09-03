@@ -139,7 +139,7 @@ export default function ContactForm() {
       <label className="mt-1 flex items-start justify-center gap-2 text-caption text-fg">
         <input type="checkbox" name="consent" required className="mt-1 accent-fg" aria-invalid={errors.consent ? true : undefined} aria-describedby={errors.consent ? "consent-error" : undefined} />
         <span>
-          <a href="/PRIVACYPOLICY/" target="_blank" rel="noopener" className="underline underline-offset-2">
+          <a href="/privacypolicy/" target="_blank" rel="noopener" className="underline underline-offset-2">
             プライバシーポリシー
           </a>
           に同意します
