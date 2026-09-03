@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 type Variant = "pill" | "block" | "line" | "liquid";
@@ -11,6 +11,8 @@ type Props = {
   className?: string;
   /** 左に白点（pill 用。liquid は常に持つ） */
   dot?: boolean;
+  /** 例: モバイルメニューを閉じる。リンク・ボタンのどちらにも付く */
+  onClick?: MouseEventHandler<HTMLElement>;
   children: ReactNode;
 };
 
@@ -32,7 +34,7 @@ const VARIANTS: Record<Variant, string> = {
  * @example <Button href="/contact/" variant="liquid">お問い合わせ</Button>  ← ヘッダー CTA（hover で白点が広がって緑に）
  * @example <Button type="submit" variant="block" disabled={busy}>送信する</Button>
  */
-export default function Button({ href, type = "button", variant = "pill", disabled, className, dot = false, children }: Props) {
+export default function Button({ href, type = "button", variant = "pill", disabled, className, dot = false, onClick, children }: Props) {
   const cls = cn(BASE, VARIANTS[variant], className);
   const inner =
     variant === "liquid" ? (
@@ -57,19 +59,19 @@ export default function Button({ href, type = "button", variant = "pill", disabl
   if (href) {
     if (href.startsWith("http")) {
       return (
-        <a href={href} className={cls} target="_blank" rel="noopener">
+        <a href={href} className={cls} target="_blank" rel="noopener" onClick={onClick}>
           {inner}
         </a>
       );
     }
     return (
-      <Link href={href} className={cls}>
+      <Link href={href} className={cls} onClick={onClick}>
         {inner}
       </Link>
     );
   }
   return (
-    <button type={type} className={cls} disabled={disabled}>
+    <button type={type} className={cls} disabled={disabled} onClick={onClick}>
       {inner}
     </button>
   );
