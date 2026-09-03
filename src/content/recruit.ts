@@ -1,3 +1,5 @@
+import { SITE } from "@/lib/site";
+
 // RECRUIT ページの内容（docs/design_handoff_recruit_page 由来）。
 // SAMPLE: INFORMATION の数値・DAILY FLOW・ROADMAP・CAREER MAP のコピーは仮。実数値・実文言に差し替える。
 export const CULTURE = [
@@ -81,7 +83,7 @@ export const DAILY_FLOW = [
   {
     time: "16:00",
     title: "もくもくタイム",
-    desc: "夕方は再び集中時間。techMaskLabの学習に充てるメンバーも。",
+    desc: `夕方は再び集中時間。${SITE.product}の学習に充てるメンバーも。`,
   },
   {
     time: "19:00",
@@ -91,7 +93,7 @@ export const DAILY_FLOW = [
 ] as const;
 
 export const ROADMAP_LEAD =
-  "未経験入社でも大丈夫。自社カリキュラム「techMaskLab」で、6ヶ月で現場デビューまで伴走します。";
+  `未経験入社でも大丈夫。自社カリキュラム「${SITE.product}」で、6ヶ月で現場デビューまで伴走します。`;
 export const ROADMAP = [
   {
     period: "MONTH 1-2",
@@ -130,7 +132,7 @@ export const CAREER_STEPS = [
     year: "YEAR 0-1",
     en: "LEARN & JOIN",
     title: "基礎習得・現場デビュー",
-    desc: "研修・OJT（エンジニア職はtechMaskLab）を経て、先輩とペアで実務を担当。",
+    desc: `研修・OJT（エンジニア職は${SITE.product}）を経て、先輩とペアで実務を担当。`,
   },
   {
     year: "YEAR 1-3",
@@ -181,6 +183,6 @@ export const JOBS = [
   },
   {
     title: "webクリエイター",
-    desc: "WEBアプリ開発・サイト制作のデザイン&コーディング。techMaskLabで未経験からの挑戦も可。",
+    desc: `WEBアプリ開発・サイト制作のデザイン&コーディング。${SITE.product}で未経験からの挑戦も可。`,
   },
 ] as const;

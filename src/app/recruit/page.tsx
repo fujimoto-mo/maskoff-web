@@ -22,7 +22,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "採用情報",
   description:
-    "株式会社MasKOFFの採用情報。肩書きより、感性。経歴より、偏愛。数字で見るMasKOFF、1日の流れ、techMaskLabのロードマップ、キャリアマップ、募集職種。",
+    `株式会社MasKOFFの採用情報。肩書きより、感性。経歴より、偏愛。数字で見るMasKOFF、1日の流れ、${SITE.product}のロードマップ、キャリアマップ、募集職種。`,
   alternates: { canonical: "/recruit/" },
 };
 
@@ -163,9 +163,9 @@ export default function RecruitPage() {
         </ol>
       </section>
 
-      {/* ROADMAP: techMaskLab */}
+      {/* ROADMAP: 自社カリキュラム（SITE.product） */}
       <section className="wrap section-pad pt-0">
-        <SectionHeading en="ROADMAP" ja="techMaskLab 学びのロードマップ" />
+        <SectionHeading en="ROADMAP" ja={`${SITE.product} 学びのロードマップ`} />
         <p
           data-reveal="up"
           className="mb-12 max-w-[640px] text-body leading-[2] text-fg-body"
