@@ -12,15 +12,15 @@ run_worker_first = ["/*", "!/_next/*", "!/images/*", "!/fonts/*", "!/videos/*", 
 
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "63d885ccaa0b4cff9d2a7555e465998a"
 
 [vars]
 # メンテナンス切替。"1" にして push すると全ページが 503 のメンテ画面（worker/maintenance.ts）。戻すときは "0"
-MAINTENANCE = "1"
+MAINTENANCE = "0"
 SITE_URL = "https://maskoff.co.jp"
 CONTACT_FROM_EMAIL = "MasKOFF <noreply@maskoff.co.jp>"
 CONTACT_TO_EMAIL = "info@maskoff.co.jp"
-GITHUB_REPO = "fujimoto-mio/maskoff-web"
+GITHUB_REPO = "fujimoto-mo/maskoff-web"
 
 # Secrets（wrangler secret put で登録 / ローカルは .dev.vars）
 #   RESEND_API_KEY / TURNSTILE_SECRET_KEY / MICROCMS_WEBHOOK_SECRET / GITHUB_DISPATCH_TOKEN / SLACK_WEBHOOK_URL
