@@ -7,3 +7,5 @@
 /privacy-policy  /privacypolicy/  301
 /TRANSACTIONACT/  /transaction/  301
 /TRANSACTIONACT  /transaction/  301
+# www → apex（正規 URL）。Function（_worker.js）経由の HTML には効かないため、同じ処理を worker/routes.ts でも行う
+https://www.maskoff.co.jp/*  https://maskoff.co.jp/:splat  301!
