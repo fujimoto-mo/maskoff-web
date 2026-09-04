@@ -1,0 +1,22 @@
+# 日次の再ビルド（microCMS の予約公開を反映するため）。ビルドとデプロイは Cloudflare Pages の Git 連携が行うので、
+# ここでは Pages の Deploy Hook を叩くだけ。手動実行（workflow_dispatch）も可。
+name: Daily rebuild (Cloudflare Pages Deploy Hook)
+
+on:
+  schedule:
+    - cron: "0 18 * * *" # 18:00 UTC = 03:00 JST
+  workflow_dispatch:
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Pages Deploy Hook
+        env:
+          HOOK: ${{ secrets.CF_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "CF_DEPLOY_HOOK_URL が未設定です（GitHub Secrets に登録してください）" >&2
+            exit 1
+          fi
+          curl -fsS -X POST "$HOOK"
