@@ -3,18 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/optimize-images.mjs",
+    "predev": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/fetch-cms-images.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/optimize-images.mjs",
-    "build": "next build",
+    "build": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/fetch-cms-images.mjs && next build && node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/build-worker.mjs",
     "start": "npx serve out",
     "lint": "eslint",
     "typecheck": "tsc --noEmit && tsc -p worker/tsconfig.json --noEmit",
     "test": "node --test \"src/**/*.test.ts\" \"worker/**/*.test.ts\"",
     "images": "node scripts/optimize-images.mjs",
     "assets:sample": "node scripts/gen-sample-assets.mjs",
-    "preview": "npm run build && wrangler dev",
-    "deploy": "npm run build && wrangler deploy"
+    "preview": "npm run build && wrangler pages dev",
+    "deploy": "npm run build && wrangler pages deploy"
   },
   "dependencies": {
     "next": "^16.3.3",
@@ -28,6 +27,7 @@
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "esbuild": "^0.28.2",
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
     "prettier": "^3.9.6",

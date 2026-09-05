@@ -28,19 +28,19 @@ Tailwind CSS v4（CSS-first / @theme）
 microCMS Hobby（ヘッドレスCMS / API上限5本 / SDK は使わず生 fetch）
 アニメーションは依存ゼロ（IntersectionObserver + rAF + Web Animations API）。GSAP はピン留めやスクラブのタイムラインが必要になった時点で導入する。Lenis は参考サイトも不使用のため導入しない
 Resend（メール送信）
-Cloudflare Workers（ホスティング）
-  ├ Static Assets（out/ を無課金で配信）
-  ├ worker/index.ts（/api/* と HTML ページで実行。静的アセットは除外）
+Cloudflare Pages（ホスティング。外部 DNS のまま独自ドメインを付けるため Workers ではなく Pages）
+  ├ 静的アセット（out/ を配信。_routes.json で除外したパスは Function を通らず無課金）
+  ├ out/_worker.js（Advanced mode。worker/index.ts を esbuild で 1 枚にバンドル。/api/* とメンテナンス、www → apex）
   ├ KV（レート制限）
   └ Turnstile（Bot対策）
-GitHub Actions（CI / デプロイ）
+GitHub Actions（日次 cron で Pages の Deploy Hook を叩くだけ。ビルド・デプロイは Pages の Git 連携）
 sharp（ビルド時の画像最適化）
 
 Node.js 24.17.0（.node-version で固定）
 ```
 
 **注意: ローカルの Node 24 で動くコードが Worker で動くとは限らない。**
-`worker/` 配下は Node ではなく workerd 上で実行される。`nodejs_compat`
+`worker/` 配下は Node ではなく workerd 上で実行される（Pages の _worker.js も同じ）。`nodejs_compat`
 フラグで一部の Node API が使えるが、あくまで互換レイヤーで全部ではない。
 Worker のコードは Web 標準 API（fetch / crypto.subtle / TextEncoder）で書く。
 
@@ -48,18 +48,21 @@ Worker のコードは Web 標準 API（fetch / crypto.subtle / TextEncoder）�
 
 **1. API Routes を作らない。**
 静的エクスポートでは `src/app/api/` が動かない。サーバー側の処理は
-すべて `worker/` に書き、`worker/index.ts` でルーティングする。
+すべて `worker/` に書き、`worker/index.ts` でルーティングする。`scripts/build-worker.mjs` が
+`next build` の後に `out/_worker.js` へ 1 枚にバンドルする（順序を変えると next build が out/ を消す）。
+**`functions/` ディレクトリは作らない。** `_worker.js` と併用できず、将来 Workers へ戻す出口も塞がる。
 
-**1-b. `wrangler.toml` の `run_worker_first` の除外パターン（`!/_next/*` `!/images/*` `!/fonts/*` `!/videos/*` 等）を消さない。**
-`/api/*` と HTML ページだけを Worker に通し（メンテナンス時に 503 を返すため）、静的アセットは
-Worker を通らず無課金で配信される。除外を消したり `true` にしたりすると全リクエストが課金対象になり、
-無料枠を即座に超える。HTML 1 表示 = Worker 1 リクエスト（無料枠 10 万/日）。
+**1-b. `worker/routes.ts` の除外リスト（`_next` / `images` / `fonts` / `videos` / favicon / robots / sitemap / 旧 URL）を消さない。**
+Pages の Advanced mode では全リクエストが `_worker.js` を通る。除外リストから `out/_routes.json` を生成して
+静的アセットを Function の対象外にしているので、消すと画像・JS まで Function 呼び出し（無料枠 10 万/日）に
+数えられる。`public/_redirects` は Function 経由のリクエストには効かないため、旧 URL（`/PRIVACYPOLICY` 等）も
+除外して静的側の 301 に任せる。www → apex は `worker/routes.ts` の `canonicalRedirect` で行う。
 
 **1-c. メンテナンスモードは `wrangler.toml` の `[vars] MAINTENANCE` で切り替える。**
-`"1"` にして push すると `worker/maintenance.ts` が `/api/rebuild` 以外の全リクエストに
-503 + `Retry-After` を返す（Google は一時停止と解釈しインデックスを保つ）。メンテ画面は Next の
-ビルドに依存しない自己完結 HTML（ビルドが壊れている時にも出せる）。`src/` 側にメンテ分岐を書かない。
-手順は README「メンテナンスモード」。
+`"1"` にして push すると Pages がビルドし、`worker/maintenance.ts` が `/api/rebuild` と静的アセット以外の
+全リクエストに 503 + `Retry-After` を返す（Google は一時停止と解釈しインデックスを保つ）。`wrangler.toml` が正で
+ダッシュボードからは変更できない。メンテ画面は Next のビルドに依存しない自己完結 HTML。`src/` 側にメンテ分岐を
+書かない。手順は README「メンテナンスモード」。
 
 **2. `next/image` を使わない。**
 最適化サーバーが動かない。代わりに `components/ui/Picture.tsx` を使う。
@@ -74,6 +77,9 @@ Worker を通らず無課金で配信される。除外を消したり `true` �
 **4. 画像を microCMS から直接配信しない。**
 Hobby プランは転送量が月20GBを超えると API が停止する。
 画像はビルド時に取得して `public/` へ同梱し、Cloudflare から配信する。
+NEWS のサムネイルは `scripts/fetch-cms-images.mjs`（`build` の先頭で実行）が microCMS の画像 API で
+AVIF / WebP / 元形式に変換して `public/images/cms/` に保存し、`getNews()` がローカルパスに差し替える。
+表示は `components/ui/CmsPicture.tsx`。同梱前の環境では元 URL の `<img>` にフォールバックする。
 
 **5. 動的ルートには `generateStaticParams` を必ず実装する。**
 静的エクスポートでは必須。無いとビルドが落ちる。
@@ -414,28 +420,33 @@ Core Web Vitals
 
 **3か所に分かれる。混同しないこと。**
 
-### wrangler.toml `[vars]`（非機密・Worker実行時）
+### wrangler.toml `[vars]`（非機密・Function 実行時。ファイルが正でダッシュボードは閲覧のみ）
 ```
-SITE_URL / CONTACT_FROM_EMAIL / CONTACT_TO_EMAIL / GITHUB_REPO / MAINTENANCE
+MAINTENANCE / NEXT_PUBLIC_SITE_URL / CONTACT_FROM_EMAIL / CONTACT_TO_EMAIL
 ```
+KV バインディング（`RATE_LIMIT`、本番とプレビューで別 ID）も `wrangler.toml` に書く。
 
-### Cloudflare Secrets（機密・Worker実行時）
+### Pages ダッシュボード 暗号化変数（機密・Function 実行時。Production / Preview 両方に登録）
 ```bash
-npx wrangler secret put RESEND_API_KEY
-npx wrangler secret put TURNSTILE_SECRET_KEY
-npx wrangler secret put MICROCMS_WEBHOOK_SECRET
-npx wrangler secret put GITHUB_DISPATCH_TOKEN
-npx wrangler secret put SLACK_WEBHOOK_URL
+npx wrangler pages secret put RESEND_API_KEY --project-name maskoff-web
+npx wrangler pages secret put TURNSTILE_SECRET_KEY --project-name maskoff-web
+npx wrangler pages secret put MICROCMS_WEBHOOK_SECRET --project-name maskoff-web
+npx wrangler pages secret put CF_DEPLOY_HOOK_URL --project-name maskoff-web
+npx wrangler pages secret put SLACK_WEBHOOK_URL --project-name maskoff-web   # 任意
 ```
 
-### GitHub Actions Secrets / Variables（ビルド時）
+### Pages ダッシュボード ビルド用環境変数（ビルド時。Production / Preview 両方）
 ```
-Secret   : CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID
-           MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY / SLACK_WEBHOOK_URL
-Variable : SITE_URL / TURNSTILE_SITE_KEY
+MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY / NEXT_PUBLIC_SITE_URL / NEXT_PUBLIC_TURNSTILE_SITE_KEY / NODE_VERSION
+```
+`NEXT_PUBLIC_SITE_URL` は検証中 `https://<project>.pages.dev`、本番切替後 `https://maskoff.co.jp`（変更後に再ビルド）。
+
+### GitHub Actions Secrets（日次 cron 用）
+```
+CF_DEPLOY_HOOK_URL
 ```
 
-microCMS の API キーは**ビルド時にのみ使う**。Worker には渡さない。
+microCMS の API キーは**ビルド時にのみ使う**。Function には渡さない。
 
 `.env.local` はローカル開発専用。**実値をコミットしないこと。**
 

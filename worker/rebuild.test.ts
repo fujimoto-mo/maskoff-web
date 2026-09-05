@@ -22,19 +22,18 @@ function makeEnv(kv: Map<string, string>, overrides: Record<string, unknown> = {
         kv.set(k, v);
       },
     },
-    SITE_URL: "https://maskoff.co.jp",
+    NEXT_PUBLIC_SITE_URL: "https://maskoff.co.jp",
     CONTACT_FROM_EMAIL: "MasKOFF <noreply@maskoff.co.jp>",
     CONTACT_TO_EMAIL: "info@maskoff.co.jp",
-    GITHUB_REPO: "owner/repo",
     RESEND_API_KEY: "re_test",
     TURNSTILE_SECRET_KEY: "t",
     MICROCMS_WEBHOOK_SECRET: SECRET,
-    GITHUB_DISPATCH_TOKEN: "ghp_test",
+    CF_DEPLOY_HOOK_URL: "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/abc123",
     ...overrides,
   } as unknown as Env;
 }
 
-function fakeFetch(status = 204) {
+function fakeFetch(status = 200) {
   const calls: { url: string; init?: RequestInit }[] = [];
   const fetchFn = (async (input: RequestInfo | URL, init?: RequestInit) => {
     calls.push({ url: String(input), init });
@@ -51,19 +50,19 @@ function req(body: string, sig?: string) {
   return new Request("https://maskoff.co.jp/api/rebuild", { method: "POST", headers, body });
 }
 
-test("正しい署名なら GitHub の workflow_dispatch を 1 回呼んで 200、ロックを置く", async () => {
+test("正しい署名なら Deploy Hook を POST で 1 回叩いて 200、ロックを置く", async () => {
   const kv = new Map<string, string>();
   const f = fakeFetch();
   const res = await handleRebuild(req(BODY, await sign(BODY, SECRET)), makeEnv(kv), f.fetchFn);
   assert.equal(res.status, 200);
   assert.deepEqual(await res.json(), { ok: true });
   assert.equal(f.calls.length, 1);
-  assert.equal(f.calls[0].url, "https://api.github.com/repos/owner/repo/actions/workflows/deploy.yml/dispatches");
-  assert.equal(new Headers(f.calls[0].init?.headers).get("authorization"), "Bearer ghp_test");
+  assert.equal(f.calls[0].url, "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/abc123");
+  assert.equal(f.calls[0].init?.method, "POST");
   assert.equal(kv.get("rebuild:lock"), "1");
 });
 
-test("署名ヘッダーが無ければ 401 で GitHub は呼ばない", async () => {
+test("署名ヘッダーが無ければ 401 で Deploy Hook は叩かない", async () => {
   const f = fakeFetch();
   const res = await handleRebuild(req(BODY), makeEnv(new Map()), f.fetchFn);
   assert.equal(res.status, 401);
@@ -103,7 +102,7 @@ test("シークレット未設定ならフェイルクローズ（\"undefined\" 
   assert.equal(f.calls.length, 0);
 });
 
-test("60 秒ロック中は署名が正しくても GitHub を呼ばず skipped", async () => {
+test("60 秒ロック中は署名が正しくても Deploy Hook を叩かず skipped", async () => {
   const f = fakeFetch();
   const kv = new Map([["rebuild:lock", "1"]]);
   const res = await handleRebuild(req(BODY, await sign(BODY, SECRET)), makeEnv(kv), f.fetchFn);
@@ -112,10 +111,17 @@ test("60 秒ロック中は署名が正しくても GitHub を呼ばず skipped"
   assert.equal(f.calls.length, 0);
 });
 
-test("GitHub が 204 以外を返したら 502", async () => {
+test("Deploy Hook が 2xx 以外を返したら 502", async () => {
   const f = fakeFetch(401);
   const res = await handleRebuild(req(BODY, await sign(BODY, SECRET)), makeEnv(new Map()), f.fetchFn);
   assert.equal(res.status, 502);
+});
+
+test("CF_DEPLOY_HOOK_URL 未設定なら 500 で叩かない（署名が正しくても）", async () => {
+  const f = fakeFetch();
+  const res = await handleRebuild(req(BODY, await sign(BODY, SECRET)), makeEnv(new Map(), { CF_DEPLOY_HOOK_URL: undefined }), f.fetchFn);
+  assert.equal(res.status, 500);
+  assert.equal(f.calls.length, 0);
 });
 
 test("verifySignature: 正しい署名は true、シークレット無しは常に false", async () => {

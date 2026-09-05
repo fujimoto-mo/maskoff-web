@@ -6,6 +6,7 @@ import { formatDate } from "@/lib/date";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { getNotice } from "@/lib/microcms";
 import { SITE } from "@/lib/site";
+import { decodeSlug } from "@/lib/slug";
 
 type Params = { slug: string };
 
@@ -15,19 +16,19 @@ export async function generateStaticParams(): Promise<Params[]> {
 }
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
-  const { slug } = await params;
+  const slug = decodeSlug((await params).slug);
   const item = (await getNotice()).find((n) => n.slug === slug);
   if (!item) return {};
   return {
     title: item.title,
     description: `${item.title}（${formatDate(item.publishedDate)}）— 株式会社MasKOFFからのお知らせ。`,
-    alternates: { canonical: `/notice/${slug}/` },
+    alternates: { canonical: `/notice/${encodeURIComponent(slug)}/` },
   };
 }
 
 /** NOTICE 詳細。本文は microCMS のリッチテキスト（HTML）をそのまま描画する */
 export default async function NoticeDetailPage({ params }: { params: Promise<Params> }) {
-  const { slug } = await params;
+  const slug = decodeSlug((await params).slug);
   const item = (await getNotice()).find((n) => n.slug === slug);
   if (!item) notFound();
   return (

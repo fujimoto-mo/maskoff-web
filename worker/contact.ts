@@ -38,11 +38,16 @@ async function sendMail(env: Env, fetchFn: typeof fetch, payload: { to: string; 
   if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
 }
 
-/** Origin は完全一致のみ許可（前方一致だと maskoff.co.jp.evil.com が通る）。localhost はポート不問 */
-export function isAllowedOrigin(origin: string, siteUrl: string): boolean {
+/**
+ * Origin は完全一致のみ許可（前方一致だと maskoff.co.jp.evil.com が通る）。
+ * 許可するのは 正規 URL（NEXT_PUBLIC_SITE_URL）/ リクエスト自身の Origin（*.pages.dev のプレビューで同一オリジンから送る場合）/ localhost（ポート不問）
+ */
+export function isAllowedOrigin(origin: string, siteUrl: string | undefined, requestOrigin?: string): boolean {
   try {
     const o = new URL(origin).origin;
-    return o === new URL(siteUrl).origin || /^http:\/\/localhost(:\d+)?$/.test(o);
+    if (/^http:\/\/localhost(:\d+)?$/.test(o)) return true;
+    if (requestOrigin && o === requestOrigin) return true;
+    return !!siteUrl && o === new URL(siteUrl).origin;
   } catch {
     return false;
   }
@@ -70,7 +75,7 @@ function rowsOf(d: ContactInput) {
  */
 export async function handleContact(req: Request, env: Env, ctx: ExecutionContext, deps: Deps = { fetchFn: fetch }): Promise<Response> {
   const origin = req.headers.get("origin") ?? "";
-  if (!isAllowedOrigin(origin, env.SITE_URL)) return json({ ok: false, error: "Forbidden" }, 403);
+  if (!isAllowedOrigin(origin, env.NEXT_PUBLIC_SITE_URL, new URL(req.url).origin)) return json({ ok: false, error: "Forbidden" }, 403);
 
   const ip = req.headers.get("cf-connecting-ip");
   if (ip) {

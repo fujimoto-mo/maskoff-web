@@ -18,10 +18,13 @@ export default function MobileNav() {
   const wasOpen = useRef(false);
   const hitTimerRef = useRef<number | null>(null);
 
-  // 安全弁: どの経路でページが変わっても必ず閉じる（MobileNav は遷移をまたいで再マウントされないため）
-  useEffect(() => {
+  // 安全弁: どの経路でページが変わっても必ず閉じる（MobileNav は遷移をまたいで再マウントされないため）。
+  // effect 内の setState は react-hooks/set-state-in-effect に触れるので、レンダー中に「前回のパス」と比べて調整する
+  const [seenPath, setSeenPath] = useState(pathname);
+  if (pathname !== seenPath) {
+    setSeenPath(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     const root = document.documentElement;

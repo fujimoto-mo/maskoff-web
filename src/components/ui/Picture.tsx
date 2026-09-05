@@ -16,6 +16,8 @@ type Props = {
   imgClassName?: string;
   /** LCP 候補（ヒーロー先頭）だけ true */
   priority?: boolean;
+  /** manifest を引かず寸法と AVIF / WebP を直接渡す（microCMS 画像を同梱した cms-manifest 用。CmsPicture から使う） */
+  entry?: Entry;
 };
 // className は <picture> に、imgClassName は <img> に付く（SVG も同じ）
 
@@ -27,7 +29,7 @@ type Props = {
  * <Picture src="/images/service/svc-01.png" alt="" sizes="(max-width: 600px) 80vw, 33vw" imgClassName="size-full object-cover" />
  * <Picture src="/images/company/vision-handwriting.svg" alt="創ることが好きだ" width={640} height={160} />
  */
-export default function Picture({ src, alt, sizes, width, height, className, imgClassName, priority = false }: Props) {
+export default function Picture({ src, alt, sizes, width, height, className, imgClassName, priority = false, entry }: Props) {
   const loading = priority ? "eager" : "lazy";
   const fetchPriority = priority ? "high" : "auto";
 
@@ -41,7 +43,7 @@ export default function Picture({ src, alt, sizes, width, height, className, img
     );
   }
 
-  const m = MANIFEST[src];
+  const m = entry ?? MANIFEST[src];
   if (!m) throw new Error(`Picture: ${src} が manifest にありません。npm run images を実行してください`);
   if (!sizes) throw new Error(`Picture: ${src} に sizes を指定してください`);
 

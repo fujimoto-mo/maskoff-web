@@ -73,6 +73,10 @@ export default function ContactForm() {
     try {
       const res = await fetch("/api/contact", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(parsed.data) });
       const json = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; errors?: Errors };
+      if (res.status === 404) {
+        // 静的エクスポートに API Route は無く、/api/contact は Worker（_worker.js）が受ける。next dev では動かない
+        throw new Error("送信 API に接続できません。開発サーバー（npm run dev）ではフォームは動作しません。npm run preview で確認してください。");
+      }
       if (!res.ok || !json.ok) {
         if (json.errors) setErrors(json.errors);
         throw new Error(json.error ?? "送信に失敗しました。時間をおいて再度お試しください。");

@@ -1,26 +1,34 @@
-name = "maskoff-site"
-main = "worker/index.ts"
-compatibility_date = "2025-06-01"
-
-[assets]
-directory = "./out"
-binding = "ASSETS"
-not_found_handling = "404-page"
-# /api/* と HTML ページは Worker を通す（メンテナンス時に 503 を返すため）。
-# _next / images / fonts / videos 等の静的アセットは除外し、Worker を経由せず無課金で配信（無料枠を温存）
-run_worker_first = ["/*", "!/_next/*", "!/images/*", "!/fonts/*", "!/videos/*", "!/favicon.ico", "!/robots.txt", "!/sitemap.xml"]
-
-[[kv_namespaces]]
-binding = "RATE_LIMIT"
-id = "63d885ccaa0b4cff9d2a7555e465998a"
+# Cloudflare Pages（Advanced mode: out/_worker.js）の設定。
+# このファイルが正（ダッシュボードでは閲覧のみ）。非機密の変数と KV バインディングはここに書く。
+# 機密（RESEND_API_KEY / TURNSTILE_SECRET_KEY / MICROCMS_WEBHOOK_SECRET / CF_DEPLOY_HOOK_URL）は
+# Pages ダッシュボードの暗号化変数か `wrangler pages secret put` で登録する（Production / Preview 両方）。
+# ビルド時の変数（MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY / NEXT_PUBLIC_* / NODE_VERSION）はダッシュボードの
+# ビルド用環境変数に登録する（ここの [vars] は Function 実行時のみ）。
+name = "maskoff-web-pages"
+pages_build_output_dir = "out"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 # メンテナンス切替。"1" にして push すると全ページが 503 のメンテ画面（worker/maintenance.ts）。戻すときは "0"
 MAINTENANCE = "0"
-SITE_URL = "https://maskoff.co.jp"
+# 正規 URL。フォームの Origin 検証と www → apex の 301 に使う（canonical / OGP / sitemap はビルド時の同名変数）
+NEXT_PUBLIC_SITE_URL = "https://maskoff.co.jp"
 CONTACT_FROM_EMAIL = "MasKOFF <noreply@maskoff.co.jp>"
 CONTACT_TO_EMAIL = "info@maskoff.co.jp"
-GITHUB_REPO = "fujimoto-mo/maskoff-web"
 
-# Secrets（wrangler secret put で登録 / ローカルは .dev.vars）
-#   RESEND_API_KEY / TURNSTILE_SECRET_KEY / MICROCMS_WEBHOOK_SECRET / GITHUB_DISPATCH_TOKEN / SLACK_WEBHOOK_URL
+# レート制限（/api/contact の IP ごとの回数、/api/rebuild の 60 秒ロック）。名前は worker/ の参照（RATE_LIMIT）と一致させる
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "63d885ccaa0b4cff9d2a7555e465998a"
+
+# プレビュー環境（*.pages.dev のブランチデプロイ）は別の KV を使う
+[env.preview]
+[[env.preview.kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "4d32d6bc4915430eb507f810466f0c06"
+[env.preview.vars]
+MAINTENANCE = "0"
+NEXT_PUBLIC_SITE_URL = "https://maskoff.co.jp"
+CONTACT_FROM_EMAIL = "MasKOFF <noreply@maskoff.co.jp>"
+CONTACT_TO_EMAIL = "info@maskoff.co.jp"
