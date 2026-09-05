@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Picture from "@/components/ui/Picture";
+import CmsPicture from "@/components/ui/CmsPicture";
 import Button from "@/components/ui/Button";
 import JsonLd from "@/components/ui/JsonLd";
 import { formatDate } from "@/lib/date";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { getNews, NEWS_CATEGORY_LABELS } from "@/lib/microcms";
 import { SITE } from "@/lib/site";
+import { decodeSlug } from "@/lib/slug";
 
 type Params = { slug: string };
 
@@ -16,19 +17,19 @@ export async function generateStaticParams(): Promise<Params[]> {
 }
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
-  const { slug } = await params;
+  const slug = decodeSlug((await params).slug);
   const item = (await getNews()).find((n) => n.slug === slug);
   if (!item) return {};
   return {
     title: item.title,
     description: `${item.title}（${formatDate(item.publishedDate)}）— 株式会社MasKOFFのニュース。`,
-    alternates: { canonical: `/news/${slug}/` },
+    alternates: { canonical: `/news/${encodeURIComponent(slug)}/` },
   };
 }
 
 /** NEWS 詳細。Article 構造化データ付き（CLAUDE.md §10） */
 export default async function NewsDetailPage({ params }: { params: Promise<Params> }) {
-  const { slug } = await params;
+  const slug = decodeSlug((await params).slug);
   const item = (await getNews()).find((n) => n.slug === slug);
   if (!item) notFound();
   return (
@@ -40,10 +41,10 @@ export default async function NewsDetailPage({ params }: { params: Promise<Param
           headline: item.title,
           datePublished: item.publishedDate,
           dateModified: item.updatedAt ?? item.publishedDate,
-          mainEntityOfPage: `${SITE.url}/news/${slug}/`,
+          mainEntityOfPage: `${SITE.url}/news/${encodeURIComponent(slug)}/`,
           author: { "@type": "Organization", name: SITE.name, url: `${SITE.url}/` },
           publisher: { "@type": "Organization", name: SITE.name, logo: { "@type": "ImageObject", url: `${SITE.url}/images/logo.png` } },
-          ...(item.thumbnail ? { image: [`${SITE.url}${item.thumbnail.url}`] } : {}),
+          ...(item.thumbnail ? { image: [item.thumbnail.url.startsWith("/") ? `${SITE.url}${item.thumbnail.url}` : item.thumbnail.url] } : {}),
         }}
       />
       <JsonLd
@@ -51,7 +52,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<Param
           [
             { name: "HOME", path: "/" },
             { name: "ニュース", path: "/news/" },
-            { name: item.title, path: `/news/${slug}/` },
+            { name: item.title, path: `/news/${encodeURIComponent(slug)}/` },
           ],
           SITE.url,
         )}
@@ -63,7 +64,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<Param
         </time>
         <h1 className="mt-2 max-w-[860px] text-[clamp(22px,3vw,34px)] font-bold leading-[1.5] tracking-[-.02em] text-fg">{item.title}</h1>
         {item.thumbnail ? (
-          <Picture src={item.thumbnail.url} alt="" sizes="(max-width: 900px) 92vw, 720px" className="mt-10 block max-w-[720px]" imgClassName="h-auto w-full" />
+          <CmsPicture image={item.thumbnail} alt="" sizes="(max-width: 900px) 92vw, 720px" className="mt-10 block max-w-[720px]" imgClassName="h-auto w-full" />
         ) : null}
         <div
           className="mt-10 max-w-[720px] text-body leading-[2.1] text-fg-body [&_p]:mt-4 [&_p:first-child]:mt-0 [&_strong]:font-bold [&_strong]:text-fg [&_a]:underline [&_a]:underline-offset-4 [&_a]:text-marker"

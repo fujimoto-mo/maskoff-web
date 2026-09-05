@@ -77,6 +77,9 @@ Pages の Advanced mode では全リクエストが `_worker.js` を通る。除
 **4. 画像を microCMS から直接配信しない。**
 Hobby プランは転送量が月20GBを超えると API が停止する。
 画像はビルド時に取得して `public/` へ同梱し、Cloudflare から配信する。
+NEWS のサムネイルは `scripts/fetch-cms-images.mjs`（`build` の先頭で実行）が microCMS の画像 API で
+AVIF / WebP / 元形式に変換して `public/images/cms/` に保存し、`getNews()` がローカルパスに差し替える。
+表示は `components/ui/CmsPicture.tsx`。同梱前の環境では元 URL の `<img>` にフォールバックする。
 
 **5. 動的ルートには `generateStaticParams` を必ず実装する。**
 静的エクスポートでは必須。無いとビルドが落ちる。

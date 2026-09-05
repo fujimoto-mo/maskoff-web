@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "predev": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/fetch-cms-images.mjs",
     "dev": "next dev",
-    "build": "next build && node scripts/build-worker.mjs",
+    "build": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/fetch-cms-images.mjs && next build && node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/build-worker.mjs",
     "start": "npx serve out",
     "lint": "eslint",
     "typecheck": "tsc --noEmit && tsc -p worker/tsconfig.json --noEmit",

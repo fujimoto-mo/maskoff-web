@@ -1,5 +1,5 @@
 // docs/microcms-schemas/*.json に対応。ただし News.thumbnail はスキーマ上 required だが、フェーズ①は CMS 画像を使わずサンプルにも無いため意図的に optional にしている。フィールドを増やすときは JSON と同時に更新する。
-export type MicroImage = { url: string; width: number; height: number };
+export type MicroImage = { url: string; width: number; height: number; avif?: string; webp?: string }; // avif / webp はビルド時に同梱した場合のみ（lib/cms-images）
 
 type Base = { id: string; createdAt: string; updatedAt: string; publishedAt: string; revisedAt: string };
 
