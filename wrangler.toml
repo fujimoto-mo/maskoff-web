@@ -4,7 +4,7 @@
 # Pages ダッシュボードの暗号化変数か `wrangler pages secret put` で登録する（Production / Preview 両方）。
 # ビルド時の変数（MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY / NEXT_PUBLIC_* / NODE_VERSION）はダッシュボードの
 # ビルド用環境変数に登録する（ここの [vars] は Function 実行時のみ）。
-name = "maskoff-web"
+name = "maskoff-web-pages"
 pages_build_output_dir = "out"
 compatibility_date = "2026-09-01"
 compatibility_flags = ["nodejs_compat"]
