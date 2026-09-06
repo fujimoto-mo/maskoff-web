@@ -13,7 +13,7 @@ compatibility_flags = ["nodejs_compat"]
 [vars]
 # メンテナンス切替。"1" にして push すると全ページが 503 のメンテ画面（worker/maintenance.ts）。戻すときは "0"
 NODE_VERSION = "24.17.0"
-MAINTENANCE = "1"
+MAINTENANCE = "0"
 MICROCMS_SERVICE_DOMAIN = "maskoff"
 # 正規 URL。フォームの Origin 検証と www → apex の 301 に使う（canonical / OGP / sitemap はビルド時の同名変数）
 # NEXT_PUBLIC_SITE_URL = "https://maskoff.co.jp"
