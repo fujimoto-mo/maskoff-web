@@ -2,9 +2,11 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import Picture from "@/components/ui/Picture";
 
-const LOGO_IN_MS_PC = 450; // ロゴ出現から幕の収縮開始まで
-const LOGO_IN_MS_SP = 780;
-const COLLAPSE_MS = 750; // 黒幕がロゴセルの箱へ縮む時間（参考サイト: clip-path .75s）
+// 幕の時間は Lighthouse の LCP（幕が消えるまでヒーロー画像が描画されない）に直結する。2026-09-06 に短縮:
+// ロゴ出現待ち 450/780ms → 200/300ms、収縮 750ms → 450ms、ロゴ出現 0.5s → 0.3s（globals.css）。合計 約 1.8s → 約 1.0s
+const LOGO_IN_MS_PC = 200; // ロゴ出現から幕の収縮開始まで
+const LOGO_IN_MS_SP = 300;
+const COLLAPSE_MS = 450; // 黒幕がロゴセルの箱へ縮む時間（参考サイトは clip-path .75s。LCP 短縮のため 0.45s）
 const CURTAIN_COVER = 2.4; // 黒幕（角丸 22% の正方形）が画面全体を覆うための一辺 = 最遠コーナー距離 × この係数
 const COLLAPSE_EASE = "cubic-bezier(0.65, 0, 0.35, 1)";
 const DONE_FADE_MS = 120; // 収縮後の幕フェード（参考サイト: opacity .12s）
@@ -13,9 +15,9 @@ const DONE_FADE_MS = 120; // 収縮後の幕フェード（参考サイト: opac
  * 初回表示のロゴ幕（参考サイトの intro-veil と同じ手順）。
  * 1. SSR で黒幕だけを出す（ロゴは非表示）。
  * 2. ハイドレーション後にマーキーのロゴセルの箱（[data-lead] [data-lead-box]）の位置・大きさを測り、
- *    同じ場所にロゴ箱を置いて 0.5s フェード + 12px 上昇で出す（data-logo-in）。ロゴは以後動かない。
- * 3. 450ms（≤640 は 780ms）後、黒幕（ロゴセル中心に置いた巨大な角丸 22% の正方形 .veil-curtain）を transform: scale で
- *    その箱の大きさまで 0.75s かけて縮める（黒がロゴに集まる）。clip-path ではなく transform なのでコンポジタで動き、
+ *    同じ場所にロゴ箱を置いて 0.3s フェード + 12px 上昇で出す（data-logo-in）。ロゴは以後動かない。
+ * 3. 200ms（≤640 は 300ms）後、黒幕（ロゴセル中心に置いた巨大な角丸 22% の正方形 .veil-curtain）を transform: scale で
+ *    その箱の大きさまで 0.45s かけて縮める（黒がロゴに集まる）。clip-path ではなく transform なのでコンポジタで動き、
  *    メインスレッドが詰まっても途中で止まらない。
  * 4. 収縮が終わったらロゴセルに data-boing、data-intro を外し kv:launch → 幕を 0.12s フェードしてアンマウント。
  * HOME を開くたびに毎回表示（ブラウザに状態は持たない）。reduced-motion / saveData / html.js 無しではスキップ。
