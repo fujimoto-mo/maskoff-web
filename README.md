@@ -1,6 +1,6 @@
 # MasKOFF Corporate Site
 
-Cloudflare Workers (Static Assets) + Next.js 16 static export + microCMS Hobby + Resend + Turnstile + KV + GitHub Actions — **月額 ¥0**。
+Cloudflare Pages（Advanced mode の `_worker.js`）+ Next.js 16 static export + microCMS Hobby + Resend + Turnstile + KV + GitHub Actions — **月額 ¥0**。
 
 ## ページ構成
 
@@ -39,7 +39,7 @@ cp .dev.vars.example .dev.vars     # Wrangler 実行時（Resend / Turnstile sec
 
 # 5) 開発
 npm run dev                # Next.js のみ（フォーム送信は失敗する）
-npm run preview            # build → wrangler dev（/api/* 含めて本番同等）
+npm run preview            # build → wrangler pages dev（/api/* 含めて本番同等。機密は .dev.vars）
 ```
 
 ## 開発サーバーの起動・停止・再起動
@@ -66,14 +66,20 @@ npm run build && npx serve out -l 3999
 - `next dev` は同じディレクトリで 2 つ起動できない（ロックが掛かる）。「already running」と出たら上の停止コマンドで先に止める
 - 画像を追加・差し替えたときは `npm run build`（`prebuild` で最適化スクリプトが走る）か `node scripts/optimize-images.mjs` を実行してから確認する
 
-## デプロイ
+## デプロイ（Cloudflare Pages）
 
-1. Cloudflare: KV Namespace 作成 → `wrangler.toml` の `id` を置換。Turnstile ウィジェット作成。
-2. `wrangler secret put RESEND_API_KEY / TURNSTILE_SECRET_KEY / MICROCMS_WEBHOOK_SECRET / GITHUB_DISPATCH_TOKEN`（任意で `SLACK_WEBHOOK_URL`）
-3. GitHub Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `MICROCMS_SERVICE_DOMAIN`, `MICROCMS_API_KEY` / Variables: `TURNSTILE_SITE_KEY`
-4. `main` へ push → `.github/workflows/deploy.yml` が build & deploy。
-5. microCMS の各 API に Webhook（カスタム通知）: `https://maskoff.co.jp/api/rebuild`、シークレットは `MICROCMS_WEBHOOK_SECRET` と同値。
-6. Resend でドメイン認証（SPF/DKIM を Cloudflare DNS に追加。既存 SPF がある場合は `include:` を統合）。
+ビルドとデプロイは Pages の Git 連携が行う（`main` へ push → Pages がビルド）。GitHub Actions は日次 cron で Deploy Hook を叩くだけ。
+
+1. Cloudflare → Workers & Pages → Pages プロジェクトを作成（Git 連携）。ビルドコマンド `npm run build`、出力ディレクトリ `out`。
+2. 設定 → 環境変数（Production / Preview 両方）: `MICROCMS_SERVICE_DOMAIN`, `MICROCMS_API_KEY`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `NODE_VERSION`（24.17.0）。
+3. 暗号化変数（Production / Preview 両方）: `RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`, `MICROCMS_WEBHOOK_SECRET`, `CF_DEPLOY_HOOK_URL`（任意で `SLACK_WEBHOOK_URL`）。`npx wrangler pages secret put <NAME> --project-name maskoff-web` でも可。
+4. KV バインディングと非機密の変数は `wrangler.toml` に定義済み（ファイルが正。ダッシュボードでは閲覧のみ）。
+5. 設定 → ビルド → デプロイフック を作成し、URL を 3 の `CF_DEPLOY_HOOK_URL` と GitHub Secrets の `CF_DEPLOY_HOOK_URL`（`.github/workflows/daily-rebuild.yml` 用）に登録。
+6. microCMS の各 API に Webhook（カスタム通知）: `https://maskoff.co.jp/api/rebuild`、シークレットは `MICROCMS_WEBHOOK_SECRET` と同値。
+7. Turnstile のホスト名に `<project>.pages.dev` と `maskoff.co.jp` を登録。Resend でドメイン認証（SPF/DKIM をムームーDNS に追加）。
+8. `<project>.pages.dev` で検証後、カスタムドメイン（apex は ALIAS、www は CNAME）を設定し、`NEXT_PUBLIC_SITE_URL` を本番 URL に変えて再ビルド。
+
+`functions/` ディレクトリは作らない（`_worker.js` と併用不可）。静的アセットと旧 URL は `worker/routes.ts` → `out/_routes.json` で Function の対象外にしている。
 
 ## デザイントークン
 
@@ -99,7 +105,7 @@ npm run build && npx serve out -l 3999
 
 ## メンテナンスモード
 
-`wrangler.toml` の `[vars] MAINTENANCE` がスイッチ。`"1"` で全ページが 503 のメンテ画面（`worker/maintenance.ts`）になり、`/api/contact` も 503 で止まる。`/api/rebuild`（microCMS → 再ビルド）はメンテ中も動く。
+`wrangler.toml` の `[vars] MAINTENANCE` がスイッチ。`"1"` で全ページが 503 のメンテ画面（`worker/maintenance.ts`）になり、`/api/contact` も 503 で止まる。画像・フォントなどの静的アセットは配信を続ける。`/api/rebuild`（microCMS → 再ビルド）はメンテ中も動く。
 
 ```bash
 # ON
@@ -116,8 +122,8 @@ git commit -am "メンテナンス終了" && git push
 curl -sI https://maskoff.co.jp/ | head -1
 
 # ローカルでメンテ画面を確認
-npm run build && npx wrangler dev --var MAINTENANCE:1
+npm run build && npx wrangler pages dev --binding MAINTENANCE=1
 ```
 
-- 緊急時は Cloudflare ダッシュボード（Workers → Settings → Variables）で `MAINTENANCE` を直接書き換えれば数秒で反映される。ただし次の push で `wrangler.toml` の値に戻る
+- `wrangler.toml` が正なのでダッシュボードからは変更できない。反映は Pages のビルド完了後（push から 3〜5 分）
 - 文言・連絡先を変えるときは `worker/maintenance.ts`（連絡先は `CONTACT_TO_EMAIL`）

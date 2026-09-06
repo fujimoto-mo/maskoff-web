@@ -4,8 +4,10 @@ out
 .env*.local
 .dev.vars
 .wrangler
-public/images/optimized
 tsconfig.tsbuildinfo
+# microCMS 画像の同梱物（scripts/fetch-cms-images.mjs がビルド時に生成）
+public/images/cms
+src/lib/images/cms-manifest.json
 next-env.d.ts
 *:Zone.Identifier
 .superpowers/

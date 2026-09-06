@@ -1,6 +1,7 @@
-# Wrangler ランタイム（Worker）— WSL 内で作成すること
+# Function 実行時の機密（wrangler pages dev 用）— WSL 内で作成すること。本番は Pages ダッシュボードの暗号化変数に登録
 RESEND_API_KEY=re_xxxxxxxx
 TURNSTILE_SECRET_KEY=
 MICROCMS_WEBHOOK_SECRET=change-me
-GITHUB_DISPATCH_TOKEN=github_pat_xxxxxxxx
+# Pages → 設定 → ビルド → デプロイフック で作成した URL
+CF_DEPLOY_HOOK_URL=
 SLACK_WEBHOOK_URL=

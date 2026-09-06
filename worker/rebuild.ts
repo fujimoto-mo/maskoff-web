@@ -2,12 +2,13 @@ import type { Env } from "./index.ts";
 import { json } from "./lib/json.ts";
 
 /**
- * microCMS Webhook → GitHub Actions workflow_dispatch
+ * microCMS Webhook → Cloudflare Pages の Deploy Hook
  * microCMS 側: 「カスタム通知」URL = https://<domain>/api/rebuild、シークレット = MICROCMS_WEBHOOK_SECRET
  * 署名は X-MICROCMS-Signature (HMAC-SHA256, hex) で検証。
  * - シークレット未設定なら必ず拒否（フェイルクローズ。未設定のまま公開しても穴にならない）
  * - 比較は crypto.subtle.verify（定数時間）。hex の手組み比較はしない
- * - 署名が正しくても 60 秒に 1 回しか dispatch しない（連打・リプレイ対策）
+ * - 署名が正しくても 60 秒に 1 回しか Deploy Hook を叩かない（連打・リプレイでビルド枠を消費されない）
+ * Deploy Hook の URL は知っていれば誰でもビルドを起動できるため、Pages の暗号化変数 CF_DEPLOY_HOOK_URL に置く。
  */
 const enc = new TextEncoder();
 
@@ -32,21 +33,16 @@ export async function handleRebuild(req: Request, env: Env, fetchFn: typeof fetc
   if (!(await verifySignature(body, req.headers.get("x-microcms-signature"), env.MICROCMS_WEBHOOK_SECRET))) {
     return json({ ok: false, error: "invalid signature" }, 401);
   }
+  if (!env.CF_DEPLOY_HOOK_URL) {
+    console.error("CF_DEPLOY_HOOK_URL が未設定です");
+    return json({ ok: false, error: "deploy hook not configured" }, 500);
+  }
   // 連打対策: 60秒に1回まで
   const lock = await env.RATE_LIMIT.get("rebuild:lock");
   if (lock) return json({ ok: true, skipped: true });
   await env.RATE_LIMIT.put("rebuild:lock", "1", { expirationTtl: 60 });
 
-  const r = await fetchFn(`https://api.github.com/repos/${env.GITHUB_REPO}/actions/workflows/deploy.yml/dispatches`, {
-    method: "POST",
-    headers: {
-      authorization: `Bearer ${env.GITHUB_DISPATCH_TOKEN}`,
-      accept: "application/vnd.github+json",
-      "user-agent": "maskoff-site-worker",
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({ ref: "main" }),
-  });
-  if (r.status !== 204) return json({ ok: false, error: `GitHub ${r.status}` }, 502);
+  const r = await fetchFn(env.CF_DEPLOY_HOOK_URL, { method: "POST" });
+  if (!r.ok) return json({ ok: false, error: `Deploy Hook ${r.status}` }, 502);
   return json({ ok: true });
 }

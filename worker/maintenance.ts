@@ -3,7 +3,7 @@
  * index.ts が /api/* 以外の全リクエストにこれを返す（Google は一時停止と解釈しインデックスを保つ）。
  *
  * Next のビルドに依存しない自己完結 HTML にしている（ビルドが壊れている時こそ出したい画面のため）。
- * ロゴとフォントは /images/* /fonts/* から読む。どちらも run_worker_first の除外対象なので
+ * ロゴとフォントは /images/* /fonts/* から読む。どちらも _routes.json（worker/routes.ts）で Function の対象外なので
  * メンテ中も Worker を通らずそのまま配信される。色・余白の値は src/styles/tokens.css と同じ。
  */
 export function maintenanceHtml(email: string): string {

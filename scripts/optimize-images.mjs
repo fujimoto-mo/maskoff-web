@@ -7,6 +7,7 @@ import sharp from "sharp";
 
 const SRC = "public/images";
 const OUT = "public/images/optimized";
+const CMS = "public/images/cms"; // microCMS から取得した同梱画像（fetch-cms-images.mjs が変換済み）は対象外
 const MANIFEST = "src/lib/images/manifest.json";
 
 async function walk(dir) {
@@ -14,7 +15,7 @@ async function walk(dir) {
   for (const e of await readdir(dir, { withFileTypes: true })) {
     const p = join(dir, e.name);
     if (e.isDirectory()) {
-      if (p !== OUT) out.push(...(await walk(p)));
+      if (p !== OUT && p !== CMS) out.push(...(await walk(p)));
     } else if (/\.(jpe?g|png)$/i.test(e.name)) out.push(p);
   }
   return out;
