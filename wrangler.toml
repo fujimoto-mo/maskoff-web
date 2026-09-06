@@ -1,42 +1,44 @@
 # Cloudflare Pages（Advanced mode: out/_worker.js）の設定。
-# このファイルが正（ダッシュボードでは閲覧のみ）。非機密の変数と KV バインディングはここに書く。
-# 機密（RESEND_API_KEY / TURNSTILE_SECRET_KEY / MICROCMS_WEBHOOK_SECRET / CF_DEPLOY_HOOK_URL）は
-# Pages ダッシュボードの暗号化変数か `wrangler pages secret put` で登録する（Production / Preview 両方）。
-# ビルド時の変数（MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY / NEXT_PUBLIC_* / NODE_VERSION）はダッシュボードの
-# ビルド用環境変数に登録する（ここの [vars] は Function 実行時のみ）。
+# 非機密の変数と KV バインディングはここに書く（ダッシュボードでは平文変数を追加できない）。
+# 機密（RESEND_API_KEY / TURNSTILE_SECRET_KEY / MICROCMS_API_KEY /
+# MICROCMS_WEBHOOK_SECRET / CF_DEPLOY_HOOK_URL）はダッシュボードの暗号化変数、
+# または `wrangler pages secret put` で登録する（Production / Preview 両方）。
+# NODE_VERSION はビルド環境が読む値のため、ダッシュボードの「ビルド用環境変数」に登録する。
+
 name = "maskoff-web-pages"
 pages_build_output_dir = "out"
 compatibility_date = "2026-09-01"
 compatibility_flags = ["nodejs_compat"]
 
-# --- Production（本番）---
+# ===== Production =====
 [vars]
-# メンテナンス切替。"1" にして push すると全ページが 503 のメンテ画面（worker/maintenance.ts）。戻すときは "0"
-NODE_VERSION = "24.17.0"
+# メンテナンス切替。"1" で全ページ 503（worker/maintenance.ts）。戻すときは "0"
 MAINTENANCE = "0"
 MICROCMS_SERVICE_DOMAIN = "maskoff"
-# 正規 URL。フォームの Origin 検証と www → apex の 301 に使う（canonical / OGP / sitemap はビルド時の同名変数）
+# 正規 URL。canonical / OGP / sitemap / Origin 検証 / www→apex 301 に使う
+# 切替当日に下の行をコメントアウトし、上の行を有効化する
 # NEXT_PUBLIC_SITE_URL = "https://maskoff.co.jp"
 NEXT_PUBLIC_SITE_URL = "https://maskoff-web-pages.pages.dev"
+NEXT_PUBLIC_TURNSTILE_SITE_KEY = "0x4AAAAAAEmu5fYpKNKnUPAI"
 CONTACT_FROM_EMAIL = "MasKOFF <noreply@maskoff.co.jp>"
 CONTACT_TO_EMAIL = "info@maskoff.co.jp"
-NEXT_PUBLIC_TURNSTILE_SITE_KEY = "0x4AAAAAAEmu5fYpKNKnUPAI"
 
-# レート制限（/api/contact の IP ごとの回数、/api/rebuild の 60 秒ロック）。名前は worker/ の参照（RATE_LIMIT）と一致させる
+# レート制限。binding 名は worker/ 側の参照と一致させること
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
 id = "63d885ccaa0b4cff9d2a7555e465998a"
 
-# プレビュー環境（*.pages.dev のブランチデプロイ）は別の KV を使う
+# ===== Preview（*.pages.dev のブランチデプロイ）=====
 [env.preview]
+
 [[env.preview.kv_namespaces]]
 binding = "RATE_LIMIT"
 id = "4d32d6bc4915430eb507f810466f0c06"
+
 [env.preview.vars]
-NODE_VERSION = "24.17.0"
 MAINTENANCE = "0"
 MICROCMS_SERVICE_DOMAIN = "maskoff"
-CONTACT_FROM_EMAIL = "MasKOFF <noreply@maskoff.co.jp>"
-CONTACT_TO_EMAIL = "info@maskoff.co.jp"
 NEXT_PUBLIC_SITE_URL = "https://staging.maskoff-web-pages.pages.dev"
 NEXT_PUBLIC_TURNSTILE_SITE_KEY = "0x4AAAAAAEmu5fYpKNKnUPAI"
+CONTACT_FROM_EMAIL = "MasKOFF <noreply@maskoff.co.jp>"
+CONTACT_TO_EMAIL = "info@maskoff.co.jp"
