@@ -12,6 +12,10 @@ export default function CmsPicture({ image, alt, sizes, className, imgClassName 
   if (image.avif && image.webp) {
     return <Picture src={image.url} alt={alt} sizes={sizes} className={className} imgClassName={imgClassName} entry={{ width: image.width, height: image.height, avif: image.avif, webp: image.webp }} />;
   }
+  // サンプルデータ（src/content/sample.ts）の画像は public/images/ 配下なので通常の manifest で AVIF / WebP を出す
+  if (image.url.startsWith("/images/")) {
+    return <Picture src={image.url} alt={alt} sizes={sizes} className={className} imgClassName={imgClassName} />;
+  }
   return (
     <picture className={className}>
       <img src={image.url} alt={alt} width={image.width} height={image.height} sizes={sizes} className={imgClassName} loading="lazy" decoding="async" />
