@@ -9,13 +9,18 @@ pages_build_output_dir = "out"
 compatibility_date = "2026-09-01"
 compatibility_flags = ["nodejs_compat"]
 
+# --- Production（本番）---
 [vars]
 # メンテナンス切替。"1" にして push すると全ページが 503 のメンテ画面（worker/maintenance.ts）。戻すときは "0"
+NODE_VERSION = "24.17.0"
 MAINTENANCE = "0"
+MICROCMS_SERVICE_DOMAIN = "maskoff"
 # 正規 URL。フォームの Origin 検証と www → apex の 301 に使う（canonical / OGP / sitemap はビルド時の同名変数）
-NEXT_PUBLIC_SITE_URL = "https://maskoff.co.jp"
+# NEXT_PUBLIC_SITE_URL = "https://maskoff.co.jp"
+NEXT_PUBLIC_SITE_URL = "https://maskoff-web-pages.pages.dev"
 CONTACT_FROM_EMAIL = "MasKOFF <noreply@maskoff.co.jp>"
 CONTACT_TO_EMAIL = "info@maskoff.co.jp"
+NEXT_PUBLIC_TURNSTILE_SITE_KEY = "0x4AAAAAAEmu5fYpKNKnUPAI"
 
 # レート制限（/api/contact の IP ごとの回数、/api/rebuild の 60 秒ロック）。名前は worker/ の参照（RATE_LIMIT）と一致させる
 [[kv_namespaces]]
@@ -28,7 +33,10 @@ id = "63d885ccaa0b4cff9d2a7555e465998a"
 binding = "RATE_LIMIT"
 id = "4d32d6bc4915430eb507f810466f0c06"
 [env.preview.vars]
+NODE_VERSION = "24.17.0"
 MAINTENANCE = "0"
-NEXT_PUBLIC_SITE_URL = "https://maskoff.co.jp"
+MICROCMS_SERVICE_DOMAIN = "maskoff"
 CONTACT_FROM_EMAIL = "MasKOFF <noreply@maskoff.co.jp>"
 CONTACT_TO_EMAIL = "info@maskoff.co.jp"
+NEXT_PUBLIC_SITE_URL = "https://staging.maskoff-web-pages.pages.dev"
+NEXT_PUBLIC_TURNSTILE_SITE_KEY = "0x4AAAAAAEmu5fYpKNKnUPAI"
