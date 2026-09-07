@@ -166,7 +166,7 @@ export default function ServicePage() {
                   alt=""
                   sizes="(max-width: 960px) 100vw, 50vw"
                   className="block size-full"
-                  imgClassName="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  imgClassName={cn("size-full transition-transform duration-500 group-hover:scale-[1.03]", s.imageFit === "contain" ? "object-contain" : "object-cover")}
                 />
               </Link>
             </article>
