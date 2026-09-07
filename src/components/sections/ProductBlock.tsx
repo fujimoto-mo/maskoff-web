@@ -7,8 +7,8 @@ import { SITE } from "@/lib/site";
 
 const COPY = [
   `${SITE.product}は、未経験の方でも即戦力のエンジニアを目指せるプログラミングスクールです。`,
-  "PHP、HTML/CSS、JavaScript、インフラを学べ、オンラインとオフラインの両方でアクセス可能です。",
-  "現役エンジニアのサポート、カスタマイズ可能なカリキュラムなどスキルアップ環境が充実しています。",
+  "PHP、HTML/CSS、JavaScript、インフラを学べ、オンラインでアクセスして学習していきます。",
+  "エンジニアのサポート、カスタマイズ可能なカリキュラムなどスキルアップ環境が充実しています。",
 ] as const;
 
 const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as CSSProperties;
