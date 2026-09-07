@@ -5,6 +5,7 @@ import CarouselDots from "@/components/ui/CarouselDots";
 import Picture from "@/components/ui/Picture";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { revealDelay } from "@/components/motion/reveal-delay";
+import { cn } from "@/lib/cn";
 import { SERVICES, type Service } from "@/lib/services";
 
 type Props = {
@@ -34,7 +35,7 @@ export default function ServiceGrid({ services = SERVICES, limit = 6 }: Props) {
                     alt=""
                     sizes="(max-width: 600px) 80vw, (max-width: 960px) 50vw, 33vw"
                     className="block size-full"
-                    imgClassName="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    imgClassName={cn("size-full transition-transform duration-500 group-hover:scale-[1.03]", s.imageFit === "contain" ? "object-contain" : "object-cover")}
                   />
                   <span
                     aria-hidden

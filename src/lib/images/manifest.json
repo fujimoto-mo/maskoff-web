@@ -84,7 +84,7 @@
     "webp": "/images/optimized/hero/hero-14.webp"
   },
   "/images/hero/hero-15.png": {
-    "width": 674,
+    "width": 650,
     "height": 716,
     "avif": "/images/optimized/hero/hero-15.avif",
     "webp": "/images/optimized/hero/hero-15.webp"
@@ -186,20 +186,20 @@
     "webp": "/images/optimized/product/techmasklab.webp"
   },
   "/images/service/svc-01.png": {
-    "width": 800,
-    "height": 800,
+    "width": 1600,
+    "height": 1103,
     "avif": "/images/optimized/service/svc-01.avif",
     "webp": "/images/optimized/service/svc-01.webp"
   },
-  "/images/service/svc-02.png": {
-    "width": 800,
-    "height": 800,
+  "/images/service/svc-02.jpg": {
+    "width": 1448,
+    "height": 1086,
     "avif": "/images/optimized/service/svc-02.avif",
     "webp": "/images/optimized/service/svc-02.webp"
   },
-  "/images/service/svc-03.png": {
-    "width": 800,
-    "height": 800,
+  "/images/service/svc-03.jpg": {
+    "width": 1600,
+    "height": 1067,
     "avif": "/images/optimized/service/svc-03.avif",
     "webp": "/images/optimized/service/svc-03.webp"
   },
@@ -209,15 +209,15 @@
     "avif": "/images/optimized/service/svc-04.avif",
     "webp": "/images/optimized/service/svc-04.webp"
   },
-  "/images/service/svc-05.png": {
-    "width": 800,
-    "height": 800,
+  "/images/service/svc-05.jpg": {
+    "width": 1448,
+    "height": 1086,
     "avif": "/images/optimized/service/svc-05.avif",
     "webp": "/images/optimized/service/svc-05.webp"
   },
-  "/images/service/svc-06.png": {
-    "width": 800,
-    "height": 800,
+  "/images/service/svc-06.jpg": {
+    "width": 1448,
+    "height": 1086,
     "avif": "/images/optimized/service/svc-06.avif",
     "webp": "/images/optimized/service/svc-06.webp"
   },
@@ -227,9 +227,9 @@
     "avif": "/images/optimized/service/svc-07.avif",
     "webp": "/images/optimized/service/svc-07.webp"
   },
-  "/images/service/svc-08.png": {
-    "width": 800,
-    "height": 800,
+  "/images/service/svc-08.jpg": {
+    "width": 1448,
+    "height": 1086,
     "avif": "/images/optimized/service/svc-08.avif",
     "webp": "/images/optimized/service/svc-08.webp"
   },

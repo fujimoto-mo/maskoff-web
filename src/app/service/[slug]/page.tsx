@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import JsonLd from "@/components/ui/JsonLd";
 import Picture from "@/components/ui/Picture";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { cn } from "@/lib/cn";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { SERVICES } from "@/lib/services";
 import { SITE } from "@/lib/site";
@@ -109,7 +110,7 @@ export default async function ServiceDetailPage({
             sizes="100vw"
             priority
             className="block size-full"
-            imgClassName="size-full object-cover"
+            imgClassName={cn("size-full", s.imageFit === "contain" ? "object-contain" : "object-cover")}
           />
         </div>
       </div>

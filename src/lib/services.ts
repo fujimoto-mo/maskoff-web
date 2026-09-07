@@ -17,8 +17,10 @@ export type Service = {
   description: string;
   /** タグチップ（3 つ） */
   tags: readonly string[];
-  /** 正方形。public/images/service/ */
+  /** public/images/service/。imageFit が cover（既定）のときは正方形にする */
   image: string;
+  /** 画像の収め方。写真は cover（既定）。透過背景のモックアップなど全体を見せたい画像は contain（余白は枠の bg-surface） */
+  imageFit?: "cover" | "contain";
 };
 
 export const SERVICES: readonly Service[] = [
@@ -33,6 +35,7 @@ export const SERVICES: readonly Service[] = [
       `未経験からエンジニアを目指す実践型カリキュラム「${SITE.product}」を運営。実案件ベースの課題と現役エンジニアのメンタリングで、現場で通用するスキルを育てます。`,
     tags: ["プログラミング教育", "実案件ベース", "メンタリング"],
     image: "/images/service/svc-01.png",
+    imageFit: "contain",
   },
   {
     slug: "recruitment-ads",
@@ -44,7 +47,7 @@ export const SERVICES: readonly Service[] = [
     description:
       "各種求人媒体の正規代理店として、媒体選定から原稿制作、掲載後の運用改善までをワンストップで支援。採用ターゲットに届く広告設計で、企業の採用力を高めます。",
     tags: ["媒体選定", "原稿制作", "運用改善"],
-    image: "/images/service/svc-02.png",
+    image: "/images/service/svc-02.jpg",
   },
   {
     slug: "web-development",
@@ -56,7 +59,7 @@ export const SERVICES: readonly Service[] = [
     description:
       "業務システムからサービス立ち上げまで、企画・UI/UX設計・開発・運用を一貫して提供。小さく速くリリースし、改善を重ねる開発スタイルで事業の成長に伴走します。",
     tags: ["受託開発", "UI/UX設計", "保守運用"],
-    image: "/images/service/svc-03.png",
+    image: "/images/service/svc-03.jpg",
   },
   {
     slug: "career-support",
@@ -80,7 +83,7 @@ export const SERVICES: readonly Service[] = [
     description:
       "事務・カスタマーサポートなどのバックオフィス業務を受託。業務フローの設計から運用まで担い、お客様がコア業務に集中できる体制をつくります。",
     tags: ["事務代行", "カスタマーサポート", "運用設計"],
-    image: "/images/service/svc-05.png",
+    image: "/images/service/svc-05.jpg",
   },
   {
     slug: "apparel-consulting",
@@ -92,7 +95,7 @@ export const SERVICES: readonly Service[] = [
     description:
       "オリジナルブランド運営で培った知見をもとに、ブランド立ち上げ・OEM/ODM・販売戦略を支援。コンセプト設計からものづくり、売り場づくりまで伴走します。",
     tags: ["ブランド設計", "OEM / ODM", "販売戦略"],
-    image: "/images/service/svc-06.png",
+    image: "/images/service/svc-06.jpg",
   },
   {
     slug: "cross-border-ec",
@@ -116,6 +119,6 @@ export const SERVICES: readonly Service[] = [
     description:
       "中小企業のITツール選定・導入・定着をサポート。補助金の活用支援も含め、現場に無理なく根づくDXを、伴走型で実現します。",
     tags: ["ITツール選定", "補助金活用", "定着支援"],
-    image: "/images/service/svc-08.png",
+    image: "/images/service/svc-08.jpg",
   },
 ];
