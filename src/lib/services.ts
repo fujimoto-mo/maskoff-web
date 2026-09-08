@@ -71,7 +71,7 @@ export const SERVICES: readonly Service[] = [
     description:
       `キャリア面談・人材紹介・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。${SITE.product}修了生のキャリアサポートとも連動しています。`,
     tags: ["キャリア面談", "人材紹介", "研修"],
-    image: "/images/service/svc-04.png",
+    image: "/images/service/svc-04.jpg",
   },
   {
     slug: "bpo",
