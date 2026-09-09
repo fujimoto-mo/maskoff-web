@@ -10,7 +10,7 @@ export default function ThanksPage() {
       <SectionHeading as="h1" en="THANK YOU" ja="お問い合わせを受け付けました" id="thanks-title" />
       <p className="max-w-[40em] text-body text-fg-body">確認メールをお送りしました。担当より 2 営業日以内にご連絡いたします。届かない場合は迷惑メールフォルダをご確認ください。</p>
       <p className="mt-10">
-        <Button href="/" variant="line">
+        <Button href="/" variant="liquid">
           HOME へ戻る
         </Button>
       </p>

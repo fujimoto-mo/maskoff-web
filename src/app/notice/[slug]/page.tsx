@@ -54,7 +54,7 @@ export default async function NoticeDetailPage({ params }: { params: Promise<Par
           dangerouslySetInnerHTML={{ __html: item.body }}
         />
         <div className="mt-14">
-          <Button href="/notice/" variant="line">
+          <Button href="/notice/" variant="liquid">
             お知らせ一覧へ戻る
           </Button>
         </div>
