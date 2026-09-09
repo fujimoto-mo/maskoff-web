@@ -227,11 +227,17 @@
     "avif": "/images/optimized/service/svc-07.avif",
     "webp": "/images/optimized/service/svc-07.webp"
   },
-  "/images/service/svc-08.jpg": {
-    "width": 1448,
-    "height": 1086,
+  "/images/service/svc-08.png": {
+    "width": 800,
+    "height": 800,
     "avif": "/images/optimized/service/svc-08.avif",
     "webp": "/images/optimized/service/svc-08.webp"
+  },
+  "/images/service/svc-09.jpg": {
+    "width": 1448,
+    "height": 1086,
+    "avif": "/images/optimized/service/svc-09.avif",
+    "webp": "/images/optimized/service/svc-09.webp"
   },
   "/images/vision/cube.jpg": {
     "width": 800,
