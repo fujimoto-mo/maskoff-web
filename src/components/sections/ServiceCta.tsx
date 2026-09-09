@@ -26,7 +26,7 @@ export default function ServiceCta() {
         style={{ "--rd": "160ms" } as CSSProperties}
         className="mt-8"
       >
-        <Button href="/contact/" dot className="px-10 py-3.5 text-[14px]">
+        <Button href="/contact/" variant="liquid" size="md">
           CONTACT
         </Button>
       </div>

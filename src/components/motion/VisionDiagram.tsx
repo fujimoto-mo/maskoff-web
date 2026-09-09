@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { cubeGeometry } from "@/components/motion/cube-geometry";
+import { LEADS_PC, LEADS_SP, SP, pointsAttr } from "@/components/motion/vision-leads";
 import Picture from "@/components/ui/Picture";
 import { VISION_FACES } from "@/content/vision-diagram";
 import { cn } from "@/lib/cn";
@@ -16,13 +17,7 @@ const PHOTO_BOX = {
   width: `${((CUBE.upperRight.x - CUBE.upperLeft.x) / 540) * 100}%`,
   height: `${((CUBE.bottom.y - CUBE.top.y) / 440) * 100}%`,
 } as const;
-/** 引き出し線（PC / タブレット）: 面の中 → 斜め → 事業名ブロックの端へ水平。始点は各面の内側 */
-const LEADS = [
-  "318,112 395,43 417,43",
-  "232,270 196,368 179,368",
-  "308,270 340,368 349,368",
-] as const;
-/** 事業名ブロックの位置。引き出し線が届く内側の端を基準にする（% は viewBox 540x440 に対する比率。423/540、173/540、355/540、354/440） */
+/** 事業名ブロックの位置（PC / タブレット。引き出し線は vision-leads.ts の LEADS_PC）。引き出し線が届く内側の端を基準にする（% は viewBox 540x440 に対する比率。423/540、173/540、355/540、354/440） */
 const BLOCK_POS = [
   "top-0 left-[78.3%]",
   "top-[80.5%] right-[68%]",
@@ -35,14 +30,45 @@ const BLOCK_POS = [
  * 面ラベルがぼかしから出現 → 引き出し線を描いて事業名がフェード。
  * 事業名は HTML（検索・読み上げに乗せる）。PC では @container の cqw 単位で文字を立方体と同率に拡縮させ
  * （15px で頭打ち）、引き出し線が届く内側の端を基準に置くので SVG 座標の引き出し線とズレない。
- * SP は引き出し線を消し、立方体の下に縦積み。
+ * SP は HR を右上（幅 40% を右寄せ、SVG の上端に 11% 重ねる）、IT / RC を立方体の下の 2 列（各 49%、SVG 下端から 12% 引き上げ）に置き、
+ * SP 用の引き出し線（LEADS_SP）でつなぐ。配置比率は vision-leads.ts の SP を CSS 変数で渡し、線の座標と同じ値を使う。
  * 出現後は 3 面が 9s 周期で順に明るくなり（vd-glow）、7s ごとに斜めの光が立方体を横切る（vd-sheen）。
  * 面の中は写真（Picture を六角形に clip-path）。膜・稜線・ラベルはトークン / currentColor で、
  * VISION の黒反転に追従する。reduced-motion では常時アニメを止める。
  * @example <VisionDiagram />
  */
+const pct = (ratio: number) => `${Math.round(ratio * 1000) / 10}%`;
+
 export default function VisionDiagram() {
   const Y = [CUBE.upperLeft, CUBE.upperRight, CUBE.bottom];
+  /** 事業名ブロック。i = 0: HR / 1: IT / 2: RC（VISION_FACES・LEADS の順） */
+  const block = (i: number) => {
+    const face = VISION_FACES[i];
+    return (
+      <div
+        key={face.code}
+        className={cn(
+          // PC: 文字は幅に比例（540px で 13px）だが 15px で頭打ち。内側の端を基準に置くので、頭打ち後も引き出し線とはずれない
+          "vd-lbl absolute whitespace-nowrap text-[min(2.4cqw,15px)] leading-[2.2] font-medium text-fg-muted",
+          BLOCK_POS[i],
+          // SP: 12px（390px 幅で長い事業名が 2 列に収まる上限）。幅は CSS 変数（vision-leads.ts の SP）
+          "max-sp:static max-sp:whitespace-normal max-sp:text-[12px] max-sp:[text-wrap:balance]",
+          i === 0
+            ? "max-sp:order-first max-sp:w-[var(--vd-hr-w)] max-sp:self-end max-sp:mb-[var(--vd-hr-mb)]"
+            : "max-sp:w-[var(--vd-col-w)]",
+        )}
+        style={{ "--ni": i } as CSSProperties}
+      >
+        {/* 面の英字。立方体の面と引き出し線で対応が分かるので読み上げ専用 */}
+        <p className="sr-only">{face.code}</p>
+        <ul>
+          {face.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
   const HEX = [
     CUBE.top,
     CUBE.upperRight,
@@ -56,7 +82,15 @@ export default function VisionDiagram() {
   return (
     <div
       data-reveal="diagram"
-      className="@container relative w-full max-w-[756px] self-center justify-self-center max-tab:order-last max-tab:mt-2.5 max-sp:flex max-sp:flex-col max-sp:gap-6"
+      className="@container relative w-full max-w-[756px] self-center justify-self-center max-tab:order-last max-tab:mt-2.5 max-sp:flex max-sp:flex-col"
+      style={
+        {
+          "--vd-hr-w": pct(1 - SP.hrLeft),
+          "--vd-hr-mb": pct(-SP.hrBottom),
+          "--vd-row-mt": pct(-SP.rowTop),
+          "--vd-col-w": pct(SP.col),
+        } as CSSProperties
+      }
     >
       {/* 写真と SVG を同じ箱に入れる（SP では外側が flex-col になり高さが変わるため、% の基準をここに固定） */}
       <div className="relative">
@@ -144,46 +178,38 @@ export default function VisionDiagram() {
               </text>
             ))}
           </g>
-          <g aria-hidden className="max-sp:hidden">
-            {LEADS.map((pts, i) => (
-              <polyline
-                key={pts}
-                className="vd-lead"
-                points={pts}
-                fill="none"
-                stroke="currentColor"
-                strokeOpacity="0.55"
-                strokeWidth="1.25"
-                pathLength={1}
-                style={{ "--ni": i } as CSSProperties}
-              />
-            ))}
-          </g>
+          {/* 引き出し線。PC / タブレットと SP で経路が違うので 2 組を持ち CSS で出し分ける */}
+          {(
+            [
+              ["max-sp:hidden", LEADS_PC],
+              ["hidden max-sp:block", LEADS_SP],
+            ] as const
+          ).map(([cls, leads]) => (
+            <g key={cls} aria-hidden className={cls}>
+              {leads.map((lead, i) => (
+                <polyline
+                  key={i}
+                  className="vd-lead"
+                  points={pointsAttr(lead)}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeOpacity="0.55"
+                  strokeWidth="1.25"
+                  pathLength={1}
+                  style={{ "--ni": i } as CSSProperties}
+                />
+              ))}
+            </g>
+          ))}
         </svg>
       </div>
-      {VISION_FACES.map((face, i) => (
-        <div
-          key={face.code}
-          className={cn(
-            // 文字は幅に比例（540px で 13px）だが 15px で頭打ち。内側の端を基準に置くので、頭打ち後も引き出し線とはずれない
-            "vd-lbl absolute whitespace-nowrap text-[min(2.4cqw,15px)] leading-[2.2] font-medium text-fg-muted max-sp:static max-sp:whitespace-normal max-sp:text-[13px]",
-            BLOCK_POS[i],
-            // SP: viewBox 下部の引き出し線用の空き（約 20%）を詰める
-            i === 0 && "max-sp:-mt-9",
-          )}
-          style={{ "--ni": i } as CSSProperties}
-        >
-          {/* 面の英字。PC では立方体の面と引き出し線で対応が分かるので読み上げ専用、SP では見出しとして表示 */}
-          <p className="sr-only font-display text-[16px] font-bold text-fg max-sp:not-sr-only max-sp:mb-1">
-            {face.code}
-          </p>
-          <ul>
-            {face.items.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      {/* HR（上面）。SP では order-first で SVG の上に回り、右寄せ 40% 幅で右上の空きに重なる */}
+      {block(0)}
+      {/* IT / RC（左面・右面）。PC は contents で包みを消し container 基準の absolute のまま。SP は 2 列の行 */}
+      <div className="contents max-sp:flex max-sp:justify-between max-sp:mt-[var(--vd-row-mt)]">
+        {block(1)}
+        {block(2)}
+      </div>
     </div>
   );
 }

@@ -14,7 +14,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "事業内容",
   description:
-    `株式会社MasKOFFの8つの事業。${SITE.product} エンジニアカリキュラム、求人広告代理店、WEBアプリ開発、キャリア支援、BPO、アパレルコンサルティング、海外越境EC導入支援、中小向けIT導入支援。`,
+    `株式会社MasKOFFの9つの事業。${SITE.product} エンジニアカリキュラム、求人広告代理店、WEBアプリ開発、キャリア支援、BPO、アパレルコンサルティング、TiPLY、海外越境EC導入支援、中小向けIT導入支援。`,
   alternates: { canonical: "/service/" },
 };
 
@@ -81,11 +81,11 @@ export default function ServicePage() {
           </span>
         </h1>
         <p className="mt-10 text-[16px] font-medium text-fg-body max-sp:text-[14px]">
-          事業内容 — 個性と技術で、人と事業を支える8つのサービス。
+          事業内容 — 個性と技術で、人と事業を支える9つのサービス。
         </p>
       </section>
 
-      {/* マーキー帯: 8 事業の英字ラベル */}
+      {/* マーキー帯: 9 事業の英字ラベル */}
       <div
         aria-hidden
         className="overflow-hidden border-y border-border py-3 whitespace-nowrap"

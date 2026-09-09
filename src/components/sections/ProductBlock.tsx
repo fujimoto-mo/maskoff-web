@@ -52,7 +52,7 @@ export default function ProductBlock() {
               ))}
             </div>
             <div data-reveal="up" style={rd(4)} className="mt-8">
-              <Button href="/service/tech-education/" dot>
+              <Button href="/service/tech-education/" variant="liquid">
                 詳しく見る
               </Button>
             </div>

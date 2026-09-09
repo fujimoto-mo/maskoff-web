@@ -7,7 +7,7 @@ export default function NotFound() {
       <SectionHeading as="h1" en="404" ja="ページが見つかりません" id="nf-title" />
       <p className="text-body text-fg-body">URL が変更されたか、ページが削除された可能性があります。</p>
       <p className="mt-10">
-        <Button href="/" variant="line">
+        <Button href="/" variant="liquid">
           HOME へ戻る
         </Button>
       </p>

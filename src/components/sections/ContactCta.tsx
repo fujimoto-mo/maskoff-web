@@ -15,7 +15,7 @@ export default function ContactCta() {
           アパレル企画、ホームページ制作、アーティスト支援など、お気軽にご相談ください。
         </p>
         <div data-reveal="up" style={{ "--rd": "80ms" } as React.CSSProperties} className="mt-8">
-          <Button href="/contact/" dot className="px-10 py-3.5 text-[14px]">
+          <Button href="/contact/" variant="liquid" size="md">
             お問い合わせフォームへ
           </Button>
         </div>

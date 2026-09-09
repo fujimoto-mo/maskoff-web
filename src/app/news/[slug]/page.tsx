@@ -71,7 +71,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<Param
           dangerouslySetInnerHTML={{ __html: item.body }}
         />
         <div className="mt-14">
-          <Button href="/news/" variant="line">
+          <Button href="/news/" variant="liquid">
             ニュース一覧へ戻る
           </Button>
         </div>

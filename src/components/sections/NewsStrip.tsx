@@ -39,7 +39,7 @@ export default function NewsStrip({ news, notice }: Props) {
             ))}
           </ul>
           <p className="mt-6">
-            <Button href="/news/" variant="line">
+            <Button href="/news/" variant="liquid">
               すべてのニュース
             </Button>
           </p>
@@ -52,7 +52,7 @@ export default function NewsStrip({ news, notice }: Props) {
             ))}
           </ul>
           <p className="mt-6">
-            <Button href="/notice/" variant="line">
+            <Button href="/notice/" variant="liquid">
               すべてのお知らせ
             </Button>
           </p>

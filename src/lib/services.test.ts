@@ -3,10 +3,10 @@ import assert from "node:assert/strict";
 import { SERVICES } from "./services.ts";
 import manifest from "./images/manifest.json" with { type: "json" };
 
-test("SERVICES: 8 事業、slug は一意の kebab-case、番号は 01〜08 の順", () => {
-  assert.equal(SERVICES.length, 8);
+test("SERVICES: 9 事業、slug は一意の kebab-case、番号は 01〜09 の順", () => {
+  assert.equal(SERVICES.length, 9);
   const slugs = SERVICES.map((s) => s.slug);
-  assert.equal(new Set(slugs).size, 8);
+  assert.equal(new Set(slugs).size, 9);
   for (const s of SERVICES)
     assert.match(s.slug, /^[a-z0-9]+(-[a-z0-9]+)*$/, s.slug);
   SERVICES.forEach((s, i) =>

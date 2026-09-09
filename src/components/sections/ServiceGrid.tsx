@@ -52,7 +52,7 @@ export default function ServiceGrid({ services = SERVICES, limit = 6 }: Props) {
         </ul>
         <CarouselDots trackId="service-track" count={items.length} label="事業カード" />
         <p className="mt-10 text-center">
-          <Button href="/service/" variant="line">
+          <Button href="/service/" variant="liquid">
             事業一覧を見る
           </Button>
         </p>

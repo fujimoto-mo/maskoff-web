@@ -132,7 +132,7 @@ export default function MobileNav() {
               </Link>
             ))}
           </div>
-          <Button href="/recruit/" dot onClick={() => setOpen(false)} className="mt-4 w-full py-[22px] text-[18px]">
+          <Button href="/recruit/" variant="liquid" size="lg" onClick={() => setOpen(false)} className="mt-4 w-full">
             RECRUIT
           </Button>
           <div className="mt-6 flex gap-6 text-caption font-medium tracking-[.06em] text-fg-muted">

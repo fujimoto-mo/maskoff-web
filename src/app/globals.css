@@ -611,15 +611,41 @@
   /* CTA の液体ホバー。bg-fg utility は使わない（utilities レイヤーが components レイヤーの
      :hover より常に優先され、背景色が変わらなくなるため。components 層内で完結させる） */
   .cta-liquid {
+    /* 寸法はヘッダー CTA（sm）基準。md / lg は下の .cta-liquid-* で上書き（Button の size と対応） */
+    --cl-dot: 8px; /* 白点の直径 */
+    --cl-dot-x: 18px; /* 白点の左位置（= ボタンの padding-left） */
+    --cl-gap: 16px; /* 白点の左端から文字までの距離 */
+    --cl-arw: 15px; /* 矢印の大きさ */
+    --cl-arw-x: 13px; /* 矢印の右位置 */
+    --cl-shift: 15px; /* hover 時に文字が左へ寄る量 */
+    --cl-scale: 56; /* 白点の拡大率（ボタン全体を覆う大きさ） */
     background-color: var(--color-fg);
     transition: background-color 0.18s;
   }
+  .cta-liquid-md {
+    /* ページ末尾の CTA 帯・RECRUIT の ENTRY（14px） */
+    --cl-dot-x: 26px;
+    --cl-gap: 18px;
+    --cl-arw: 16px;
+    --cl-arw-x: 20px;
+    --cl-scale: 90;
+  }
+  .cta-liquid-lg {
+    /* SP メニューの RECRUIT（18px・全幅） */
+    --cl-dot: 10px;
+    --cl-dot-x: 28px;
+    --cl-gap: 22px;
+    --cl-arw: 20px;
+    --cl-arw-x: 22px;
+    --cl-shift: 20px;
+    --cl-scale: 120;
+  }
   .cl-fill {
     position: absolute;
-    top: calc(50% - 4px);
-    left: 18px;
-    width: 8px;
-    height: 8px;
+    top: calc(50% - var(--cl-dot) / 2);
+    left: var(--cl-dot-x);
+    width: var(--cl-dot);
+    height: var(--cl-dot);
     border-radius: 50%;
     background: var(--color-fg-invert);
     transform-origin: 50% 50%;
@@ -630,7 +656,7 @@
     position: relative;
     z-index: 1;
     display: inline-flex;
-    margin-left: 16px;
+    margin-left: var(--cl-gap);
     overflow: hidden;
     transition: transform 0.5s var(--ease-out-quart);
   }
@@ -649,9 +675,9 @@
   .cl-arw {
     position: absolute;
     top: 50%;
-    right: 13px;
-    width: 15px;
-    height: 15px;
+    right: var(--cl-arw-x);
+    width: var(--cl-arw);
+    height: var(--cl-arw);
     opacity: 0;
     transform: translate(7px, -50%);
     transition:
@@ -667,7 +693,7 @@
     .cta-liquid:hover .cl-fill,
     .cta-liquid:focus-visible .cl-fill {
       background: color-mix(in srgb, var(--color-marker) 88%, black);
-      transform: scale(56);
+      transform: scale(var(--cl-scale));
     }
     .cta-liquid:hover .cl-cur,
     .cta-liquid:focus-visible .cl-cur {
@@ -679,7 +705,7 @@
     }
     .cta-liquid:hover .cl-txt,
     .cta-liquid:focus-visible .cl-txt {
-      transform: translateX(-15px);
+      transform: translateX(calc(-1 * var(--cl-shift)));
     }
     .cta-liquid:hover .cl-arw,
     .cta-liquid:focus-visible .cl-arw {
