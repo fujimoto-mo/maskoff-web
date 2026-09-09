@@ -2,34 +2,30 @@ import Link from "next/link";
 import type { MouseEventHandler, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "pill" | "block" | "line" | "liquid";
+type Variant = "liquid" | "block";
 type Size = "sm" | "md" | "lg";
 type Props = {
   href?: string;
   type?: "button" | "submit";
+  /** liquid（既定）: 黒のピル。hover で白点が広がって赤に塗り替わり、矢印が出る（サイト内のリンク型ボタンはすべてこれ）/ block: フォーム送信用の幅いっぱいの角丸ボタン */
   variant?: Variant;
   /** liquid のみ。sm: ヘッダー・本文内のリンク（既定）/ md: ページ末尾の CTA 帯・RECRUIT の ENTRY / lg: SP メニューの RECRUIT。白点・矢印の寸法は globals.css の .cta-liquid-* */
   size?: Size;
   disabled?: boolean;
   className?: string;
-  /** 左に白点（pill 用。liquid は常に持つ） */
-  dot?: boolean;
   /** 例: モバイルメニューを閉じる。リンク・ボタンのどちらにも付く */
   onClick?: MouseEventHandler<HTMLElement>;
   children: ReactNode;
 };
 
-// transition-opacity / hover:opacity は utilities レイヤーなので、components レイヤーの
-// .cta-liquid の transition・background-color に勝ってしまう。liquid には持たせず、各バリアント側で付ける。
 const BASE = "inline-flex items-center justify-center gap-2 font-bold tracking-[.02em] disabled:cursor-not-allowed disabled:opacity-35";
-const HOVER_FADE = "transition-opacity hover:opacity-[.88]";
 const VARIANTS: Record<Variant, string> = {
-  pill: `${HOVER_FADE} rounded-pill bg-fg px-[22px] py-2.5 text-[13px] text-fg-invert`,
-  block: `${HOVER_FADE} w-full rounded-btn bg-fg px-[34px] py-[18px] text-[16px] text-fg-invert max-tab:text-[14px]`,
-  line: `${HOVER_FADE} rounded-pill border border-fg px-[22px] py-2.5 text-[13px] text-fg`,
   // bg-fg utility はここでは使わない: utilities レイヤーは components レイヤーの .cta-liquid:hover より
   // 常に優先されてしまい、hover で背景色が変わらなくなる（globals.css 側で背景色を持たせる）。
   liquid: "cta-liquid relative overflow-hidden rounded-pill text-fg-invert",
+  // transition-opacity / hover:opacity は utilities レイヤーなので、components レイヤーの
+  // .cta-liquid の transition・background-color に勝ってしまう。liquid には持たせず block だけに付ける。
+  block: "transition-opacity hover:opacity-[.88] w-full rounded-btn bg-fg px-[34px] py-[18px] text-[16px] text-fg-invert max-tab:text-[14px]",
 };
 /** liquid の寸法（padding-left は .cta-liquid の --cl-dot-x、padding-right は矢印の余白と対応） */
 const LIQUID_SIZE: Record<Size, string> = {
@@ -39,12 +35,11 @@ const LIQUID_SIZE: Record<Size, string> = {
 };
 
 /**
- * @example <Button href="/contact/" dot>お問い合わせ</Button>
- * @example <Button href="/contact/" variant="liquid">お問い合わせ</Button>  ← ヘッダー CTA（hover で白点が広がって赤に）
+ * @example <Button href="/recruit/" variant="liquid">RECRUIT</Button>  ← ヘッダー CTA
  * @example <Button href="/contact/" variant="liquid" size="md">CONTACT</Button>  ← ページ末尾の CTA 帯
  * @example <Button type="submit" variant="block" disabled={busy}>送信する</Button>
  */
-export default function Button({ href, type = "button", variant = "pill", size = "sm", disabled, className, dot = false, onClick, children }: Props) {
+export default function Button({ href, type = "button", variant = "liquid", size = "sm", disabled, className, onClick, children }: Props) {
   const cls = cn(BASE, VARIANTS[variant], variant === "liquid" && LIQUID_SIZE[size], className);
   const inner =
     variant === "liquid" ? (
@@ -61,10 +56,7 @@ export default function Button({ href, type = "button", variant = "pill", size =
         </svg>
       </>
     ) : (
-      <>
-        {dot && <span aria-hidden className="size-2 rounded-full bg-current" />}
-        {children}
-      </>
+      children
     );
   if (href) {
     if (href.startsWith("http")) {
