@@ -1,6 +1,6 @@
 # MasKOFF Corporate Site
 
-Cloudflare Pages（Advanced mode の `_worker.js`）+ Next.js 16 static export + microCMS Hobby + Resend + Turnstile + KV + GitHub Actions — **月額 ¥0**。
+Cloudflare Pages（Advanced mode の `_worker.js`）+ Next.js 16 static export + microCMS Hobby + Resend + Turnstile + KV — **月額 ¥0**。
 
 ## ページ構成
 
@@ -68,13 +68,13 @@ npm run build && npx serve out -l 3999
 
 ## デプロイ（Cloudflare Pages）
 
-ビルドとデプロイは Pages の Git 連携が行う（`main` へ push → Pages がビルド）。GitHub Actions は日次 cron で Deploy Hook を叩くだけ。
+ビルドとデプロイは Pages の Git 連携が行う（`main` へ push → Pages がビルド）。
 
 1. Cloudflare → Workers & Pages → Pages プロジェクトを作成（Git 連携）。ビルドコマンド `npm run build`、出力ディレクトリ `out`。
 2. 設定 → 環境変数（Production / Preview 両方）: `MICROCMS_SERVICE_DOMAIN`, `MICROCMS_API_KEY`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `NODE_VERSION`（24.17.0）。
 3. 暗号化変数（Production / Preview 両方）: `RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`, `MICROCMS_WEBHOOK_SECRET`, `CF_DEPLOY_HOOK_URL`（任意で `SLACK_WEBHOOK_URL`）。`npx wrangler pages secret put <NAME> --project-name maskoff-web` でも可。
 4. KV バインディングと非機密の変数は `wrangler.toml` に定義済み（ファイルが正。ダッシュボードでは閲覧のみ）。
-5. 設定 → ビルド → デプロイフック を作成し、URL を 3 の `CF_DEPLOY_HOOK_URL` と GitHub Secrets の `CF_DEPLOY_HOOK_URL`（`.github/workflows/daily-rebuild.yml` 用）に登録。
+5. 設定 → ビルド → デプロイフック を作成し、URL を 3 の `CF_DEPLOY_HOOK_URL` に登録。
 6. microCMS の各 API に Webhook（カスタム通知）: `https://maskoff.co.jp/api/rebuild`、シークレットは `MICROCMS_WEBHOOK_SECRET` と同値。
 7. Turnstile のホスト名に `<project>.pages.dev` と `maskoff.co.jp` を登録。Resend でドメイン認証（SPF/DKIM をムームーDNS に追加）。
 8. `<project>.pages.dev` で検証後、カスタムドメイン（apex は ALIAS、www は CNAME）を設定し、`NEXT_PUBLIC_SITE_URL` を本番 URL に変えて再ビルド。
