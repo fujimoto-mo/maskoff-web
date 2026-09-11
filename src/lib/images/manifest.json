@@ -42,8 +42,8 @@
     "webp": "/images/optimized/hero/hero-07.webp"
   },
   "/images/hero/hero-08.png": {
-    "width": 640,
-    "height": 760,
+    "width": 360,
+    "height": 450,
     "avif": "/images/optimized/hero/hero-08.avif",
     "webp": "/images/optimized/hero/hero-08.webp"
   },
@@ -78,14 +78,14 @@
     "webp": "/images/optimized/hero/hero-13.webp"
   },
   "/images/hero/hero-14.png": {
-    "width": 820,
-    "height": 740,
+    "width": 600,
+    "height": 600,
     "avif": "/images/optimized/hero/hero-14.avif",
     "webp": "/images/optimized/hero/hero-14.webp"
   },
   "/images/hero/hero-15.png": {
     "width": 650,
-    "height": 716,
+    "height": 691,
     "avif": "/images/optimized/hero/hero-15.avif",
     "webp": "/images/optimized/hero/hero-15.webp"
   },
@@ -203,9 +203,9 @@
     "avif": "/images/optimized/service/svc-03.avif",
     "webp": "/images/optimized/service/svc-03.webp"
   },
-  "/images/service/svc-04.png": {
-    "width": 800,
-    "height": 800,
+  "/images/service/svc-04.jpg": {
+    "width": 1448,
+    "height": 1086,
     "avif": "/images/optimized/service/svc-04.avif",
     "webp": "/images/optimized/service/svc-04.webp"
   },
@@ -227,11 +227,17 @@
     "avif": "/images/optimized/service/svc-07.avif",
     "webp": "/images/optimized/service/svc-07.webp"
   },
-  "/images/service/svc-08.jpg": {
-    "width": 1448,
-    "height": 1086,
+  "/images/service/svc-08.png": {
+    "width": 800,
+    "height": 800,
     "avif": "/images/optimized/service/svc-08.avif",
     "webp": "/images/optimized/service/svc-08.webp"
+  },
+  "/images/service/svc-09.jpg": {
+    "width": 1448,
+    "height": 1086,
+    "avif": "/images/optimized/service/svc-09.avif",
+    "webp": "/images/optimized/service/svc-09.webp"
   },
   "/images/vision/cube.jpg": {
     "width": 800,

@@ -180,7 +180,7 @@ export default function CompanyPage() {
         <p data-reveal="up" className="font-display text-[clamp(40px,7vw,88px)] font-extrabold leading-none tracking-[-.04em] text-fg">TAKE OFF YOUR MASK.</p>
         <p data-reveal="up" style={rd(1)} className="mt-6 text-body text-fg-muted">協業・取材・その他のご相談はお気軽に。</p>
         <div data-reveal="up" style={rd(2)} className="mt-8">
-          <Button href="/contact/" dot className="px-10 py-3.5 text-[14px]">
+          <Button href="/contact/" variant="liquid" size="md">
             CONTACT
           </Button>
         </div>

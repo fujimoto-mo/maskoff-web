@@ -1,5 +1,6 @@
 export type MarqueeCell =
-  | { type: "image"; src: string; alt?: string }
+  /** anim: 透過アニメーション WebP（Picture の anim）。reduced-motion では src の静止画のまま */
+  | { type: "image"; src: string; alt?: string; anim?: string }
   /** 短いループ動画（muted / inline）。poster は静止画。JS 無効・reduced-motion では poster のまま */
   | { type: "video"; src: string; poster: string; alt?: string }
   | { type: "text"; lines: string[] }

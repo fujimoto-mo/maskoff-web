@@ -1,10 +1,10 @@
 import { SITE } from "./site.ts"; // node:test でも解決できるよう相対 + 拡張子付き
 
-// 8 事業（docs/design_handoff_service_page 由来）。HOME の SERVICE グリッド、/service/、/service/[slug]/ が共有する単一のデータ。
+// 9 事業（docs/design_handoff_service_page 由来。07 TiPLY は 2026-09-09 に追加）。HOME の SERVICE グリッド、/service/、/service/[slug]/ が共有する単一のデータ。
 // SAMPLE: 本文（description）は仮文言、画像は仮画像。実データ確定時に差し替える。
 export type Service = {
   slug: string;
-  /** "01"〜"08"。SERVICE ページの番号 */
+  /** "01"〜"09"。SERVICE ページの番号 */
   num: string;
   /** 英字ラベル（番号の横・マーキー・パンくず） */
   en: string;
@@ -71,7 +71,7 @@ export const SERVICES: readonly Service[] = [
     description:
       `キャリア面談・人材紹介・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。${SITE.product}修了生のキャリアサポートとも連動しています。`,
     tags: ["キャリア面談", "人材紹介", "研修"],
-    image: "/images/service/svc-04.png",
+    image: "/images/service/svc-04.jpg",
   },
   {
     slug: "bpo",
@@ -98,8 +98,20 @@ export const SERVICES: readonly Service[] = [
     image: "/images/service/svc-06.jpg",
   },
   {
-    slug: "cross-border-ec",
+    slug: "tiply",
     num: "07",
+    en: "TIPLY",
+    title: "TiPLY事業",
+    verb: "もてなす",
+    lead: "飲食店向けサービス「TiPLY」の企画・営業・マーケティング・サービス運営を行っています。",
+    description:
+      "飲食店向けサービス「TiPLY」に関する企画、営業、マーケティング、サービス運営などを行っています。",
+    tags: ["サービス企画", "営業・マーケティング", "サービス運営"],
+    image: "/images/service/svc-07.png",
+  },
+  {
+    slug: "cross-border-ec",
+    num: "08",
     en: "CROSS-BORDER EC",
     title: "海外越境ECサービス導入支援",
     verb: "ひらく",
@@ -107,11 +119,11 @@ export const SERVICES: readonly Service[] = [
     description:
       "海外マーケットプレイスへの出店から、物流・決済・多言語対応まで、越境ECの立ち上げと運用を支援。日本の商品を世界の顧客へ届けます。",
     tags: ["出店支援", "物流・決済", "多言語対応"],
-    image: "/images/service/svc-07.png",
+    image: "/images/service/svc-08.png",
   },
   {
     slug: "it-enablement",
-    num: "08",
+    num: "09",
     en: "IT ENABLEMENT",
     title: "中小向けIT導入支援事業",
     verb: "ねづく",
@@ -119,6 +131,6 @@ export const SERVICES: readonly Service[] = [
     description:
       "中小企業のITツール選定・導入・定着をサポート。補助金の活用支援も含め、現場に無理なく根づくDXを、伴走型で実現します。",
     tags: ["ITツール選定", "補助金活用", "定着支援"],
-    image: "/images/service/svc-08.jpg",
+    image: "/images/service/svc-09.jpg",
   },
 ];

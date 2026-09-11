@@ -173,7 +173,7 @@ export default async function ServiceDetailPage({
           ))}
         </nav>
         <p data-reveal="up" style={rd(2)} className="mt-10">
-          <Button href="/service/" variant="line">
+          <Button href="/service/" variant="liquid">
             事業一覧へ戻る
           </Button>
         </p>

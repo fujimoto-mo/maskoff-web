@@ -16,6 +16,7 @@ function Cell({ cell, priority }: { cell: MarqueeCell; priority: boolean }) {
         alt={cell.alt ?? ""}
         sizes="(max-width: 600px) 45vw, 20vw"
         priority={priority}
+        anim={cell.anim}
         className="block size-full"
         imgClassName="size-full object-contain"
       />

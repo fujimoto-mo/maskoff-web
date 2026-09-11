@@ -33,7 +33,6 @@ Cloudflare Pages（ホスティング。外部 DNS のまま独自ドメイン�
   ├ out/_worker.js（Advanced mode。worker/index.ts を esbuild で 1 枚にバンドル。/api/* とメンテナンス、www → apex）
   ├ KV（レート制限）
   └ Turnstile（Bot対策）
-GitHub Actions（日次 cron で Pages の Deploy Hook を叩くだけ。ビルド・デプロイは Pages の Git 連携）
 sharp（ビルド時の画像最適化）
 
 Node.js 24.17.0（.node-version で固定）
@@ -297,7 +296,7 @@ FAQは `<details>/<summary>` を閉じた状態で SSR し、PCでは CSS の `:
 | 手書き線描画 | VISION | `Handwriting` が 1 文字ずつ読み順に輪郭を `stroke-dashoffset 1→0` で描き、続けて `fill-opacity 0→1`（合計 1.6s）。データは `scripts/handwriting-paths.py` で生成 |
 | 行フェード | VISION 本文 | PC は段落単位で行が順に、SP(≤640) は 1 行ずつ画面下 75% で点灯 |
 | マーカー描画 | VISION 本文 | `MarkerLayer` が文字位置を計測し背後の線を `clip-path` で左→右（0.85s）。他セクションは `background-size` 方式 |
-| 相関図 | VISION | 等角の立方体（HR / IT / RC の 3 面。座標は `cube-geometry`）。面の中は写真 `public/images/vision/cube.jpg`（外接矩形 260:300 で切り抜き。`Picture` を六角形の `clip-path` で切り、上に明るい膜・白い稜線・ラベルを重ねる）。面が順にフェード → 中央から Y 字の稜線を線描画 → 面ラベルがぼかしから出現 → 引き出し線を描いて事業名がフェード。出現後は 3 面が 9s 周期で順に明るくなり、7s ごとに斜めの光が立方体を横切る（`vd-glow` / `vd-sheen`、reduced-motion では停止）。事業名は HTML（`src/content/vision-diagram.ts`）で、PC は `@container` の cqw 単位で立方体と同率に拡縮させ引き出し線とずらさない。SP は引き出し線を消し立方体の下に縦積み |
+| 相関図 | VISION | 等角の立方体（HR / IT / RC の 3 面。座標は `cube-geometry`）。面の中は写真 `public/images/vision/cube.jpg`（外接矩形 260:300 で切り抜き。`Picture` を六角形の `clip-path` で切り、上に明るい膜・白い稜線・ラベルを重ねる）。面が順にフェード → 中央から Y 字の稜線を線描画 → 面ラベルがぼかしから出現 → 引き出し線を描いて事業名がフェード。出現後は 3 面が 9s 周期で順に明るくなり、7s ごとに斜めの光が立方体を横切る（`vd-glow` / `vd-sheen`、reduced-motion では停止）。事業名は HTML（`src/content/vision-diagram.ts`）で、PC は `@container` の cqw 単位で立方体と同率に拡縮させ引き出し線とずらさない。SP は HR を右上（幅 40% を右寄せ）、IT / RC を立方体の下の 2 列に置き、SP 用の引き出し線（`vision-leads.ts` の `LEADS_SP`。配置比率 `SP` を CSS 変数で共有）でつなぐ |
 | スクロールリビール | SERVICE / PARTNERS / FAQ / NEWS / CONTACT | `data-reveal="blur"`（SERVICE、奥から blur 解除）/ `"up"`（fade + 18px）。stagger 80ms |
 | ホバー散布 | WORKS | 行ホバーでサムネ 5 枚が 3 パターンの配置で出現、他行は薄く。`(max-width: 820px)` または `(hover: none)`（タッチ主体端末含む）では画面中央の行がアクティブになる方式に切替 |
 | ホバーロール | WORKS の名前・ナビ | 同一テキストを2つ重ね、`overflow:hidden` + `translateY` で入れ替え |
@@ -330,7 +329,7 @@ components/
 ├ motion/    RevealObserver, ScrollTheme, IntroVeil, Marquee, MarqueeDrag,
 │            SplitChars, Handwriting, MarkerLayer, VisionDiagram, CustomCursor
 │            葉モジュール（純粋関数・node:test 対象）: reveal-delay, scroll-theme-math,
-│            split-chars, handwriting-timing, marker-rects, marquee-cells, marquee-physics, cube-geometry
+│            split-chars, handwriting-timing, marker-rects, marquee-cells, marquee-physics, cube-geometry, vision-leads
 └ sections/  Hero, VisionBlock, ServiceGrid, MemberList, FaqList,
              NewsList, ContactForm, StepFlow
 ```
@@ -440,11 +439,6 @@ npx wrangler pages secret put SLACK_WEBHOOK_URL --project-name maskoff-web   # �
 MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY / NEXT_PUBLIC_SITE_URL / NEXT_PUBLIC_TURNSTILE_SITE_KEY / NODE_VERSION
 ```
 `NEXT_PUBLIC_SITE_URL` は検証中 `https://<project>.pages.dev`、本番切替後 `https://maskoff.co.jp`（変更後に再ビルド）。
-
-### GitHub Actions Secrets（日次 cron 用）
-```
-CF_DEPLOY_HOOK_URL
-```
 
 microCMS の API キーは**ビルド時にのみ使う**。Function には渡さない。
 
