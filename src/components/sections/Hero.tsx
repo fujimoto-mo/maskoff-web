@@ -8,11 +8,15 @@ const img = (n: number) => ({ type: "image" as const, src: `/images/hero/hero-${
 const TEXT = { type: "text" as const, lines: ["TAKE THE", "MASK", "OFF"] };
 // SAMPLE: 動画セル。参考サイトは各行 1 つを動画風（アニメ WebP）にしている。実素材は正方形・数秒ループ・音なし・~500KB 以下の MP4 を推奨
 const VIDEO = { type: "video" as const, src: "/videos/hero/sample-01.mp4", poster: "/images/hero/sample-01-poster.png" };
+// 白 T シャツ。透過アニメーション WebP（26f / 0.87s ループ、scripts 不要・生成物をコミット）。reduced-motion では hero-08.png の静止画
+const TEE = { ...img(8), anim: "/images/hero/hero-08-anim.webp" };
+// ノート PC の回転。透過アニメーション WebP（25f / 0.84s ループ、元動画 0911(1).mp4 の黒背景を抜き 2/3 に縮小、生成物をコミット）。reduced-motion では hero-14.png の静止画
+const LAPTOP = { ...img(14), anim: "/images/hero/hero-14-anim.webp" };
 
 const ROWS: MarqueeRow[] = [
   { cells: [img(1), img(2), img(3), TEXT, VIDEO, img(5)], duration: 60 },
-  { cells: [img(6), img(7), img(8), { type: "logo" }, img(9), img(10)], reverse: true, duration: 72 },
-  { cells: [img(11), img(12), TEXT, img(13), img(14), img(15)], duration: 66 },
+  { cells: [img(6), img(7), TEE, { type: "logo" }, img(9), img(10)], reverse: true, duration: 72 },
+  { cells: [img(11), img(12), TEXT, img(13), LAPTOP, img(15)], duration: 66 },
 ];
 
 /** HOME ヒーロー。h1 は視覚非表示、マーキーは装飾として aria-hidden。 */

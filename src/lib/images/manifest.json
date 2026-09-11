@@ -42,8 +42,8 @@
     "webp": "/images/optimized/hero/hero-07.webp"
   },
   "/images/hero/hero-08.png": {
-    "width": 640,
-    "height": 760,
+    "width": 360,
+    "height": 450,
     "avif": "/images/optimized/hero/hero-08.avif",
     "webp": "/images/optimized/hero/hero-08.webp"
   },
@@ -78,8 +78,8 @@
     "webp": "/images/optimized/hero/hero-13.webp"
   },
   "/images/hero/hero-14.png": {
-    "width": 820,
-    "height": 740,
+    "width": 600,
+    "height": 600,
     "avif": "/images/optimized/hero/hero-14.avif",
     "webp": "/images/optimized/hero/hero-14.webp"
   },

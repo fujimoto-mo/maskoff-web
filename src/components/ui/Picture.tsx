@@ -18,6 +18,8 @@ type Props = {
   priority?: boolean;
   /** manifest を引かず寸法と AVIF / WebP を直接渡す（microCMS 画像を同梱した cms-manifest 用。CmsPicture から使う） */
   entry?: Entry;
+  /** アニメーション WebP（アルファ可）。prefers-reduced-motion が reduce 以外のときだけ表示し、reduce では src の静止画に落ちる。例 "/images/hero/hero-08-anim.webp" */
+  anim?: string;
 };
 // className は <picture> に、imgClassName は <img> に付く（SVG も同じ）
 
@@ -29,7 +31,7 @@ type Props = {
  * <Picture src="/images/service/svc-01.png" alt="" sizes="(max-width: 600px) 80vw, 33vw" imgClassName="size-full object-cover" />
  * <Picture src="/images/company/vision-handwriting.svg" alt="創ることが好きだ" width={640} height={160} />
  */
-export default function Picture({ src, alt, sizes, width, height, className, imgClassName, priority = false, entry }: Props) {
+export default function Picture({ src, alt, sizes, width, height, className, imgClassName, priority = false, entry, anim }: Props) {
   const loading = priority ? "eager" : "lazy";
   const fetchPriority = priority ? "high" : "auto";
 
@@ -49,6 +51,7 @@ export default function Picture({ src, alt, sizes, width, height, className, img
 
   return (
     <picture className={className}>
+      {anim && <source type="image/webp" srcSet={anim} media="(prefers-reduced-motion: no-preference)" />}
       <source type="image/avif" srcSet={m.avif} sizes={sizes} />
       <source type="image/webp" srcSet={m.webp} sizes={sizes} />
       <img
