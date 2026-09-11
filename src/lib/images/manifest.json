@@ -24,8 +24,8 @@
     "webp": "/images/optimized/hero/hero-04.webp"
   },
   "/images/hero/hero-05.png": {
-    "width": 760,
-    "height": 760,
+    "width": 600,
+    "height": 600,
     "avif": "/images/optimized/hero/hero-05.avif",
     "webp": "/images/optimized/hero/hero-05.webp"
   },
