@@ -50,7 +50,7 @@ const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as CSSProperties;
 /** 英字ラベル（ハンドオフの mono 小文字）。Inter Tight の小サイズ＋字間広めで置き換え */
 const LABEL = "font-display text-[11px] font-medium tracking-[.15em] text-fg-muted";
 /** 欄外の注記（集計条件・保証しない旨） */
-const NOTE = "text-caption leading-[1.9] text-fg-muted";
+const NOTE = "text-[10px] leading-[1.9] text-fg-muted";
 const pad2 = (n: number) => String(n).padStart(2, "0");
 /** 本文セグメント（文字列 or マーカー）を描画 */
 const segments = (segs: readonly Segment[]) =>
@@ -438,7 +438,7 @@ export default function RecruitPage() {
             >
               <p className={`${LABEL} text-marker`}>{p.en}</p>
               <p className="mt-3 text-[18px] font-black text-fg">{p.title}</p>
-              <p className="mt-2.5 text-caption leading-[1.9] text-fg-body">
+              <p className="mt-2.5 text-caption leading-[1.9] text-fg-body whitespace-pre-line">
                 {p.desc}
               </p>
             </li>

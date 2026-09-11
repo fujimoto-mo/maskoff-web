@@ -33,7 +33,6 @@ Cloudflare Pages（ホスティング。外部 DNS のまま独自ドメイン�
   ├ out/_worker.js（Advanced mode。worker/index.ts を esbuild で 1 枚にバンドル。/api/* とメンテナンス、www → apex）
   ├ KV（レート制限）
   └ Turnstile（Bot対策）
-GitHub Actions（日次 cron で Pages の Deploy Hook を叩くだけ。ビルド・デプロイは Pages の Git 連携）
 sharp（ビルド時の画像最適化）
 
 Node.js 24.17.0（.node-version で固定）
@@ -440,11 +439,6 @@ npx wrangler pages secret put SLACK_WEBHOOK_URL --project-name maskoff-web   # �
 MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY / NEXT_PUBLIC_SITE_URL / NEXT_PUBLIC_TURNSTILE_SITE_KEY / NODE_VERSION
 ```
 `NEXT_PUBLIC_SITE_URL` は検証中 `https://<project>.pages.dev`、本番切替後 `https://maskoff.co.jp`（変更後に再ビルド）。
-
-### GitHub Actions Secrets（日次 cron 用）
-```
-CF_DEPLOY_HOOK_URL
-```
 
 microCMS の API キーは**ビルド時にのみ使う**。Function には渡さない。
 

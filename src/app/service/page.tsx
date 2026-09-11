@@ -94,9 +94,9 @@ export default function ServicePage() {
           {[0, 1].map((k) => (
             <span
               key={k}
-              className="pr-6 font-display text-[20px] font-bold tracking-[.06em] text-fg"
+              className="font-display text-[20px] font-bold tracking-[.06em] text-fg"
             >
-              {SERVICES.map((s) => s.en).join(" / ")} /{" "}
+              {SERVICES.map((s) => s.en).join(" / ")} /&nbsp;
             </span>
           ))}
         </div>
