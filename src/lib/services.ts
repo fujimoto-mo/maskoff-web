@@ -47,7 +47,9 @@ export const SERVICES: readonly Service[] = [
     description:
       "各種求人媒体の正規代理店として、媒体選定から原稿制作、掲載後の運用改善までをワンストップで支援。採用ターゲットに届く広告設計で、企業の採用力を高めます。",
     tags: ["媒体選定", "原稿制作", "運用改善"],
-    image: "/images/service/svc-02.jpg",
+    // 求人媒体のロゴ一覧（docs/svc-02.png を 1600px 正方形・bg-surface 地に整形、ロゴ群は上下左右とも中央。contain で全ロゴを見せる）
+    image: "/images/service/svc-02.png",
+    imageFit: "contain",
   },
   {
     slug: "web-development",
