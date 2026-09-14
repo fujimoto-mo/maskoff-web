@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 const PROFILE = [
   { dt: "社名", dd: ["株式会社MasKOFF（マスクオフ）"] },
   { dt: "設立", dd: ["2025年4月"] },
-  { dt: "代表者", dd: ["代表取締役 藤本 ツヨシ"] },
+  { dt: "代表者", dd: ["代表取締役 フジモト"] },
   { dt: "所在地", dd: ["〒150-0021 東京都渋谷区恵比寿西1-33-6-216"] },
   { dt: "事業内容", dd: ["ホームページ制作、デザインの制作", "キャリア支援事業", "Bアパレル製品の企画・製造・販売", "デザイン及びコンサルタント業務", "アーティストの活動支援"] },
   { dt: "資本金", dd: ["3,000,000円"] },
@@ -110,7 +110,7 @@ export default function CompanyPage() {
             </p>
             <p data-reveal="up" style={rd(3)} className="mt-9 text-[13px] text-fg-muted">株式会社MasKOFF 代表取締役</p>
             <p data-reveal="up" style={rd(3)} className="mt-1.5 text-[20px] font-bold text-fg">
-              藤本 ツヨシ<span className="ml-3 font-display text-caption font-normal tracking-[.1em] text-fg-muted">TSUYOSHI FUJIMOTO</span>
+              {/* 藤本 ツヨシ<span className="ml-3 font-display text-caption font-normal tracking-[.1em] text-fg-muted">TSUYOSHI FUJIMOTO</span> */}
             </p>
           </div>
         </div>
