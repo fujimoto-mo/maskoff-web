@@ -167,6 +167,12 @@
     "avif": "/images/optimized/partners/p04.avif",
     "webp": "/images/optimized/partners/p04.webp"
   },
+  "/images/product/techmasklab-logo.jpg": {
+    "width": 588,
+    "height": 504,
+    "avif": "/images/optimized/product/techmasklab-logo.avif",
+    "webp": "/images/optimized/product/techmasklab-logo.webp"
+  },
   "/images/product/techmasklab.png": {
     "width": 1600,
     "height": 942,
