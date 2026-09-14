@@ -1,8 +1,8 @@
 export type MarqueeCell =
   /** anim: 透過アニメーション WebP（Picture の anim）。reduced-motion では src の静止画のまま */
   | { type: "image"; src: string; alt?: string; anim?: string }
-  /** 短いループ動画（muted / inline）。poster は静止画。JS 無効・reduced-motion では poster のまま */
-  | { type: "video"; src: string; poster: string; alt?: string }
+  /** 短いループ動画（muted / inline）。poster は静止画。JS 無効・reduced-motion では poster のまま。size はセルに対する表示比率（0–1、既定 1。2/3 で他の画像セルと同程度の大きさ） */
+  | { type: "video"; src: string; poster: string; alt?: string; size?: number }
   | { type: "text"; lines: string[] }
   | { type: "logo" };
 
