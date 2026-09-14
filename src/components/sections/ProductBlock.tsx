@@ -15,7 +15,7 @@ const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as CSSProperties;
 
 /**
  * HOME の PRODUCT（VISION と SERVICE の間）。自社プロダクト（SITE.product）の紹介。
- * PC は左に画面イメージ・右に文章の 2 カラム、960px 以下は縦積み（画像 → 文章）。
+ * PC は左に画面イメージ・右に文章の 2 カラム、960px 以下は縦積み（画像 → 文章）。文章側の背景にロゴ画像を 30% 透過・全体表示（contain）× 1.2 倍で敷く。
  * @example <ProductBlock />
  */
 export default function ProductBlock() {
@@ -23,7 +23,7 @@ export default function ProductBlock() {
     <section
       id="product"
       aria-labelledby="product-title"
-      className="section-pad"
+      className="section-pad overflow-x-clip"
     >
       <div className="wrap">
         <SectionHeading en="PRODUCT" ja="自社プロダクト" id="product-title" />
@@ -37,24 +37,34 @@ export default function ProductBlock() {
               imgClassName="h-auto w-full"
             />
           </div>
-          <div>
-            <h3
-              data-reveal="up"
-              className="font-display text-[clamp(28px,3.4vw,40px)] font-extrabold leading-[1.1] tracking-[-.04em] text-fg"
-            >
-              {SITE.product}
-            </h3>
-            <div className="mt-6 space-y-2 text-body leading-[2.1] text-fg-body">
-              {COPY.map((line, i) => (
-                <p key={line} data-reveal="up" style={rd(i + 1)}>
-                  {line}
-                </p>
-              ))}
-            </div>
-            <div data-reveal="up" style={rd(4)} className="mt-8">
-              <Button href="/service/tech-education/" variant="liquid">
-                詳しく見る
-              </Button>
+          <div className="relative flex flex-col justify-center self-stretch">
+            {/* 右カラムの背景: TECH MASK LAB. のロゴ画像を 30% の透過で、切り取らずに全体が収まる大きさ（object-contain）にして敷き、PC では文章の幅に近づけるため 1.2 倍に拡大する（はみ出しは切らないが、拡大した箱の透明部分が画面外へ出て横スクロールを生むので section に overflow-x-clip を付けている。SP は幅いっぱいに収まるので等倍。装飾のため alt は空）。self-stretch で行の高さ（左の画像と同じ高さ）に揃えたうえで、枠を文章カラムより上下 40px・左右 24px（960px 以下は上下 32px・左右 12px。ページ余白の内側に収める）広げる。960px 以下では文章ブロックの背景になる */}
+            <Picture
+              src="/images/product/techmasklab-logo.jpg"
+              alt=""
+              sizes="(max-width: 960px) 100vw, 50vw"
+              className="absolute -inset-x-6 -inset-y-10 block max-pc:-inset-x-3 max-pc:-inset-y-8"
+              imgClassName="size-full object-contain opacity-30 pc:scale-[1.2]"
+            />
+            <div className="relative">
+              <h3
+                data-reveal="up"
+                className="font-display text-[clamp(28px,3.4vw,40px)] font-extrabold leading-[1.1] tracking-[-.04em] text-fg"
+              >
+                {SITE.product}
+              </h3>
+              <div className="mt-6 space-y-2 text-body leading-[2.1] text-fg-body">
+                {COPY.map((line, i) => (
+                  <p key={line} data-reveal="up" style={rd(i + 1)}>
+                    {line}
+                  </p>
+                ))}
+              </div>
+              <div data-reveal="up" style={rd(4)} className="mt-8">
+                <Button href="/service/tech-education/" variant="liquid">
+                  詳しく見る
+                </Button>
+              </div>
             </div>
           </div>
         </div>
