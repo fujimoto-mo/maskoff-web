@@ -29,7 +29,7 @@ export const SERVICES: readonly Service[] = [
     num: "01",
     en: "TECH EDUCATION",
     title: `${SITE.product} エンジニアカリキュラム`,
-    verb: "そだてる",
+    verb: "育てる",
     lead: "未経験から現場で通用するエンジニアへ。実案件ベースの実践型カリキュラムです。",
     description:
       `未経験からエンジニアを目指す実践型カリキュラム「${SITE.product}」を運営。実案件ベースの課題と現役エンジニアのメンタリングで、現場で通用するスキルを育てます。`,
@@ -42,19 +42,21 @@ export const SERVICES: readonly Service[] = [
     num: "02",
     en: "RECRUITMENT ADS",
     title: "求人広告代理店事業",
-    verb: "つのる",
+    verb: "募る",
     lead: "媒体選定から原稿制作、掲載後の運用改善まで、採用広告をワンストップで支援します。",
     description:
       "各種求人媒体の正規代理店として、媒体選定から原稿制作、掲載後の運用改善までをワンストップで支援。採用ターゲットに届く広告設計で、企業の採用力を高めます。",
     tags: ["媒体選定", "原稿制作", "運用改善"],
-    image: "/images/service/svc-02.jpg",
+    // 求人媒体のロゴ一覧（docs/svc-02.png を 1600px 正方形・bg-surface 地に整形、ロゴ群は上下左右とも中央。contain で全ロゴを見せる）
+    image: "/images/service/svc-02.png",
+    imageFit: "contain",
   },
   {
     slug: "web-development",
     num: "03",
     en: "WEB DEVELOPMENT",
     title: "WEBアプリ開発事業",
-    verb: "つくる",
+    verb: "創る",
     lead: "企画・UI/UX設計・開発・運用を一貫して。小さく速く出して、改善を重ねます。",
     description:
       "業務システムからサービス立ち上げまで、企画・UI/UX設計・開発・運用を一貫して提供。小さく速くリリースし、改善を重ねる開発スタイルで事業の成長に伴走します。",
@@ -66,7 +68,7 @@ export const SERVICES: readonly Service[] = [
     num: "04",
     en: "CAREER SUPPORT",
     title: "キャリア支援事業",
-    verb: "ささえる",
+    verb: "支える",
     lead: "キャリア面談・人材紹介・研修で、一人ひとりの「らしさ」を活かした働き方へ。",
     description:
       `キャリア面談・人材紹介・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。${SITE.product}修了生のキャリアサポートとも連動しています。`,
@@ -78,7 +80,7 @@ export const SERVICES: readonly Service[] = [
     num: "05",
     en: "BPO",
     title: "BPO事業",
-    verb: "まかせる",
+    verb: "任せる",
     lead: "事務・カスタマーサポートなどのバックオフィス業務を、設計から運用まで受託します。",
     description:
       "事務・カスタマーサポートなどのバックオフィス業務を受託。業務フローの設計から運用まで担い、お客様がコア業務に集中できる体制をつくります。",
@@ -90,7 +92,7 @@ export const SERVICES: readonly Service[] = [
     num: "06",
     en: "APPAREL CONSULTING",
     title: "アパレルコンサルティング事業",
-    verb: "まとう",
+    verb: "纏う",
     lead: "ブランド立ち上げ・OEM/ODM・販売戦略まで、ものづくりと売り場づくりに伴走します。",
     description:
       "オリジナルブランド運営で培った知見をもとに、ブランド立ち上げ・OEM/ODM・販売戦略を支援。コンセプト設計からものづくり、売り場づくりまで伴走します。",
@@ -114,7 +116,7 @@ export const SERVICES: readonly Service[] = [
     num: "08",
     en: "CROSS-BORDER EC",
     title: "海外越境ECサービス導入支援",
-    verb: "ひらく",
+    verb: "拓く",
     lead: "海外マーケットプレイスへの出店から、物流・決済・多言語対応までを支援します。",
     description:
       "海外マーケットプレイスへの出店から、物流・決済・多言語対応まで、越境ECの立ち上げと運用を支援。日本の商品を世界の顧客へ届けます。",
@@ -126,7 +128,7 @@ export const SERVICES: readonly Service[] = [
     num: "09",
     en: "IT ENABLEMENT",
     title: "中小向けIT導入支援事業",
-    verb: "ねづく",
+    verb: "根付く",
     lead: "ITツールの選定・導入・定着を伴走型で。補助金の活用もサポートします。",
     description:
       "中小企業のITツール選定・導入・定着をサポート。補助金の活用支援も含め、現場に無理なく根づくDXを、伴走型で実現します。",

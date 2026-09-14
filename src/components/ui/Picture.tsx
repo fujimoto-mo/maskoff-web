@@ -4,7 +4,7 @@ type Entry = { width: number; height: number; avif: string; webp: string };
 const MANIFEST = manifest as Record<string, Entry>;
 
 type Props = {
-  /** public/images 配下のパス。例 "/images/hero/hero-01.png" */
+  /** public/images 配下のパス。例 "/images/hero/hero-02.png" */
   src: string;
   alt: string;
   /** ラスター画像では必須。例 "(max-width: 600px) 80vw, 33vw" */

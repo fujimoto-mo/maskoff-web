@@ -1,19 +1,13 @@
 {
-  "/images/hero/hero-01.png": {
-    "width": 720,
-    "height": 820,
-    "avif": "/images/optimized/hero/hero-01.avif",
-    "webp": "/images/optimized/hero/hero-01.webp"
-  },
   "/images/hero/hero-02.png": {
-    "width": 640,
+    "width": 626,
     "height": 640,
     "avif": "/images/optimized/hero/hero-02.avif",
     "webp": "/images/optimized/hero/hero-02.webp"
   },
   "/images/hero/hero-03.png": {
-    "width": 720,
-    "height": 590,
+    "width": 948,
+    "height": 890,
     "avif": "/images/optimized/hero/hero-03.avif",
     "webp": "/images/optimized/hero/hero-03.webp"
   },
@@ -34,12 +28,6 @@
     "height": 620,
     "avif": "/images/optimized/hero/hero-06.avif",
     "webp": "/images/optimized/hero/hero-06.webp"
-  },
-  "/images/hero/hero-07.png": {
-    "width": 880,
-    "height": 880,
-    "avif": "/images/optimized/hero/hero-07.avif",
-    "webp": "/images/optimized/hero/hero-07.webp"
   },
   "/images/hero/hero-08.png": {
     "width": 360,
@@ -89,11 +77,11 @@
     "avif": "/images/optimized/hero/hero-15.avif",
     "webp": "/images/optimized/hero/hero-15.webp"
   },
-  "/images/hero/sample-01-poster.png": {
-    "width": 480,
-    "height": 480,
-    "avif": "/images/optimized/hero/sample-01-poster.avif",
-    "webp": "/images/optimized/hero/sample-01-poster.webp"
+  "/images/hero/maskoff.png": {
+    "width": 512,
+    "height": 512,
+    "avif": "/images/optimized/hero/maskoff.avif",
+    "webp": "/images/optimized/hero/maskoff.webp"
   },
   "/images/logo-mark.png": {
     "width": 100,
@@ -179,6 +167,12 @@
     "avif": "/images/optimized/partners/p04.avif",
     "webp": "/images/optimized/partners/p04.webp"
   },
+  "/images/product/techmasklab-logo.jpg": {
+    "width": 588,
+    "height": 504,
+    "avif": "/images/optimized/product/techmasklab-logo.avif",
+    "webp": "/images/optimized/product/techmasklab-logo.webp"
+  },
   "/images/product/techmasklab.png": {
     "width": 1600,
     "height": 942,
@@ -191,15 +185,15 @@
     "avif": "/images/optimized/service/svc-01.avif",
     "webp": "/images/optimized/service/svc-01.webp"
   },
-  "/images/service/svc-02.jpg": {
-    "width": 1448,
-    "height": 1086,
+  "/images/service/svc-02.png": {
+    "width": 1600,
+    "height": 1600,
     "avif": "/images/optimized/service/svc-02.avif",
     "webp": "/images/optimized/service/svc-02.webp"
   },
   "/images/service/svc-03.jpg": {
     "width": 1600,
-    "height": 1067,
+    "height": 1371,
     "avif": "/images/optimized/service/svc-03.avif",
     "webp": "/images/optimized/service/svc-03.webp"
   },
@@ -216,8 +210,8 @@
     "webp": "/images/optimized/service/svc-05.webp"
   },
   "/images/service/svc-06.jpg": {
-    "width": 1448,
-    "height": 1086,
+    "width": 1200,
+    "height": 848,
     "avif": "/images/optimized/service/svc-06.avif",
     "webp": "/images/optimized/service/svc-06.webp"
   },

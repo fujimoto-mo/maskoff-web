@@ -14,11 +14,10 @@ export default function PartnerGrid({ partners = PARTNERS }: { partners?: readon
     <section id="partners" aria-labelledby="partners-title" className="section-pad">
       <div className="wrap">
         <SectionHeading en="PARTNERS" ja="MasKOFFが支援する活動" id="partners-title" />
-        {/* SAMPLE */}
         <p className="-mt-2 mb-11 text-body text-fg-body max-sp:text-body-sp">
-          スポーツ・カルチャー・教育の現場を、ものづくりとテクノロジーで支えています。
+          マーケティング・飲食店向けサービス・ECまで、領域を越えて事業とパートナーシップを広げています。
           <br className="max-sp:hidden" />
-          表現者が輝く場所に寄り添い、その未来を共につくる仲間であり続けます。
+          自社で事業を動かして得た知見を、提携先や支援先の成長にも還元していきます。
         </p>
         <ul id="partner-track" className="grid grid-cols-4 gap-gap-card max-pc:grid-cols-2 max-sp:carousel">
           {partners.map((p, i) => (

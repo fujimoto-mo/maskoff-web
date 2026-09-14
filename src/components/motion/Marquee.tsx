@@ -24,11 +24,19 @@ function Cell({ cell, priority }: { cell: MarqueeCell; priority: boolean }) {
   }
   if (cell.type === "video") {
     // React は SSR で muted 属性を出さないため、再生前に MarqueeDrag が v.muted = true を設定する
-    return (
+    const box = (
       <div className="mq-vid size-full overflow-hidden rounded-[22%] bg-surface">
         <video data-mq-video className="block size-full object-cover" poster={cell.poster} muted loop playsInline preload="metadata" aria-label={cell.alt} tabIndex={-1}>
           <source src={cell.src} type="video/mp4" />
         </video>
+      </div>
+    );
+    if (cell.size === undefined || cell.size >= 1) return box;
+    // size < 1 はセル内で中央に縮める（poster も同じ箱なので reduced-motion / JS 無効でも同じ大きさ）
+    const pct = `${Math.round(cell.size * 10000) / 100}%`;
+    return (
+      <div className="flex size-full items-center justify-center">
+        <div style={{ width: pct, height: pct }}>{box}</div>
       </div>
     );
   }
