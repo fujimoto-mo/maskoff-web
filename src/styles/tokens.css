@@ -29,6 +29,11 @@
   --color-marker: #ff302f;
   --color-required: #ef3b59;
   --color-disabled: #a9a9a9;
+  /* VISION 相関図の 3 つの領域名だけの例外（CLAUDE.md §4-1）。参考画像の黄緑 / 黄 / 橙。
+     これは白地用の濃い色（白とのコントラスト 5:1 以上）で、黒地では ScrollTheme が --color-dark-accent-* へ背景と一緒に補間する */
+  --color-accent-hr: #63722a;
+  --color-accent-mk: #836a0a;
+  --color-accent-cr: #b0521c;
 
 
   /* --- レイアウト ------------------------------------------------- */
@@ -117,6 +122,10 @@
   --color-dark-fg-muted: #9a9a97;
   --color-dark-surface: #151514;
   --color-dark-border: #2c2c2a;
+  /* 相関図の領域名（参考画像の実測値。黒とのコントラスト 7:1 以上） */
+  --color-dark-accent-hr: #a8b868;
+  --color-dark-accent-mk: #d8c868;
+  --color-dark-accent-cr: #d88858;
 }
 
 
@@ -124,4 +133,8 @@
 @theme inline {
   --font-display: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: "Inter Tight", "Noto Sans JP", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* VISION 相関図のブロック専用のセリフ体（参考図の明朝系の見出しを再現）。OS 標準フォントだけで組み、Web フォントは配信しない
+     （3 つの短い文言のために和文セリフを配信すると数百 KB になる）。英字は Georgia、和文はヒラギノ明朝（Mac / iOS）・游明朝（Windows）。
+     どちらも無い環境（Android の一部）は serif の総称にフォールバックする */
+  --font-serif: Georgia, "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", YuMincho, "Noto Serif JP", "Noto Serif CJK JP", "Noto Serif", serif;
 }

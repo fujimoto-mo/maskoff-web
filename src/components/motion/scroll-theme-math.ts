@@ -1,7 +1,7 @@
 export type Rgb = [number, number, number];
 
-/** 補間する変数名（--color-<name>）。fg-invert の暗側は dark-bg を使う */
-export const THEME_VARS = ["bg", "fg", "fg-body", "fg-muted", "surface", "border", "fg-invert"] as const;
+/** 補間する変数名（--color-<name>）。fg-invert の暗側は dark-bg を使う。accent-* は VISION 相関図の領域名の色（白地用 → 黒地用） */
+export const THEME_VARS = ["bg", "fg", "fg-body", "fg-muted", "surface", "border", "fg-invert", "accent-hr", "accent-mk", "accent-cr"] as const;
 
 /** 暗色パレットのフォールバック（tokens.css の --color-dark-* と同値。CSS が読めない環境でも白文字を保証） */
 export const DARK_FALLBACK: Record<(typeof THEME_VARS)[number], string> = {
@@ -12,6 +12,9 @@ export const DARK_FALLBACK: Record<(typeof THEME_VARS)[number], string> = {
   surface: "#151514",
   border: "#2c2c2a",
   "fg-invert": "#0a0a0a",
+  "accent-hr": "#a8b868",
+  "accent-mk": "#d8c868",
+  "accent-cr": "#d88858",
 };
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));

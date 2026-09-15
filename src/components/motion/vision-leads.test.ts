@@ -42,7 +42,7 @@ test("引き出し線の折れ点と終点は立方体の外にある（線が�
   }
 });
 
-test("SP: HR の線は水平に終わり、HR ブロックの左端（幅の 60%）にブロック下端より上で届く", () => {
+test("SP: HR の線は水平に終わり、HR ブロックの左端（幅の 55%）にブロック下端より上で届く", () => {
   const [, bend, end] = LEADS_SP[0];
   assert.equal(bend.y, end.y, "末尾が水平でない");
   assert.ok(bend.x < end.x, "末尾が右向き（ブロック側）でない");
@@ -51,17 +51,17 @@ test("SP: HR の線は水平に終わり、HR ブロックの左端（幅の 60%
   assert.ok(end.y > 0, "終点が viewBox の上に出ている");
 });
 
-test("SP: IT / RC の線は垂直に終わり、下段の上端で自分の列の範囲内に届く", () => {
+test("SP: MK / CR の線は垂直に終わり、下段の上端で自分の列の範囲内に届く", () => {
   const rowTop = VIEW.h - VIEW.w * SP.rowTop;
-  const [, itBend, itEnd] = LEADS_SP[1];
-  const [, rcBend, rcEnd] = LEADS_SP[2];
-  for (const [bend, end] of [[itBend, itEnd], [rcBend, rcEnd]] as const) {
+  const [, mkBend, mkEnd] = LEADS_SP[1];
+  const [, crBend, crEnd] = LEADS_SP[2];
+  for (const [bend, end] of [[mkBend, mkEnd], [crBend, crEnd]] as const) {
     assert.equal(bend.x, end.x, "末尾が垂直でない");
     assert.ok(bend.y < end.y, "末尾が下向きでない");
     near(end.y, rowTop);
   }
-  assert.ok(itEnd.x > 0 && itEnd.x < VIEW.w * SP.col, `IT 終点 x=${itEnd.x} が左列の外`);
-  assert.ok(rcEnd.x > VIEW.w * (1 - SP.col) && rcEnd.x < VIEW.w, `RC 終点 x=${rcEnd.x} が右列の外`);
+  assert.ok(mkEnd.x > 0 && mkEnd.x < VIEW.w * SP.col, `MK 終点 x=${mkEnd.x} が左列の外`);
+  assert.ok(crEnd.x > VIEW.w * (1 - SP.col) && crEnd.x < VIEW.w, `CR 終点 x=${crEnd.x} が右列の外`);
 });
 
 test("SP: 線はすべて viewBox の中に収まる（SVG の overflow に頼らない）", () => {
@@ -70,7 +70,7 @@ test("SP: 線はすべて viewBox の中に収まる（SVG の overflow に頼�
       assert.ok(p.x >= 0 && p.x <= VIEW.w && p.y >= 0 && p.y <= VIEW.h, `${p.x},${p.y}`);
 });
 
-test("SP の配置比率: HR は右上 40% 幅、下段 2 列は合計が 100% 未満で隙間がある", () => {
+test("SP の配置比率: HR は右上 45% 幅、下段 2 列は合計が 100% 未満で隙間がある", () => {
   assert.ok(SP.hrLeft > 0.5 && SP.hrLeft < 0.7);
   assert.ok(SP.col * 2 < 1);
 });
