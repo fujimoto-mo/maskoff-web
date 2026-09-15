@@ -113,7 +113,9 @@ export const SERVICES: readonly Service[] = [
     description:
       "飲食店向けサービス「TiPLY」に関する企画、営業、マーケティング、サービス運営などを行っています。",
     tags: ["サービス企画", "営業・マーケティング", "サービス運営"],
+    // ARIGATO TiPLY JAPAN のロゴ・利用シーン・卓上 POP を並べた横長の合成画像（docs/Frame2.png、1200×613）。切り抜くと構成が壊れるため contain。地の白は枠の bg-surface（#F9F9F9）に合わせてある
     image: "/images/service/svc-07.png",
+    imageFit: "contain",
   },
   {
     slug: "cross-border-ec",
@@ -125,7 +127,8 @@ export const SERVICES: readonly Service[] = [
     description:
       "海外マーケットプレイスへの出店から、物流・決済・多言語対応まで、越境ECの立ち上げと運用を支援。日本の商品を世界の顧客へ届けます。",
     tags: ["出店支援", "物流・決済", "多言語対応"],
-    image: "/images/service/svc-08.png",
+    // docs/Frame1.png（EC の 3D イラスト、1200×676）を JPEG に。全面絵柄なので cover
+    image: "/images/service/svc-08.jpg",
   },
   {
     slug: "it-enablement",
