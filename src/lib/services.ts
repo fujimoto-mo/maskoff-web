@@ -21,6 +21,8 @@ export type Service = {
   image: string;
   /** 画像の収め方。写真は cover（既定）。透過背景のモックアップなど全体を見せたい画像は contain（余白は枠の bg-surface） */
   imageFit?: "cover" | "contain";
+  /** /service/[slug]/ のキービジュアルだけの拡大率（contain で余白が大きい画像用）。枠は overflow-hidden なので、はみ出した分は切れる。HOME・一覧のカードには効かない */
+  imageZoom?: number;
 };
 
 export const SERVICES: readonly Service[] = [
@@ -50,6 +52,8 @@ export const SERVICES: readonly Service[] = [
     // 求人媒体のロゴ一覧（docs/svc-02.png を 1600px 正方形・bg-surface 地に整形、ロゴ群は上下左右とも中央。contain で全ロゴを見せる）
     image: "/images/service/svc-02.png",
     imageFit: "contain",
+    // 詳細ページでは余白を詰めるため 1.4 倍に拡大（ロゴ群は縦 359〜1241px に収まり、1.4 倍で見える範囲 229〜1371px の内側なので切れない）
+    imageZoom: 1.4,
   },
   {
     slug: "web-development",

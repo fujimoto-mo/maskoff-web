@@ -103,6 +103,7 @@ export default async function ServiceDetailPage({
         <div
           data-reveal="up"
           className="h-[clamp(240px,40vw,520px)] overflow-hidden bg-surface"
+          style={s.imageZoom ? ({ "--kv-zoom": s.imageZoom } as CSSProperties) : undefined}
         >
           <Picture
             src={s.image}
@@ -110,7 +111,11 @@ export default async function ServiceDetailPage({
             sizes="100vw"
             priority
             className="block size-full"
-            imgClassName={cn("size-full", s.imageFit === "contain" ? "object-contain" : "object-cover")}
+            imgClassName={cn(
+              "size-full",
+              s.imageFit === "contain" ? "object-contain" : "object-cover",
+              s.imageZoom ? "scale-(--kv-zoom)" : null,
+            )}
           />
         </div>
       </div>
