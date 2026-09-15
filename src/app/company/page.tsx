@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { revealDelay } from "@/components/motion/reveal-delay";
+import TouchToggle from "@/components/motion/TouchToggle";
 import Button from "@/components/ui/Button";
 import JsonLd from "@/components/ui/JsonLd";
 import Marker from "@/components/ui/Marker";
@@ -93,8 +94,8 @@ export default function CompanyPage() {
         <SectionHeading en="MESSAGE" ja="代表メッセージ" />
         <div className="grid gap-14 pc:grid-cols-[320px_1fr]">
           <div data-reveal="up">
-            {/* 代表ポートレート。既定は落書き風のスケッチ（docs/17_33.png）、マウスホバーで完成イラスト（docs/32_39.png）に 0.3s でクロスフェード（reduced-motion では即時切替。タッチ端末はホバーが無いので既定のまま）。どちらも 1254px 正方形・白地で、枠は PC 320×400 / SP 全幅×400。cover で切れるのは左右の白い余白だけ */}
-            <div className="group relative h-[400px] w-full overflow-hidden bg-surface pc:w-[320px]">
+            {/* 代表ポートレート。既定は落書き風のスケッチ（docs/17_33.png）、マウスホバーで完成イラスト（docs/32_39.png）に 0.3s でクロスフェード（reduced-motion では即時切替）。タッチ端末はホバーが無いので TouchToggle がタップごとに data-on を付け外しし、同じクロスフェードで切り替える（長押しの画像メニューは touch-callout で抑止）。どちらも 1254px 正方形・白地で、枠は PC 320×400 / SP 全幅×400。cover で切れるのは左右の白い余白だけ */}
+            <TouchToggle className="group relative h-[400px] w-full overflow-hidden bg-surface select-none [-webkit-touch-callout:none] pc:w-[320px]">
               <Picture
                 src="/images/company/ceo.jpg"
                 alt="代表取締役 藤本 ツヨシ（イラスト）"
@@ -106,10 +107,10 @@ export default function CompanyPage() {
                 src="/images/company/ceo-hover.jpg"
                 alt=""
                 sizes="(max-width: 960px) 100vw, 320px"
-                className="absolute inset-0 block size-full opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 motion-reduce:transition-none"
+                className="absolute inset-0 block size-full opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-data-on:opacity-100 motion-reduce:transition-none"
                 imgClassName="size-full object-cover"
               />
-            </div>
+            </TouchToggle>
             <p className="mt-3 font-display text-caption tracking-[.15em] text-fg-muted">CEO / FOUNDER</p>
           </div>
           <div>
