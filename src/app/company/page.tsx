@@ -3,6 +3,7 @@ import { revealDelay } from "@/components/motion/reveal-delay";
 import Button from "@/components/ui/Button";
 import JsonLd from "@/components/ui/JsonLd";
 import Marker from "@/components/ui/Marker";
+import Picture from "@/components/ui/Picture";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
@@ -92,8 +93,23 @@ export default function CompanyPage() {
         <SectionHeading en="MESSAGE" ja="代表メッセージ" />
         <div className="grid gap-14 pc:grid-cols-[320px_1fr]">
           <div data-reveal="up">
-            {/* SAMPLE: 代表ポートレート（実画像に差し替え → Picture を使う） */}
-            <div className="flex h-[400px] w-full items-center justify-center bg-placeholder font-display text-caption text-fg-muted pc:w-[320px]">CEO PORTRAIT</div>
+            {/* 代表ポートレート。既定は落書き風のスケッチ（docs/17_33.png）、マウスホバーで完成イラスト（docs/32_39.png）に 0.3s でクロスフェード（reduced-motion では即時切替。タッチ端末はホバーが無いので既定のまま）。どちらも 1254px 正方形・白地で、枠は PC 320×400 / SP 全幅×400。cover で切れるのは左右の白い余白だけ */}
+            <div className="group relative h-[400px] w-full overflow-hidden bg-surface pc:w-[320px]">
+              <Picture
+                src="/images/company/ceo.jpg"
+                alt="代表取締役 藤本 ツヨシ（イラスト）"
+                sizes="(max-width: 960px) 100vw, 320px"
+                className="block size-full"
+                imgClassName="size-full object-cover"
+              />
+              <Picture
+                src="/images/company/ceo-hover.jpg"
+                alt=""
+                sizes="(max-width: 960px) 100vw, 320px"
+                className="absolute inset-0 block size-full opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 motion-reduce:transition-none"
+                imgClassName="size-full object-cover"
+              />
+            </div>
             <p className="mt-3 font-display text-caption tracking-[.15em] text-fg-muted">CEO / FOUNDER</p>
           </div>
           <div>
