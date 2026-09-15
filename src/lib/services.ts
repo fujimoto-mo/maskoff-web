@@ -102,7 +102,7 @@ export const SERVICES: readonly Service[] = [
   {
     slug: "tiply",
     num: "07",
-    en: "TIPLY",
+    en: "TiPLY",
     title: "TiPLY事業",
     verb: "もてなす",
     lead: "飲食店向けサービス「TiPLY」の企画・営業・マーケティング・サービス運営を行っています。",
