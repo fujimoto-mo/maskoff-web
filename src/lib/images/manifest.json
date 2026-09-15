@@ -1,4 +1,16 @@
 {
+  "/images/company/ceo-hover.jpg": {
+    "width": 1254,
+    "height": 1254,
+    "avif": "/images/optimized/company/ceo-hover.avif",
+    "webp": "/images/optimized/company/ceo-hover.webp"
+  },
+  "/images/company/ceo.jpg": {
+    "width": 1254,
+    "height": 1254,
+    "avif": "/images/optimized/company/ceo.avif",
+    "webp": "/images/optimized/company/ceo.webp"
+  },
   "/images/hero/hero-02.png": {
     "width": 626,
     "height": 640,
