@@ -149,7 +149,7 @@
     "avif": "/images/optimized/partners/p01.avif",
     "webp": "/images/optimized/partners/p01.webp"
   },
-  "/images/partners/p02.png": {
+  "/images/partners/p02.jpg": {
     "width": 1050,
     "height": 650,
     "avif": "/images/optimized/partners/p02.avif",
@@ -161,7 +161,7 @@
     "avif": "/images/optimized/partners/p03.avif",
     "webp": "/images/optimized/partners/p03.webp"
   },
-  "/images/partners/p04.png": {
+  "/images/partners/p04.jpg": {
     "width": 1050,
     "height": 650,
     "avif": "/images/optimized/partners/p04.avif",
