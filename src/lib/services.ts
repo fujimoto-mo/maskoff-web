@@ -21,6 +21,8 @@ export type Service = {
   image: string;
   /** 画像の収め方。写真は cover（既定）。透過背景のモックアップなど全体を見せたい画像は contain（余白は枠の bg-surface） */
   imageFit?: "cover" | "contain";
+  /** /service/[slug]/ のキービジュアルだけの拡大率（contain で余白が大きい画像用）。枠は overflow-hidden なので、はみ出した分は切れる。HOME・一覧のカードには効かない */
+  imageZoom?: number;
 };
 
 export const SERVICES: readonly Service[] = [
@@ -50,6 +52,8 @@ export const SERVICES: readonly Service[] = [
     // 求人媒体のロゴ一覧（docs/svc-02.png を 1600px 正方形・bg-surface 地に整形、ロゴ群は上下左右とも中央。contain で全ロゴを見せる）
     image: "/images/service/svc-02.png",
     imageFit: "contain",
+    // 詳細ページでは余白を詰めるため 1.4 倍に拡大（ロゴ群は縦 359〜1241px に収まり、1.4 倍で見える範囲 229〜1371px の内側なので切れない）
+    imageZoom: 1.4,
   },
   {
     slug: "web-development",
@@ -102,14 +106,16 @@ export const SERVICES: readonly Service[] = [
   {
     slug: "tiply",
     num: "07",
-    en: "TIPLY",
+    en: "TiPLY",
     title: "TiPLY事業",
     verb: "もてなす",
     lead: "飲食店向けサービス「TiPLY」の企画・営業・マーケティング・サービス運営を行っています。",
     description:
       "飲食店向けサービス「TiPLY」に関する企画、営業、マーケティング、サービス運営などを行っています。",
     tags: ["サービス企画", "営業・マーケティング", "サービス運営"],
+    // ARIGATO TiPLY JAPAN のロゴ・利用シーン・卓上 POP を並べた横長の合成画像（docs/Frame2.png、1200×613）。切り抜くと構成が壊れるため contain。地の白は枠の bg-surface（#F9F9F9）に合わせてある
     image: "/images/service/svc-07.png",
+    imageFit: "contain",
   },
   {
     slug: "cross-border-ec",
@@ -121,7 +127,8 @@ export const SERVICES: readonly Service[] = [
     description:
       "海外マーケットプレイスへの出店から、物流・決済・多言語対応まで、越境ECの立ち上げと運用を支援。日本の商品を世界の顧客へ届けます。",
     tags: ["出店支援", "物流・決済", "多言語対応"],
-    image: "/images/service/svc-08.png",
+    // docs/Frame1.png（EC の 3D イラスト、1200×676）を JPEG に。全面絵柄なので cover
+    image: "/images/service/svc-08.jpg",
   },
   {
     slug: "it-enablement",

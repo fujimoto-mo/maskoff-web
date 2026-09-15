@@ -168,6 +168,13 @@ SERVICEだけガターが広いのは、カードに背景色がないため間�
   --color-marker:      #FF302F;  /* 本文中のマーカーハイライト */
   --color-required:    #EF3B59;  /* 必須マーク */
 
+  /* 例外: VISION 相関図の 3 つの領域名と矢印だけ（2026-09-15 承認。参考画像の黄緑 / 黄 / 橙を実測）。
+     ここに書くのは白地用の濃い色（白とのコントラスト 5:1 以上）。黒地用は @theme static の
+     --color-dark-accent-*（#A8B868 / #D8C868 / #D88858）で、ScrollTheme が背景と一緒に補間する */
+  --color-accent-hr:   #63722A;  /* HR – Recruiting */
+  --color-accent-mk:   #836A0A;  /* Marketing */
+  --color-accent-cr:   #B0521C;  /* Creative */
+
   /* UI */
   --color-disabled:    #A9A9A9;  /* 無効ボタン */
 }
@@ -175,6 +182,7 @@ SERVICEだけガターが広いのは、カードに背景色がないため間�
 
 **有彩色は `--color-marker` と `--color-required` の2つだけです。**
 色は写真とコンテンツに持たせ、UIは徹底して無彩色にします。この規律がデザインの核心です。
+唯一の例外は VISION 相関図の 3 つの領域名（`--color-accent-hr / mk / cr`）で、他の UI には使いません。
 
 `--color-marker` の赤は、本文中のキーフレーズ背景として使います。装飾で乱用しないでください。1セクションにつき2〜3箇所が上限です。
 
@@ -296,7 +304,7 @@ FAQは `<details>/<summary>` を閉じた状態で SSR し、PCでは CSS の `:
 | 手書き線描画 | VISION | `Handwriting` が 1 文字ずつ読み順に輪郭を `stroke-dashoffset 1→0` で描き、続けて `fill-opacity 0→1`（合計 1.6s）。データは `scripts/handwriting-paths.py` で生成 |
 | 行フェード | VISION 本文 | PC は段落単位で行が順に、SP(≤640) は 1 行ずつ画面下 75% で点灯 |
 | マーカー描画 | VISION 本文 | `MarkerLayer` が文字位置を計測し背後の線を `clip-path` で左→右（0.85s）。他セクションは `background-size` 方式 |
-| 相関図 | VISION | 等角の立方体（HR / IT / RC の 3 面。座標は `cube-geometry`）。面の中は写真 `public/images/vision/cube.jpg`（外接矩形 260:300 で切り抜き。`Picture` を六角形の `clip-path` で切り、上に明るい膜・白い稜線・ラベルを重ねる）。面が順にフェード → 中央から Y 字の稜線を線描画 → 面ラベルがぼかしから出現 → 引き出し線を描いて事業名がフェード。出現後は 3 面が 9s 周期で順に明るくなり、7s ごとに斜めの光が立方体を横切る（`vd-glow` / `vd-sheen`、reduced-motion では停止）。事業名は HTML（`src/content/vision-diagram.ts`）で、PC は `@container` の cqw 単位で立方体と同率に拡縮させ引き出し線とずらさない。SP は HR を右上（幅 40% を右寄せ）、IT / RC を立方体の下の 2 列に置き、SP 用の引き出し線（`vision-leads.ts` の `LEADS_SP`。配置比率 `SP` を CSS 変数で共有）でつなぐ |
+| 相関図 | VISION | 等角の立方体（HR / MK / CR = 人材・採用 / マーケティング / クリエイティブ の 3 面。座標は `cube-geometry`）。面の中は写真 `public/images/vision/cube.jpg`（外接矩形 260:300 で切り抜き。`Picture` を六角形の `clip-path` で切り、上に明るい膜・白い稜線・ラベルを重ねる）。面が順にフェード → 中央から Y 字の稜線を線描画 → 面ラベルがぼかしから出現 → 引き出し線を描いて領域ブロックがフェード。出現後は 3 面が 9s 周期で順に明るくなり、7s ごとに斜めの光が立方体を横切る（`vd-glow` / `vd-sheen`、reduced-motion では停止）。領域ブロックは HTML（`src/content/vision-diagram.ts`。英字の領域名 → 和文の事業名（事業一覧へのリンク、丸囲みの矢印付き）→ サービス 4 項目）で、ブロックだけ OS 標準のセリフ体（`--font-serif`。Georgia + ヒラギノ明朝 / 游明朝、Web フォントは配信しない）、領域名と矢印だけ `--color-accent-*` の 3 色。PC は `@container` の cqw 単位で立方体と同率に拡縮させ引き出し線とずらさない。SP は HR を右上（幅 45% を右寄せ）、MK / CR を立方体の下の 2 列に置き、SP 用の引き出し線（`vision-leads.ts` の `LEADS_SP`。配置比率 `SP` を CSS 変数で共有）でつなぐ |
 | スクロールリビール | SERVICE / PARTNERS / FAQ / NEWS / CONTACT | `data-reveal="blur"`（SERVICE、奥から blur 解除）/ `"up"`（fade + 18px）。stagger 80ms |
 | ホバー散布 | WORKS | 行ホバーでサムネ 5 枚が 3 パターンの配置で出現、他行は薄く。`(max-width: 820px)` または `(hover: none)`（タッチ主体端末含む）では画面中央の行がアクティブになる方式に切替 |
 | ホバーロール | WORKS の名前・ナビ | 同一テキストを2つ重ね、`overflow:hidden` + `translateY` で入れ替え |
