@@ -54,3 +54,8 @@ test("SERVICES: cardFit は HOME・一覧のカードだけの収め方（未指
   for (const s of SERVICES) if (s.cardFit !== undefined) assert.ok(["cover", "contain"].includes(s.cardFit), s.slug);
   assert.equal(SERVICES.find((s) => s.slug === "career-support")?.cardFit, "contain");
 });
+
+test("SERVICES: kvAspect は「幅 / 高さ」の形式。文字入りのキャリア支援はヒーローも全体表示（3 / 2）", () => {
+  for (const s of SERVICES) if (s.kvAspect !== undefined) assert.match(s.kvAspect, /^\d+ \/ \d+$/, s.slug);
+  assert.equal(SERVICES.find((s) => s.slug === "career-support")?.kvAspect, "3 / 2");
+});

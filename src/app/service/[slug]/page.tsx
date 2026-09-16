@@ -102,10 +102,14 @@ export default async function ServiceDetailPage({
       <div className="wrap">
         <div
           data-reveal="up"
-          className="h-[clamp(240px,40vw,520px)] overflow-hidden bg-surface"
+          className={cn("overflow-hidden bg-surface", s.kvAspect ? "aspect-(--kv-aspect)" : "h-[clamp(240px,40vw,520px)]")}
           style={
-            s.imageZoom || s.imagePosition
-              ? ({ ...(s.imageZoom && { "--kv-zoom": s.imageZoom }), ...(s.imagePosition && { "--kv-pos": s.imagePosition }) } as CSSProperties)
+            s.imageZoom || s.imagePosition || s.kvAspect
+              ? ({
+                  ...(s.imageZoom && { "--kv-zoom": s.imageZoom }),
+                  ...(s.imagePosition && { "--kv-pos": s.imagePosition }),
+                  ...(s.kvAspect && { "--kv-aspect": s.kvAspect }),
+                } as CSSProperties)
               : undefined
           }
         >
