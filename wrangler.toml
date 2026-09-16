@@ -13,7 +13,7 @@ compatibility_flags = ["nodejs_compat"]
 # ===== Production =====
 [vars]
 # メンテナンス切替。"1" で全ページ 503（worker/maintenance.ts）。戻すときは "0"
-MAINTENANCE = "0"
+MAINTENANCE = "1"
 NODE_VERSION = "24.17.0"
 MICROCMS_SERVICE_DOMAIN = "maskoff"
 # 正規 URL。canonical / OGP / sitemap / Origin 検証 / www→apex 301 に使う
