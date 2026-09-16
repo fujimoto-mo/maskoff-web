@@ -23,7 +23,9 @@ export function routesJson() {
 }
 
 /**
- * www → apex の 301 先。正規 URL（NEXT_PUBLIC_SITE_URL）の "www." 付きホストで来たときだけ返す。
+ * 正規 URL（NEXT_PUBLIC_SITE_URL）の "www." 付きホストで来たときだけ、正規 URL への 301 先を返す。
+ * 現在は正規 URL が www（https://www.maskoff.co.jp）なので常に null（apex → www の 301 は Firebase Hosting が担う。
+ * docs/production-migration.md）。将来 NS を Cloudflare に移して apex を正規に戻した場合はそのまま効く。
  * プレビュー（*.pages.dev）やローカルはそのまま。
  */
 export function canonicalRedirect(requestUrl: URL, siteUrl: string | undefined): string | null {
