@@ -40,7 +40,7 @@ a:hover{opacity:.7}
 <body>
 <p class="logo"><img src="/images/logo-mark.png" alt="" width="28" height="28">MasKOFF</p>
 <main class="sec">
-<h1>MAINTE NANCE</h1>
+<h1>MAINTENANCE</h1>
 <p class="ja">ただいまメンテナンス中です</p>
 <p>現在、サイトのメンテナンスを行っております。<br>ご不便をおかけしますが、9月18日（金）公開予定です。時間になりましたらアクセスしてください。</p>
 <p>お急ぎのご用件は <a href="mailto:${email}">${email}</a> までご連絡ください。</p>
