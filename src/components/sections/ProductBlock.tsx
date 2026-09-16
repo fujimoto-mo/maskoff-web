@@ -6,9 +6,9 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import { SITE } from "@/lib/site";
 
 const COPY = [
-  `${SITE.product}は、未経験の方でも即戦力のエンジニアを目指せるプログラミングスクールです。`,
-  "PHP、HTML/CSS、JavaScript、インフラを学べ、オンラインでアクセスして学習していきます。",
-  "エンジニアのサポート、カスタマイズ可能なカリキュラムなどスキルアップ環境が充実しています。",
+  `${SITE.product}は、未経験から、エンジニアやWebマーケティング分野で活躍するために必要なスキルを身につけられるオンラインスクールです。`,
+  "SNSマーケティングをはじめ、PHP、HTML/CSS、JavaScript、インフラなど、希望するキャリアに合わせた分野をオンラインで学習できます。",
+  "学習中はエンジニアによるサポートを受けながら、一人ひとりの目的や習熟度に合わせてカリキュラムを調整できるなど、実践的なスキルを身につけやすい学習環境を整えています。",
 ] as const;
 
 const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as CSSProperties;
