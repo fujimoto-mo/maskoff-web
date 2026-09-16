@@ -23,6 +23,8 @@ export type Service = {
   imageFit?: "cover" | "contain";
   /** /service/[slug]/ のキービジュアルだけの拡大率（contain で余白が大きい画像用）。枠は overflow-hidden なので、はみ出した分は切れる。HOME・一覧のカードには効かない */
   imageZoom?: number;
+  /** /service/[slug]/ のキービジュアルだけの CSS object-position（cover で切れる位置の指定。既定は中央 "50% 50%"）。帯は横長なので、顔や見出しが上寄りの写真は "50% 15%" のように上を残す。HOME・一覧のカードには効かない */
+  imagePosition?: string;
 };
 
 export const SERVICES: readonly Service[] = [
@@ -78,6 +80,7 @@ export const SERVICES: readonly Service[] = [
       `キャリア面談・人材紹介・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。${SITE.product}修了生のキャリアサポートとも連動しています。`,
     tags: ["キャリア面談", "人材紹介", "研修"],
     image: "/images/service/svc-04.jpg",
+    imagePosition: "50% 10%", // 顔と手書き見出しが上 3 割にある。中央合わせだと PC 幅で顔が切れる（15% だと 1440px 以上で見出し 1 行目の上端が欠ける）
   },
   {
     slug: "bpo",

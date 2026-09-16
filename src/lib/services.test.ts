@@ -39,3 +39,13 @@ test("SERVICES: 本文・リード・タグ（3 つ）が空でなく、画像�
     );
   }
 });
+
+test("SERVICES: imagePosition は cover の写真にだけ付け、CSS object-position の 2 値（例 50% 15%）。キャリア支援は顔が上寄りなので設定必須", () => {
+  for (const s of SERVICES) {
+    if (s.imagePosition === undefined) continue;
+    assert.notEqual(s.imageFit, "contain", `${s.slug}: contain では意味がない`);
+    assert.match(s.imagePosition, /^\S+ \S+$/, `${s.slug}: imagePosition "${s.imagePosition}"`);
+  }
+  const career = SERVICES.find((s) => s.slug === "career-support");
+  assert.ok(career?.imagePosition, "career-support に imagePosition が必要");
+});
