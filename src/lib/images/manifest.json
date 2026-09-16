@@ -90,8 +90,8 @@
     "webp": "/images/optimized/hero/hero-15.webp"
   },
   "/images/hero/maskoff.png": {
-    "width": 512,
-    "height": 512,
+    "width": 800,
+    "height": 600,
     "avif": "/images/optimized/hero/maskoff.avif",
     "webp": "/images/optimized/hero/maskoff.webp"
   },
