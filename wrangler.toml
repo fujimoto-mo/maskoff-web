@@ -37,7 +37,7 @@ binding = "RATE_LIMIT"
 id = "4d32d6bc4915430eb507f810466f0c06"
 
 [env.preview.vars]
-MAINTENANCE = "0"
+MAINTENANCE = "1"
 NODE_VERSION = 24.17.0
 MICROCMS_SERVICE_DOMAIN = "maskoff"
 NEXT_PUBLIC_SITE_URL = "https://www.maskoff.co.jp"
