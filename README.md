@@ -75,9 +75,10 @@ npm run build && npx serve out -l 3999
 3. 暗号化変数（Production / Preview 両方）: `RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`, `MICROCMS_WEBHOOK_SECRET`, `CF_DEPLOY_HOOK_URL`（任意で `SLACK_WEBHOOK_URL`）。`npx wrangler pages secret put <NAME> --project-name maskoff-web` でも可。
 4. KV バインディングと非機密の変数は `wrangler.toml` に定義済み（ファイルが正。ダッシュボードでは閲覧のみ）。
 5. 設定 → ビルド → デプロイフック を作成し、URL を 3 の `CF_DEPLOY_HOOK_URL` に登録。
-6. microCMS の各 API に Webhook（カスタム通知）: `https://maskoff.co.jp/api/rebuild`、シークレットは `MICROCMS_WEBHOOK_SECRET` と同値。
-7. Turnstile のホスト名に `<project>.pages.dev` と `maskoff.co.jp` を登録。Resend でドメイン認証（SPF/DKIM をムームーDNS に追加）。
-8. `<project>.pages.dev` で検証後、カスタムドメイン（apex は ALIAS、www は CNAME）を設定し、`NEXT_PUBLIC_SITE_URL` を本番 URL に変えて再ビルド。
+6. microCMS の各 API に Webhook（カスタム通知）: `https://www.maskoff.co.jp/api/rebuild`、シークレットは `MICROCMS_WEBHOOK_SECRET` と同値。
+7. Turnstile のホスト名に `<project>.pages.dev` と `maskoff.co.jp` を登録（サブドメイン www も自動で対象）。Resend でドメイン認証（SPF/DKIM をムームーDNS に追加）。
+8. `<project>.pages.dev` で検証後、カスタムドメイン `www.maskoff.co.jp` を CNAME で設定し、`NEXT_PUBLIC_SITE_URL` を `https://www.maskoff.co.jp` に変えて再ビルド。
+   **正規 URL は www。** 外部 DNS（ムームー）のままでは Pages に apex（www なし）を付けられないため、`maskoff.co.jp` は Firebase Hosting が全パスを www へ 301 する（設定は `docs/apex-redirect-firebase/`、経緯は `docs/production-migration.md`）。
 
 `functions/` ディレクトリは作らない（`_worker.js` と併用不可）。静的アセットと旧 URL は `worker/routes.ts` → `out/_routes.json` で Function の対象外にしている。
 
@@ -118,7 +119,7 @@ sed -i 's/^MAINTENANCE = "1"/MAINTENANCE = "0"/' wrangler.toml
 git commit -am "メンテナンス終了" && git push
 
 # 反映確認（メンテ中は 503、通常は 200）。push から 3〜5 分
-curl -sI https://maskoff.co.jp/ | head -1
+curl -sI https://www.maskoff.co.jp/ | head -1
 
 # ローカルでメンテ画面を確認
 npm run build && npx wrangler pages dev --binding MAINTENANCE=1
