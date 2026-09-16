@@ -127,7 +127,7 @@ export default function CompanyPage() {
             </p>
             <p data-reveal="up" style={rd(3)} className="mt-9 text-[13px] text-fg-muted">株式会社MasKOFF 代表取締役</p>
             <p data-reveal="up" style={rd(3)} className="mt-1.5 text-[20px] font-bold text-fg">
-              藤本 ツヨシ<span className="ml-3 font-display text-caption font-normal tracking-[.1em] text-fg-muted">TSUYOSHI FUJIMOTO</span>
+             {/* 藤本 ツヨシ<span className="ml-3 font-display text-caption font-normal tracking-[.1em] text-fg-muted">TSUYOSHI FUJIMOTO</span> */}
             </p>
           </div>
         </div>
