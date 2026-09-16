@@ -2,7 +2,7 @@
 export const SITE = {
   name: "株式会社MasKOFF",
   nameEn: "MasKOFF Inc.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://maskoff.co.jp",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.maskoff.co.jp",
   tagline: "TAKE THE MASKOFF",
   /** 自社プロダクトの正式表記。見出し・本文・meta・構造化データはすべてここを参照する（表記ゆれ防止） */
   product: "techMasKLab",
