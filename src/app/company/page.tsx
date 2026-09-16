@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const PROFILE = [
   { dt: "社名", dd: ["株式会社MasKOFF（マスクオフ）"] },
   { dt: "設立", dd: ["2025年4月"] },
-  { dt: "代表者", dd: ["代表取締役 藤本ツヨシ"] },
+  /*{ dt: "代表者", dd: ["代表取締役 藤本ツヨシ"] },*/
   { dt: "所在地", dd: ["〒150-0021 東京都渋谷区恵比寿西1-33-6-216"] },
   { dt: "事業内容", dd: ["ホームページ制作、デザインの制作", "キャリア支援事業", "アパレル製品の企画・製造・販売", "デザイン及びコンサルタント業務", "アーティストの活動支援"] },
   { dt: "資本金", dd: ["3,000,000円"] },
@@ -98,7 +98,7 @@ export default function CompanyPage() {
             <TouchToggle className="group relative h-[400px] w-full overflow-hidden bg-surface select-none [-webkit-touch-callout:none] pc:w-[320px]">
               <Picture
                 src="/images/company/ceo.jpg"
-                alt="代表取締役 藤本 ツヨシ（イラスト）"
+                alt="代表取締役 （イラスト）"
                 sizes="(max-width: 960px) 100vw, 320px"
                 className="block size-full"
                 imgClassName="size-full object-cover"
