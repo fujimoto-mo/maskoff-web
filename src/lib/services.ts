@@ -21,8 +21,14 @@ export type Service = {
   image: string;
   /** 画像の収め方。写真は cover（既定）。透過背景のモックアップなど全体を見せたい画像は contain（余白は枠の bg-surface） */
   imageFit?: "cover" | "contain";
+  /** HOME・一覧のカードだけの収め方（未指定なら imageFit）。カードは正方形なので、文字入りの横長写真は contain で全体を見せ、ヒーローは cover のままにしたいときに使う */
+  cardFit?: "cover" | "contain";
   /** /service/[slug]/ のキービジュアルだけの拡大率（contain で余白が大きい画像用）。枠は overflow-hidden なので、はみ出した分は切れる。HOME・一覧のカードには効かない */
   imageZoom?: number;
+  /** /service/[slug]/ のキービジュアルの帯を画像の縦横比に合わせる（例 "3 / 2"）。指定すると帯の高さは幅から決まり（PC では高くなる）、画像は切れずに全体が出る。未指定は既定の帯（clamp(240px,40vw,520px)）で cover */
+  kvAspect?: string;
+  /** /service/[slug]/ のキービジュアルだけの CSS object-position（cover で切れる位置の指定。既定は中央 "50% 50%"）。帯は横長なので、顔や見出しが上寄りの写真は "50% 15%" のように上を残す。HOME・一覧のカードには効かない */
+  imagePosition?: string;
 };
 
 export const SERVICES: readonly Service[] = [
@@ -32,7 +38,7 @@ export const SERVICES: readonly Service[] = [
     en: "TECH EDUCATION",
     title: `${SITE.product} エンジニアカリキュラム`,
     verb: "育てる",
-    lead: "未経験から現場で通用するエンジニアへ。実案件ベースの実践型カリキュラムです。",
+    lead: "未経験から、現場で求められるスキルの習得を目指す実践型カリキュラムです。",
     description:
       `未経験からエンジニアを目指す実践型カリキュラム「${SITE.product}」を運営。実案件ベースの課題と現役エンジニアのメンタリングで、現場で通用するスキルを育てます。`,
     tags: ["プログラミング教育", "実案件ベース", "メンタリング"],
@@ -78,6 +84,9 @@ export const SERVICES: readonly Service[] = [
       `キャリア面談・人材紹介・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。${SITE.product}修了生のキャリアサポートとも連動しています。`,
     tags: ["キャリア面談", "人材紹介", "研修"],
     image: "/images/service/svc-04.jpg",
+    cardFit: "contain", // 見出し文字と右の階段まで含めてカードで全体を見せる
+    kvAspect: "3 / 2", // 文字入りのポスター画像なので、ヒーローも切らずに全体を出す（帯を画像比に）
+    imagePosition: "50% 10%", // kvAspect を外して cover に戻す場合の保険。顔と手書き見出しが上 3 割にある
   },
   {
     slug: "bpo",

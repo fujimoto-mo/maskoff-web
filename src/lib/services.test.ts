@@ -39,3 +39,23 @@ test("SERVICES: 本文・リード・タグ（3 つ）が空でなく、画像�
     );
   }
 });
+
+test("SERVICES: imagePosition は cover の写真にだけ付け、CSS object-position の 2 値（例 50% 15%）。キャリア支援は顔が上寄りなので設定必須", () => {
+  for (const s of SERVICES) {
+    if (s.imagePosition === undefined) continue;
+    assert.notEqual(s.imageFit, "contain", `${s.slug}: contain では意味がない`);
+    assert.match(s.imagePosition, /^\S+ \S+$/, `${s.slug}: imagePosition "${s.imagePosition}"`);
+  }
+  const career = SERVICES.find((s) => s.slug === "career-support");
+  assert.ok(career?.imagePosition, "career-support に imagePosition が必要");
+});
+
+test("SERVICES: cardFit は HOME・一覧のカードだけの収め方（未指定なら imageFit）。文字入りのキャリア支援はカードで全体表示", () => {
+  for (const s of SERVICES) if (s.cardFit !== undefined) assert.ok(["cover", "contain"].includes(s.cardFit), s.slug);
+  assert.equal(SERVICES.find((s) => s.slug === "career-support")?.cardFit, "contain");
+});
+
+test("SERVICES: kvAspect は「幅 / 高さ」の形式。文字入りのキャリア支援はヒーローも全体表示（3 / 2）", () => {
+  for (const s of SERVICES) if (s.kvAspect !== undefined) assert.match(s.kvAspect, /^\d+ \/ \d+$/, s.slug);
+  assert.equal(SERVICES.find((s) => s.slug === "career-support")?.kvAspect, "3 / 2");
+});

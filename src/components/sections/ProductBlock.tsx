@@ -6,16 +6,16 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import { SITE } from "@/lib/site";
 
 const COPY = [
-  `${SITE.product}は、未経験の方でも即戦力のエンジニアを目指せるプログラミングスクールです。`,
-  "PHP、HTML/CSS、JavaScript、インフラを学べ、オンラインでアクセスして学習していきます。",
-  "エンジニアのサポート、カスタマイズ可能なカリキュラムなどスキルアップ環境が充実しています。",
+  `${SITE.product}は、未経験から、エンジニアやWebマーケティング分野で活躍するために必要なスキルを身につけられるオンラインスクールです。`,
+  "SNSマーケティングをはじめ、PHP、HTML/CSS、JavaScript、インフラなど、希望するキャリアに合わせた分野をオンラインで学習できます。",
+  "学習中はエンジニアによるサポートを受けながら、一人ひとりの目的や習熟度に合わせてカリキュラムを調整できるなど、実践的なスキルを身につけやすい学習環境を整えています。",
 ] as const;
 
 const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as CSSProperties;
 
 /**
  * HOME の PRODUCT（VISION と SERVICE の間）。自社プロダクト（SITE.product）の紹介。
- * PC は左に画面イメージ・右に文章の 2 カラム、960px 以下は縦積み（画像 → 文章）。文章側の背景にロゴ画像を 30% 透過で枠の端まで敷く（PC は cover、960px 以下は contain + 黒地）。
+ * PC は左に画面イメージ・右に文章の 2 カラム、960px 以下は縦積み（画像 → 文章）。文章側は黒地（bg-bg-dark）のパネルで、ロゴ画像を 25% の透過で枠の端まで敷き、文字は白の太字（2026-09-16 承認。灰地に白ロゴだと本文をストロークが横切って読めなかったため）。PC は cover、960px 以下は contain。
  * @example <ProductBlock />
  */
 export default function ProductBlock() {
@@ -38,22 +38,22 @@ export default function ProductBlock() {
             />
           </div>
           <div className="relative flex flex-col justify-center self-stretch">
-            {/* 右カラムの背景: TECH MASK LAB. のロゴ画像を 30% の透過で枠の端まで敷く。self-stretch で行の高さ（左の画像と同じ高さ）に揃えたうえで、枠を文章カラムより上下 40px・左右 24px（960px 以下は上下 32px・左右 12px。ページ余白の内側に収める）広げる。PC は object-cover（枠の縦横比 1.4〜1.6 に対し画像は 1.17 なので、切れるのは上下の黒い余白だけでロゴ本体は全部残る）。960px 以下は枠が横長（タブレット）／縦長（SP）になり cover だとロゴが切れるため object-contain にし、余った帯は黒地（bg-bg-dark）で埋めて枠全体を 1 枚の画像に見せる。画像の地は #000 で bg-bg-dark（#0A0A0A）とわずかに違うため、img を mix-blend-lighten で地に合わせて帯との境目を消す。opacity は帯も含めて薄くするため picture 側に付ける。装飾のため alt は空 */}
+            {/* 右カラムの背景: 黒地のパネルに TECH MASK LAB. のロゴ画像を 25% の透過で枠の端まで敷く（白い本文と喧嘩しない濃さ。白 on ロゴ最明部でもコントラスト比 7:1 以上）。self-stretch で行の高さ（左の画像と同じ高さ）に揃えたうえで、枠を文章カラムより上下 40px・左右 24px（960px 以下は上下 32px・左右 12px。ページ余白の内側に収める）広げる。PC は object-cover（枠の縦横比 1.4〜1.6 に対し画像は 1.17 なので、切れるのは上下の黒い余白だけでロゴ本体は全部残る）。960px 以下は枠が横長（タブレット）／縦長（SP）になり cover だとロゴが切れるため object-contain にし、余った帯は黒地（bg-bg-dark）で埋めて枠全体を 1 枚の画像に見せる。画像の地は #000 で bg-bg-dark（#0A0A0A）とわずかに違うため、img を mix-blend-lighten で地に合わせて帯との境目を消す。opacity は img 側に付け、黒地（パネル）は不透明のまま保つ。装飾のため alt は空 */}
             <Picture
               src="/images/product/techmasklab-logo.jpg"
               alt=""
               sizes="(max-width: 960px) 100vw, 50vw"
-              className="absolute -inset-x-6 -inset-y-10 block bg-bg-dark opacity-30 max-pc:-inset-x-3 max-pc:-inset-y-8"
-              imgClassName="size-full object-cover mix-blend-lighten max-pc:object-contain"
+              className="absolute -inset-x-6 -inset-y-10 block bg-bg-dark max-pc:-inset-x-3 max-pc:-inset-y-8"
+              imgClassName="size-full object-cover opacity-25 mix-blend-lighten max-pc:object-contain"
             />
             <div className="relative">
               <h3
                 data-reveal="up"
-                className="font-display text-[clamp(28px,3.4vw,40px)] font-extrabold leading-[1.1] tracking-[-.04em] text-fg"
+                className="font-display text-[clamp(28px,3.4vw,40px)] font-extrabold leading-[1.1] tracking-[-.04em] text-fg-invert"
               >
                 {SITE.product}
               </h3>
-              <div className="mt-6 space-y-2 text-body leading-[2.1] text-fg-body">
+              <div className="mt-6 space-y-2 text-body leading-[2.1] font-bold text-fg-invert">
                 {COPY.map((line, i) => (
                   <p key={line} data-reveal="up" style={rd(i + 1)}>
                     {line}
@@ -61,7 +61,8 @@ export default function ProductBlock() {
                 ))}
               </div>
               <div data-reveal="up" style={rd(4)} className="mt-8">
-                <Button href="/service/tech-education/" variant="liquid">
+                {/* 黒地の上では黒ピルが沈むので白の縁取り（ring）を足す。液体ホバーはそのまま */}
+                <Button href="/service/tech-education/" variant="liquid" className="ring-1 ring-fg-invert/50">
                   詳しく見る
                 </Button>
               </div>
