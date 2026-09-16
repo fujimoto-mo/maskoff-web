@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 // 現行サイト https://maskoff.co.jp/TRANSACTIONACT の内容を移植（URL は /transaction/ に変更、旧 URL は _redirects で 301）（2026-09-02 取得）
 const ROWS: { dt: string; dd: string[] }[] = [
   { dt: "販売業者", dd: ["株式会社MasKOFF"] },
-  { dt: "代表責任者", dd: ["代表取締役　藤本剛"] },
+  /*{ dt: "代表責任者", dd: ["代表取締役　藤本剛"] },*/
   { dt: "所在地", dd: ["〒150-0021 東京都渋谷区恵比寿西１丁目３３番６－２１６号ＪＰｎｏｉｅ恵比寿西"] },
   { dt: "電話番号", dd: ["080-7244-0077"] },
   { dt: "電話受付時間", dd: ["10:00〜18:00（土日祝除く）", "※受付時間外の場合は、メールにてお問い合わせください。"] },
