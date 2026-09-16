@@ -13,7 +13,7 @@ compatibility_flags = ["nodejs_compat"]
 # ===== Production =====
 [vars]
 # メンテナンス切替。"1" で全ページ 503（worker/maintenance.ts）。戻すときは "0"
-MAINTENANCE = "0"
+MAINTENANCE = "1"
 NODE_VERSION = 24.17.0
 MICROCMS_SERVICE_DOMAIN = "maskoff"
 # 正規 URL。canonical / OGP / sitemap / Origin 検証 / www→apex 301 に使う
@@ -37,7 +37,7 @@ binding = "RATE_LIMIT"
 id = "4d32d6bc4915430eb507f810466f0c06"
 
 [env.preview.vars]
-MAINTENANCE = "1"
+MAINTENANCE = "0"
 NODE_VERSION = 24.17.0
 MICROCMS_SERVICE_DOMAIN = "maskoff"
 NEXT_PUBLIC_SITE_URL = "https://www.maskoff.co.jp"
