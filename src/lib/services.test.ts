@@ -49,3 +49,8 @@ test("SERVICES: imagePosition は cover の写真にだけ付け、CSS object-po
   const career = SERVICES.find((s) => s.slug === "career-support");
   assert.ok(career?.imagePosition, "career-support に imagePosition が必要");
 });
+
+test("SERVICES: cardFit は HOME・一覧のカードだけの収め方（未指定なら imageFit）。文字入りのキャリア支援はカードで全体表示", () => {
+  for (const s of SERVICES) if (s.cardFit !== undefined) assert.ok(["cover", "contain"].includes(s.cardFit), s.slug);
+  assert.equal(SERVICES.find((s) => s.slug === "career-support")?.cardFit, "contain");
+});

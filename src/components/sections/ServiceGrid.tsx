@@ -35,7 +35,7 @@ export default function ServiceGrid({ services = SERVICES, limit = 6 }: Props) {
                     alt=""
                     sizes="(max-width: 600px) 80vw, (max-width: 960px) 50vw, 33vw"
                     className="block size-full"
-                    imgClassName={cn("size-full transition-transform duration-500 group-hover:scale-[1.03]", s.imageFit === "contain" ? "object-contain" : "object-cover")}
+                    imgClassName={cn("size-full transition-transform duration-500 group-hover:scale-[1.03]", (s.cardFit ?? s.imageFit) === "contain" ? "object-contain" : "object-cover")}
                   />
                   <span
                     aria-hidden
