@@ -28,7 +28,7 @@ const BLOCK_POS = [
   "top-[81.4%] left-[65.7%]",
 ] as const;
 /** 領域名と矢印の色（HR / MK / CR）。tokens.css の --color-accent-*（白地用）を ScrollTheme が黒地用へ補間する。面の英字と項目は無彩色のまま */
-const ACCENT = ["text-accent-hr", "text-accent-mk", "text-accent-cr"] as const;
+const ACCENT = ["text-accent-cr", "text-accent-cr", "text-accent-cr"] as const; // 2026-09-17: 3 領域とも Creative の色（橙）に統一（クライアント指示）。HR / MK 用トークンは未使用
 
 /**
  * 相関図。等角の立方体を 3 面（HR / MK / CR）に分け、各面から引き出し線で領域ブロック（英字の領域名 → 和文の事業名 → サービス 4 つ）につなぐ。
