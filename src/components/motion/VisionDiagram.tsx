@@ -28,7 +28,7 @@ const BLOCK_POS = [
   "top-[81.4%] left-[65.7%]",
 ] as const;
 /** 領域名と矢印の色（HR / MK / CR）。tokens.css の --color-accent-*（白地用）を ScrollTheme が黒地用へ補間する。面の英字と項目は無彩色のまま */
-const ACCENT = ["text-accent-hr", "text-accent-mk", "text-accent-cr"] as const;
+const ACCENT = ["text-accent-cr", "text-accent-cr", "text-accent-cr"] as const; // 2026-09-17: 3 領域とも Creative の色（橙）に統一（クライアント指示）。HR / MK 用トークンは未使用
 
 /**
  * 相関図。等角の立方体を 3 面（HR / MK / CR）に分け、各面から引き出し線で領域ブロック（英字の領域名 → 和文の事業名 → サービス 4 つ）につなぐ。
@@ -36,7 +36,7 @@ const ACCENT = ["text-accent-hr", "text-accent-mk", "text-accent-cr"] as const;
  * 面ラベルがぼかしから出現 → 引き出し線を描いてブロックがフェード。
  * ブロックは HTML（検索・読み上げに乗せる）。PC では @container の cqw 単位で文字を立方体と同率に拡縮させ
  * （見出し 22px / 本文 15px で頭打ち）、引き出し線が届く内側の端を基準に置くので SVG 座標の引き出し線とズレない。
- * ブロックは参考図に倣いセリフ体（tokens.css の --font-serif。OS 標準の Georgia + 明朝）で、英字の領域名 → 和文の事業名（事業一覧へのリンク。丸囲みの矢印付き）→ サービス項目の 3 段。
+ * ブロックの書体は本文と同じ（Inter Tight + Noto Sans JP。2026-09-17 にセリフ体から統一。--font-serif は未使用）、英字の領域名 → 和文の事業名（事業一覧へのリンク。丸囲みの矢印付き）→ サービス項目の 3 段。
  * 領域名と矢印だけ参考図の 3 色（ACCENT。CLAUDE.md §4-1 の例外）で、面の英字・事業名・項目は無彩色。
  * SP は HR を右上（幅 45% を右寄せ、SVG の上端に 11% 重ねる）、MK / CR を立方体の下の 2 列（各 49%、SVG 下端から 12% 引き上げ）に置き、
  * SP 用の引き出し線（LEADS_SP）でつなぐ。配置比率は vision-leads.ts の SP を CSS 変数で渡し、線の座標と同じ値を使う。
@@ -57,7 +57,7 @@ export default function VisionDiagram() {
         key={face.code}
         className={cn(
           // PC: 文字は幅に比例（540px で 13px）だが 15px で頭打ち。内側の端を基準に置くので、頭打ち後も引き出し線とはずれない
-          "vd-lbl absolute whitespace-nowrap font-serif text-[min(2.4cqw,15px)] leading-[2.1] tracking-[.03em] text-fg-muted",
+          "vd-lbl absolute whitespace-nowrap text-[min(2.4cqw,15px)] leading-[2.1] tracking-[.03em] text-fg-muted",
           BLOCK_POS[i],
           // SP: 12〜13px を幅に比例させる（390px で 13px、360px で 12.2px。下段の列幅 49% に 12 文字の項目が 1 行で入る）。幅は CSS 変数（vision-leads.ts の SP）
           "max-sp:static max-sp:whitespace-normal max-sp:text-[clamp(12px,3.4vw,13px)] max-sp:[text-wrap:balance]",

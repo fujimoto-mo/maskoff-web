@@ -28,8 +28,10 @@
   --color-placeholder-text: #b5b5b2;
   --color-marker: #ff302f;
   /* VISION 本文のマーカー帯だけの色（2026-09-17 承認）。CTA・番号・他セクションの --color-marker は赤のまま。
-     黒反転中は 75% で黒地に重ね、文字は白のまま（クライアント指示。コントラスト 2.2:1 で AA 未満だが蛍光の見え方を優先） */
+     黒反転中は 75% で黒地に重ね、文字は白のまま（クライアント指示。コントラスト 緑 2.2:1 / オレンジ 3.6:1 で AA 未満だが蛍光の見え方を優先）。
+     マーカーごとの色は vision-copy.ts の tone で切り替え（未指定 = 緑、"orange" = 下のオレンジ） */
   --color-marker-vision: #00ff91;
+  --color-marker-vision-orange: #ff8c1a;
   --color-required: #ef3b59;
   --color-disabled: #a9a9a9;
   /* VISION 相関図の 3 つの領域名だけの例外（CLAUDE.md §4-1）。参考画像の黄緑 / 黄 / 橙。
