@@ -30,7 +30,7 @@ export async function generateMetadata({
   if (!s) return {};
   return {
     title: s.title,
-    description: s.lead,
+    description: s.lead.replace(/\n/g, " "), // lead の \n は表示用の改行。meta では 1 行にする
     alternates: { canonical: `/service/${slug}/` },
   };
 }
@@ -93,7 +93,7 @@ export default async function ServiceDetailPage({
         <h1 className="mt-5 text-[clamp(30px,4.5vw,56px)] font-black leading-[1.35] tracking-[-.02em] text-fg [text-wrap:pretty]">
           {s.title}
         </h1>
-        <p className="mt-6 max-w-[720px] text-[16px] font-medium leading-[1.9] text-fg-body max-sp:text-[14px]">
+        <p className="mt-6 max-w-[720px] text-[16px] font-medium leading-[1.9] whitespace-pre-line text-fg-body max-sp:text-[14px]">
           {s.lead}
         </p>
       </section>

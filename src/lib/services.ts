@@ -11,7 +11,7 @@ export type Service = {
   title: string;
   /** HOME のバッジに入る動詞。4 文字以内（86px の丸に収める） */
   verb: string;
-  /** HOME カード・詳細ページのリード用 1〜2 行 */
+  /** HOME カード・詳細ページのリード用 1〜2 行。"\n" を入れるとその位置で改行する（whitespace-pre-line。meta description では空白に置換） */
   lead: string;
   /** /service/ の各行と詳細ページの本文 */
   description: string;
