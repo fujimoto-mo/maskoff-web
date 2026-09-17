@@ -21,8 +21,8 @@ const SILHOUETTE = { type: "video" as const, src: "/videos/hero/hero-14.mp4", po
 const PHONE = img(5);
 
 const ROWS: MarqueeRow[] = [
-  { cells: [GLITCH, img(2), img(3), TEXT, LOGO_TILE, PHONE], duration: 60 },
-  { cells: [img(6), TILES, TEE, { type: "logo" }, img(9), img(10)], reverse: true, duration: 72 },
+  { cells: [GLITCH, img(2), img(3), TEXT, img(6), PHONE], duration: 60 },
+  { cells: [LOGO_TILE, TILES, TEE, { type: "logo" }, img(9), img(10)], reverse: true, duration: 72 },
   { cells: [img(11), img(12), TEXT, img(13), SILHOUETTE, img(15)], duration: 66 },
 ];
 

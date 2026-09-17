@@ -33,8 +33,20 @@ export type Service = {
 
 export const SERVICES: readonly Service[] = [
   {
-    slug: "tech-education",
+    slug: "apparel-consulting",
     num: "01",
+    en: "APPAREL CONSULTING",
+    title: "アパレルコンサルティング事業",
+    verb: "纏う",
+    lead: "ブランドを立ち上げたい個人または企業向けにデザインの作成からメーカーの取次、販売戦略までトレンドに合わせた支援が出来ます。広告運用からインフルエンサーの起用も可能",
+    description:
+      "オリジナルブランド運営で培った知見をもとに、ブランド立ち上げ・OEM/ODM・販売戦略を支援。コンセプト設計からものづくり、売り場づくりまで伴走します。",
+    tags: ["ブランド設計", "OEM / ODM", "販売戦略"],
+    image: "/images/service/svc-06.jpg",
+  },
+  {
+    slug: "tech-education",
+    num: "02",
     en: "TECH EDUCATION",
     title: `-${SITE.product} -`,
     verb: "育てる",
@@ -47,7 +59,7 @@ export const SERVICES: readonly Service[] = [
   },
   {
     slug: "sns",
-    num: "02",
+    num: "03",
     en: "SNS MARKETING",
     title: "SNSマーケティング事業",
     verb: "魅せる",
@@ -56,18 +68,6 @@ export const SERVICES: readonly Service[] = [
       "事務・カスタマーサポートなどのバックオフィス業務を受託。業務フローの設計から運用まで担い、お客様がコア業務に集中できる体制をつくります。",
     tags: ["事務代行", "カスタマーサポート", "運用設計"],
     image: "/images/service/svc-05.jpg",
-  },
-  {
-    slug: "apparel-consulting",
-    num: "03",
-    en: "APPAREL CONSULTING",
-    title: "アパレルコンサルティング事業",
-    verb: "纏う",
-    lead: "ブランドを立ち上げたい個人または企業向けにデザインの作成からメーカーの取次、販売戦略までトレンドに合わせた支援が出来ます。広告運用からインフルエンサーの起用も可能",
-    description:
-      "オリジナルブランド運営で培った知見をもとに、ブランド立ち上げ・OEM/ODM・販売戦略を支援。コンセプト設計からものづくり、売り場づくりまで伴走します。",
-    tags: ["ブランド設計", "OEM / ODM", "販売戦略"],
-    image: "/images/service/svc-06.jpg",
   },
   {
     slug: "career-support",
