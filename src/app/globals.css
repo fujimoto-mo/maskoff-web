@@ -231,16 +231,13 @@
     -webkit-clip-path: inset(0px 100% 0px 0px);
   }
   html[data-on-vision] .marker-line {
-    /* 暗転中は半透明のまま黒地に重ねる（参考サイトと同じ）。緑（--color-marker-vision）は明るいので 45%: 反転中の文字色 #F2F2F0 とのコントラスト 5.3:1（50% だと 4.5:1 ちょうどで余裕がない） */
-    background: color-mix(in srgb, var(--color-marker-vision) 45%, transparent);
+    /* 暗転中は蛍光色の帯（緑 75%）を黒地に重ね、文字は本文と同じ白のまま（2026-09-17 クライアント指示。
+       白文字と帯のコントラストは 2.2:1 で AA 未満だが、蛍光ペンの見え方を優先した） */
+    background: color-mix(in srgb, var(--color-marker-vision) 75%, transparent);
   }
   .marker-target {
     position: relative;
   }
-  /* 黒文字にするのは帯が実際に引かれた（MarkerLayer が data-marked を付けた）ものだけ。
-     安全弁で js が外れた・color-mix 非対応などで帯が無い経路では黒背景に黒文字になってしまう */
-  /* 暗転中も対象文字は本文と同じ白のまま（色は変えない — 参考サイトと同じ）。帯は半透明で黒地に重なる */
-
   /* 相関図（立方体）: 面が順にフェード → 中央から Y 字の稜線を線描画 → 面ラベルがぼかしから出現 →
      引き出し線を描いて事業名がフェード。JS 無効・reduced-motion は最終状態 */
   .vd-face {

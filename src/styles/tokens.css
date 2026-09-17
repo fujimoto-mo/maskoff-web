@@ -28,7 +28,7 @@
   --color-placeholder-text: #b5b5b2;
   --color-marker: #ff302f;
   /* VISION 本文のマーカー帯だけの色（2026-09-17 承認）。CTA・番号・他セクションの --color-marker は赤のまま。
-     黒反転中は 45% で黒地に重ね、反転中の文字色 #F2F2F0 とのコントラスト 5.3:1（60% だと 3.7:1 で AA 未満） */
+     黒反転中は 75% で黒地に重ね、文字は白のまま（クライアント指示。コントラスト 2.2:1 で AA 未満だが蛍光の見え方を優先） */
   --color-marker-vision: #00ff91;
   --color-required: #ef3b59;
   --color-disabled: #a9a9a9;
