@@ -6,9 +6,10 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import { SITE } from "@/lib/site";
 
 const COPY = [
-  `${SITE.product}は、未経験から、エンジニアやWebマーケティング分野で活躍するために必要なスキルを身につけられるオンラインスクールです。`,
+  `${SITE.product}は、未経験から、コーディングやWebマーケティング分野で活躍するために必要なスキルを身につけられる自社オリジナルブランドのオンラインスクールです。`,
   "SNSマーケティングをはじめ、PHP、HTML/CSS、JavaScript、インフラなど、希望するキャリアに合わせた分野をオンラインで学習できます。",
-  "学習中はエンジニアによるサポートを受けながら、一人ひとりの目的や習熟度に合わせてカリキュラムを調整できるなど、実践的なスキルを身につけやすい学習環境を整えています。",
+  "学習中はプロフェッショナル講師によるサポートを受けながら、一人ひとりの目的や習熟度に合わせてカリキュラムを調整できるなど、実践的なスキルを身につけやすい学習環境を整えています。",
+  "※こちらのcurriculumはMasKOFFのメンバーのみが受けられます。",
 ] as const;
 
 const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as CSSProperties;
