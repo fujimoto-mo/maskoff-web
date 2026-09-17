@@ -94,11 +94,11 @@ export default function CompanyPage() {
         <SectionHeading en="MESSAGE" ja="代表メッセージ" />
         <div className="grid gap-14 pc:grid-cols-[320px_1fr]">
           <div data-reveal="up">
-            {/* 代表ポートレート。既定は落書き風のスケッチ（docs/17_33.png）、マウスホバーで完成イラスト（docs/32_39.png）に 0.3s でクロスフェード（reduced-motion では即時切替）。タッチ端末はホバーが無いので TouchToggle がタップごとに data-on を付け外しし、同じクロスフェードで切り替える（長押しの画像メニューは touch-callout で抑止）。どちらも 1254px 正方形・白地で、枠は PC 320×400 / SP 全幅×400。cover で切れるのは左右の白い余白だけ */}
-            <TouchToggle className="group relative h-[400px] w-full overflow-hidden bg-surface select-none [-webkit-touch-callout:none] pc:w-[320px]">
+            {/* 代表メッセージの画像。既定は黒地の書「新たな自分をさらけ出せ。」（docs/S__117104643.jpg）、マウスホバーで白地版（docs/S__117104644.jpg）に 0.3s でクロスフェード（reduced-motion では即時切替）。タッチ端末はホバーが無いので TouchToggle がタップごとに data-on を付け外しし、同じクロスフェードで切り替える（長押しの画像メニューは touch-callout で抑止）。どちらも 1254px 正方形で文字が端まであるため、枠は正方形（PC 320×320 / SP 全幅の正方形）にして切らない（2026-09-17 にポートレートから差し替え） */}
+            <TouchToggle className="group relative aspect-square w-full overflow-hidden bg-surface select-none [-webkit-touch-callout:none] pc:w-[320px]">
               <Picture
                 src="/images/company/ceo.jpg"
-                alt="代表取締役 （イラスト）"
+                alt="新たな自分をさらけ出せ。株式会社MasKOFF チーム一同"
                 sizes="(max-width: 960px) 100vw, 320px"
                 className="block size-full"
                 imgClassName="size-full object-cover"
