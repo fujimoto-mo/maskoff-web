@@ -12,8 +12,8 @@
     "webp": "/images/optimized/company/ceo.webp"
   },
   "/images/hero/hero-02.png": {
-    "width": 626,
-    "height": 640,
+    "width": 800,
+    "height": 800,
     "avif": "/images/optimized/hero/hero-02.avif",
     "webp": "/images/optimized/hero/hero-02.webp"
   },
@@ -55,7 +55,7 @@
   },
   "/images/hero/hero-10.png": {
     "width": 800,
-    "height": 600,
+    "height": 800,
     "avif": "/images/optimized/hero/hero-10.avif",
     "webp": "/images/optimized/hero/hero-10.webp"
   },
@@ -72,8 +72,8 @@
     "webp": "/images/optimized/hero/hero-12.webp"
   },
   "/images/hero/hero-13.png": {
-    "width": 818,
-    "height": 818,
+    "width": 800,
+    "height": 800,
     "avif": "/images/optimized/hero/hero-13.avif",
     "webp": "/images/optimized/hero/hero-13.webp"
   },
