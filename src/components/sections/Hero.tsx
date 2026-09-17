@@ -10,8 +10,8 @@ const TEXT = { type: "text" as const, lines: ["TAKE THE", "MASK", "OFF"] };
 const LOGO_TILE = { type: "image" as const, src: "/images/hero/maskoff.png", anim: "/images/hero/maskoff-anim.webp" };
 // グリッチ映像。元動画 MOHP素材 (4).mp4（960px / 60s / 170MB）の先頭 3.5s から、末尾 0.5s を先頭に溶かした 3s のシームレスループを切り出し、342px / 24fps / H.264 約290KB に圧縮（生成物をコミット）。poster は先頭フレームの WebP。セル内で 2/3 に縮めて表示
 const GLITCH = { type: "video" as const, src: "/videos/hero/hero-01.mp4", poster: "/images/hero/hero-01-poster.webp", size: 2 / 3 };
-// ダンサーの映像。元動画 MOHP素材 (1).mp4（640px / 37s / 30fps / 8.4MB、docs/）の 0.5〜4.5s に先頭 0.5s を xfade で溶かした 4s のシームレスループを 512px / 24fps / H.264 に圧縮（生成物をコミット）。poster は 0.5s のフレームの WebP。セル内で 2/3 に縮めて表示（2026-09-17 にアプリタイル映像から差し替え）
-const TILES = { type: "video" as const, src: "/videos/hero/hero-07.mp4", poster: "/images/hero/hero-07-poster.webp", size: 2 / 3 };
+// ダンサーの映像。元動画 MOHP素材 (1).mp4（640px / 37s / 30fps / 8.4MB、docs/）の 0.5〜4.5s に先頭 0.5s を xfade で溶かした 4s のシームレスループを 512px / 24fps / H.264 に圧縮（生成物をコミット）。poster は 0.5s のフレームの WebP。セル内で 3/4 に縮めて表示（2026-09-17 にアプリタイル映像から差し替え、同日 2/3 → 3/4）
+const TILES = { type: "video" as const, src: "/videos/hero/hero-07.mp4", poster: "/images/hero/hero-07-poster.webp", size: 3 / 4 };
 // トートバッグを持つ人物の写真（角丸の透過 PNG、静止画。以前の白 T シャツの透過アニメ WebP は 2026-09-17 に廃止）
 const TEE = img(8);
 // 逆光のシルエット映像。元動画 MOHP素材.mp4（640px / 6.5s / 30fps）の 0.5〜4.5s に先頭 0.5s を xfade で溶かした 4s のシームレスループを 512px / 24fps / H.264 に圧縮（生成物をコミット、元動画は docs/）。
