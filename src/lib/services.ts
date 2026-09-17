@@ -46,9 +46,9 @@ export const SERVICES: readonly Service[] = [
     imageFit: "contain",
   },
   {
-    slug: "bpo",
+    slug: "sns",
     num: "02",
-    en: "BPO",
+    en: "SNS MARKETING",
     title: "SNSマーケティング事業",
     verb: "魅せる",
     lead: "-イメージ”を崩さないSNSマーケティング- \n企業様向けに弊社で磨き上げた優秀なスタッフをBPOを通して支援いたします。各企業の課題ヒアリングから設計、テスト、運用実施後、お客様のタイミングに合わせて即時解決いたします。",
