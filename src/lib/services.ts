@@ -11,7 +11,7 @@ export type Service = {
   title: string;
   /** HOME のバッジに入る動詞。4 文字以内（86px の丸に収める） */
   verb: string;
-  /** HOME カード・詳細ページのリード用 1〜2 行 */
+  /** HOME カード・詳細ページのリード用 1〜2 行。"\n" を入れるとその位置で改行する（whitespace-pre-line。meta description では空白に置換） */
   lead: string;
   /** /service/ の各行と詳細ページの本文 */
   description: string;
@@ -36,9 +36,9 @@ export const SERVICES: readonly Service[] = [
     slug: "tech-education",
     num: "01",
     en: "TECH EDUCATION",
-    title: `${SITE.product} エンジニアカリキュラム`,
+    title: `-${SITE.product} -`,
     verb: "育てる",
-    lead: "未経験から、現場で求められるスキルの習得を目指す実践型カリキュラムです。",
+    lead: "-アナタの新しい顔を創る- \nMasKOFF Original Curriculum",
     description:
       `未経験からエンジニアを目指す実践型カリキュラム「${SITE.product}」を運営。実案件ベースの課題と現役エンジニアのメンタリングで、現場で通用するスキルを育てます。`,
     tags: ["プログラミング教育", "実案件ベース", "メンタリング"],
@@ -46,8 +46,47 @@ export const SERVICES: readonly Service[] = [
     imageFit: "contain",
   },
   {
-    slug: "recruitment-ads",
+    slug: "sns",
     num: "02",
+    en: "SNS MARKETING",
+    title: "SNSマーケティング事業",
+    verb: "魅せる",
+    lead: "-イメージ”を崩さないSNSマーケティング- \n企業様向けに弊社で磨き上げた優秀なスタッフをBPOを通して支援いたします。各企業の課題ヒアリングから設計、テスト、運用実施後、お客様のタイミングに合わせて即時解決いたします。",
+    description:
+      "事務・カスタマーサポートなどのバックオフィス業務を受託。業務フローの設計から運用まで担い、お客様がコア業務に集中できる体制をつくります。",
+    tags: ["事務代行", "カスタマーサポート", "運用設計"],
+    image: "/images/service/svc-05.jpg",
+  },
+  {
+    slug: "apparel-consulting",
+    num: "03",
+    en: "APPAREL CONSULTING",
+    title: "アパレルコンサルティング事業",
+    verb: "纏う",
+    lead: "ブランドを立ち上げたい個人または企業向けにデザインの作成からメーカーの取次、販売戦略までトレンドに合わせた支援が出来ます。広告運用からインフルエンサーの起用も可能",
+    description:
+      "オリジナルブランド運営で培った知見をもとに、ブランド立ち上げ・OEM/ODM・販売戦略を支援。コンセプト設計からものづくり、売り場づくりまで伴走します。",
+    tags: ["ブランド設計", "OEM / ODM", "販売戦略"],
+    image: "/images/service/svc-06.jpg",
+  },
+  {
+    slug: "career-support",
+    num: "04",
+    en: "CAREER SUPPORT",
+    title: "キャリア支援事業【MIRAIZU】",
+    verb: "支える",
+    lead: "アナタの”MIRAIZU”を形成します。\nキャリア面談・スキル向上研修を通して、一人ひとりの「らしさ」を活かした働き方を提供します。",
+    description:
+      `キャリア面談・人材紹介・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。${SITE.product}修了生のキャリアサポートとも連動しています。`,
+    tags: ["キャリア面談・スキル向上研修"],
+    image: "/images/service/svc-04.jpg",
+    cardFit: "contain", // 見出し文字と右の階段まで含めてカードで全体を見せる
+    kvAspect: "1 / 1", // 文字入りのポスター画像（MIRAIZU ロゴ + 正方形）なので、ヒーローも切らずに全体を出す（帯を画像比に）
+    imagePosition: "50% 10%", // kvAspect を外して cover に戻す場合の保険。顔と手書き見出しが上 3 割にある
+  },
+  {
+    slug: "recruitment-ads",
+    num: "05",
     en: "RECRUITMENT ADS",
     title: "求人広告代理店事業",
     verb: "募る",
@@ -63,54 +102,15 @@ export const SERVICES: readonly Service[] = [
   },
   {
     slug: "web-development",
-    num: "03",
+    num: "06",
     en: "WEB DEVELOPMENT",
-    title: "WEBアプリ開発事業",
+    title: "WEBアプリケーション開発事業",
     verb: "創る",
-    lead: "企画・UI/UX設計・開発・運用を一貫して。小さく速く出して、改善を重ねます。",
+    lead: "企画・UI/UX設計・開発・運用を一貫して。\n小さく速く出して、改善を重ねます。クリエイティブ領域含めてデザインを書き出します。",
     description:
       "業務システムからサービス立ち上げまで、企画・UI/UX設計・開発・運用を一貫して提供。小さく速くリリースし、改善を重ねる開発スタイルで事業の成長に伴走します。",
     tags: ["受託開発", "UI/UX設計", "保守運用"],
     image: "/images/service/svc-03.jpg",
-  },
-  {
-    slug: "career-support",
-    num: "04",
-    en: "CAREER SUPPORT",
-    title: "キャリア支援事業",
-    verb: "支える",
-    lead: "キャリア面談・人材紹介・研修で、一人ひとりの「らしさ」を活かした働き方へ。",
-    description:
-      `キャリア面談・人材紹介・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。${SITE.product}修了生のキャリアサポートとも連動しています。`,
-    tags: ["キャリア面談", "人材紹介", "研修"],
-    image: "/images/service/svc-04.jpg",
-    cardFit: "contain", // 見出し文字と右の階段まで含めてカードで全体を見せる
-    kvAspect: "3 / 2", // 文字入りのポスター画像なので、ヒーローも切らずに全体を出す（帯を画像比に）
-    imagePosition: "50% 10%", // kvAspect を外して cover に戻す場合の保険。顔と手書き見出しが上 3 割にある
-  },
-  {
-    slug: "bpo",
-    num: "05",
-    en: "BPO",
-    title: "BPO事業",
-    verb: "任せる",
-    lead: "事務・カスタマーサポートなどのバックオフィス業務を、設計から運用まで受託します。",
-    description:
-      "事務・カスタマーサポートなどのバックオフィス業務を受託。業務フローの設計から運用まで担い、お客様がコア業務に集中できる体制をつくります。",
-    tags: ["事務代行", "カスタマーサポート", "運用設計"],
-    image: "/images/service/svc-05.jpg",
-  },
-  {
-    slug: "apparel-consulting",
-    num: "06",
-    en: "APPAREL CONSULTING",
-    title: "アパレルコンサルティング事業",
-    verb: "纏う",
-    lead: "ブランド立ち上げ・OEM/ODM・販売戦略まで、ものづくりと売り場づくりに伴走します。",
-    description:
-      "オリジナルブランド運営で培った知見をもとに、ブランド立ち上げ・OEM/ODM・販売戦略を支援。コンセプト設計からものづくり、売り場づくりまで伴走します。",
-    tags: ["ブランド設計", "OEM / ODM", "販売戦略"],
-    image: "/images/service/svc-06.jpg",
   },
   {
     slug: "tiply",

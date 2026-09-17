@@ -153,6 +153,77 @@
     transition-duration: var(--duration-reveal-fast), var(--duration-reveal);
   }
 
+  /* SERVICE 詳細 ISSUES: 課題は左から、解決は右から slide-in */
+  html.js [data-reveal="slide"] {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  html.js [data-reveal="slide"][data-side="r"] {
+    transform: translateX(28px);
+  }
+  [data-reveal-kind="slide"] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--duration-reveal-fast) ease var(--rd, 0s),
+      transform var(--duration-reveal) var(--ease-out-quart) var(--rd, 0s);
+  }
+
+  /* SERVICE 詳細 FLOW: 線（::before）が左→右（≤960 は上→下）に伸び、ステップが順に点灯。
+     線の位置・太さは ServiceFlow の Tailwind クラス、ここは初期状態と遷移だけ */
+  html.js [data-reveal="flow"]::before {
+    transform: scaleX(0);
+  }
+  html.js [data-reveal="flow"] > li {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  [data-reveal-kind="flow"]::before {
+    transform: none;
+    transition: transform 0.9s var(--ease-out-quart) 0.1s;
+  }
+  [data-reveal-kind="flow"] > li {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.5s ease calc(0.25s + var(--i, 0) * 0.18s),
+      transform 0.6s var(--ease-out-quart) calc(0.25s + var(--i, 0) * 0.18s);
+  }
+  @media (width < 961px) {
+    html.js [data-reveal="flow"]::before {
+      transform: scaleY(0);
+    }
+  }
+  /* 縦タイムライン（variant="vertical"）は PC でも上→下 */
+  html.js [data-reveal="flow"][data-variant="vertical"]::before {
+    transform: scaleY(0);
+  }
+  /* stairs（ServiceFlow variant="stairs"）: PC で右上がりの階段。--i は番号。transform は出現遷移と衝突するので margin で */
+  @media (width >= 961px) {
+    .sv-stairs > li {
+      margin-bottom: calc(var(--i, 0) * 28px);
+    }
+  }
+
+  /* CYCLE（ServiceCycle）: 弧を順に線描画、ノードは遅れてフェード */
+  .cyc-arc {
+    stroke-dasharray: 1;
+  }
+  html.js [data-reveal="up"] .cyc-arc {
+    stroke-dashoffset: 1;
+  }
+  [data-reveal-kind="up"] .cyc-arc {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.7s var(--ease-sym) calc(0.2s + var(--i, 0) * 0.35s);
+  }
+  html.js [data-reveal="up"] .cyc-node {
+    opacity: 0;
+  }
+  [data-reveal-kind="up"] .cyc-node {
+    opacity: 1;
+    transition: opacity 0.4s ease calc(0.3s + var(--i, 0) * 0.35s);
+  }
+
   /* 見出し: 1 文字ずつ skew 立ち上がり（spec §4-2） */
   .ch-clip {
     display: inline-block;
@@ -225,22 +296,19 @@
   .marker-line {
     position: absolute;
     border-radius: 2px;
-    background: color-mix(in srgb, var(--color-marker) 50%, transparent);
+    background: color-mix(in srgb, var(--color-marker-vision) 50%, transparent);
     transform-origin: left center;
     clip-path: inset(0px 100% 0px 0px);
     -webkit-clip-path: inset(0px 100% 0px 0px);
   }
   html[data-on-vision] .marker-line {
-    /* 暗転中は半透明のまま黒地に重ねる（参考サイトと同じ）。白文字とのコントラスト ≈ 9:1 */
-    background: color-mix(in srgb, var(--color-marker) 60%, transparent);
+    /* 暗転中は蛍光色の帯（緑 75%）を黒地に重ね、文字は本文と同じ白のまま（2026-09-17 クライアント指示。
+       白文字と帯のコントラストは 2.2:1 で AA 未満だが、蛍光ペンの見え方を優先した） */
+    background: color-mix(in srgb, var(--color-marker-vision) 75%, transparent);
   }
   .marker-target {
     position: relative;
   }
-  /* 黒文字にするのは帯が実際に引かれた（MarkerLayer が data-marked を付けた）ものだけ。
-     安全弁で js が外れた・color-mix 非対応などで帯が無い経路では黒背景に黒文字になってしまう */
-  /* 暗転中も対象文字は本文と同じ白のまま（色は変えない — 参考サイトと同じ）。帯は半透明で黒地に重なる */
-
   /* 相関図（立方体）: 面が順にフェード → 中央から Y 字の稜線を線描画 → 面ラベルがぼかしから出現 →
      引き出し線を描いて事業名がフェード。JS 無効・reduced-motion は最終状態 */
   .vd-face {
@@ -838,6 +906,10 @@
   html.js [data-reveal="blur"],
   html.js [data-reveal="blur"] .svf-badge,
   html.js [data-reveal="up"],
+  html.js [data-reveal="slide"],
+  html.js [data-reveal="flow"] > li,
+  html.js [data-reveal="flow"]::before,
+  html.js [data-reveal="up"] .cyc-node,
   html.js [data-reveal="diagram"] .vd-node,
   html.js [data-reveal="diagram"] .vd-face,
   html.js [data-reveal="diagram"] .vd-photo,
@@ -848,7 +920,8 @@
   }
   html.js .write-stroke,
   html.js [data-reveal="diagram"] .vd-edge,
-  html.js [data-reveal="diagram"] .vd-lead {
+  html.js [data-reveal="diagram"] .vd-lead,
+  html.js [data-reveal="up"] .cyc-arc {
     stroke-dashoffset: 0;
   }
   html.js .write-stroke {

@@ -4,12 +4,15 @@ import { notFound } from "next/navigation";
 import type { CSSProperties } from "react";
 import { revealDelay } from "@/components/motion/reveal-delay";
 import ServiceCta from "@/components/sections/ServiceCta";
+import ServiceOverview from "@/components/sections/ServiceOverview";
+import ServiceSections from "@/components/sections/ServiceSections";
 import Button from "@/components/ui/Button";
 import JsonLd from "@/components/ui/JsonLd";
 import Picture from "@/components/ui/Picture";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/cn";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
+import { getServiceDetail } from "@/content/service-details";
 import { SERVICES } from "@/lib/services";
 import { SITE } from "@/lib/site";
 
@@ -30,7 +33,7 @@ export async function generateMetadata({
   if (!s) return {};
   return {
     title: s.title,
-    description: s.lead,
+    description: s.lead.replace(/\n/g, " "), // lead の \n は表示用の改行。meta では 1 行にする
     alternates: { canonical: `/service/${slug}/` },
   };
 }
@@ -47,6 +50,7 @@ export default async function ServiceDetailPage({
   const idx = SERVICES.findIndex((x) => x.slug === slug);
   if (idx < 0) notFound();
   const s = SERVICES[idx];
+  const d = getServiceDetail(s.slug);
   const prev = SERVICES[(idx + SERVICES.length - 1) % SERVICES.length];
   const next = SERVICES[(idx + 1) % SERVICES.length];
   return (
@@ -93,7 +97,7 @@ export default async function ServiceDetailPage({
         <h1 className="mt-5 text-[clamp(30px,4.5vw,56px)] font-black leading-[1.35] tracking-[-.02em] text-fg [text-wrap:pretty]">
           {s.title}
         </h1>
-        <p className="mt-6 max-w-[720px] text-[16px] font-medium leading-[1.9] text-fg-body max-sp:text-[14px]">
+        <p className="mt-6 max-w-[720px] text-[16px] font-medium leading-[1.9] whitespace-pre-line text-fg-body max-sp:text-[14px]">
           {s.lead}
         </p>
       </section>
@@ -129,32 +133,8 @@ export default async function ServiceDetailPage({
         </div>
       </div>
 
-      <section className="wrap section-pad">
-        <SectionHeading en="OVERVIEW" ja="事業概要" />
-        <div className="grid gap-12 pc:grid-cols-[1fr_320px]">
-          <p
-            data-reveal="up"
-            className="max-w-[720px] text-body leading-[2.2] text-fg-body"
-          >
-            {s.description}
-          </p>
-          <div data-reveal="up" style={rd(1)}>
-            <p className="font-display text-caption font-medium tracking-[.2em] text-fg-muted">
-              KEYWORDS
-            </p>
-            <ul className="mt-4 flex flex-wrap gap-2.5">
-              {s.tags.map((t) => (
-                <li
-                  key={t}
-                  className="border border-border px-3.5 py-1.5 font-display text-[11px] font-medium tracking-[.1em] text-fg-body"
-                >
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
+      <ServiceOverview intro={d.intro} />
+      <ServiceSections sections={d.sections} />
 
       {/* 前後の事業 */}
       <section className="wrap section-pad pt-0">
