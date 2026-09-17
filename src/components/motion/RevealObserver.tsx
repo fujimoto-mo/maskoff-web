@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-type Kind = "head" | "para" | "line" | "diagram" | "blur" | "up";
+type Kind = "head" | "para" | "line" | "diagram" | "blur" | "up" | "slide" | "flow";
 /** 手書き完了（vision:written）が来なくても、交差からこの時間で para を解放する */
 const PARA_RELEASE_MS = 2500;
 const OPTIONS: Record<Kind, IntersectionObserverInit> = {
@@ -12,6 +12,8 @@ const OPTIONS: Record<Kind, IntersectionObserverInit> = {
   diagram: { rootMargin: "0px 0px -20% 0px", threshold: 0.3 },
   blur: { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
   up: { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+  slide: { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+  flow: { rootMargin: "0px 0px -12% 0px", threshold: 0.2 },
 };
 
 /** 要素を「出現済み」にする。元の種別は data-reveal-kind に退避。段落は配下の行も一緒に */
