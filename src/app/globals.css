@@ -194,6 +194,35 @@
       transform: scaleY(0);
     }
   }
+  /* 縦タイムライン（variant="vertical"）は PC でも上→下 */
+  html.js [data-reveal="flow"][data-variant="vertical"]::before {
+    transform: scaleY(0);
+  }
+  /* stairs（ServiceFlow variant="stairs"）: PC で右上がりの階段。--i は番号。transform は出現遷移と衝突するので margin で */
+  @media (width >= 961px) {
+    .sv-stairs > li {
+      margin-bottom: calc(var(--i, 0) * 28px);
+    }
+  }
+
+  /* CYCLE（ServiceCycle）: 弧を順に線描画、ノードは遅れてフェード */
+  .cyc-arc {
+    stroke-dasharray: 1;
+  }
+  html.js [data-reveal="up"] .cyc-arc {
+    stroke-dashoffset: 1;
+  }
+  [data-reveal-kind="up"] .cyc-arc {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.7s var(--ease-sym) calc(0.2s + var(--i, 0) * 0.35s);
+  }
+  html.js [data-reveal="up"] .cyc-node {
+    opacity: 0;
+  }
+  [data-reveal-kind="up"] .cyc-node {
+    opacity: 1;
+    transition: opacity 0.4s ease calc(0.3s + var(--i, 0) * 0.35s);
+  }
 
   /* 見出し: 1 文字ずつ skew 立ち上がり（spec §4-2） */
   .ch-clip {
@@ -880,6 +909,7 @@
   html.js [data-reveal="slide"],
   html.js [data-reveal="flow"] > li,
   html.js [data-reveal="flow"]::before,
+  html.js [data-reveal="up"] .cyc-node,
   html.js [data-reveal="diagram"] .vd-node,
   html.js [data-reveal="diagram"] .vd-face,
   html.js [data-reveal="diagram"] .vd-photo,
@@ -890,7 +920,8 @@
   }
   html.js .write-stroke,
   html.js [data-reveal="diagram"] .vd-edge,
-  html.js [data-reveal="diagram"] .vd-lead {
+  html.js [data-reveal="diagram"] .vd-lead,
+  html.js [data-reveal="up"] .cyc-arc {
     stroke-dashoffset: 0;
   }
   html.js .write-stroke {

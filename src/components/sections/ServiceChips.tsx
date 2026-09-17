@@ -2,13 +2,14 @@ import type { CSSProperties } from "react";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 /**
- * SERVICE 詳細の SCOPE。対応範囲のチップが 60ms 間隔でポップ。
- * @example <ServiceScope items={getServiceDetail("sns").scope} />
+ * SERVICE 詳細のチップ一覧（MARKETS など）。60ms 間隔でポップ。
+ * @example <ServiceChips en="MARKETS" ja="出店先のイメージ" items={["北米", "欧州"]} />
  */
-export default function ServiceScope({ items }: { items: readonly string[] }) {
+export default function ServiceChips({ en, ja, items }: { en: string; ja: string; items: readonly string[] }) {
+  const id = `sv-${en.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
   return (
-    <section aria-labelledby="sv-scope" className="wrap section-pad pt-0">
-      <SectionHeading en="SCOPE" ja="対応範囲" id="sv-scope" />
+    <section aria-labelledby={id} className="wrap section-pad pt-0">
+      <SectionHeading en={en} ja={ja} id={id} />
       <ul className="mt-[clamp(32px,4vw,48px)] flex flex-wrap gap-3 max-sp:gap-2">
         {items.map((t, i) => (
           <li

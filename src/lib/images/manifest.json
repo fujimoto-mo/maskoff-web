@@ -197,11 +197,23 @@
     "avif": "/images/optimized/service/detail/apparel-consulting-1.avif",
     "webp": "/images/optimized/service/detail/apparel-consulting-1.webp"
   },
-  "/images/service/detail/apparel-consulting-2.jpg": {
+  "/images/service/detail/apparel-process-2.jpg": {
     "width": 1200,
-    "height": 800,
-    "avif": "/images/optimized/service/detail/apparel-consulting-2.avif",
-    "webp": "/images/optimized/service/detail/apparel-consulting-2.webp"
+    "height": 900,
+    "avif": "/images/optimized/service/detail/apparel-process-2.avif",
+    "webp": "/images/optimized/service/detail/apparel-process-2.webp"
+  },
+  "/images/service/detail/apparel-process-3.jpg": {
+    "width": 1200,
+    "height": 900,
+    "avif": "/images/optimized/service/detail/apparel-process-3.avif",
+    "webp": "/images/optimized/service/detail/apparel-process-3.webp"
+  },
+  "/images/service/detail/apparel-process-4.jpg": {
+    "width": 1200,
+    "height": 900,
+    "avif": "/images/optimized/service/detail/apparel-process-4.avif",
+    "webp": "/images/optimized/service/detail/apparel-process-4.webp"
   },
   "/images/service/detail/career-support-1.jpg": {
     "width": 1200,
@@ -209,23 +221,11 @@
     "avif": "/images/optimized/service/detail/career-support-1.avif",
     "webp": "/images/optimized/service/detail/career-support-1.webp"
   },
-  "/images/service/detail/career-support-2.jpg": {
-    "width": 1200,
-    "height": 800,
-    "avif": "/images/optimized/service/detail/career-support-2.avif",
-    "webp": "/images/optimized/service/detail/career-support-2.webp"
-  },
   "/images/service/detail/cross-border-ec-1.jpg": {
     "width": 1200,
     "height": 800,
     "avif": "/images/optimized/service/detail/cross-border-ec-1.avif",
     "webp": "/images/optimized/service/detail/cross-border-ec-1.webp"
-  },
-  "/images/service/detail/cross-border-ec-2.jpg": {
-    "width": 1200,
-    "height": 800,
-    "avif": "/images/optimized/service/detail/cross-border-ec-2.avif",
-    "webp": "/images/optimized/service/detail/cross-border-ec-2.webp"
   },
   "/images/service/detail/it-enablement-1.jpg": {
     "width": 1200,
@@ -233,23 +233,11 @@
     "avif": "/images/optimized/service/detail/it-enablement-1.avif",
     "webp": "/images/optimized/service/detail/it-enablement-1.webp"
   },
-  "/images/service/detail/it-enablement-2.jpg": {
-    "width": 1200,
-    "height": 800,
-    "avif": "/images/optimized/service/detail/it-enablement-2.avif",
-    "webp": "/images/optimized/service/detail/it-enablement-2.webp"
-  },
   "/images/service/detail/recruitment-ads-1.jpg": {
     "width": 1200,
     "height": 800,
     "avif": "/images/optimized/service/detail/recruitment-ads-1.avif",
     "webp": "/images/optimized/service/detail/recruitment-ads-1.webp"
-  },
-  "/images/service/detail/recruitment-ads-2.jpg": {
-    "width": 1200,
-    "height": 800,
-    "avif": "/images/optimized/service/detail/recruitment-ads-2.avif",
-    "webp": "/images/optimized/service/detail/recruitment-ads-2.webp"
   },
   "/images/service/detail/sns-1.jpg": {
     "width": 1200,
@@ -257,23 +245,11 @@
     "avif": "/images/optimized/service/detail/sns-1.avif",
     "webp": "/images/optimized/service/detail/sns-1.webp"
   },
-  "/images/service/detail/sns-2.jpg": {
-    "width": 1200,
-    "height": 800,
-    "avif": "/images/optimized/service/detail/sns-2.avif",
-    "webp": "/images/optimized/service/detail/sns-2.webp"
-  },
   "/images/service/detail/tech-education-1.jpg": {
     "width": 1200,
     "height": 800,
     "avif": "/images/optimized/service/detail/tech-education-1.avif",
     "webp": "/images/optimized/service/detail/tech-education-1.webp"
-  },
-  "/images/service/detail/tech-education-2.jpg": {
-    "width": 1200,
-    "height": 800,
-    "avif": "/images/optimized/service/detail/tech-education-2.avif",
-    "webp": "/images/optimized/service/detail/tech-education-2.webp"
   },
   "/images/service/detail/tiply-1.jpg": {
     "width": 1200,
@@ -281,23 +257,11 @@
     "avif": "/images/optimized/service/detail/tiply-1.avif",
     "webp": "/images/optimized/service/detail/tiply-1.webp"
   },
-  "/images/service/detail/tiply-2.jpg": {
-    "width": 1200,
-    "height": 800,
-    "avif": "/images/optimized/service/detail/tiply-2.avif",
-    "webp": "/images/optimized/service/detail/tiply-2.webp"
-  },
   "/images/service/detail/web-development-1.jpg": {
     "width": 1200,
     "height": 800,
     "avif": "/images/optimized/service/detail/web-development-1.avif",
     "webp": "/images/optimized/service/detail/web-development-1.webp"
-  },
-  "/images/service/detail/web-development-2.jpg": {
-    "width": 1200,
-    "height": 800,
-    "avif": "/images/optimized/service/detail/web-development-2.avif",
-    "webp": "/images/optimized/service/detail/web-development-2.webp"
   },
   "/images/service/svc-01.png": {
     "width": 1600,

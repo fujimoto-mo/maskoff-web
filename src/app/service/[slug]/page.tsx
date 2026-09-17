@@ -4,13 +4,8 @@ import { notFound } from "next/navigation";
 import type { CSSProperties } from "react";
 import { revealDelay } from "@/components/motion/reveal-delay";
 import ServiceCta from "@/components/sections/ServiceCta";
-import ServiceFaq from "@/components/sections/ServiceFaq";
-import ServiceFeatures from "@/components/sections/ServiceFeatures";
-import ServiceFlow from "@/components/sections/ServiceFlow";
-import ServiceGallery from "@/components/sections/ServiceGallery";
-import ServiceIssues from "@/components/sections/ServiceIssues";
 import ServiceOverview from "@/components/sections/ServiceOverview";
-import ServiceScope from "@/components/sections/ServiceScope";
+import ServiceSections from "@/components/sections/ServiceSections";
 import Button from "@/components/ui/Button";
 import JsonLd from "@/components/ui/JsonLd";
 import Picture from "@/components/ui/Picture";
@@ -139,12 +134,7 @@ export default async function ServiceDetailPage({
       </div>
 
       <ServiceOverview intro={d.intro} />
-      <ServiceFeatures items={d.features} />
-      <ServiceIssues items={d.issues} />
-      <ServiceFlow steps={d.flow} />
-      <ServiceScope items={d.scope} />
-      <ServiceGallery items={d.gallery} />
-      <ServiceFaq items={d.faq} />
+      <ServiceSections sections={d.sections} />
 
       {/* 前後の事業 */}
       <section className="wrap section-pad pt-0">
