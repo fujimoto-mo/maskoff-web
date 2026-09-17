@@ -33,7 +33,6 @@ export default function PartnerGrid({ partners = PARTNERS }: { partners?: readon
                 <span className="absolute top-3 left-3 rounded-pill bg-fg/55 px-3 py-1 font-display text-[10px] font-bold tracking-[.08em] text-fg-invert backdrop-blur-[8px] max-tab:text-[11px]">
                   {p.tag}
                 </span>
-                <Picture src={p.icon} alt="" sizes="44px" className="absolute right-2.5 bottom-2.5 block size-11 overflow-hidden rounded-[10px]" imgClassName="size-full" />
               </div>
               <h3 className="mb-1.5 text-[18px] font-bold leading-[1.55] tracking-[.01em] text-fg max-tab:mb-2 max-tab:text-[16px] max-tab:leading-[1.5]">{p.name}</h3>
               <p className="text-caption text-fg-body max-tab:text-[11.5px] max-tab:leading-[1.8]">{p.text}</p>

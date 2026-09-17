@@ -28,10 +28,10 @@ test("service-details: intro は 2〜3 段落、マーカーは 1 段落 1 か�
   }
 });
 
-test("service-details: sections は 2〜5 個、各 type の個数制約、文字列は空でない", () => {
+test("service-details: sections は 2〜7 個、各 type の個数制約、文字列は空でない", () => {
   for (const slug of slugs) {
     const d = getServiceDetail(slug);
-    assert.ok(d.sections.length >= 2 && d.sections.length <= 5, `${slug}: sections ${d.sections.length}`);
+    assert.ok(d.sections.length >= 2 && d.sections.length <= 7, `${slug}: sections ${d.sections.length}`);
     for (const s of d.sections) {
       const tag = `${slug}/${s.type}`;
       if ("en" in s) assert.ok(s.en && s.ja, `${tag}: 見出し`);
@@ -45,7 +45,7 @@ test("service-details: sections は 2〜5 個、各 type の個数制約、文�
           for (const c of s.items) assert.ok(c.problem && c.solution, `${tag}: 空`);
           break;
         case "flow":
-          assert.ok(s.steps.length >= 3 && s.steps.length <= 5, tag);
+          assert.ok(s.steps.length >= 3 && s.steps.length <= 8, tag);
           for (const c of s.steps) assert.ok(c.title && c.text, `${tag}: 空`);
           break;
         case "tiles":

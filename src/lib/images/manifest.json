@@ -125,30 +125,6 @@
     "avif": "/images/optimized/ogp.avif",
     "webp": "/images/optimized/ogp.webp"
   },
-  "/images/partners/icon-01.png": {
-    "width": 176,
-    "height": 176,
-    "avif": "/images/optimized/partners/icon-01.avif",
-    "webp": "/images/optimized/partners/icon-01.webp"
-  },
-  "/images/partners/icon-02.png": {
-    "width": 176,
-    "height": 176,
-    "avif": "/images/optimized/partners/icon-02.avif",
-    "webp": "/images/optimized/partners/icon-02.webp"
-  },
-  "/images/partners/icon-03.png": {
-    "width": 176,
-    "height": 176,
-    "avif": "/images/optimized/partners/icon-03.avif",
-    "webp": "/images/optimized/partners/icon-03.webp"
-  },
-  "/images/partners/icon-04.png": {
-    "width": 176,
-    "height": 176,
-    "avif": "/images/optimized/partners/icon-04.avif",
-    "webp": "/images/optimized/partners/icon-04.webp"
-  },
   "/images/partners/p01.png": {
     "width": 1050,
     "height": 650,
