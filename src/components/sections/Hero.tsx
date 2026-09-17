@@ -17,8 +17,8 @@ const TEE = img(8);
 // 逆光のシルエット映像。元動画 MOHP素材.mp4（640px / 6.5s / 30fps）の 0.5〜4.5s に先頭 0.5s を xfade で溶かした 4s のシームレスループを 512px / 24fps / H.264 に圧縮（生成物をコミット、元動画は docs/）。
 // poster は 0.5s のフレームの WebP。全面映像なので透過 WebP ではなく動画セル（CLAUDE.md §9）。セル内で 2/3 に縮めて表示
 const SILHOUETTE = { type: "video" as const, src: "/videos/hero/hero-14.mp4", poster: "/images/hero/hero-14-poster.webp", size: 2 / 3 };
-// スマートフォンの回転。透過アニメーション WebP（25f / 0.84s ループ、元動画 0911 (1).mp4 の黒背景を抜き 2/3 に縮小、生成物をコミット）。reduced-motion では hero-05.png の静止画
-const PHONE = { ...img(5), anim: "/images/hero/hero-05-anim.webp" };
+// 円形のイラスト（透過 PNG、静止画。800x800 のキャンバス中央に 2/3 で配置。以前のスマートフォン回転の透過アニメ WebP は 2026-09-17 に廃止）
+const PHONE = img(5);
 
 const ROWS: MarqueeRow[] = [
   { cells: [GLITCH, img(2), img(3), TEXT, LOGO_TILE, PHONE], duration: 60 },

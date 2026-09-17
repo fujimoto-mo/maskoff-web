@@ -30,8 +30,8 @@
     "webp": "/images/optimized/hero/hero-04.webp"
   },
   "/images/hero/hero-05.png": {
-    "width": 600,
-    "height": 600,
+    "width": 800,
+    "height": 800,
     "avif": "/images/optimized/hero/hero-05.avif",
     "webp": "/images/optimized/hero/hero-05.webp"
   },
