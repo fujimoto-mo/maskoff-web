@@ -7,7 +7,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36";
 const FONTS = [
   { slug: "inter-tight", css: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&display=swap", subsets: ["latin", "latin-ext"] },
-  { slug: "noto-sans-jp", css: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=optional", subsets: null }, // null = 全スライス
+  { slug: "noto-sans-jp", css: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap", subsets: null }, // null = 全スライス
 ];
 
 async function get(url, type) {

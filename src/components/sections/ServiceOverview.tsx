@@ -9,9 +9,9 @@ const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as CSSProperties;
 /**
  * SERVICE 詳細の OVERVIEW。段落が順にフェードし、{ marker } は蛍光ペン（background-size 方式）。
  * max-w は段落の読みやすさのための本文幅（コンテナの中央寄せではない。既存 OVERVIEW と同じ扱い）。
- * @example <ServiceOverview intro={getServiceDetail("sns").intro} />
+ * @example <ServiceOverview intro={getServiceDetail("sns").intro} note="※ こちらのカリキュラムは MasKOFF のメンバーのみが受けられます。" />
  */
-export default function ServiceOverview({ intro }: { intro: readonly (readonly Segment[])[] }) {
+export default function ServiceOverview({ intro, note }: { intro: readonly (readonly Segment[])[]; note?: string }) {
   return (
     <section aria-labelledby="sv-overview" className="wrap section-pad">
       <SectionHeading en="OVERVIEW" ja="事業概要" id="sv-overview" />
@@ -21,6 +21,11 @@ export default function ServiceOverview({ intro }: { intro: readonly (readonly S
             {para.map((seg, k) => (typeof seg === "string" ? <span key={k}>{seg}</span> : <Marker key={k}>{seg.marker}</Marker>))}
           </p>
         ))}
+        {note && (
+          <p data-reveal="up" style={rd(intro.length)} className="text-caption leading-[1.9] text-fg-muted">
+            {note}
+          </p>
+        )}
       </div>
     </section>
   );
