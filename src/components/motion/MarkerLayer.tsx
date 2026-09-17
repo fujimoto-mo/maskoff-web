@@ -40,7 +40,6 @@ export default function MarkerLayer() {
           line.className = "marker-line";
           line.dataset.target = String(i);
           line.dataset.line = String(k);
-          if (t.dataset.tone) line.dataset.tone = t.dataset.tone; // 帯の色（vision-copy.ts の tone）
           line.style.left = `${box.left}px`;
           line.style.top = `${box.top}px`;
           line.style.width = `${box.width}px`;

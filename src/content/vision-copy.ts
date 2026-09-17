@@ -1,6 +1,6 @@
 // SAMPLE: VISION 本文。段落 = 行（文）の配列、行 = セグメントの配列。マーカーは 1 セクション 3 箇所まで。
-/** tone: マーカー帯の色。未指定は --color-marker-vision（緑）、"orange" は --color-marker-vision-orange。bold: 対象文字を太字（700）に */
-export type Segment = string | { marker: string; tone?: "orange"; bold?: boolean };
+/** bold: 対象文字を太字（700）に。帯の色は --color-marker（赤）で共通（2026-09-17 に緑 / オレンジを試した後、元の赤に戻した） */
+export type Segment = string | { marker: string; bold?: boolean };
 export type VisionParagraph = Segment[][];
 
 export const VISION_COPY: VisionParagraph[] = [
@@ -9,7 +9,7 @@ export const VISION_COPY: VisionParagraph[] = [
     ["誰かに合わせるためにつくられた自分ではなく、一人ひとりが持つ個性や魅力を見つけ、引き出し、形にしていく。"],
   ],
   [
-    /*["私たちは", { marker: "AI×ファッションブランド", tone: "orange", bold: true }, "の企画から始まった会社です。"],*/
+    /*["私たちは", { marker: "AI×ファッションブランド", bold: true }, "の企画から始まった会社です。"],*/
     ["私たちは、ファッションの企画から始まり、"],
     ["その考え方を、人材・採用支援、マーケティング、Web・アプリ開発やクリエイティブへと広げてきました。"],
   ],
@@ -18,11 +18,11 @@ export const VISION_COPY: VisionParagraph[] = [
     /*[{ marker: "進化したこの時代で、新たな個性をさらけ出す" }, "。"],*/
   ],
   [
-    [{ marker:"人や企業が本来持っている魅力" , tone: "orange", bold: true}, "を見つけ、"],
+    [{ marker:"人や企業が本来持っている魅力", bold: true}, "を見つけ、"],
     ["その可能性が伝わる形にすること。"],
   ],
   [
-    /*[{ marker: "クリエイティブの世界", tone: "orange", bold: true }, "で素の自分で立てる場所が、ここから増えていくことを願って、"],*/
+    /*[{ marker: "クリエイティブの世界", bold: true }, "で素の自分で立てる場所が、ここから増えていくことを願って、"],*/
     ["変化の速い時代だからこそ、"],
     ["決められた枠に自分を合わせるのではなく、"],
     ["それぞれの個性や強みを活かせる選択肢を増やしていきたい。"],
@@ -31,6 +31,6 @@ export const VISION_COPY: VisionParagraph[] = [
     ["素の自分で、前に進める場所をもっと増やす。"],
   ],
   [
-    ["MasKOFFは、そのための",{ marker: "仕組みと新しい価値", tone: "orange", bold: true }, "をつくり続けます。"],
+    ["MasKOFFは、そのための",{ marker: "仕組みと新しい価値", bold: true }, "をつくり続けます。"],
   ],
 ];
