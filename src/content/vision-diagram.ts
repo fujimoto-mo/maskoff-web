@@ -10,7 +10,7 @@ export const VISION_FACES = [
     code: "HR",
     en: "Human Recruiting",
     ja: "人材・採用支援事業",
-    items: ["人材育成(techMasKLab.Project)", "求人広告採用支援", "キャリア支援", "BPO事業"],
+    items: ["人材育成(techMasKLab.Project)", "求人広告採用支援", "キャリア支援"],
   },
   {
     code: "MK",
