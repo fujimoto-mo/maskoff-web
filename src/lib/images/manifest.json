@@ -12,8 +12,8 @@
     "webp": "/images/optimized/company/ceo.webp"
   },
   "/images/hero/hero-02.png": {
-    "width": 626,
-    "height": 640,
+    "width": 800,
+    "height": 800,
     "avif": "/images/optimized/hero/hero-02.avif",
     "webp": "/images/optimized/hero/hero-02.webp"
   },
@@ -30,32 +30,32 @@
     "webp": "/images/optimized/hero/hero-04.webp"
   },
   "/images/hero/hero-05.png": {
-    "width": 600,
-    "height": 600,
+    "width": 800,
+    "height": 800,
     "avif": "/images/optimized/hero/hero-05.avif",
     "webp": "/images/optimized/hero/hero-05.webp"
   },
   "/images/hero/hero-06.png": {
-    "width": 700,
-    "height": 620,
+    "width": 695,
+    "height": 695,
     "avif": "/images/optimized/hero/hero-06.avif",
     "webp": "/images/optimized/hero/hero-06.webp"
   },
   "/images/hero/hero-08.png": {
-    "width": 360,
-    "height": 450,
+    "width": 800,
+    "height": 800,
     "avif": "/images/optimized/hero/hero-08.avif",
     "webp": "/images/optimized/hero/hero-08.webp"
   },
   "/images/hero/hero-09.png": {
-    "width": 720,
-    "height": 720,
+    "width": 800,
+    "height": 800,
     "avif": "/images/optimized/hero/hero-09.avif",
     "webp": "/images/optimized/hero/hero-09.webp"
   },
   "/images/hero/hero-10.png": {
     "width": 800,
-    "height": 600,
+    "height": 800,
     "avif": "/images/optimized/hero/hero-10.avif",
     "webp": "/images/optimized/hero/hero-10.webp"
   },
@@ -72,20 +72,14 @@
     "webp": "/images/optimized/hero/hero-12.webp"
   },
   "/images/hero/hero-13.png": {
-    "width": 818,
-    "height": 818,
+    "width": 800,
+    "height": 800,
     "avif": "/images/optimized/hero/hero-13.avif",
     "webp": "/images/optimized/hero/hero-13.webp"
   },
-  "/images/hero/hero-14.png": {
-    "width": 600,
-    "height": 600,
-    "avif": "/images/optimized/hero/hero-14.avif",
-    "webp": "/images/optimized/hero/hero-14.webp"
-  },
   "/images/hero/hero-15.png": {
-    "width": 650,
-    "height": 691,
+    "width": 800,
+    "height": 800,
     "avif": "/images/optimized/hero/hero-15.avif",
     "webp": "/images/optimized/hero/hero-15.webp"
   },
