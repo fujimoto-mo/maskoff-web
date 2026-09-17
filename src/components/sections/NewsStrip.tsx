@@ -24,7 +24,7 @@ function Row({ href, date, tag, title, index }: { href: string; date: string; ta
 }
 
 /**
- * HOME の NEWS / NOTICE 最新 3 件（CLAUDE.md §5）。dipsy には無いセクション。
+ * HOME の NEWS 最新 4 件 / NOTICE 最新 3 件（CLAUDE.md §5 は 3 件。NEWS は 2026-09-17 のクライアント指示で 4 件に）。dipsy には無いセクション。
  * @example <NewsStrip news={await getNews()} notice={await getNotice()} />
  */
 export default function NewsStrip({ news, notice }: Props) {
@@ -34,7 +34,7 @@ export default function NewsStrip({ news, notice }: Props) {
         <div>
           <SectionHeading en="NEWS" ja="ニュース" id="news-title" />
           <ul className="border-t border-border">
-            {news.slice(0, 3).map((n, i) => (
+            {news.slice(0, 4).map((n, i) => (
               <Row key={n.id} href={`/news/${n.slug}/`} date={n.publishedDate} tag={NEWS_CATEGORY_LABELS[first(n.category) ?? "press"]} title={n.title} index={i} />
             ))}
           </ul>
