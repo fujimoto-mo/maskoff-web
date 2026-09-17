@@ -81,7 +81,7 @@ export const SERVICES: readonly Service[] = [
     tags: ["キャリア面談・スキル向上研修"],
     image: "/images/service/svc-04.jpg",
     cardFit: "contain", // 見出し文字と右の階段まで含めてカードで全体を見せる
-    kvAspect: "3 / 2", // 文字入りのポスター画像なので、ヒーローも切らずに全体を出す（帯を画像比に）
+    kvAspect: "1 / 1", // 文字入りのポスター画像（MIRAIZU ロゴ + 正方形）なので、ヒーローも切らずに全体を出す（帯を画像比に）
     imagePosition: "50% 10%", // kvAspect を外して cover に戻す場合の保険。顔と手書き見出しが上 3 割にある
   },
   {

@@ -210,8 +210,8 @@
     "webp": "/images/optimized/service/svc-03.webp"
   },
   "/images/service/svc-04.jpg": {
-    "width": 1536,
-    "height": 1024,
+    "width": 1800,
+    "height": 1800,
     "avif": "/images/optimized/service/svc-04.avif",
     "webp": "/images/optimized/service/svc-04.webp"
   },
