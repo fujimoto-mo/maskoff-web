@@ -45,7 +45,7 @@ export default function ServiceGrid({ services = SERVICES, limit = 6 }: Props) {
                   </span>
                 </div>
                 <h3 className="mt-[22px] mb-3 text-center text-card-title text-fg max-tab:text-card-title-sp">{s.title}</h3>
-                <p className="text-[13.5px] leading-[1.8] whitespace-pre-line text-fg-body max-tab:text-[11.5px]">{s.lead}</p>
+                <p className="text-center text-[13.5px] leading-[1.8] whitespace-pre-line text-fg-body max-tab:text-[11.5px]">{s.lead}</p>
               </Link>
             </li>
           ))}

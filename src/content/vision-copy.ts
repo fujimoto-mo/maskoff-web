@@ -18,7 +18,7 @@ export const VISION_COPY: VisionParagraph[] = [
     /*[{ marker: "進化したこの時代で、新たな個性をさらけ出す" }, "。"],*/
   ],
   [
-    [{ marker:"人や企業が本来持っている魅力" , bold: true}, "を見つけ、"],
+    [{ marker:"人や企業が本来持っている魅力" , tone: "orange", bold: true}, "を見つけ、"],
     ["その可能性が伝わる形にすること。"],
   ],
   [
@@ -31,6 +31,6 @@ export const VISION_COPY: VisionParagraph[] = [
     ["素の自分で、前に進める場所をもっと増やす。"],
   ],
   [
-    ["MasKOFFは、そのための",{ marker: "仕組みと新しい価値", bold: true }, "をつくり続けます。"],
+    ["MasKOFFは、そのための",{ marker: "仕組みと新しい価値", tone: "orange", bold: true }, "をつくり続けます。"],
   ],
 ];
