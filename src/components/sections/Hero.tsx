@@ -12,8 +12,8 @@ const LOGO_TILE = { type: "image" as const, src: "/images/hero/maskoff.png", ani
 const GLITCH = { type: "video" as const, src: "/videos/hero/hero-01.mp4", poster: "/images/hero/hero-01-poster.webp", size: 2 / 3 };
 // アプリタイルの映像。元動画 MOHP素材 (3).mp4（2378px / 15s / 18MB）の先頭 4.75s から、末尾 0.75s を先頭に溶かした 4s のシームレスループを切り出し、342px / 24fps / H.264 に圧縮（生成物をコミット）。poster は先頭フレームの WebP。セル内で 2/3 に縮めて表示
 const TILES = { type: "video" as const, src: "/videos/hero/hero-07.mp4", poster: "/images/hero/hero-07-poster.webp", size: 2 / 3 };
-// 白 T シャツ。透過アニメーション WebP（26f / 0.87s ループ、scripts 不要・生成物をコミット）。reduced-motion では hero-08.png の静止画
-const TEE = { ...img(8), anim: "/images/hero/hero-08-anim.webp" };
+// トートバッグを持つ人物の写真（角丸の透過 PNG、静止画。以前の白 T シャツの透過アニメ WebP は 2026-09-17 に廃止）
+const TEE = img(8);
 // 逆光のシルエット映像。元動画 MOHP素材.mp4（640px / 6.5s / 30fps）の 0.5〜4.5s に先頭 0.5s を xfade で溶かした 4s のシームレスループを 512px / 24fps / H.264 に圧縮（生成物をコミット、元動画は docs/）。
 // poster は 0.5s のフレームの WebP。全面映像なので透過 WebP ではなく動画セル（CLAUDE.md §9）。セル内で 2/3 に縮めて表示
 const SILHOUETTE = { type: "video" as const, src: "/videos/hero/hero-14.mp4", poster: "/images/hero/hero-14-poster.webp", size: 2 / 3 };
