@@ -4,9 +4,9 @@ import { mergeLineRects } from "./marker-rects.ts";
 
 const block = { left: 100, top: 1000, width: 560, height: 800 };
 
-test("1 矩形: block 相対、高さ 0.78 倍・Y 0.16 倍・左右 0.18em の拡張", () => {
+test("1 矩形: block 相対、高さ 0.78 倍・Y 0.10 倍・左右 0.18em の拡張", () => {
   const r = mergeLineRects([{ left: 150, top: 1200, width: 200, height: 28 }], block, 28, 14);
-  assert.deepEqual(r, [{ left: 50 - 2.52, top: 200 + 4.48, width: 200 + 5.04, height: 21.84 }]);
+  assert.deepEqual(r, [{ left: 50 - 2.52, top: 200 + 2.8, width: 200 + 5.04, height: 21.84 }]);
 });
 
 test("同じ行の複数矩形は 1 本に統合", () => {
