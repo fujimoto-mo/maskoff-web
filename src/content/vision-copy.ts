@@ -19,7 +19,7 @@ export const VISION_COPY: VisionParagraph[] = [
     [{ marker: "進化したこの時代で、新たな個性をさらけ出す" }, "。"],
   ],
   [
-    [{ marker: "クリエイティブの世界で", tone: "orange", bold: true }, "素の自分で立てる場所が、ここから増えていくことを願って、"],
+    [{ marker: "クリエイティブの世界", tone: "orange", bold: true }, "で素の自分で立てる場所が、ここから増えていくことを願って、"],
     ["MasKOFFは、そんな仕組みと仲間をつくる会社です。"],
   ],
 ];
