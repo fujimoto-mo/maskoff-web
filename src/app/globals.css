@@ -302,12 +302,23 @@
     -webkit-clip-path: inset(0px 100% 0px 0px);
   }
   html[data-on-vision] .marker-line {
-    /* 暗転中は蛍光色の帯（オレンジ --color-marker-vision の 75%）を黒地に重ね、文字は本文と同じ白のまま（2026-09-17 クライアント指示。
-       白文字と帯のコントラストは 3.6:1 で AA 未満だが、蛍光ペンの見え方を優先した） */
+    /* 暗転中は蛍光色の帯（--color-marker-vision の 75%）を黒地に重ね、文字は本文と同じ白のまま（2026-09-17 クライアント指示。
+       白文字と帯のコントラストは 緑 2.2:1 / オレンジ 3.6:1 で AA 未満だが、蛍光ペンの見え方を優先した） */
     background: color-mix(in srgb, var(--color-marker-vision) 75%, transparent);
+  }
+  /* マーカーごとの色（vision-copy.ts の tone: "orange"。MarkerLayer が帯に data-tone を写す） */
+  .marker-line[data-tone="orange"] {
+    background: color-mix(in srgb, var(--color-marker-vision-orange) 50%, transparent);
+  }
+  html[data-on-vision] .marker-line[data-tone="orange"] {
+    background: color-mix(in srgb, var(--color-marker-vision-orange) 75%, transparent);
   }
   .marker-target {
     position: relative;
+  }
+  /* vision-copy.ts の bold: true。太字にすると幅が変わるが、帯は MarkerLayer が描画時に実測するので追従する */
+  .marker-target[data-bold] {
+    font-weight: 700;
   }
   /* 相関図（立方体）: 面が順にフェード → 中央から Y 字の稜線を線描画 → 面ラベルがぼかしから出現 →
      引き出し線を描いて事業名がフェード。JS 無効・reduced-motion は最終状態 */

@@ -30,7 +30,7 @@ export default function VisionBlock() {
                           typeof seg === "string" ? (
                             seg
                           ) : (
-                            <span key={si} className="marker-target">
+                            <span key={si} className="marker-target" data-tone={seg.tone} data-bold={seg.bold ? "" : undefined}>
                               {seg.marker}
                             </span>
                           ),

@@ -1,5 +1,6 @@
 // SAMPLE: VISION 本文。段落 = 行（文）の配列、行 = セグメントの配列。マーカーは 1 セクション 3 箇所まで。
-export type Segment = string | { marker: string };
+/** tone: マーカー帯の色。未指定は --color-marker-vision（緑）、"orange" は --color-marker-vision-orange。bold: 対象文字を太字（700）に */
+export type Segment = string | { marker: string; tone?: "orange"; bold?: boolean };
 export type VisionParagraph = Segment[][];
 
 export const VISION_COPY: VisionParagraph[] = [
@@ -8,7 +9,7 @@ export const VISION_COPY: VisionParagraph[] = [
     ["誰かに合わせるために被った仮面は、いつのまにか自分の輪郭を曖昧にしていく。"],
   ],
   [
-    ["私たちは",{marker: "AI×ファッションブランド"},"の企画から始まった会社です。"],
+    ["私たちは", { marker: "AI×ファッションブランド", tone: "orange", bold: true }, "の企画から始まった会社です。"],
     ["服は、着る人の「素」を隠すためではなく、引き出すためにある。"],
     ["その考え方は、アーティストの活動支援にも、ホームページ制作にも通じています。"],
   ],
@@ -18,7 +19,7 @@ export const VISION_COPY: VisionParagraph[] = [
     [{ marker: "進化したこの時代で、新たな個性をさらけ出す" }, "。"],
   ],
   [
-    [{ marker: "クリエイティブの世界で" }, "素の自分で立てる場所が、ここから増えていくことを願って、"],
+    [{ marker: "クリエイティブの世界で", tone: "orange", bold: true }, "素の自分で立てる場所が、ここから増えていくことを願って、"],
     ["MasKOFFは、そんな仕組みと仲間をつくる会社です。"],
   ],
 ];
