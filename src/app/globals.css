@@ -225,14 +225,14 @@
   .marker-line {
     position: absolute;
     border-radius: 2px;
-    background: color-mix(in srgb, var(--color-marker) 50%, transparent);
+    background: color-mix(in srgb, var(--color-marker-vision) 50%, transparent);
     transform-origin: left center;
     clip-path: inset(0px 100% 0px 0px);
     -webkit-clip-path: inset(0px 100% 0px 0px);
   }
   html[data-on-vision] .marker-line {
-    /* 暗転中は半透明のまま黒地に重ねる（参考サイトと同じ）。白文字とのコントラスト ≈ 9:1 */
-    background: color-mix(in srgb, var(--color-marker) 60%, transparent);
+    /* 暗転中は半透明のまま黒地に重ねる（参考サイトと同じ）。緑（--color-marker-vision）は明るいので 45%: 反転中の文字色 #F2F2F0 とのコントラスト 5.3:1（50% だと 4.5:1 ちょうどで余裕がない） */
+    background: color-mix(in srgb, var(--color-marker-vision) 45%, transparent);
   }
   .marker-target {
     position: relative;
