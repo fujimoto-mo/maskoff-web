@@ -113,7 +113,7 @@ export default function CompanyPage() {
                 imgClassName="size-full object-cover"
               />
             </TouchToggle>
-            <p className="mt-3 font-display text-caption tracking-[.15em] text-fg-muted">CEO / FOUNDER</p>
+            {/*<p className="mt-3 font-display text-caption tracking-[.15em] text-fg-muted">CEO / FOUNDER</p>*/}
           </div>
           <div>
             <h3 data-reveal="up" className="text-[26px] font-bold leading-[1.6] text-fg max-sp:text-[22px]">

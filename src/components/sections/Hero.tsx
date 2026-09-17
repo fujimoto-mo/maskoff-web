@@ -5,7 +5,8 @@ import { SITE } from "@/lib/site";
 
 // SAMPLE: public/images/hero/ の透過 PNG は仮素材。実素材に差し替えたら枚数と配置を見直す。
 const img = (n: number) => ({ type: "image" as const, src: `/images/hero/hero-${String(n).padStart(2, "0")}.png` });
-// 「TAKE THE MASK OFF」のテキストセルは 2026-09-17 に廃止し、角丸ひし形の人物写真 hero-16（2/3 配置）に差し替えた
+const TEXT = { type: "text" as const, lines: ["TAKE THE", "MASK", "OFF"] };
+// 1 行目のテキストセルは 2026-09-17 に角丸ひし形の人物写真 hero-16（2/3 配置）に差し替え。3 行目のテキストセルは残す
 const PORTRAIT = img(16);
 // MASK OFF の積み文字ロゴ（docs/maskoff.png）を黒い角丸タイルに載せ、タイルが左右に揺れて沈む透過アニメーション WebP（32f / 1.92s ループ、scripts 不要・生成物をコミット）。reduced-motion では maskoff.png の静止画
 const LOGO_TILE = { type: "image" as const, src: "/images/hero/maskoff.png", anim: "/images/hero/maskoff-anim.webp" };
@@ -24,7 +25,7 @@ const PHONE = img(5);
 const ROWS: MarqueeRow[] = [
   { cells: [GLITCH, img(2), img(3), PORTRAIT, img(6), PHONE], duration: 60 },
   { cells: [LOGO_TILE, TILES, TEE, { type: "logo" }, img(9), img(10)], reverse: true, duration: 72 },
-  { cells: [img(11), img(12), PORTRAIT, img(13), SILHOUETTE, img(15)], duration: 66 },
+  { cells: [img(11), img(12), TEXT, img(13), SILHOUETTE, img(15)], duration: 66 },
 ];
 
 /** HOME ヒーロー。h1 は視覚非表示、マーキーは装飾として aria-hidden。 */
