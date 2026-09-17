@@ -8,15 +8,15 @@
 export const VISION_FACES = [
   {
     code: "HR",
-    en: "HR – Recruiting",
+    en: "Human Recruiting",
     ja: "人材・採用支援事業",
-    items: ["求人広告・採用支援", "エンジニア育成", "キャリア支援", "BPO・業務代行"],
+    items: ["人材育成(techMasKLab.Project)", "求人広告採用支援", "キャリア支援"],
   },
   {
     code: "MK",
     en: "Marketing",
     ja: "マーケティング事業",
-    items: ["販売戦略・ブランディング", "SNSマーケティング", "海外越境EC導入支援", "飲食店向けサービス TiPLY"],
+    items: ["飲食店向けサービス TiPLY", "販売戦略・ブランディング", "SNSマーケティング", "海外越境EC導入支援"],
   },
   {
     code: "CR",

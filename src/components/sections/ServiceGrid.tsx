@@ -35,7 +35,7 @@ export default function ServiceGrid({ services = SERVICES, limit = 6 }: Props) {
                     alt=""
                     sizes="(max-width: 600px) 80vw, (max-width: 960px) 50vw, 33vw"
                     className="block size-full"
-                    imgClassName={cn("size-full transition-transform duration-500 group-hover:scale-[1.03]", s.imageFit === "contain" ? "object-contain" : "object-cover")}
+                    imgClassName={cn("size-full transition-transform duration-500 group-hover:scale-[1.03]", (s.cardFit ?? s.imageFit) === "contain" ? "object-contain" : "object-cover")}
                   />
                   <span
                     aria-hidden
@@ -45,7 +45,7 @@ export default function ServiceGrid({ services = SERVICES, limit = 6 }: Props) {
                   </span>
                 </div>
                 <h3 className="mt-[22px] mb-3 text-center text-card-title text-fg max-tab:text-card-title-sp">{s.title}</h3>
-                <p className="text-[13.5px] leading-[1.8] text-fg-body max-tab:text-[11.5px]">{s.lead}</p>
+                <p className="text-[13.5px] leading-[1.8] whitespace-pre-line text-fg-body max-tab:text-[11.5px]">{s.lead}</p>
               </Link>
             </li>
           ))}

@@ -14,7 +14,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "事業内容",
   description:
-    `株式会社MasKOFFの9つの事業。${SITE.product} エンジニアカリキュラム、求人広告代理店、WEBアプリ開発、キャリア支援、BPO、アパレルコンサルティング、TiPLY、海外越境EC導入支援、中小向けIT導入支援。`,
+    `株式会社MasKOFFの9つの事業。${SITE.product} エンジニアカリキュラム、求人広告代理店、WEBアプリ開発、キャリア支援、SNSマーケティング、アパレルコンサルティング、TiPLY、海外越境EC導入支援、中小向けIT導入支援。`,
   alternates: { canonical: "/service/" },
 };
 
@@ -166,7 +166,7 @@ export default function ServicePage() {
                   alt=""
                   sizes="(max-width: 960px) 100vw, 50vw"
                   className="block size-full"
-                  imgClassName={cn("size-full transition-transform duration-500 group-hover:scale-[1.03]", s.imageFit === "contain" ? "object-contain" : "object-cover")}
+                  imgClassName={cn("size-full transition-transform duration-500 group-hover:scale-[1.03]", (s.cardFit ?? s.imageFit) === "contain" ? "object-contain" : "object-cover")}
                 />
               </Link>
             </article>

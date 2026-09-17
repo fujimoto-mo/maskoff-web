@@ -183,7 +183,7 @@ export default function VisionDiagram() {
               x2={p.x}
               y2={p.y}
               stroke="currentColor"
-              strokeWidth="5"
+              strokeWidth="1.7"
               strokeLinecap="round"
               pathLength={1}
             />

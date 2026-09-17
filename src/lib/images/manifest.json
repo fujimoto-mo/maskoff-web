@@ -60,8 +60,8 @@
     "webp": "/images/optimized/hero/hero-10.webp"
   },
   "/images/hero/hero-11.png": {
-    "width": 660,
-    "height": 860,
+    "width": 800,
+    "height": 800,
     "avif": "/images/optimized/hero/hero-11.avif",
     "webp": "/images/optimized/hero/hero-11.webp"
   },
@@ -90,8 +90,8 @@
     "webp": "/images/optimized/hero/hero-15.webp"
   },
   "/images/hero/maskoff.png": {
-    "width": 512,
-    "height": 512,
+    "width": 800,
+    "height": 600,
     "avif": "/images/optimized/hero/maskoff.avif",
     "webp": "/images/optimized/hero/maskoff.webp"
   },
@@ -191,6 +191,78 @@
     "avif": "/images/optimized/product/techmasklab.avif",
     "webp": "/images/optimized/product/techmasklab.webp"
   },
+  "/images/service/detail/apparel-consulting-1.jpg": {
+    "width": 1200,
+    "height": 800,
+    "avif": "/images/optimized/service/detail/apparel-consulting-1.avif",
+    "webp": "/images/optimized/service/detail/apparel-consulting-1.webp"
+  },
+  "/images/service/detail/apparel-process-2.jpg": {
+    "width": 1200,
+    "height": 900,
+    "avif": "/images/optimized/service/detail/apparel-process-2.avif",
+    "webp": "/images/optimized/service/detail/apparel-process-2.webp"
+  },
+  "/images/service/detail/apparel-process-3.jpg": {
+    "width": 1200,
+    "height": 900,
+    "avif": "/images/optimized/service/detail/apparel-process-3.avif",
+    "webp": "/images/optimized/service/detail/apparel-process-3.webp"
+  },
+  "/images/service/detail/apparel-process-4.jpg": {
+    "width": 1200,
+    "height": 900,
+    "avif": "/images/optimized/service/detail/apparel-process-4.avif",
+    "webp": "/images/optimized/service/detail/apparel-process-4.webp"
+  },
+  "/images/service/detail/career-support-1.jpg": {
+    "width": 1200,
+    "height": 800,
+    "avif": "/images/optimized/service/detail/career-support-1.avif",
+    "webp": "/images/optimized/service/detail/career-support-1.webp"
+  },
+  "/images/service/detail/cross-border-ec-1.jpg": {
+    "width": 1200,
+    "height": 800,
+    "avif": "/images/optimized/service/detail/cross-border-ec-1.avif",
+    "webp": "/images/optimized/service/detail/cross-border-ec-1.webp"
+  },
+  "/images/service/detail/it-enablement-1.jpg": {
+    "width": 1200,
+    "height": 800,
+    "avif": "/images/optimized/service/detail/it-enablement-1.avif",
+    "webp": "/images/optimized/service/detail/it-enablement-1.webp"
+  },
+  "/images/service/detail/recruitment-ads-1.jpg": {
+    "width": 1200,
+    "height": 800,
+    "avif": "/images/optimized/service/detail/recruitment-ads-1.avif",
+    "webp": "/images/optimized/service/detail/recruitment-ads-1.webp"
+  },
+  "/images/service/detail/sns-1.jpg": {
+    "width": 1200,
+    "height": 800,
+    "avif": "/images/optimized/service/detail/sns-1.avif",
+    "webp": "/images/optimized/service/detail/sns-1.webp"
+  },
+  "/images/service/detail/tech-education-1.jpg": {
+    "width": 1200,
+    "height": 800,
+    "avif": "/images/optimized/service/detail/tech-education-1.avif",
+    "webp": "/images/optimized/service/detail/tech-education-1.webp"
+  },
+  "/images/service/detail/tiply-1.jpg": {
+    "width": 1200,
+    "height": 800,
+    "avif": "/images/optimized/service/detail/tiply-1.avif",
+    "webp": "/images/optimized/service/detail/tiply-1.webp"
+  },
+  "/images/service/detail/web-development-1.jpg": {
+    "width": 1200,
+    "height": 800,
+    "avif": "/images/optimized/service/detail/web-development-1.avif",
+    "webp": "/images/optimized/service/detail/web-development-1.webp"
+  },
   "/images/service/svc-01.png": {
     "width": 1600,
     "height": 1103,
@@ -210,14 +282,14 @@
     "webp": "/images/optimized/service/svc-03.webp"
   },
   "/images/service/svc-04.jpg": {
-    "width": 1448,
-    "height": 1086,
+    "width": 1800,
+    "height": 1800,
     "avif": "/images/optimized/service/svc-04.avif",
     "webp": "/images/optimized/service/svc-04.webp"
   },
   "/images/service/svc-05.jpg": {
-    "width": 1448,
-    "height": 1086,
+    "width": 1190,
+    "height": 1190,
     "avif": "/images/optimized/service/svc-05.avif",
     "webp": "/images/optimized/service/svc-05.webp"
   },
