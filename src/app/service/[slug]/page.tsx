@@ -133,7 +133,7 @@ export default async function ServiceDetailPage({
         </div>
       </div>
 
-      <ServiceOverview intro={d.intro} />
+      <ServiceOverview intro={d.intro} note={d.note} />
       <ServiceSections sections={d.sections} />
 
       {/* 前後の事業 */}
