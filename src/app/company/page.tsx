@@ -30,6 +30,7 @@ const HISTORY = [
   { dt: "2025.09", dd: "オリジナルファッションブランド 1st コレクションを発表" },
   { dt: "2026.04", dd: "MasKOFFメンバー50名突破" },
   { dt: "2026.06", dd: "デザイン・コンサルティング事業を開始" },
+  { dt: "2026.07", dd: "東証グロース上場企業の株式会社トリドリ社と業務提携" },
 ];
 
 const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as React.CSSProperties;
