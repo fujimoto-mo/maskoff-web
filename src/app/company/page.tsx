@@ -125,7 +125,7 @@ export default function CompanyPage() {
             <p data-reveal="up" style={rd(2)} className="mt-5 text-body leading-[2.2] text-fg-body">
               ブランドとして、パートナーとして、そしてアーティストの伴走者として。仮面を外したすべての表現者と、新しいカルチャーをつくっていきます。
             </p>
-            <p data-reveal="up" style={rd(3)} className="mt-9 text-[13px] text-fg-muted">株式会社MasKOFF 代表取締役</p>
+            <p data-reveal="up" style={rd(3)} className="mt-9 text-[13px] text-fg-muted">株式会社MasKOFF 一同</p>
             <p data-reveal="up" style={rd(3)} className="mt-1.5 text-[20px] font-bold text-fg">
              {/* 藤本 ツヨシ<span className="ml-3 font-display text-caption font-normal tracking-[.1em] text-fg-muted">TSUYOSHI FUJIMOTO</span> */}
             </p>
