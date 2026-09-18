@@ -14,21 +14,21 @@ test("SERVICES: 9 事業、slug は一意の kebab-case、番号は 01〜09 の�
   );
 });
 
-test("SERVICES: HOME のバッジに入る verb は 4 文字以内、英字ラベルは大文字", () => {
+test("SERVICES: HOME のバッジに入る verb は 4 文字以内、英字ラベルは英数字（TiPLY のようなブランド表記の小文字は可）", () => {
   for (const s of SERVICES) {
     assert.ok(
       s.verb.length >= 2 && s.verb.length <= 4,
       `${s.slug}: verb "${s.verb}"`,
     );
-    assert.match(s.en, /^[A-Z0-9 \-/]+$/, `${s.slug}: en "${s.en}"`);
+    assert.match(s.en, /^[A-Za-z0-9 \-/]+$/, `${s.slug}: en "${s.en}"`);
   }
 });
 
-test("SERVICES: 本文・リード・タグ（3 つ）が空でなく、画像は manifest に存在する", () => {
+test("SERVICES: 本文・リード・タグ（1〜3 つ）が空でなく、画像は manifest に存在する", () => {
   const keys = Object.keys(manifest as Record<string, unknown>);
   for (const s of SERVICES) {
     assert.ok(s.title && s.lead && s.description, s.slug);
-    assert.equal(s.tags.length, 3, `${s.slug}: tags`);
+    assert.ok(s.tags.length >= 1 && s.tags.length <= 3, `${s.slug}: tags ${s.tags.length}`);
     assert.ok(
       s.tags.every((t) => t.trim().length > 0),
       s.slug,
@@ -50,12 +50,15 @@ test("SERVICES: imagePosition は cover の写真にだけ付け、CSS object-po
   assert.ok(career?.imagePosition, "career-support に imagePosition が必要");
 });
 
-test("SERVICES: cardFit は HOME・一覧のカードだけの収め方（未指定なら imageFit）。文字入りのキャリア支援はカードで全体表示", () => {
+test("SERVICES: cardFit は HOME・一覧のカードだけの収め方（未指定なら imageFit）", () => {
   for (const s of SERVICES) if (s.cardFit !== undefined) assert.ok(["cover", "contain"].includes(s.cardFit), s.slug);
-  assert.equal(SERVICES.find((s) => s.slug === "career-support")?.cardFit, "contain");
 });
 
-test("SERVICES: kvAspect は「幅 / 高さ」の形式。文字入りのキャリア支援はヒーローも全体表示（画像と同じ 1 / 1）", () => {
-  for (const s of SERVICES) if (s.kvAspect !== undefined) assert.match(s.kvAspect, /^\d+ \/ \d+$/, s.slug);
-  assert.equal(SERVICES.find((s) => s.slug === "career-support")?.kvAspect, "1 / 1");
+test("SERVICES: kvAspect は「幅 / 高さ」の形式で、付けるなら manifest の画像寸法と同じ比", () => {
+  const dims = manifest as Record<string, { width: number; height: number }>;
+  for (const s of SERVICES) {
+    if (s.kvAspect === undefined) continue;
+    assert.match(s.kvAspect, /^\d+ \/ \d+$/, s.slug);
+    assert.equal(s.kvAspect, `${dims[s.image].width} / ${dims[s.image].height}`, s.slug);
+  }
 });

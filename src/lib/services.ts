@@ -33,20 +33,8 @@ export type Service = {
 
 export const SERVICES: readonly Service[] = [
   {
-    slug: "apparel-consulting",
-    num: "01",
-    en: "APPAREL CONSULTING",
-    title: "アパレルコンサルティング事業",
-    verb: "纏う",
-    lead: "ブランドを立ち上げたい個人または企業向けにデザインの作成からメーカーの取次、販売戦略までトレンドに合わせた支援が出来ます。広告運用からインフルエンサーの起用も可能",
-    description:
-      "オリジナルブランド運営で培った知見をもとに、ブランド立ち上げ・OEM/ODM・販売戦略を支援。コンセプト設計からものづくり、売り場づくりまで伴走します。",
-    tags: ["ブランド設計", "OEM / ODM", "販売戦略"],
-    image: "/images/service/svc-06.jpg",
-  },
-  {
     slug: "tech-education",
-    num: "02",
+    num: "01",
     en: "TECH EDUCATION",
     title: `-${SITE.product} -`,
     verb: "育てる",
@@ -56,6 +44,18 @@ export const SERVICES: readonly Service[] = [
     tags: ["プログラミング教育", "実案件ベース", "メンタリング"],
     image: "/images/service/svc-01.png",
     imageFit: "contain",
+  },
+  {
+    slug: "web-development",
+    num: "02",
+    en: "WEB DEVELOPMENT",
+    title: "WEBアプリケーション開発事業",
+    verb: "創る",
+    lead: "企画・UI/UX設計・開発・運用を一貫して。\n小さく速く出して、改善を重ねます。クリエイティブ領域含めてデザインを書き出します。",
+    description:
+      "業務システムからサービス立ち上げまで、企画・UI/UX設計・開発・運用を一貫して提供。小さく速くリリースし、改善を重ねる開発スタイルで事業の成長に伴走します。",
+    tags: ["受託開発", "UI/UX設計", "保守運用"],
+    image: "/images/service/svc-03.jpg",
   },
   {
     slug: "sns",
@@ -70,23 +70,35 @@ export const SERVICES: readonly Service[] = [
     image: "/images/service/svc-05.jpg",
   },
   {
-    slug: "career-support",
+    slug: "apparel-consulting",
     num: "04",
+    en: "APPAREL CONSULTING",
+    title: "アパレルコンサルティング事業",
+    verb: "纏う",
+    lead: "ブランドを立ち上げたい個人または企業向けにデザインの作成からメーカーの取次、販売戦略までトレンドに合わせた支援が出来ます。広告運用からインフルエンサーの起用も可能",
+    description:
+      "オリジナルブランド運営で培った知見をもとに、ブランド立ち上げ・OEM/ODM・販売戦略を支援。コンセプト設計からものづくり、売り場づくりまで伴走します。",
+    tags: ["ブランド設計", "OEM / ODM", "販売戦略"],
+    image: "/images/service/svc-06.jpg",
+    imagePosition: "50% 0%", // 2 人の顔が上端にあるため、ヒーローの帯（cover）では上を優先して切る
+  },
+  {
+    slug: "career-support",
+    num: "05",
     en: "CAREER SUPPORT",
     title: "キャリア支援事業【MIRAIZU】",
     verb: "支える",
     lead: "アナタの”MIRAIZU”を形成します。\nキャリア面談・スキル向上研修を通して、一人ひとりの「らしさ」を活かした働き方を提供します。",
     description:
-      `キャリア面談・人材紹介・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。${SITE.product}修了生のキャリアサポートとも連動しています。`,
+      `キャリア面談・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。${SITE.product}修了生のキャリアサポートとも連動しています。`,
     tags: ["キャリア面談・スキル向上研修"],
+    // 2026-09-18 に文字なしの写真（docs/ChatGPT Image 2026年9月18日 16_20_26 (1).png、1536×1024）へ差し替え。カード・ヒーローとも他の事業と同じ cover。顔が上半分にあるので上寄せで切る
     image: "/images/service/svc-04.jpg",
-    cardFit: "contain", // 見出し文字と右の階段まで含めてカードで全体を見せる
-    kvAspect: "1800 / 1496", // 文字入りのポスター画像（MIRAIZU ロゴ + 横長 1.2:1。docs/MOHP素材 (1).png を 1800px 幅の JPG に）なので、ヒーローも切らずに全体を出す（帯を画像比に）
-    imagePosition: "50% 10%", // kvAspect を外して cover に戻す場合の保険。顔と手書き見出しが上 3 割にある
+    imagePosition: "50% 0%",
   },
   {
     slug: "recruitment-ads",
-    num: "05",
+    num: "06",
     en: "RECRUITMENT ADS",
     title: "求人広告代理店事業",
     verb: "募る",
@@ -99,18 +111,6 @@ export const SERVICES: readonly Service[] = [
     imageFit: "contain",
     // 詳細ページでは余白を詰めるため 1.4 倍に拡大（ロゴ群は縦 359〜1241px に収まり、1.4 倍で見える範囲 229〜1371px の内側なので切れない）
     imageZoom: 1.4,
-  },
-  {
-    slug: "web-development",
-    num: "06",
-    en: "WEB DEVELOPMENT",
-    title: "WEBアプリケーション開発事業",
-    verb: "創る",
-    lead: "企画・UI/UX設計・開発・運用を一貫して。\n小さく速く出して、改善を重ねます。クリエイティブ領域含めてデザインを書き出します。",
-    description:
-      "業務システムからサービス立ち上げまで、企画・UI/UX設計・開発・運用を一貫して提供。小さく速くリリースし、改善を重ねる開発スタイルで事業の成長に伴走します。",
-    tags: ["受託開発", "UI/UX設計", "保守運用"],
-    image: "/images/service/svc-03.jpg",
   },
   {
     slug: "tiply",

@@ -175,13 +175,13 @@
   },
   "/images/service/detail/apparel-process-2.jpg": {
     "width": 1200,
-    "height": 900,
+    "height": 800,
     "avif": "/images/optimized/service/detail/apparel-process-2.avif",
     "webp": "/images/optimized/service/detail/apparel-process-2.webp"
   },
   "/images/service/detail/apparel-process-3.jpg": {
-    "width": 1200,
-    "height": 900,
+    "width": 1145,
+    "height": 1374,
     "avif": "/images/optimized/service/detail/apparel-process-3.avif",
     "webp": "/images/optimized/service/detail/apparel-process-3.webp"
   },
@@ -270,8 +270,8 @@
     "webp": "/images/optimized/service/svc-03.webp"
   },
   "/images/service/svc-04.jpg": {
-    "width": 1800,
-    "height": 1496,
+    "width": 1536,
+    "height": 1024,
     "avif": "/images/optimized/service/svc-04.avif",
     "webp": "/images/optimized/service/svc-04.webp"
   },
