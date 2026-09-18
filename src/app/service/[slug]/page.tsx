@@ -60,7 +60,7 @@ export default async function ServiceDetailPage({
           "@context": "https://schema.org",
           "@type": "Service",
           name: s.title,
-          description: s.description,
+          description: s.description.replace(/\n/g, " "), // description の \n は一覧の表示用の改行。構造化データでは 1 行にする
           url: `${SITE.url}/service/${s.slug}/`,
           provider: {
             "@type": "Organization",

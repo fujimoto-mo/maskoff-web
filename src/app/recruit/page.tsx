@@ -50,7 +50,7 @@ const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as CSSProperties;
 /** 英字ラベル（ハンドオフの mono 小文字）。Inter Tight の小サイズ＋字間広めで置き換え */
 const LABEL = "font-display text-[11px] font-medium tracking-[.15em] text-fg-muted";
 /** 欄外の注記（集計条件・保証しない旨） */
-const NOTE = "text-[10px] leading-[1.9] text-fg-muted";
+const NOTE = "text-[10px] leading-[1.9] whitespace-pre-line text-fg-muted"; // 注記の "\n" も改行として効かせる
 const pad2 = (n: number) => String(n).padStart(2, "0");
 /** 本文セグメント（文字列 or マーカー）を描画 */
 const segments = (segs: readonly Segment[]) =>
@@ -119,7 +119,7 @@ export default function RecruitPage() {
           style={rd(1)}
           className="mt-8 max-w-[640px] text-body leading-[2.1] text-fg-body"
         >
-          MasKOFFは少数精鋭のチームです。役職や年次に関係なく、良いと思ったものを「良い」と言える人。自分の好きを言語化できる人。つくることを、人生の真ん中に置いている人。そんな仲間を探しています。
+          MasKOFFは少数精鋭のチームです。<br></br>役職や年次に関係なく、良いと思ったものを「良い」と言える人<br></br>自分の好きを言語化できる人<br></br>つくることを、人生の真ん中に置いている人<br></br>そんな仲間を探しています。
         </p>
         <ul className="mt-14 grid gap-4 pc:grid-cols-3">
           {CULTURE.map((c, i) => (
@@ -166,7 +166,7 @@ export default function RecruitPage() {
         </ul>
         <p
           data-reveal="up"
-          className="mt-10 max-w-[720px] text-body leading-[2.1] text-fg-body"
+          className="mt-10 max-w-[720px] text-body leading-[2.1] whitespace-pre-line text-fg-body"
         >
           {STATS_BODY}
         </p>
@@ -238,7 +238,7 @@ export default function RecruitPage() {
                   <p
                     key={pi}
                     className={cn(
-                      "text-body leading-[2.1] text-fg-body",
+                      "text-body leading-[2.1] whitespace-pre-line text-fg-body",
                       pi > 0 && "mt-4",
                     )}
                   >

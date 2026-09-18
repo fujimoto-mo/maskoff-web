@@ -9,6 +9,7 @@ const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as CSSProperties;
 /**
  * SERVICE 詳細の OVERVIEW。段落が順にフェードし、{ marker } は蛍光ペン（background-size 方式）。
  * max-w は段落の読みやすさのための本文幅（コンテナの中央寄せではない。既存 OVERVIEW と同じ扱い）。
+ * 文字列の "\n" は PC（961px 以上）だけ改行として効く（pc:whitespace-pre-line）。760px 幅で語の途中で折り返す箇所を文節で切るためのもので、SP は自然な折り返しに任せる。
  * @example <ServiceOverview intro={getServiceDetail("sns").intro} note="※ こちらのカリキュラムは MasKOFF のメンバーのみが受けられます。" />
  */
 export default function ServiceOverview({ intro, note }: { intro: readonly (readonly Segment[])[]; note?: string }) {
@@ -17,7 +18,7 @@ export default function ServiceOverview({ intro, note }: { intro: readonly (read
       <SectionHeading en="OVERVIEW" ja="事業概要" id="sv-overview" />
       <div className="mt-[clamp(32px,4vw,48px)] max-w-[760px] space-y-6">
         {intro.map((para, i) => (
-          <p key={i} data-reveal="up" style={rd(i)} className="text-[15px] leading-[2.1] text-fg-body max-sp:text-body-sp">
+          <p key={i} data-reveal="up" style={rd(i)} className="text-[15px] leading-[2.1] text-fg-body pc:whitespace-pre-line max-sp:text-body-sp">
             {para.map((seg, k) => (typeof seg === "string" ? <span key={k}>{seg}</span> : <Marker key={k}>{seg.marker}</Marker>))}
           </p>
         ))}
