@@ -20,7 +20,8 @@ export default function VisionBlock() {
           <div className="marker-block relative" data-marker-block>
             <MarkerLayer />
             <Handwriting />
-            <div className="relative z-[1] space-y-[22px] text-body leading-[2] text-fg max-sp:text-body-sp [&>p]:max-w-[560px]">
+            {/* 本文は PC・SP とも 15px（2026-09-18 にクライアント指示。--text-body 14px / 13px より 1 段大きい） */}
+            <div className="relative z-[1] space-y-[22px] text-[15px] leading-[2] text-fg [&>p]:max-w-[560px]">
               {VISION_COPY.map((paragraph, pi) => (
                 <p key={pi} data-reveal="para">
                   {paragraph.map((line, li) => (

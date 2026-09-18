@@ -20,12 +20,12 @@ const PHOTO_BOX = {
 } as const;
 /**
  * 領域ブロックの位置（PC / タブレット。引き出し線は vision-leads.ts の LEADS_PC）。横は引き出し線が届く内側の端を基準にする（% は viewBox 540 に対する比率。423/540、173/540、355/540）。
- * 縦は引き出し線の水平な末尾（y = 43 / 368、440 に対し 9.8% / 83.6%）が 1 行目の見出し（22px × 1.25 = 27.5px）の中心に来るよう、見出しの半分（13.75px / 616px ≒ 2.2%）だけ上げる
+ * 縦は引き出し線の水平な末尾（y = 43 / 368、440 に対し 9.8% / 83.6%）が 1 行目の見出し（15px × 1.25 = 18.75px）の中心に来るよう、見出しの半分（9.4px / 616px ≒ 1.5%）だけ上げる
  */
 const BLOCK_POS = [
-  "top-[7.5%] left-[78.3%]",
-  "top-[81.4%] right-[68%]",
-  "top-[81.4%] left-[65.7%]",
+  "top-[8.3%] left-[78.3%]",
+  "top-[82.1%] right-[68%]",
+  "top-[82.1%] left-[65.7%]",
 ] as const;
 /** 領域名と矢印の色（HR / MK / CR）。tokens.css の --color-accent-*（白地用）を ScrollTheme が黒地用へ補間する。面の英字と項目は無彩色のまま */
 const ACCENT = ["text-accent-cr", "text-accent-cr", "text-accent-cr"] as const; // 2026-09-17: 3 領域とも Creative の色（橙）に統一（クライアント指示）。HR / MK 用トークンは未使用
@@ -34,8 +34,8 @@ const ACCENT = ["text-accent-cr", "text-accent-cr", "text-accent-cr"] as const; 
  * 相関図。等角の立方体を 3 面（HR / MK / CR）に分け、各面から引き出し線で領域ブロック（英字の領域名 → 和文の事業名 → サービス 4 つ）につなぐ。
  * data-reveal="diagram" が in になると、面が順にフェード → 中央から Y 字の稜線を線描画 →
  * 面ラベルがぼかしから出現 → 引き出し線を描いてブロックがフェード。
- * ブロックは HTML（検索・読み上げに乗せる）。PC では @container の cqw 単位で文字を立方体と同率に拡縮させ
- * （見出し 22px / 本文 15px で頭打ち）、引き出し線が届く内側の端を基準に置くので SVG 座標の引き出し線とズレない。
+ * ブロックは HTML（検索・読み上げに乗せる）。領域名 15px / 事業名 14px は PC・SP とも固定（2026-09-18 にクライアント指示で統一）、項目だけ PC では @container の cqw 単位で
+ * 立方体と同率に拡縮させ（事業名と同じ 14px で頭打ち。項目は事業名以下にする指示）、引き出し線が届く内側の端を基準に置くので SVG 座標の引き出し線とズレない。
  * ブロックの書体は本文と同じ（Inter Tight + Noto Sans JP。2026-09-17 にセリフ体から統一。--font-serif は未使用）、英字の領域名 → 和文の事業名（事業一覧へのリンク。丸囲みの矢印付き）→ サービス項目の 3 段。
  * 領域名と矢印だけ参考図の 3 色（ACCENT。CLAUDE.md §4-1 の例外）で、面の英字・事業名・項目は無彩色。
  * SP は HR を右上（幅 45% を右寄せ、SVG の上端に 11% 重ねる）、MK / CR を立方体の下の 2 列（各 49%、SVG 下端から 12% 引き上げ）に置き、
@@ -56,8 +56,8 @@ export default function VisionDiagram() {
       <div
         key={face.code}
         className={cn(
-          // PC: 文字は幅に比例（540px で 13px）だが 15px で頭打ち。内側の端を基準に置くので、頭打ち後も引き出し線とはずれない
-          "vd-lbl absolute whitespace-nowrap text-[min(2.4cqw,15px)] leading-[2.1] tracking-[.03em] text-fg-muted",
+          // PC: 項目の文字は幅に比例（540px で 13px）だが 14px（事業名と同じ）で頭打ち。内側の端を基準に置くので、頭打ち後も引き出し線とはずれない
+          "vd-lbl absolute whitespace-nowrap text-[min(2.4cqw,14px)] leading-[2.1] tracking-[.03em] text-fg-muted",
           BLOCK_POS[i],
           // SP: 12〜13px を幅に比例させる（390px で 13px、360px で 12.2px。下段の列幅 49% に 12 文字の項目が 1 行で入る）。幅は CSS 変数（vision-leads.ts の SP）
           "max-sp:static max-sp:whitespace-normal max-sp:text-[clamp(12px,3.4vw,13px)] max-sp:[text-wrap:balance]",
@@ -67,13 +67,13 @@ export default function VisionDiagram() {
         )}
         style={{ "--ni": i } as CSSProperties}
       >
-        {/* 領域名（セリフ体・細め・大きめ）。引き出し線の水平な末尾は 1 行目の中心に届く（BLOCK_POS）。上面ブロックは 1440px で列の右端まで 164px しかないため 22px が上限 */}
-        <p className={cn("text-[min(3cqw,22px)] leading-[1.25] tracking-[.01em] max-sp:text-[17px]", ACCENT[i])}>{face.en}</p>
+        {/* 領域名。PC・SP とも 15px 固定。引き出し線の水平な末尾は 1 行目の中心に届く（BLOCK_POS） */}
+        <p className={cn("text-[15px] leading-[1.25] tracking-[.01em]", ACCENT[i])}>{face.en}</p>
         {/* 和文の事業名。参考図の丸囲みの矢印を添えて事業一覧へリンクする（矢印は装飾なので aria-hidden）。矢印は文中に流し込み、折り返しても最後の文字に付いて回る */}
         <p className="mt-1.5 leading-[1.6]">
           <Link
             href="/service/"
-            className="group/lnk text-[min(2.2cqw,14px)] tracking-[.06em] text-fg max-sp:text-[12px] max-sp:tracking-[.04em]"
+            className="group/lnk text-[14px] tracking-[.06em] text-fg max-sp:tracking-[.04em]"
           >
             {face.ja}
             <span

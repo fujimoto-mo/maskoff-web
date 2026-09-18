@@ -8,7 +8,7 @@ export type Img = { src: string; alt: string };
  * 事業別セクション（spec 2026-09-17-service-layouts §2）。ServiceSections が type で部品に振り分ける。
  * - cards: カード群（cols 3 / 4。numeral で大きな番号、image で右に写真）
  * - issues: 課題 → 解決 / flow: 手順（horizontal / vertical / stairs。steps[].image で写真つき）
- * - tiles: 正方形タイル / chips: チップ / media: ロゴ帯 / product: 画像 + 要点 3 / cycle: 4 ノードのループ図 / notice: 案内帯 / faq: 3 問
+ * - tiles: 正方形タイル / chips: チップ / media: ロゴ帯 / product: 画像 + 要点 3（link で要点の下に外部サイトへのボタン）/ cycle: 4 ノードのループ図 / notice: 案内帯 / faq: 3 問
  */
 export type Section =
   | { type: "cards"; en: string; ja: string; items: readonly { title: string; text: string }[]; cols?: 3 | 4; numeral?: boolean; image?: Img }
@@ -17,7 +17,7 @@ export type Section =
   | { type: "tiles"; en: string; ja: string; items: readonly string[] }
   | { type: "chips"; en: string; ja: string; items: readonly string[] }
   | { type: "media"; en: string; ja: string; image: Img; note?: string }
-  | { type: "product"; en: string; ja: string; image: Img; points: readonly { title: string; text: string }[] }
+  | { type: "product"; en: string; ja: string; image: Img; points: readonly { title: string; text: string }[]; link?: { href: string; label: string } }
   | { type: "cycle"; en: string; ja: string; items: readonly { title: string; text: string }[] }
   | { type: "notice"; en: string; ja: string; title: string; text: string; note?: string }
   | { type: "faq"; items: readonly { q: string; a: string }[] };
@@ -48,14 +48,14 @@ export const SERVICE_DETAILS: Readonly<Record<string, ServiceDetail>> = {
         ja: "3つの特徴",
         items: [
           { title: "課題提出型で、すぐ実践", text: `${SITE.product} は課題提出型の研修プラットフォームです。学んだことをその場で手を動かして試しながら進められます。` },
-          { title: "目的と習熟度に合わせて調整", text: "目指す職種や今の理解度に合わせて、学ぶ順番と深さを組み替えます。希望するキャリアに合わせた分野を選べます。" },
+          { title: "わからないことはすぐに相談", text: "つまずいたときやわからないことがあれば、相談できる環境を整えています。一人ひとりの理解度や習熟度に合わせて、無理なくステップアップしながら学習を進められます。" },
           { title: "自分のペースで、1 年を目安に", text: "研修期間は 1 年ほどを想定していますが、課題提出に期限はありません。仕事と両立しながら、自分のペースでスキルを磨けます。" },
         ],
       },
       {
         type: "flow",
         en: "CURRICULUM",
-        ja: "学習の流れ",
+        ja: "学習の流れ(SNS マーケティングの場合)",
         variant: "vertical",
         steps: [
           { title: "学習の準備（1〜2 ヶ月目）", text: "予習・ガイダンス・ビジネスマナー研修。入職後 1 ヶ月は仕事に慣れることを優先し、学習の開始時期は本人と相談して決めます。" },
@@ -283,48 +283,76 @@ export const SERVICE_DETAILS: Readonly<Record<string, ServiceDetail>> = {
     ],
   },
   tiply: {
+    // 内容は自社サイト ARIGATO TiPLY（arigato-one.vercel.app、2026-09-18 時点）に合わせている。料金の具体額は載せない（サイトも個別相談）
     intro: [
-      ["TiPLY は、飲食店向けのサービスです。海外からのお客様の声を店舗に届け、", { marker: "飲食店の新しい収入源" }, "をつくる取り組みとして、企画・営業・マーケティング・運営を自社で行っています。"],
-      ["弊社が持つ海外マーケットのネットワークを活かし、インバウンドの流れを店舗の力に変えることを目指しています。"],
-      ["導入から運用までをサポートするので、海外のお客様への対応が初めての店舗でも始められます。"],
+      ["TiPLY（ARIGATO TiPLY）は、飲食店・バー向けの多言語チップ決済サービスです。テーブルの QR コードを読み込むだけで、海外のお客様がスマホから", { marker: "感謝をチップとして店舗に届けられる" }, "仕組みを、企画・営業・マーケティング・運営まで自社で行っています。"],
+      ["日本にはチップの習慣がなく、キャッシュレスの海外のお客様は渡したくても渡せません。TiPLY はその気持ちを受け取り、", { marker: "飲食店の新しい収入源" }, "とクチコミの育成につなげます。"],
+      ["導入はテーブルに QR コードを置くだけ。海外のお客様への対応が初めての店舗でも、導入から運用までサポートします。"],
     ],
     sections: [
       {
         type: "product",
         en: "PRODUCT",
         ja: "TiPLY とは",
-        image: { src: "/images/service/svc-07.png", alt: "TiPLY の卓上パネル。QR コードを読み取って店舗のストーリーを見る" },
+        image: { src: `${D}/arigato-tiply-1.jpg`, alt: "ARIGATO TiPLY のサイト。スマホをかざすだけで感謝をチップにするサービスの紹介と、お客様が見るスマホ画面" },
         points: [
-          { title: "店舗に置くだけの卓上パネル", text: "QR コードを読み取ると、店舗のストーリーや案内が多言語で表示されます。" },
-          { title: "海外のお客様の声が届く", text: "来店後の感想や応援の気持ちが、店舗にダイレクトに届きます。" },
-          { title: "店舗の新しい収入源に", text: "お客様の気持ちを受け取る仕組みが、店舗の新しい収入の流れになります。" },
+          { title: "QR を読むだけの多言語チップ決済", text: "日本語・英語・韓国語・中国語をワンタップで切替。お店の写真とこだわりを見てから、金額を選んで感謝を送れます。" },
+          { title: "カード・電子ウォレット・現金に対応", text: "Stripe の決済基盤でカード・Apple Pay・Google Pay に対応し、カード情報は店舗を経由しません。現金派のお客様はお会計に加えてレジで精算できます。" },
+          { title: "クチコミを育て、声を店舗に届ける", text: "★4 以上のお客様は Google クチコミ・SNS へ案内し、★3 以下は店舗だけに届く非公開フィードバックとして分けて受け取ります。" },
         ],
       },
-      { type: "cards", en: "BENEFITS", ja: "店舗のメリット", items: [
-      { title: "海外のお客様の声が届く", text: "来店した海外のお客様からのダイレクトな声を、店舗の改善と発信に活かせます。" },
-      { title: "導入の手間を抑えた設計", text: "店舗の負担が増えないよう、導入と日々の運用をできるだけ簡単にしています。" },
-      { title: "運営まで自社で担う", text: "企画・営業・マーケティング・運営を一貫して自社で行うため、要望を素早く反映できます。" },
-    ] },
-      { type: "flow", en: "HOW IT WORKS", ja: "導入の流れ", steps: [
-      { title: "お問い合わせ", text: "店舗の業態と現状の課題をお聞きします。" },
-      { title: "ご説明・導入相談", text: "サービスの内容と導入の流れをご説明します。" },
-      { title: "導入・初期設定", text: "店舗に合わせて設定し、スタッフ向けにご案内します。" },
-      { title: "運用サポート", text: "運用開始後も、活用方法の相談と改善を続けます。" },
-    ] },
+      { type: "issues", items: [
+        { problem: "チップ文化がなく、海外のお客様が渡し方に戸惑う", solution: "テーブルの QR コードを読み込むだけ。スマホの操作だけで感謝をチップとして送れます。" },
+        { problem: "現金を持たないキャッシュレス世代には小銭がない", solution: "カード・Apple Pay・Google Pay で決済。現金のお客様はお会計に加えてレジで精算します。" },
+        { problem: "多言語の案内やクチコミの育成まで手が回らない", solution: "4 言語に自動で対応し、★4 以上の評価は Google クチコミ・SNS へ案内します。" },
+      ] },
+      { type: "flow", en: "HOW IT WORKS", ja: "お客様の操作（スマホひとつで完結）", steps: [
+        { title: "QR コードをスキャン", text: "テーブルの QR コードを読み取り、日本語・English・한국어・中文から言語を選びます。" },
+        { title: "お店のストーリーを見る", text: "お店の写真とこだわりが表示され、雰囲気を感じながら操作を始められます。" },
+        { title: "金額を選ぶ", text: "気持ちにあわせて、チップの金額をタップで選びます。" },
+        { title: "支払い方法を選ぶ", text: "カード・Apple Pay・Google Pay で今すぐ、またはお会計時に現金で。" },
+        { title: "レビューを書く", text: "★評価・コメント・写真を送信。お店への応援がそのまま届きます。" },
+        { title: "感謝を受け取る", text: "★4 以上のお客様には Google クチコミ・SNS フォローをご案内します。" },
+      ] },
+      { type: "cards", en: "FEATURES", ja: "店舗側の機能", cols: 4, items: [
+        { title: "リアルタイム通知", text: "チップ・口コミが届くと、管理画面のトースト表示とスマホへのプッシュ通知で即座にお知らせします。" },
+        { title: "売上・レポート集計", text: "本日の実績（前日比つき）・累計・日別の推移をダッシュボードでいつでも確認できます。" },
+        { title: "導入は QR を置くだけ", text: "QR コードを発行し、管理画面から店舗情報を設定すればすぐに始められます。" },
+        { title: "運営まで自社で担う", text: "企画・営業・マーケティング・運営を一貫して自社で行うため、要望を素早く反映できます。" },
+      ] },
+      { type: "flow", en: "FLOW", ja: "導入の流れ", steps: [
+        { title: "お問い合わせ", text: "店舗の業態と現状の課題をお聞きします。" },
+        { title: "ご説明・導入相談", text: "サービスの内容と導入の流れをご説明します。" },
+        { title: "導入・初期設定", text: "店舗に合わせて設定し、スタッフ向けにご案内します。" },
+        { title: "運用サポート", text: "運用開始後も、活用方法の相談と改善を続けます。" },
+      ] },
       { type: "faq", items: [
-      { q: "どのような店舗が対象ですか？", a: "飲食店全般が対象です。業態や規模に合わせて導入方法をご提案します。" },
-      { q: "海外のお客様への対応が初めてでも大丈夫ですか？", a: "はい。導入時のご案内と運用サポートで、初めての店舗でも始められます。" },
-      { q: "導入費用を教えてください。", a: "店舗の規模とプランに応じてご案内します。まずはお問い合わせください。" },
-    ] },
+        { q: "導入にはどれくらい時間がかかりますか？", a: "テーブルに置く QR コードを発行するだけで準備は完了します。管理画面から店舗情報を設定すればすぐに始められます。" },
+        { q: "海外発行のクレジットカードでも使えますか？", a: "はい。Stripe の国際カード決済に対応しているため、海外発行のカードでもお使いいただけます。" },
+        { q: "決済手数料や料金体系について知りたいです。", a: "カード決済には通常の決済手数料が発生します。詳しい料金体系は店舗の規模に応じてご案内しますので、まずはお問い合わせください。" },
+      ] },
     ],
   },
   "cross-border-ec": {
     intro: [
       ["海外マーケットプレイスへの出店から、物流・決済・多言語対応までを支援し、", { marker: "日本の商品を世界の顧客へ" }, "届けます。"],
       ["どの国・どのモールで売るかの選定から、商品登録、発送、決済、カスタマー対応まで、越境ECの立ち上げに必要な実務を一通り担います。"],
-      ["立ち上げ後は広告と集客、レポートをもとにした改善で、販売を伸ばしていきます。"],
+      ["立ち上げ後は広告と集客、レポートをもとにした改善で、販売を伸ばしていきます。自社でも", { marker: "越境EC「OMIKUJI BOX」を企画・運営" }, "しており、その実践で得た知見をもとに支援します。"],
     ],
     sections: [
+      {
+        type: "product",
+        en: "CASE",
+        ja: "自社運営の越境EC「OMIKUJI BOX」",
+        // omikujibox.com（Shopify 製。2022 年 10 月開始）のファーストビュー。価格は変わるため本文に書かない
+        image: { src: `${D}/omikujibox-1.jpg`, alt: "OMIKUJI BOX のサイト。日本のお菓子の定期購入ボックスと、日本行き航空券が当たるおみくじの案内" },
+        points: [
+          { title: "日本のお菓子とおみくじの定期便", text: "16〜20 種の人気スナックに、おみくじ・限定ドリンク・オリジナルガイドを添えて毎月お届けする月額制のサブスクリプションです。" },
+          { title: "海外向けに設計した購入体験", text: "英語サイト・米ドル決済（クレジットカード / Apple Pay / Google Pay）、全世界送料無料。Shopify で構築し、定期購入と海外配送を自社で運用しています。" },
+          { title: "「大吉」で日本行き航空券", text: "箱に入ったおみくじで大吉を引くと日本行きの航空券が当たる仕掛けで、商品そのものを日本文化の体験にしています。" },
+        ],
+        link: { href: "https://omikujibox.com/", label: "omikujibox.com を見る" },
+      },
       { type: "chips", en: "MARKETS", ja: "出店先のイメージ", items: ["北米", "欧州", "東アジア", "東南アジア", "オセアニア", "大手マーケットプレイス", "越境モール", "自社 EC"] },
       { type: "flow", en: "FLOW", ja: "ご依頼の流れ", steps: [
       { title: "相談・市場選定", text: "商品と目標をお聞きし、販売する国とモールを選びます。" },
