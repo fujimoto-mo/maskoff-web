@@ -191,6 +191,12 @@
     "avif": "/images/optimized/service/detail/apparel-process-4.avif",
     "webp": "/images/optimized/service/detail/apparel-process-4.webp"
   },
+  "/images/service/detail/arigato-tiply-1.jpg": {
+    "width": 1200,
+    "height": 750,
+    "avif": "/images/optimized/service/detail/arigato-tiply-1.avif",
+    "webp": "/images/optimized/service/detail/arigato-tiply-1.webp"
+  },
   "/images/service/detail/career-support-1.jpg": {
     "width": 1200,
     "height": 800,

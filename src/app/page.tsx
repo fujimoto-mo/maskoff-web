@@ -11,7 +11,7 @@ import { getNews, getNotice } from "@/lib/microcms";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: { absolute: `${SITE.name}｜${SITE.tagline} — アパレル・アーティスト支援・Web制作` },
+  title: { absolute: `${SITE.name}｜${SITE.tagline} — アパレル製品の企画、SNSマーケティング、Web制作` },
   description: SITE.description,
   alternates: { canonical: "/" },
 };
