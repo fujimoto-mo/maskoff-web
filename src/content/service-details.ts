@@ -8,7 +8,8 @@ export type Img = { src: string; alt: string };
  * 事業別セクション（spec 2026-09-17-service-layouts §2）。ServiceSections が type で部品に振り分ける。
  * - cards: カード群（cols 3 / 4。numeral で大きな番号、image で右に写真）
  * - issues: 課題 → 解決 / flow: 手順（horizontal / vertical / stairs。steps[].image で写真つき）
- * - tiles: 正方形タイル / chips: チップ / media: ロゴ帯 / product: 画像 + 要点 3（link で要点の下に外部サイトへのボタン）/ cycle: 4 ノードのループ図 / notice: 案内帯 / faq: 3 問
+ * - tiles: 正方形タイル / chips: チップ / media: ロゴ帯 / product: 画像 + 要点 3（links で要点の下に外部サイト・SNS へのボタン。icon で先頭にロゴ。video があれば image をポスターにして縦型動画を置く）/ cycle: 4 ノードのループ図 / notice: 案内帯 / faq: 3 問
+ * - story: ブランドストーリー（PC 2 カラム: concept = 左のコンセプト、body = 右のストーリー。段落は Segment の配列、"\n" は SP でも改行。note は末尾の小さな注記）
  */
 export type Section =
   | { type: "cards"; en: string; ja: string; items: readonly { title: string; text: string }[]; cols?: 3 | 4; numeral?: boolean; image?: Img }
@@ -17,9 +18,10 @@ export type Section =
   | { type: "tiles"; en: string; ja: string; items: readonly string[] }
   | { type: "chips"; en: string; ja: string; items: readonly string[] }
   | { type: "media"; en: string; ja: string; image: Img; note?: string }
-  | { type: "product"; en: string; ja: string; image: Img; points: readonly { title: string; text: string }[]; link?: { href: string; label: string } }
+  | { type: "product"; en: string; ja: string; image: Img; points: readonly { title: string; text: string }[]; links?: readonly { href: string; label: string; icon?: Img }[]; video?: { src: string } }
   | { type: "cycle"; en: string; ja: string; items: readonly { title: string; text: string }[] }
   | { type: "notice"; en: string; ja: string; title: string; text: string; note?: string }
+  | { type: "story"; en: string; ja: string; concept: readonly (readonly Segment[])[]; body: readonly (readonly Segment[])[]; note?: string }
   | { type: "faq"; items: readonly { q: string; a: string }[] };
 
 export type ServiceDetail = {
@@ -151,14 +153,34 @@ export const SERVICE_DETAILS: Readonly<Record<string, ServiceDetail>> = {
         type: "product",
         en: "CASE",
         ja: "自社ブランド「DotHyphen」",
-        // dothyphen.store（Shopify 製。2025 年 11 月発表）のファーストビュー。価格は変わるため本文に書かない
-        image: { src: `${D}/dothyphen-1.jpg`, alt: "DotHyphen のサイト。ブランド名と 2026 SPRING Collection のモデル 2 人" },
+        // ブランドムービー（docs/ の MP4 を音なし 720×1280 に再エンコード。public/videos/service/）。image はそのポスター（5 秒付近のフレーム）。価格は変わるため本文に書かない
+        image: { src: `${D}/dothyphen-movie.jpg`, alt: "DotHyphen のブランドムービー。DHh のキャップと T シャツを着た 2 人" },
+        video: { src: "/videos/service/dothyphen.mp4" },
         points: [
           { title: "自社オリジナルブランド", text: "2025 年 11 月に発表。スウェットセット・シャツ・アウター・キャップ・バッグを展開し販売しています。" },
           { title: "企画から生産・EC運営まで自社で運用", text: "Shopify で ECを構築し、各種カード・Apple Pay・Google Pay・Shop Pay の決済、配送、お問い合わせ対応まで自社で運営しています。" },
           { title: "日本語・韓国語・英語、円とウォンに対応", text: "言語と通貨を切り替えられる越境対応の EC で、海外のお客様にも販売しています。" },
         ],
-        link: { href: "https://dothyphen.store/", label: "DotHyphen のサイトを見る" },
+        links: [
+          { href: "https://dothyphen.store/", label: "DotHyphen のショップサイトを見る" },
+          { href: "https://www.instagram.com/dhh._officialstore", label: "Instagram", icon: { src: "/images/icons/instagram.png", alt: "" } },
+        ],
+      },
+      {
+        // docs/IMG_3507.jpg（2025-07-07 のブランドコンセプト文）を書き起こしたもの。行の区切りは原文どおり
+        type: "story",
+        en: "STORY",
+        ja: "DotHyphen のブランドストーリー",
+        concept: [
+          [{ marker: "現状の自分（Dot）と、理想の自分（Hyphen）" }, "の間にあるギャップや焦り、願い――\nそんな感情をビジュアルに落とし込み、アイテムで表現するブランド。"],
+          ["DHHの服を着るときだけは、理想の自分、または別の自分になれる。\nそれを “体験” として楽しめるブランドです。"],
+        ],
+        body: [
+          ["誰しもが「理想」を持っているけど、\n現実ではその理想から離れた場所で生きていることが多いんじゃないかと思う。"],
+          ["私自身も「こうなりたい」と思うことが多く、\nその思いをビジュアル（ピクチャー）に落とし込んで、\n自分の身に纏えば少しでも理想に近づける気がする。"],
+          ["そんな疑似体験をさせてくれるもの。\n", { marker: "なりたい自分を表現する手段" }, "として存在してくれているのが \"DotHyphen\"。"],
+        ],
+        note: "2025 年 7 月 7 日",
       },
       {
         type: "flow",
@@ -363,7 +385,7 @@ export const SERVICE_DETAILS: Readonly<Record<string, ServiceDetail>> = {
           { title: "海外向けに設計した購入体験", text: "英語サイト・米ドル決済（クレジットカード / Apple Pay / Google Pay）、全世界送料無料。Shopify で構築し、定期購入と海外配送を自社で運用しています。" },
           { title: "「大吉」で日本行き航空券", text: "箱に入ったおみくじで大吉を引くと日本行きの航空券が当たる仕掛けで、商品そのものを日本文化の体験にしています。" },
         ],
-        link: { href: "https://omikujibox.com/", label: "omikujibox.com を見る" },
+        links: [{ href: "https://omikujibox.com/", label: "omikujibox.com を見る" }],
       },
       { type: "chips", en: "MARKETS", ja: "出店先のイメージ", items: ["北米", "欧州", "東アジア", "東南アジア", "オセアニア", "大手マーケットプレイス", "越境モール", "自社 EC"] },
       { type: "flow", en: "FLOW", ja: "ご依頼の流れ", steps: [

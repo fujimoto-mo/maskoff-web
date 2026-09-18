@@ -7,6 +7,7 @@ import ServiceIssues from "@/components/sections/ServiceIssues";
 import ServiceMedia from "@/components/sections/ServiceMedia";
 import ServiceNotice from "@/components/sections/ServiceNotice";
 import ServiceProduct from "@/components/sections/ServiceProduct";
+import ServiceStory from "@/components/sections/ServiceStory";
 import ServiceTiles from "@/components/sections/ServiceTiles";
 import type { Section } from "@/content/service-details";
 
@@ -33,9 +34,11 @@ export default function ServiceSections({ sections }: { sections: readonly Secti
           case "media":
             return <ServiceMedia key={key} en={s.en} ja={s.ja} image={s.image} note={s.note} />;
           case "product":
-            return <ServiceProduct key={key} en={s.en} ja={s.ja} image={s.image} points={s.points} link={s.link} />;
+            return <ServiceProduct key={key} en={s.en} ja={s.ja} image={s.image} points={s.points} links={s.links} video={s.video} />;
           case "cycle":
             return <ServiceCycle key={key} en={s.en} ja={s.ja} items={s.items} />;
+          case "story":
+            return <ServiceStory key={key} en={s.en} ja={s.ja} concept={s.concept} body={s.body} note={s.note} />;
           case "notice":
             return <ServiceNotice key={key} en={s.en} ja={s.ja} title={s.title} text={s.text} note={s.note} />;
           case "faq":
