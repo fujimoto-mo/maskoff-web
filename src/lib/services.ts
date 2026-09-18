@@ -118,9 +118,9 @@ export const SERVICES: readonly Service[] = [
     en: "TiPLY",
     title: "TiPLY事業",
     verb: "もてなす",
-    lead: "飲食店向けサービス「TiPLY」の企画・営業・マーケティング・サービス運営を行っています。",
+    lead: "飲食店向けサービス「TiPLY」の企画・営業・マーケティング・サービス運営を行っています。\n（サービス準備中）",
     description:
-      "飲食店向けサービス「TiPLY」に関する企画、営業、マーケティング、サービス運営などを行っています。",
+      "飲食店向けサービス「TiPLY」に関する企画、営業、マーケティング、サービス運営などを行っています。（サービス準備中）",
     tags: ["サービス企画", "営業・マーケティング", "サービス運営"],
     // ARIGATO TiPLY JAPAN のロゴ・利用シーン・卓上 POP を並べた横長の合成画像（docs/Frame2.png、1200×613）。切り抜くと構成が壊れるため contain。地の白は枠の bg-surface（#F9F9F9）に合わせてある
     image: "/images/service/svc-07.png",
