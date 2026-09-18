@@ -209,6 +209,12 @@
     "avif": "/images/optimized/service/detail/it-enablement-1.avif",
     "webp": "/images/optimized/service/detail/it-enablement-1.webp"
   },
+  "/images/service/detail/omikujibox-1.jpg": {
+    "width": 1200,
+    "height": 750,
+    "avif": "/images/optimized/service/detail/omikujibox-1.avif",
+    "webp": "/images/optimized/service/detail/omikujibox-1.webp"
+  },
   "/images/service/detail/recruitment-ads-1.jpg": {
     "width": 1200,
     "height": 800,
