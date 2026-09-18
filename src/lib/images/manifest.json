@@ -276,14 +276,14 @@
     "webp": "/images/optimized/service/svc-04.webp"
   },
   "/images/service/svc-05.jpg": {
-    "width": 1190,
-    "height": 1190,
+    "width": 1672,
+    "height": 941,
     "avif": "/images/optimized/service/svc-05.avif",
     "webp": "/images/optimized/service/svc-05.webp"
   },
   "/images/service/svc-06.jpg": {
     "width": 1200,
-    "height": 848,
+    "height": 676,
     "avif": "/images/optimized/service/svc-06.avif",
     "webp": "/images/optimized/service/svc-06.webp"
   },
