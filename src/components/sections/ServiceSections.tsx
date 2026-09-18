@@ -33,7 +33,7 @@ export default function ServiceSections({ sections }: { sections: readonly Secti
           case "media":
             return <ServiceMedia key={key} en={s.en} ja={s.ja} image={s.image} note={s.note} />;
           case "product":
-            return <ServiceProduct key={key} en={s.en} ja={s.ja} image={s.image} points={s.points} />;
+            return <ServiceProduct key={key} en={s.en} ja={s.ja} image={s.image} points={s.points} link={s.link} />;
           case "cycle":
             return <ServiceCycle key={key} en={s.en} ja={s.ja} items={s.items} />;
           case "notice":

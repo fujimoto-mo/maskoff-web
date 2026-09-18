@@ -8,7 +8,7 @@ export type Img = { src: string; alt: string };
  * 事業別セクション（spec 2026-09-17-service-layouts §2）。ServiceSections が type で部品に振り分ける。
  * - cards: カード群（cols 3 / 4。numeral で大きな番号、image で右に写真）
  * - issues: 課題 → 解決 / flow: 手順（horizontal / vertical / stairs。steps[].image で写真つき）
- * - tiles: 正方形タイル / chips: チップ / media: ロゴ帯 / product: 画像 + 要点 3 / cycle: 4 ノードのループ図 / notice: 案内帯 / faq: 3 問
+ * - tiles: 正方形タイル / chips: チップ / media: ロゴ帯 / product: 画像 + 要点 3（link で要点の下に外部サイトへのボタン）/ cycle: 4 ノードのループ図 / notice: 案内帯 / faq: 3 問
  */
 export type Section =
   | { type: "cards"; en: string; ja: string; items: readonly { title: string; text: string }[]; cols?: 3 | 4; numeral?: boolean; image?: Img }
@@ -17,7 +17,7 @@ export type Section =
   | { type: "tiles"; en: string; ja: string; items: readonly string[] }
   | { type: "chips"; en: string; ja: string; items: readonly string[] }
   | { type: "media"; en: string; ja: string; image: Img; note?: string }
-  | { type: "product"; en: string; ja: string; image: Img; points: readonly { title: string; text: string }[] }
+  | { type: "product"; en: string; ja: string; image: Img; points: readonly { title: string; text: string }[]; link?: { href: string; label: string } }
   | { type: "cycle"; en: string; ja: string; items: readonly { title: string; text: string }[] }
   | { type: "notice"; en: string; ja: string; title: string; text: string; note?: string }
   | { type: "faq"; items: readonly { q: string; a: string }[] };
@@ -322,9 +322,22 @@ export const SERVICE_DETAILS: Readonly<Record<string, ServiceDetail>> = {
     intro: [
       ["海外マーケットプレイスへの出店から、物流・決済・多言語対応までを支援し、", { marker: "日本の商品を世界の顧客へ" }, "届けます。"],
       ["どの国・どのモールで売るかの選定から、商品登録、発送、決済、カスタマー対応まで、越境ECの立ち上げに必要な実務を一通り担います。"],
-      ["立ち上げ後は広告と集客、レポートをもとにした改善で、販売を伸ばしていきます。"],
+      ["立ち上げ後は広告と集客、レポートをもとにした改善で、販売を伸ばしていきます。自社でも", { marker: "越境EC「OMIKUJI BOX」を企画・運営" }, "しており、その実践で得た知見をもとに支援します。"],
     ],
     sections: [
+      {
+        type: "product",
+        en: "CASE",
+        ja: "自社運営の越境EC「OMIKUJI BOX」",
+        // omikujibox.com（Shopify 製。2022 年 10 月開始）のファーストビュー。価格は変わるため本文に書かない
+        image: { src: `${D}/omikujibox-1.jpg`, alt: "OMIKUJI BOX のサイト。日本のお菓子の定期購入ボックスと、日本行き航空券が当たるおみくじの案内" },
+        points: [
+          { title: "日本のお菓子とおみくじの定期便", text: "16〜20 種の人気スナックに、おみくじ・限定ドリンク・オリジナルガイドを添えて毎月お届けする月額制のサブスクリプションです。" },
+          { title: "海外向けに設計した購入体験", text: "英語サイト・米ドル決済（クレジットカード / Apple Pay / Google Pay）、全世界送料無料。Shopify で構築し、定期購入と海外配送を自社で運用しています。" },
+          { title: "「大吉」で日本行き航空券", text: "箱に入ったおみくじで大吉を引くと日本行きの航空券が当たる仕掛けで、商品そのものを日本文化の体験にしています。" },
+        ],
+        link: { href: "https://omikujibox.com/", label: "omikujibox.com を見る" },
+      },
       { type: "chips", en: "MARKETS", ja: "出店先のイメージ", items: ["北米", "欧州", "東アジア", "東南アジア", "オセアニア", "大手マーケットプレイス", "越境モール", "自社 EC"] },
       { type: "flow", en: "FLOW", ja: "ご依頼の流れ", steps: [
       { title: "相談・市場選定", text: "商品と目標をお聞きし、販売する国とモールを選びます。" },
