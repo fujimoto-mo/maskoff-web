@@ -19,9 +19,9 @@ export default function ContactSection() {
         <div>
           <SectionHeading en="CONTACT" ja="お問い合わせ・ご相談" id="contact-title" className="mb-[34px]" />
           <p data-reveal="up" style={{ "--rd": "0ms" } as CSSProperties} className="mb-10 text-body leading-[1.9] text-fg-body max-sp:text-body-sp">
-            まず、話すことから。
+            まず、話すことから、
             <br />
-            事業のご相談、採用、取材のご依頼はこちらから。
+            事業のご相談、採用、取材のご依頼はこちらへ。
           </p>
           <div data-reveal="up" style={{ "--rd": "80ms" } as CSSProperties}>
             <StepFlow heading="求職希望の方のご面談希望の流れ" steps={STEPS} />
