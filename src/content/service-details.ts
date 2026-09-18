@@ -142,11 +142,24 @@ export const SERVICE_DETAILS: Readonly<Record<string, ServiceDetail>> = {
   },
   "apparel-consulting": {
     intro: [
-      ["ブランドを立ち上げたい個人・企業向けに、コンセプト設計から売り場づくりまでを支援します。自社でオリジナルブランドを運営してきた経験をもとに、つまずきやすい点を先回りしてお伝えします。"],
+      ["ブランドを立ち上げたい個人・企業向けに、コンセプト設計から売り場づくりまでを支援します。自社ブランド「DotHyphen」を企画・運営してきた経験をもとに、つまずきやすい点を先回りしてお伝えします。"],
       ["デザインの制作、メーカーへの取次（OEM / ODM）、生産管理、販売戦略まで、トレンドに合わせた形で進めます。"],
       ["広告運用やインフルエンサーの起用など、売るための施策まで一緒に組み立てます。"],
     ],
     sections: [
+      {
+        type: "product",
+        en: "CASE",
+        ja: "自社ブランド「DotHyphen」",
+        // dothyphen.store（Shopify 製。2025 年 11 月発表）のファーストビュー。価格は変わるため本文に書かない
+        image: { src: `${D}/dothyphen-1.jpg`, alt: "DotHyphen のサイト。ブランド名と 2026 SPRING Collection のモデル 2 人" },
+        points: [
+          { title: "自社オリジナルブランド", text: "2025 年 11 月に発表。スウェットセット・シャツ・アウター・キャップ・バッグを展開し販売しています。" },
+          { title: "企画から生産・EC運営まで自社で運用", text: "Shopify で ECを構築し、各種カード・Apple Pay・Google Pay・Shop Pay の決済、配送、お問い合わせ対応まで自社で運営しています。" },
+          { title: "日本語・韓国語・英語、円とウォンに対応", text: "言語と通貨を切り替えられる越境対応の EC で、海外のお客様にも販売しています。" },
+        ],
+        link: { href: "https://dothyphen.store/", label: "DotHyphen のサイトを見る" },
+      },
       {
         type: "flow",
         en: "PROCESS",

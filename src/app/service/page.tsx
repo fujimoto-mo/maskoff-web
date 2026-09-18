@@ -129,7 +129,7 @@ export default function ServicePage() {
                 <h2 className="mt-6 text-[clamp(24px,3vw,34px)] font-black leading-[1.5] text-fg [text-wrap:pretty]">
                   {s.title}
                 </h2>
-                <p className="mt-6 text-body leading-[2.1] text-fg-body">
+                <p className="mt-6 text-body leading-[2.1] whitespace-pre-line text-fg-body">
                   {s.description}
                 </p>
                 <ul className="mt-7 flex flex-wrap gap-2.5">

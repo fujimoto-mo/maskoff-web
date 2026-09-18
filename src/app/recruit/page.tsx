@@ -119,7 +119,7 @@ export default function RecruitPage() {
           style={rd(1)}
           className="mt-8 max-w-[640px] text-body leading-[2.1] text-fg-body"
         >
-          MasKOFFは少数精鋭のチームです。役職や年次に関係なく、良いと思ったものを「良い」と言える人。自分の好きを言語化できる人。つくることを、人生の真ん中に置いている人。そんな仲間を探しています。
+          MasKOFFは少数精鋭のチームです。<br></br>役職や年次に関係なく、良いと思ったものを「良い」と言える人<br></br>自分の好きを言語化できる人<br></br>つくることを、人生の真ん中に置いている人<br></br>そんな仲間を探しています。
         </p>
         <ul className="mt-14 grid gap-4 pc:grid-cols-3">
           {CULTURE.map((c, i) => (

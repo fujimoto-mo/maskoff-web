@@ -209,6 +209,12 @@
     "avif": "/images/optimized/service/detail/cross-border-ec-1.avif",
     "webp": "/images/optimized/service/detail/cross-border-ec-1.webp"
   },
+  "/images/service/detail/dothyphen-1.jpg": {
+    "width": 1200,
+    "height": 750,
+    "avif": "/images/optimized/service/detail/dothyphen-1.avif",
+    "webp": "/images/optimized/service/detail/dothyphen-1.webp"
+  },
   "/images/service/detail/it-enablement-1.jpg": {
     "width": 1200,
     "height": 800,

@@ -35,7 +35,7 @@ export default function PartnerGrid({ partners = PARTNERS }: { partners?: readon
                 </span>
               </div>
               <h3 className="mb-1.5 text-[18px] font-bold leading-[1.55] tracking-[.01em] text-fg max-tab:mb-2 max-tab:text-[16px] max-tab:leading-[1.5]">{p.name}</h3>
-              <p className="text-caption text-fg-body max-tab:text-[11.5px] max-tab:leading-[1.8]">{p.text}</p>
+              <p className="text-caption text-fg-body whitespace-pre-line max-tab:text-[11.5px] max-tab:leading-[1.8]">{p.text}</p>
             </li>
           ))}
         </ul>
