@@ -1,7 +1,6 @@
 import type { CSSProperties } from "react";
 import { revealDelay } from "@/components/motion/reveal-delay";
 import Marker from "@/components/ui/Marker";
-import SectionHeading from "@/components/ui/SectionHeading";
 import type { Segment } from "@/content/service-details";
 
 const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as CSSProperties;
@@ -15,43 +14,38 @@ const paragraphs = (paras: readonly (readonly Segment[])[], offset: number) =>
   ));
 
 /**
- * SERVICE 詳細のブランドストーリー（STORY: DotHyphen）。PC は左にコンセプト、右にストーリーの 2 カラム。SP は縦積み。
+ * SERVICE 詳細のプロダクト紹介（ServiceProduct）の右カラムに入れるブランドストーリー（CASE: DotHyphen）。
+ * 小さな「STORY」ラベルと和文の見出し → コンセプト → ストーリー → 注記の順に縦に並ぶ。
  * 文字列の "\n" は全幅で改行として効く（詩的な行分けなので OVERVIEW と違い SP でも改行する）。{ marker } は蛍光ペン。
- * @example <ServiceStory en="STORY" ja="ブランドストーリー" concept={[["…"]]} body={[["…"]]} note="2025 年 7 月 7 日" />
+ * @example <ServiceStory ja="DotHyphen のブランドストーリー" concept={[["…"]]} body={[["…"]]} note="2025 年 7 月 7 日" delay={0} />
  */
 export default function ServiceStory({
-  en,
   ja,
   concept,
   body,
   note,
+  delay = 0,
 }: {
-  en: string;
   ja: string;
   concept: readonly (readonly Segment[])[];
   body: readonly (readonly Segment[])[];
   note?: string;
+  /** リビールの開始インデックス（ServiceProduct 内の順番に合わせる） */
+  delay?: number;
 }) {
-  const id = `sv-${en.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
   return (
-    <section aria-labelledby={id} className="wrap section-pad pt-0">
-      <SectionHeading en={en} ja={ja} id={id} />
-      <div className="mt-[clamp(32px,4vw,48px)] grid gap-x-gap-cols gap-y-10 pc:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)]">
-        <div className="space-y-5">
-          <p data-reveal="up" style={rd(0)} className="font-display text-caption font-medium tracking-[.2em] text-fg-muted">
-            CONCEPT
-          </p>
-          {paragraphs(concept, 1)}
-        </div>
-        <div className="space-y-5 border-border pc:border-l pc:pl-[clamp(32px,4vw,64px)]">
-          {paragraphs(body, concept.length + 1)}
-          {note && (
-            <p data-reveal="up" style={rd(concept.length + body.length + 1)} className="text-caption text-fg-muted">
-              {note}
-            </p>
-          )}
-        </div>
+    <div className="space-y-5">
+      <div data-reveal="up" style={rd(delay)}>
+        <p className="font-display text-caption font-medium tracking-[.2em] text-fg-muted">STORY</p>
+        <p className="mt-1 text-[16px] font-bold leading-[1.5] text-fg">{ja}</p>
       </div>
-    </section>
+      {paragraphs(concept, delay + 1)}
+      {paragraphs(body, delay + 1 + concept.length)}
+      {note && (
+        <p data-reveal="up" style={rd(delay + 1 + concept.length + body.length)} className="text-caption text-fg-muted">
+          {note}
+        </p>
+      )}
+    </div>
   );
 }
