@@ -90,12 +90,11 @@ export const SERVICES: readonly Service[] = [
     verb: "支える",
     lead: "アナタの”MIRAIZU”を形成します。\nキャリア面談・スキル向上研修を通して、一人ひとりの「らしさ」を活かした働き方を提供します。",
     description:
-      `キャリア面談・人材紹介・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。${SITE.product}修了生のキャリアサポートとも連動しています。`,
+      `キャリア面談・研修を通じて、一人ひとりの「らしさ」を活かした働き方を支援。${SITE.product}修了生のキャリアサポートとも連動しています。`,
     tags: ["キャリア面談・スキル向上研修"],
+    // 2026-09-18 に文字なしの写真（docs/ChatGPT Image 2026年9月18日 16_20_26 (1).png、1536×1024）へ差し替え。カード・ヒーローとも他の事業と同じ cover。顔が上半分にあるので上寄せで切る
     image: "/images/service/svc-04.jpg",
-    cardFit: "contain", // 見出し文字と右の階段まで含めてカードで全体を見せる
-    kvAspect: "1800 / 1496", // 文字入りのポスター画像（MIRAIZU ロゴ + 横長 1.2:1。docs/MOHP素材 (1).png を 1800px 幅の JPG に）なので、ヒーローも切らずに全体を出す（帯を画像比に）
-    imagePosition: "50% 10%", // kvAspect を外して cover に戻す場合の保険。顔と手書き見出しが上 3 割にある
+    imagePosition: "50% 0%",
   },
   {
     slug: "recruitment-ads",

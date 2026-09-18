@@ -50,14 +50,15 @@ test("SERVICES: imagePosition は cover の写真にだけ付け、CSS object-po
   assert.ok(career?.imagePosition, "career-support に imagePosition が必要");
 });
 
-test("SERVICES: cardFit は HOME・一覧のカードだけの収め方（未指定なら imageFit）。文字入りのキャリア支援はカードで全体表示", () => {
+test("SERVICES: cardFit は HOME・一覧のカードだけの収め方（未指定なら imageFit）", () => {
   for (const s of SERVICES) if (s.cardFit !== undefined) assert.ok(["cover", "contain"].includes(s.cardFit), s.slug);
-  assert.equal(SERVICES.find((s) => s.slug === "career-support")?.cardFit, "contain");
 });
 
-test("SERVICES: kvAspect は「幅 / 高さ」の形式。文字入りのキャリア支援はヒーローも全体表示（manifest の画像寸法と同じ比）", () => {
-  for (const s of SERVICES) if (s.kvAspect !== undefined) assert.match(s.kvAspect, /^\d+ \/ \d+$/, s.slug);
-  const career = SERVICES.find((s) => s.slug === "career-support");
-  const dim = (manifest as Record<string, { width: number; height: number }>)[career?.image ?? ""];
-  assert.equal(career?.kvAspect, `${dim.width} / ${dim.height}`);
+test("SERVICES: kvAspect は「幅 / 高さ」の形式で、付けるなら manifest の画像寸法と同じ比", () => {
+  const dims = manifest as Record<string, { width: number; height: number }>;
+  for (const s of SERVICES) {
+    if (s.kvAspect === undefined) continue;
+    assert.match(s.kvAspect, /^\d+ \/ \d+$/, s.slug);
+    assert.equal(s.kvAspect, `${dims[s.image].width} / ${dims[s.image].height}`, s.slug);
+  }
 });
