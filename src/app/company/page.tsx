@@ -87,8 +87,7 @@ export default function CompanyPage() {
         </p>
         <p data-reveal="up" style={rd(1)} className="mt-8 max-w-[640px] text-body leading-[2.1] text-fg-body">
           MASK OFFには「仮面を外す」「素の自分」という意味があります。誰もが空気を読み、誰かの正解をなぞるこの時代に、自分だけの感性をさらけ出すこと。株式会社MasKOFFは、
-          <Marker>進化したこの時代で新たな個性をさらけ出す</Marker>
-          という理念のもと、オリジナルファッションブランドの企画・デザインを軸に、クリエイティブサービスを提供しています。
+          進化したこの時代で新たな個性をさらけ出すという理念のもと、オリジナルファッションブランドの企画・デザインを軸に、クリエイティブサービスを提供しています。
         </p>
       </section>
 
