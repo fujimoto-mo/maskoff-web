@@ -95,6 +95,12 @@
     "avif": "/images/optimized/hero/maskoff.avif",
     "webp": "/images/optimized/hero/maskoff.webp"
   },
+  "/images/icons/instagram.png": {
+    "width": 128,
+    "height": 128,
+    "avif": "/images/optimized/icons/instagram.avif",
+    "webp": "/images/optimized/icons/instagram.webp"
+  },
   "/images/logo-mark.png": {
     "width": 100,
     "height": 100,
@@ -209,11 +215,11 @@
     "avif": "/images/optimized/service/detail/cross-border-ec-1.avif",
     "webp": "/images/optimized/service/detail/cross-border-ec-1.webp"
   },
-  "/images/service/detail/dothyphen-1.jpg": {
-    "width": 1200,
-    "height": 750,
-    "avif": "/images/optimized/service/detail/dothyphen-1.avif",
-    "webp": "/images/optimized/service/detail/dothyphen-1.webp"
+  "/images/service/detail/dothyphen-movie.jpg": {
+    "width": 720,
+    "height": 1280,
+    "avif": "/images/optimized/service/detail/dothyphen-movie.avif",
+    "webp": "/images/optimized/service/detail/dothyphen-movie.webp"
   },
   "/images/service/detail/it-enablement-1.jpg": {
     "width": 1200,
