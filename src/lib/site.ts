@@ -1,4 +1,4 @@
-// SAMPLE: SNS は仮。公開前に実データへ差し替える。電話番号はサイトに載せない（2026-09-24 クライアント指示）。
+// 電話番号・SNS はサイトに載せない（会社の Instagram / X は無い。2026-09-24 クライアント指示）。SNS を持ったら sns: { instagram, x } を足すと Organization の sameAs と SP メニューに出る。
 export const SITE = {
   name: "株式会社MasKOFF",
   nameEn: "MasKOFF Inc.",
@@ -12,10 +12,6 @@ export const SITE = {
   /** 構造化データ（JobPosting の勤務地など）用の分割表記。address と同じ住所 */
   postalAddress: { postalCode: "150-0021", addressRegion: "東京都", addressLocality: "渋谷区", streetAddress: "恵比寿西1-33-6-216" },
   email: "info@maskoff.co.jp",
-  sns: {
-    instagram: "https://www.instagram.com/",
-    x: "https://x.com/",
-  },
   /** Google Search Console の HTML タグ確認（google-site-verification の content）。空なら出力しない */
   googleSiteVerification: "" as string,
   /** GA4 の測定 ID（G-XXXXXXXXXX）。空なら読み込まない。本番ホストでだけ動く（components/layout/Analytics.tsx） */
