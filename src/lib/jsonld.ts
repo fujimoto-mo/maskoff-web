@@ -1,4 +1,4 @@
-type OrgInput = { name: string; url: string; address: string; sns: { instagram: string; x: string } };
+type OrgInput = { name: string; url: string; address: string; sns?: { instagram?: string; x?: string } };
 
 /** アカウントの URL か（"https://x.com/" のようなトップページだけの仮値は sameAs に出さない） */
 const isAccountUrl = (u: string) => {
@@ -9,9 +9,9 @@ const isAccountUrl = (u: string) => {
   }
 };
 
-/** 全ページ共通の Organization（layout.tsx で 1 回だけ出力）。SNS が仮値（パスなし）のときは sameAs を省く */
+/** 全ページ共通の Organization（layout.tsx で 1 回だけ出力）。SNS が無い・仮値（パスなし）のときは sameAs を省く */
 export function organizationJsonLd(site: OrgInput) {
-  const sameAs = [site.sns.instagram, site.sns.x].filter(isAccountUrl);
+  const sameAs = [site.sns?.instagram, site.sns?.x].filter((u): u is string => typeof u === "string" && isAccountUrl(u));
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
