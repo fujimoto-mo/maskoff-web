@@ -13,7 +13,7 @@ export const SITE = {
   postalAddress: { postalCode: "150-0021", addressRegion: "東京都", addressLocality: "渋谷区", streetAddress: "恵比寿西1-33-6-216" },
   email: "info@maskoff.co.jp",
   /** Google Search Console の HTML タグ確認（google-site-verification の content）。空なら出力しない */
-  googleSiteVerification: "" as string,
+  googleSiteVerification: "ULpbwxv1vzs6tkT5-xMFuLcDXMRKEK6GhjW6nUdiVcs" as string,
   /** GA4 の測定 ID（G-XXXXXXXXXX）。空なら読み込まない。本番ホストでだけ動く（components/layout/Analytics.tsx） */
   ga4MeasurementId: "G-YGKBEG5KQB" as string,
 } as const;
