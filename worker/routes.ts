@@ -8,6 +8,14 @@ export const STATIC_PREFIXES = ["/_next/", "/images/", "/fonts/", "/videos/"] as
 export const STATIC_FILES = ["/favicon.ico", "/robots.txt", "/sitemap.xml"] as const;
 export const LEGACY_PATHS = ["/PRIVACYPOLICY", "/PRIVACYPOLICY/", "/TRANSACTIONACT", "/TRANSACTIONACT/", "/privacy-policy", "/privacy-policy/"] as const;
 
+/**
+ * Pages のプレビュー（*.pages.dev）か。本番と同じ HTML が検索に重複登録されないよう、Worker が HTML に X-Robots-Tag: noindex を付ける
+ * （robots.txt は静的で本番と共通のため、ヘッダーで指示する）。NEXT_PUBLIC_SITE_URL はプレビュー環境では staging の URL なので比較には使わない
+ */
+export function isPreviewHost(hostname: string): boolean {
+  return hostname === "pages.dev" || hostname.endsWith(".pages.dev");
+}
+
 /** 静的アセットか（メンテナンス中も 503 にせず配信する対象） */
 export function isStaticAsset(pathname: string): boolean {
   return STATIC_PREFIXES.some((p) => pathname.startsWith(p)) || (STATIC_FILES as readonly string[]).includes(pathname);

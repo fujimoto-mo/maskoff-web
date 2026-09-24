@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { openGraph } from "@/lib/seo";
 import JsonLd from "@/components/ui/JsonLd";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   title: "特定商取引法に基づく表記",
   description: "株式会社MasKOFFの特定商取引法に基づく表記。販売業者・所在地・支払方法・返品に関する特約など。",
   alternates: { canonical: "/transaction/" },
+  openGraph: openGraph("/transaction/"),
 };
 
 // 現行サイト https://maskoff.co.jp/TRANSACTIONACT の内容を移植（URL は /transaction/ に変更、旧 URL は _redirects で 301）（2026-09-02 取得）
@@ -33,7 +35,7 @@ export default function TransactionActPage() {
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "HOME", path: "/" }, { name: "特定商取引法に基づく表記", path: "/transaction/" }], SITE.url)} />
       <section className="wrap section-pad">
-        <SectionHeading en="TRANSACTION ACT" ja="特定商取引法に基づく表記" />
+        <SectionHeading as="h1" en="TRANSACTION ACT" ja="特定商取引法に基づく表記" />
         <dl className="border-t border-border">
           {ROWS.map((row) => (
             <div key={row.dt} className="grid grid-cols-[240px_1fr] border-b border-border px-2 py-[22px] text-body max-tab:grid-cols-1 max-tab:gap-1.5">

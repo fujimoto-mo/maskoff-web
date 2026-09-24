@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { openGraph } from "@/lib/seo";
 import Link from "next/link";
 import JsonLd from "@/components/ui/JsonLd";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -9,8 +10,9 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "ニュース一覧",
-  description: "株式会社MasKOFFのニュース。ブランド情報・インタビュー・お知らせの一覧。",
+  description: "株式会社MasKOFFのニュース一覧。プレスリリース、自社ブランドや事業の情報、インタビュー、イベント出展などの最新情報を掲載しています。",
   alternates: { canonical: "/news/" },
+  openGraph: openGraph("/news/"),
 };
 
 /** NEWS 一覧。microCMS `news`（未設定時はサンプル）を新しい順にすべて表示 */
@@ -20,7 +22,7 @@ export default async function NewsIndexPage() {
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "HOME", path: "/" }, { name: "ニュース", path: "/news/" }], SITE.url)} />
       <section className="wrap section-pad">
-        <SectionHeading en="NEWS" ja="ニュース" />
+        <SectionHeading as="h1" en="NEWS" ja="ニュース" />
         <ul className="border-t border-border">
           {items.map((n) => (
             <li key={n.id} className="border-b border-border">

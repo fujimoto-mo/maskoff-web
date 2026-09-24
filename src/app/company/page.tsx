@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { openGraph } from "@/lib/seo";
 import { revealDelay } from "@/components/motion/reveal-delay";
 import TouchToggle from "@/components/motion/TouchToggle";
 import Button from "@/components/ui/Button";
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
   title: "会社情報",
   description: "株式会社MasKOFFの会社概要・代表メッセージ・沿革・アクセス。仮面の下の、私たちについて。",
   alternates: { canonical: "/company/" },
+  openGraph: openGraph("/company/"),
 };
 
 // SAMPLE: 会社データは仮（design_handoff_company_page 由来）。実データ確定時に差し替える
@@ -58,12 +60,13 @@ export default function CompanyPage() {
       {/* ヒーロー: COMPANY の 4 行スタック（ロゴの重ね文字モチーフ） */}
       <section className="wrap overflow-hidden pt-[clamp(48px,7vw,96px)] pb-12">
         <p className="font-display text-caption font-medium tracking-[.2em] text-fg-muted">MASKOFF.CO.JP / COMPANY</p>
-        <h1 aria-label="COMPANY" className="mt-4 font-display text-[clamp(60px,10vw,140px)] font-extrabold leading-[.9] tracking-[-.04em] text-fg">
-          <span aria-hidden className="block">COMPANY</span>
+        {/* 装飾で 4 段（CONTACT は 3 段）に重ねるが、h1 のテキストは 1 回だけにする（重ねた分は aria-hidden の span。検索エンジンにも「COMPANYCOMPANY…」と読まれないように） */}
+        <div className="mt-4 font-display text-[clamp(60px,10vw,140px)] font-extrabold leading-[.9] tracking-[-.04em] text-fg">
+          <h1 className="block">COMPANY</h1>
           <span aria-hidden className="block opacity-40">COMPANY</span>
           <span aria-hidden className="block opacity-[.18]">COMPANY</span>
           <span aria-hidden className="-mb-[.35em] block opacity-[.08]">COMPANY</span>
-        </h1>
+        </div>
         <p className="mt-10 text-[16px] font-medium text-fg-body max-sp:text-[14px]">会社情報 — 仮面の下の、私たちについて。</p>
       </section>
 

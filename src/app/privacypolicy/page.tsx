@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { openGraph } from "@/lib/seo";
 import JsonLd from "@/components/ui/JsonLd";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   title: "プライバシーポリシー",
   description: "株式会社MasKOFFのプライバシーポリシー。個人情報の第三者提供・取扱いの委託・Cookie の使用について。",
   alternates: { canonical: "/privacypolicy/" },
+  openGraph: openGraph("/privacypolicy/"),
 };
 
 // 現行サイト https://maskoff.co.jp/PRIVACYPOLICY の内容を移植（URL は /privacypolicy/ に変更、旧 URL は _redirects で 301）（2026-09-02 取得）
@@ -46,7 +48,7 @@ export default function PrivacyPolicyPage() {
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "HOME", path: "/" }, { name: "プライバシーポリシー", path: "/privacypolicy/" }], SITE.url)} />
       <section className="wrap section-pad">
-        <SectionHeading en="PRIVACY POLICY" ja="プライバシーポリシー" />
+        <SectionHeading as="h1" en="PRIVACY POLICY" ja="プライバシーポリシー" />
         <div className="max-w-[720px]">
           <p className="text-body leading-[2.1] text-fg-body">株式会社MasKOFF（以下「当社」といいます。）は、利用者に関する情報を以下のとおり取り扱います。</p>
           {SECTIONS.map((sec) => (

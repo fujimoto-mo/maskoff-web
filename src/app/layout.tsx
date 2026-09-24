@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import Analytics from "@/components/layout/Analytics";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import SkipLink from "@/components/layout/SkipLink";
@@ -18,6 +19,8 @@ export const metadata: Metadata = {
   openGraph: { type: "website", siteName: SITE.name, locale: "ja_JP", images: ["/images/ogp.png"] },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
+  // Search Console の所有権確認タグ（値は lib/site.ts）。プレビューの noindex は worker/index.ts が X-Robots-Tag で行う
+  verification: SITE.googleSiteVerification ? { google: SITE.googleSiteVerification } : undefined,
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -42,6 +45,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <StickyCta />
         <RevealObserver />
         <CustomCursor />
+        <Analytics />
       </body>
     </html>
   );

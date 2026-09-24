@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { openGraph } from "@/lib/seo";
 import Link from "next/link";
 import { Fragment, type CSSProperties } from "react";
 import { revealDelay } from "@/components/motion/reveal-delay";
@@ -36,7 +37,7 @@ import {
 } from "@/content/recruit";
 import type { Segment } from "@/content/vision-copy";
 import { cn } from "@/lib/cn";
-import { breadcrumbJsonLd } from "@/lib/jsonld";
+import { breadcrumbJsonLd, jobPostingJsonLd } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -44,6 +45,7 @@ export const metadata: Metadata = {
   description:
     "株式会社MasKOFFの採用情報。未経験から、経験をつくる。数字で見るMasKOFF、私たちの考え方、キャリアのロードマップ、専任担当者の伴走、その先の3つのキャリア、募集職種。",
   alternates: { canonical: "/recruit/" },
+  openGraph: openGraph("/recruit/"),
 };
 
 const rd = (i: number) => ({ "--rd": `${revealDelay(i)}ms` }) as CSSProperties;
@@ -81,13 +83,9 @@ export default function RecruitPage() {
         <p className="font-display text-caption font-medium tracking-[.2em] text-fg-muted">
           MASKOFF.CO.JP / RECRUIT
         </p>
-        <h1
-          aria-label="RECRUIT"
-          className="mt-4 font-display text-[clamp(60px,10vw,140px)] font-extrabold leading-[.9] tracking-[-.04em] text-fg"
-        >
-          <span aria-hidden className="block">
-            RECRUIT
-          </span>
+        {/* 装飾で 4 段（CONTACT は 3 段）に重ねるが、h1 のテキストは 1 回だけにする（重ねた分は aria-hidden の span。検索エンジンにも「RECRUITRECRUIT…」と読まれないように） */}
+        <div className="mt-4 font-display text-[clamp(60px,10vw,140px)] font-extrabold leading-[.9] tracking-[-.04em] text-fg">
+          <h1 className="block">RECRUIT</h1>
           <span aria-hidden className="block opacity-40">
             RECRUIT
           </span>
@@ -97,7 +95,7 @@ export default function RecruitPage() {
           <span aria-hidden className="-mb-[.35em] block opacity-[.08]">
             RECRUIT
           </span>
-        </h1>
+        </div>
         <p className="mt-10 text-[16px] font-medium text-fg-body max-sp:text-[14px]">
           採用情報 — 素顔のまま、働く。
         </p>
@@ -484,8 +482,11 @@ export default function RecruitPage() {
         </div>
       </section>
 
-      {/* OPENINGS: 行全体がエントリー導線（/contact/） */}
+      {/* OPENINGS: 行全体がエントリー導線（/contact/）。posting のある職種は JobPosting 構造化データ（Google しごと検索）を出す */}
       <section className="wrap section-pad pt-0">
+        {JOBS.filter((j) => j.posting).map((j) => (
+          <JsonLd key={j.title} data={jobPostingJsonLd({ title: j.title, ...j.posting! }, SITE)} />
+        ))}
         <SectionHeading en="OPENINGS" ja="募集職種" />
         <ul className="border-t border-border">
           {JOBS.map((j, i) => (

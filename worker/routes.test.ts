@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { canonicalRedirect, isStaticAsset, routesJson } from "./routes.ts";
+import { canonicalRedirect, isPreviewHost, isStaticAsset, routesJson } from "./routes.ts";
 
 test("isStaticAsset: _next / images / fonts / videos と個別ファイルは静的、HTML と API は対象外", () => {
   for (const p of ["/_next/static/a.js", "/images/logo.png", "/fonts/inter-tight/latin.woff2", "/videos/hero/a.mp4", "/favicon.ico", "/robots.txt", "/sitemap.xml"]) {
@@ -31,4 +31,9 @@ test("canonicalRedirect: www.<正規ホスト> だけ apex へ、パスとクエ
   assert.equal(canonicalRedirect(new URL("http://localhost:8788/"), site), null);
   assert.equal(canonicalRedirect(new URL("https://www.maskoff.co.jp/"), undefined), null);
   assert.equal(canonicalRedirect(new URL("https://www.maskoff.co.jp/"), "not a url"), null);
+});
+
+test("isPreviewHost: *.pages.dev だけプレビュー。本番ドメイン・localhost は対象外", () => {
+  for (const h of ["staging.maskoff-web-pages.pages.dev", "abc123.maskoff-web-pages.pages.dev", "pages.dev"]) assert.equal(isPreviewHost(h), true, h);
+  for (const h of ["www.maskoff.co.jp", "maskoff.co.jp", "localhost", "pages.dev.example.com", "mypages.dev"]) assert.equal(isPreviewHost(h), false, h);
 });
