@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import Button from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
-import { NAV, SUB_NAV, SITE } from "@/lib/site";
+import { NAV, SUB_NAV } from "@/lib/site";
 
 /** ≤720px のハンバーガー + 全画面オーバーレイ。Header から呼ぶ。 */
 export default function MobileNav() {
@@ -135,10 +135,6 @@ export default function MobileNav() {
           <Button href="/recruit/" variant="liquid" size="lg" onClick={() => setOpen(false)} className="mt-4 w-full">
             RECRUIT
           </Button>
-          <div className="mt-6 flex gap-6 text-caption font-medium tracking-[.06em] text-fg-muted">
-            <a href={SITE.sns.instagram} target="_blank" rel="noopener">INSTAGRAM ↗</a>
-            <a href={SITE.sns.x} target="_blank" rel="noopener">X ↗</a>
-          </div>
         </nav>
       </div>
     </div>

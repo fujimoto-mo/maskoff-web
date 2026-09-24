@@ -30,7 +30,8 @@ test("breadcrumbJsonLd は position 連番と絶対 URL を出す", () => {
   assert.equal(b.itemListElement[1].item, "https://maskoff.co.jp/company/");
 });
 
-test("Organization: SNS がトップページだけの仮値なら sameAs を出さない", () => {
+test("Organization: SNS が無い・トップページだけの仮値なら sameAs を出さない", () => {
+  assert.equal("sameAs" in organizationJsonLd({ name: "n", url: "https://maskoff.co.jp", address: "a" }), false);
   const j = organizationJsonLd({ name: "n", url: "https://maskoff.co.jp", address: "a", sns: { instagram: "https://www.instagram.com/", x: "https://x.com/" } });
   assert.equal("sameAs" in j, false);
   const k = organizationJsonLd({ name: "n", url: "https://maskoff.co.jp", address: "a", sns: { instagram: "https://www.instagram.com/maskoff", x: "https://x.com/" } });
