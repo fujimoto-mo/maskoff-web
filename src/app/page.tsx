@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { openGraph } from "@/lib/seo";
 import ContactCta from "@/components/sections/ContactCta";
 import Hero from "@/components/sections/Hero";
 import NewsStrip from "@/components/sections/NewsStrip";
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
   title: { absolute: `${SITE.name}｜${SITE.tagline} — アパレル製品の企画、SNSマーケティング、Web制作` },
   description: SITE.description,
   alternates: { canonical: "/" },
+  openGraph: openGraph("/"),
 };
 
 export default async function HomePage() {

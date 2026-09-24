@@ -1,3 +1,4 @@
+import type { JobPostingInput } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 import type { Segment } from "./vision-copy";
 
@@ -291,7 +292,10 @@ export const MESSAGE_BODY = [
 ] as const;
 
 /** 募集職種。エントリーは /contact/ へ（microCMS jobs に載せる場合は getJobs() に差し替える） */
-export const JOBS = [
+/** 募集職種。posting を入れると RECRUIT ページに JobPosting 構造化データ（Google しごと検索）が出る。必須項目が揃うまでは省いておく（仮データは出さない） */
+export type Job = { title: string; desc: string; posting?: Omit<JobPostingInput, "title"> };
+
+export const JOBS: readonly Job[] = [
   {
     title: "セールススタッフ",
     desc: "求人広告・IT導入支援などの提案営業。顧客の課題ヒアリングからプランニングまで。",
@@ -304,4 +308,4 @@ export const JOBS = [
     title: "webクリエイター",
     desc: `WEBアプリ開発・サイト制作のデザイン&コーディング。${SITE.product}で未経験からの挑戦も可。`,
   },
-] as const;
+];

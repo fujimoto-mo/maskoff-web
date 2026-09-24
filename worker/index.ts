@@ -2,7 +2,7 @@ import { handleContact } from "./contact.ts";
 import { json } from "./lib/json.ts";
 import { maintenanceResponse } from "./maintenance.ts";
 import { handleRebuild } from "./rebuild.ts";
-import { canonicalRedirect, isStaticAsset } from "./routes.ts";
+import { canonicalRedirect, isPreviewHost, isStaticAsset } from "./routes.ts";
 
 /**
  * Cloudflare Pages（Advanced mode）の _worker.js エントリ。scripts/build-worker.mjs が out/_worker.js に 1 枚へバンドルする。
@@ -48,6 +48,13 @@ export default {
     if (url.pathname.startsWith("/api/")) return json({ ok: false, error: "Not Found" }, 404);
     // 静的アセットは _routes.json で除外済みだが、除外漏れがあってもメンテ画面の画像・フォントが 503 にならないよう二重に守る
     if (maintenance && !isStaticAsset(url.pathname)) return maintenanceResponse(env.CONTACT_TO_EMAIL);
-    return env.ASSETS.fetch(req);
+    const res = await env.ASSETS.fetch(req);
+    // プレビュー（*.pages.dev）の HTML は検索に載せない（本番と同じ内容の重複登録を防ぐ）。静的アセットは _routes.json で除外済みなのでここには来ない
+    if (isPreviewHost(url.hostname) && (res.headers.get("content-type") ?? "").includes("text/html")) {
+      const noindex = new Response(res.body, res);
+      noindex.headers.set("x-robots-tag", "noindex, nofollow");
+      return noindex;
+    }
+    return res;
   },
 } satisfies ExportedHandler<Env>;

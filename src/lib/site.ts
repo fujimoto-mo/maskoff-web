@@ -1,4 +1,4 @@
-// SAMPLE: 住所・電話・SNS は仮。公開前に実データへ差し替える。
+// SAMPLE: SNS は仮。公開前に実データへ差し替える。電話番号はサイトに載せない（2026-09-24 クライアント指示）。
 export const SITE = {
   name: "株式会社MasKOFF",
   nameEn: "MasKOFF Inc.",
@@ -9,12 +9,17 @@ export const SITE = {
   description:
     "MASK OFF には「仮面を外す」「素の自分」という意味があります。株式会社MasKOFFは、アパレル企画・製造販売、アーティスト活動支援、ホームページ制作を通じて、人と企業の「素」を引き出します。",
   address: "〒150-0021 東京都渋谷区恵比寿西1-33-6-216",
-  tel: "090-0000-0000",
+  /** 構造化データ（JobPosting の勤務地など）用の分割表記。address と同じ住所 */
+  postalAddress: { postalCode: "150-0021", addressRegion: "東京都", addressLocality: "渋谷区", streetAddress: "恵比寿西1-33-6-216" },
   email: "info@maskoff.co.jp",
   sns: {
     instagram: "https://www.instagram.com/",
     x: "https://x.com/",
   },
+  /** Google Search Console の HTML タグ確認（google-site-verification の content）。空なら出力しない */
+  googleSiteVerification: "" as string,
+  /** GA4 の測定 ID（G-XXXXXXXXXX）。空なら読み込まない。本番ホストでだけ動く（components/layout/Analytics.tsx） */
+  ga4MeasurementId: "G-YGKBEG5KQB" as string,
 } as const;
 
 /** ヘッダー・フッターの主要ナビ。HOME 内アンカーではなくサイト共通（spec §3-7） */

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { openGraph } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { CSSProperties } from "react";
@@ -35,6 +36,7 @@ export async function generateMetadata({
     title: s.title,
     description: s.lead.replace(/\n/g, " "), // lead の \n は表示用の改行。meta では 1 行にする
     alternates: { canonical: `/service/${slug}/` },
+    openGraph: openGraph(`/service/${slug}/`),
   };
 }
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { openGraph } from "@/lib/seo";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { revealDelay } from "@/components/motion/reveal-delay";
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
   description:
     `株式会社MasKOFFの9つの事業。${SITE.product} エンジニアカリキュラム、求人広告代理店、WEBアプリ開発、キャリア支援、SNSマーケティング、アパレルコンサルティング、TiPLY、海外越境EC導入支援、中小向けIT導入支援。`,
   alternates: { canonical: "/service/" },
+  openGraph: openGraph("/service/"),
 };
 
 const FLOW = [
@@ -63,13 +65,9 @@ export default function ServicePage() {
         <p className="font-display text-caption font-medium tracking-[.2em] text-fg-muted">
           MASKOFF.CO.JP / SERVICE
         </p>
-        <h1
-          aria-label="SERVICE"
-          className="mt-4 font-display text-[clamp(60px,10vw,140px)] font-extrabold leading-[.9] tracking-[-.04em] text-fg"
-        >
-          <span aria-hidden className="block">
-            SERVICE
-          </span>
+        {/* 装飾で 4 段（CONTACT は 3 段）に重ねるが、h1 のテキストは 1 回だけにする（重ねた分は aria-hidden の span。検索エンジンにも「SERVICESERVICE…」と読まれないように） */}
+        <div className="mt-4 font-display text-[clamp(60px,10vw,140px)] font-extrabold leading-[.9] tracking-[-.04em] text-fg">
+          <h1 className="block">SERVICE</h1>
           <span aria-hidden className="block opacity-40">
             SERVICE
           </span>
@@ -79,7 +77,7 @@ export default function ServicePage() {
           <span aria-hidden className="-mb-[.35em] block opacity-[.08]">
             SERVICE
           </span>
-        </h1>
+        </div>
         <p className="mt-10 text-[16px] font-medium text-fg-body max-sp:text-[14px]">
           事業内容 — 個性と技術で、人と事業を支える9つのサービス。
         </p>
