@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { openGraph } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import CmsPicture from "@/components/ui/CmsPicture";
 import Button from "@/components/ui/Button";
@@ -24,6 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
     title: item.title,
     description: `${item.title}（${formatDate(item.publishedDate)}）— 株式会社MasKOFFのニュース。`,
     alternates: { canonical: `/news/${encodeURIComponent(slug)}/` },
+    openGraph: openGraph(`/news/${encodeURIComponent(slug)}/`, "article"),
   };
 }
 

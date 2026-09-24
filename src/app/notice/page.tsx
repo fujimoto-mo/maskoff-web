@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { openGraph } from "@/lib/seo";
 import Link from "next/link";
 import JsonLd from "@/components/ui/JsonLd";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -9,8 +10,9 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "お知らせ一覧",
-  description: "株式会社MasKOFFからのお知らせ・注意喚起の一覧。",
+  description: "株式会社MasKOFFからのお知らせ一覧。システムメンテナンス、年末年始休業、重要なお知らせや注意喚起など、サービスのご利用に関わる情報を掲載しています。",
   alternates: { canonical: "/notice/" },
+  openGraph: openGraph("/notice/"),
 };
 
 /** NOTICE 一覧。microCMS `notice`（未設定時はサンプル）を新しい順にすべて表示 */
@@ -20,7 +22,7 @@ export default async function NoticeIndexPage() {
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "HOME", path: "/" }, { name: "お知らせ", path: "/notice/" }], SITE.url)} />
       <section className="wrap section-pad">
-        <SectionHeading en="NOTICE" ja="お知らせ" />
+        <SectionHeading as="h1" en="NOTICE" ja="お知らせ" />
         <ul className="border-t border-border">
           {items.map((n) => (
             <li key={n.id} className="border-b border-border">
