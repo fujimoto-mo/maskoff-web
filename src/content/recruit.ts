@@ -292,7 +292,10 @@ export const MESSAGE_BODY = [
 ] as const;
 
 /** 募集職種。エントリーは /contact/ へ（microCMS jobs に載せる場合は getJobs() に差し替える） */
-/** 募集職種。posting を入れると RECRUIT ページに JobPosting 構造化データ（Google しごと検索）が出る。必須項目が揃うまでは省いておく（仮データは出さない） */
+/**
+ * 募集職種。表示は職種名と 1 行説明だけ（雇用形態・勤務地・給与・本文・掲載日はサイトに載せない。2026-09-24 クライアント指示）。
+ * そのため JobPosting 構造化データ（Google しごと検索）は出していない。将来載せることになったら posting を入れるだけで RECRUIT ページに出る（仮データは入れない）
+ */
 export type Job = { title: string; desc: string; posting?: Omit<JobPostingInput, "title"> };
 
 export const JOBS: readonly Job[] = [
