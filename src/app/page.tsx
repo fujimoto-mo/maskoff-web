@@ -12,7 +12,7 @@ import { getNews, getNotice } from "@/lib/microcms";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: { absolute: `${SITE.name}｜${SITE.tagline} — アパレル製品の企画、SNSマーケティング、Web制作` },
+  title: { absolute: `${SITE.name}｜新たな自分をさらけ出せ。トレンドを創る企業 MasKOFF` },
   description: SITE.description,
   alternates: { canonical: "/" },
   openGraph: openGraph("/"),
