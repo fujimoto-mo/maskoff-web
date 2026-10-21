@@ -26,7 +26,7 @@ export default function StickyCta() {
     return () => io.disconnect();
   }, [isHome]);
 
-  if (path.startsWith("/contact")) return null;
+  if (path.startsWith("/contact") || path.startsWith("/interview")) return null; // 面接案内は Zoom ボタンが主役なので CONTACT バッジを出さない
 
   return (
     <a
