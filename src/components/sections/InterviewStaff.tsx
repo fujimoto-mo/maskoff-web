@@ -20,7 +20,7 @@ export default function InterviewStaff() {
         {list.map((p) => (
           <li key={p.id} className="grid grid-cols-[72px_1fr] items-start gap-5">
             {p.photo ? (
-              <Picture src={p.photo} alt="" sizes="72px" className="block size-[72px] overflow-hidden rounded-full bg-placeholder" imgClassName="size-full object-contain" />
+              <Picture src={p.photo} alt="" sizes="72px" className="block size-[72px] overflow-hidden rounded-full bg-placeholder" imgClassName="size-full object-cover" />
             ) : (
               <span aria-hidden className="flex size-[72px] items-center justify-center rounded-full bg-placeholder text-caption text-fg-muted">
                 写真

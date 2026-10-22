@@ -29,13 +29,13 @@ export const INTERVIEW = {
   /**
    * 面接担当者の一覧（いずれか 1 人が担当）。URL の ?s=<id> で 1 人に絞れる（通常は付けず全員を表示）。
    * message は \n で改行。photo は public/images/ 配下（manifest 経由）。無ければ「写真」のプレースホルダ。
-   * 今の photo は動物のイラスト（docs/Cute Animal Portrait Sticker Set.png から犬・リス・猫・うさぎを切り出した透過 PNG）
+   * 今の photo は 4 人とも会社のマーク（ヘッダーと同じ logo-mark.png）
    */
   interviewers: [
-    { id: "yamamoto", role: "役員", name: "山本", message: "会社全体の事業を統括する頼れる存在！\nプライベートでは優しい二児のパパです😊", photo: "/images/interview/yamamoto.png" },
-    { id: "hashizume", role: "役員", name: "橋爪", message: "クライアント様からの信頼も厚い、優しいお姉さん！\nメンバーからも頼られる、みんなの相談役です✨", photo: "/images/interview/hashizume.png" },
-    { id: "ikeda", role: "人事", name: "池田", message: "細かいところまで気が配れる、しっかり者の人事担当！\n持ち前の丁寧さで、みんなをサポートしています💪", photo: "/images/interview/ikeda.png" },
-    { id: "michiwaki", role: "講師", name: "道脇", message: "アパレルが大好きな、カリキュラム卒業生！\n現在は講師としても活躍しています👕✨", photo: "/images/interview/michiwaki.png" },
+    { id: "yamamoto", role: "役員", name: "山本", message: "会社全体の事業を統括する頼れる存在！\nプライベートでは優しい二児のパパです😊", photo: "/images/logo-mark.png" },
+    { id: "hashizume", role: "役員", name: "橋爪", message: "クライアント様からの信頼も厚い、優しいお姉さん！\nメンバーからも頼られる、みんなの相談役です✨", photo: "/images/logo-mark.png" },
+    { id: "ikeda", role: "人事", name: "池田", message: "細かいところまで気が配れる、しっかり者の人事担当！\n持ち前の丁寧さで、みんなをサポートしています💪", photo: "/images/logo-mark.png" },
+    { id: "michiwaki", role: "講師", name: "道脇", message: "アパレルが大好きな、カリキュラム卒業生！\n現在は講師としても活躍しています👕✨", photo: "/images/logo-mark.png" },
   ] as readonly Interviewer[],
   /** 「面接の前にご覧ください」のリンク（プレビュー環境でも本番 HP へ飛ばすため SITE.url ではなく固定） */
   prepare: { label: "株式会社MasKOFF ホームページ", href: "https://www.maskoff.co.jp/" },
