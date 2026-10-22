@@ -5,15 +5,6 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import { INTERVIEW, type InterviewKind } from "@/content/interview";
 
 
-/** 赤い筆記体の飾り（「Recruit Event」「Flow」など）。読み上げない */
-function Script({ children, className = "" }: { children: string; className?: string }) {
-  return (
-    <span aria-hidden className={`block w-fit origin-bottom-left -rotate-6 pb-2 font-script text-[46px] leading-[1.15] text-marker ${className}`}>
-      {children}
-    </span>
-  );
-}
-
 /**
  * 面接の案内ページの本文（/interview/ と /interview/second/ で共用）。応募者へのメールの「当日の流れや担当者は、こちらのページで」からリンクされる。
  * 固定内容は content/interview.ts。日時は URL の ?k=（スプレッドシートの式で作る）または ?d=（InterviewSchedule）、担当者は ?s=（InterviewStaff。無ければ全員）。
@@ -35,8 +26,7 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
         {/* キャッチ（PC は右に手書きメッセージの画像、タブレット以下は画像を下に） */}
         <div className="grid grid-cols-[1fr_minmax(0,400px)] items-center gap-10 pt-14 pb-10 max-pc:grid-cols-1 max-pc:gap-8 max-sp:pt-10">
           <div>
-            <Script className="ml-1">{hero.script}</Script>
-            <p className="mt-4 text-[clamp(32px,5.4vw,48px)] leading-[1.35] font-bold tracking-[.06em] text-fg">
+            <p className="text-[clamp(32px,5.4vw,48px)] leading-[1.35] font-bold tracking-[.06em] text-fg">
               {hero.lines.map((l) => (
                 <span key={l} className="block">
                   {l}
@@ -52,8 +42,7 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
 
         {/* 当日の流れ */}
         <section aria-labelledby="iv-flow" className="mt-20">
-          <Script>Flow</Script>
-          <SectionHeading en="FLOW" ja="当日の流れ" id="iv-flow" className="mt-2" />
+          <SectionHeading en="FLOW" ja="当日の流れ" id="iv-flow" />
           <ol className="grid grid-cols-4 gap-6 max-pc:grid-cols-2 max-pc:gap-y-8">
             {flow.map((step, i) => (
               <li key={step} className="relative">
@@ -74,8 +63,7 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
 
         {/* 面接対応者 */}
         <section aria-labelledby="iv-staff" className="mt-20">
-          <Script>Team</Script>
-          <SectionHeading en="TEAM" ja="面接対応者" id="iv-staff" className="mt-2" />
+          <SectionHeading en="TEAM" ja="面接対応者" id="iv-staff" />
           <p className="whitespace-pre-line text-[clamp(24px,3.4vw,30px)] leading-[1.6] font-bold tracking-[.04em] text-fg">{teamHeading}</p>
           <p className="mt-4 whitespace-pre-line text-[14px] leading-[1.9] text-fg-body">{staffIntro.text}</p>
           <InterviewStaff />

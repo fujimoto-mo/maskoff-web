@@ -2,15 +2,6 @@
 @import "../styles/tokens.css";
 @import "../styles/fonts.css";
 
-/* 面接案内の飾りの筆記体（Google Fonts「Sacramento」の latin。SIL OFL）。font-script を使う要素がある時だけ読み込まれる */
-@font-face {
-  font-family: "Sacramento";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/sacramento/sacramento-latin.woff2") format("woff2");
-}
-
 @layer base {
   html {
     scroll-behavior: smooth;
