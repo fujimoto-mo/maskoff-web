@@ -101,6 +101,36 @@
     "avif": "/images/optimized/icons/instagram.avif",
     "webp": "/images/optimized/icons/instagram.webp"
   },
+  "/images/interview/hashizume.jpg": {
+    "width": 288,
+    "height": 288,
+    "avif": "/images/optimized/interview/hashizume.avif",
+    "webp": "/images/optimized/interview/hashizume.webp"
+  },
+  "/images/interview/ikeda.jpg": {
+    "width": 288,
+    "height": 288,
+    "avif": "/images/optimized/interview/ikeda.avif",
+    "webp": "/images/optimized/interview/ikeda.webp"
+  },
+  "/images/interview/michiwaki.jpg": {
+    "width": 288,
+    "height": 288,
+    "avif": "/images/optimized/interview/michiwaki.avif",
+    "webp": "/images/optimized/interview/michiwaki.webp"
+  },
+  "/images/interview/ooishi.jpg": {
+    "width": 288,
+    "height": 288,
+    "avif": "/images/optimized/interview/ooishi.avif",
+    "webp": "/images/optimized/interview/ooishi.webp"
+  },
+  "/images/interview/yamamoto.jpg": {
+    "width": 288,
+    "height": 288,
+    "avif": "/images/optimized/interview/yamamoto.avif",
+    "webp": "/images/optimized/interview/yamamoto.webp"
+  },
   "/images/logo-mark.png": {
     "width": 100,
     "height": 100,

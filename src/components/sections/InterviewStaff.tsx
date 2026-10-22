@@ -31,7 +31,7 @@ export default function InterviewStaff() {
                 <span className="mr-3">{p.role}</span>
                 {p.name}
               </p>
-              <p className="mt-2 whitespace-pre-line text-[15px] leading-[1.9] text-fg-body">{p.message}</p>
+              {p.message && <p className="mt-2 whitespace-pre-line text-[15px] leading-[1.9] text-fg-body">{p.message}</p>}
             </div>
           </li>
         ))}
