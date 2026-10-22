@@ -983,3 +983,10 @@
     transform: translate(7px, -50%);
   }
 }
+
+/* ヘッダー・フッターを出さないページ（/interview/ など。メールから直接開く案内ページ）。どちらもレイアウト共通の Server Component で
+   静的エクスポートではパスを知れないため、ページ側の目印で消す（JS で消すと一瞬出てガタつく） */
+body:has([data-hide-header]) > header,
+body:has([data-hide-footer]) > footer {
+  display: none;
+}

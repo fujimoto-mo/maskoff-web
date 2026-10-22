@@ -6,7 +6,7 @@ type GtagWindow = Window & { dataLayer?: unknown[] };
 
 /**
  * GA4（gtag.js）。SITE.ga4MeasurementId が空なら何もしない。本番ホスト（SITE.url のホスト）以外
- * （プレビュー *.pages.dev / localhost）では読み込まず、計測を汚さない。
+ * （プレビュー *.pages.dev / localhost）と /interview/ では読み込まず、計測を汚さない。
  * LCP / INP を守るため、load 後のアイドル時に script を差し込む（HTML にはタグを出さない）。
  * @example <Analytics />  ← layout.tsx の body 末尾
  */
@@ -21,6 +21,8 @@ export default function Analytics() {
       return;
     }
     if (location.hostname !== host) return;
+    // 面接案内は URL に応募者の氏名（?n=）が入るため計測しない（GA4 に個人情報を送らない）
+    if (location.pathname.startsWith("/interview")) return;
     const load = () => {
       const w = window as GtagWindow;
       const dataLayer = (w.dataLayer ??= []);
