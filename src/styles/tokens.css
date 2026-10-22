@@ -136,5 +136,7 @@
   /* VISION 相関図のブロック専用のセリフ体（参考図の明朝系の見出しを再現）。OS 標準フォントだけで組み、Web フォントは配信しない
      （3 つの短い文言のために和文セリフを配信すると数百 KB になる）。英字は Georgia、和文はヒラギノ明朝（Mac / iOS）・游明朝（Windows）。
      どちらも無い環境（Android の一部）は serif の総称にフォールバックする */
+  /* 面接案内（/interview/）の飾りの筆記体（「Recruit Event」「Flow」など）専用。latin だけを public/fonts/sacramento/ に置く（約 23KB。使うページでだけ読まれる） */
+  --font-script: "Sacramento", cursive;
   --font-serif: Georgia, "Times New Roman", "Hiragino Mincho ProN", "Yu Mincho", YuMincho, "Noto Serif JP", "Noto Serif CJK JP", "Noto Serif", serif;
 }

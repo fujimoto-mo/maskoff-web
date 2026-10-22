@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseStart, parseToken, parseName, encodeToken, formatStartJa, compactJst, googleCalendarUrl, icsText } from "./interview-schedule.ts";
+import { parseStart, parseToken, parseName, formatStartParts, encodeToken, formatStartJa, compactJst, googleCalendarUrl, icsText } from "./interview-schedule.ts";
 
 test("parseStart: タイムゾーン無しは JST、ISO の完全形も可、不正は null", () => {
   assert.equal(parseStart("2026-10-22T13:00")?.toISOString(), "2026-10-22T04:00:00.000Z");
@@ -57,4 +57,9 @@ test("location が空なら Google は location を付けず、.ics は LOCATION
   const ics = icsText(ev, "uid-2");
   assert.ok(!ics.includes("LOCATION:") && !ics.includes("URL:") && !ics.includes("zoom"));
   assert.ok(ics.includes("DESCRIPTION:参加方法: Indeed"));
+});
+
+test("formatStartParts: 「10.22」「THU」「13:00」（JST）", () => {
+  assert.deepEqual(formatStartParts(parseStart("2026-10-22T13:00")!), { date: "10.22", weekday: "THU", time: "13:00" });
+  assert.deepEqual(formatStartParts(parseStart("2026-10-08T23:30:00Z")!), { date: "10.9", weekday: "FRI", time: "08:30" });
 });

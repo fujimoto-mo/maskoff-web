@@ -56,6 +56,13 @@ export function formatStartJa(start: Date): string {
   return `${p.mo}月${p.d}日（${p.wd}）${p.h}:${p.mi}〜`;
 }
 
+/** 日時カードの大きな表示用。{ date: "10.22", weekday: "THU", time: "13:00" }（JST） */
+export function formatStartParts(start: Date): { date: string; weekday: string; time: string } {
+  const p = jstParts(start);
+  const weekday = new Intl.DateTimeFormat("en-US", { timeZone: JST, weekday: "short" }).format(start).toUpperCase();
+  return { date: `${p.mo}.${p.d}`, weekday, time: `${p.h}:${p.mi}` };
+}
+
 /** "20261022T130000"（JST、カレンダー用） */
 export function compactJst(date: Date): string {
   const p = jstParts(date);

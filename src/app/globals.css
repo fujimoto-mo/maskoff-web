@@ -2,6 +2,15 @@
 @import "../styles/tokens.css";
 @import "../styles/fonts.css";
 
+/* 面接案内の飾りの筆記体（Google Fonts「Sacramento」の latin。SIL OFL）。font-script を使う要素がある時だけ読み込まれる */
+@font-face {
+  font-family: "Sacramento";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/sacramento/sacramento-latin.woff2") format("woff2");
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -710,6 +719,15 @@
     --cl-arw-x: 22px;
     --cl-shift: 20px;
     --cl-scale: 120;
+  }
+  /* 白地・黒枠版（Button variant="liquid-light"）。枠は box-shadow で付けて寸法を liquid と揃える。
+     hover の赤背景・赤い点は .cta-liquid:hover がそのまま効く（詳細度が高いため） */
+  .cta-liquid-light {
+    background-color: var(--color-bg);
+    box-shadow: inset 0 0 0 1px var(--color-fg);
+  }
+  .cta-liquid-light .cl-fill {
+    background: var(--color-fg);
   }
   .cl-fill {
     position: absolute;
