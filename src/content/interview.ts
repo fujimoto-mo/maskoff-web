@@ -12,7 +12,13 @@ export const INTERVIEW = {
   /** ページ上部の社名の横に添える英字（2 行） */
   tagline: "CHALLENGE YOURSELF.\nCHANGE YOUR FUTURE.",
   /** 上部のキャッチ。script は赤い筆記体の飾り、lines は大見出し（1 要素 = 1 行） */
-  hero: { script: "Recruit Event", lines: ["一歩踏み出す", "その瞬間が、", "未来を変える。"], sub: "仕事も、人生も、もっと面白く。" },
+  hero: {
+    script: "Recruit Event",
+    lines: ["一歩踏み出す", "その瞬間が、", "未来を変える。"],
+    sub: "仕事も、人生も、もっと面白く。",
+    /** キャッチの右（SP は下）に置く手書きメッセージの画像（docs/S__117104644.jpg を 1000px に縮小） */
+    image: { src: "/images/interview/hero.jpg", alt: "新たな自分をさらけ出せ。株式会社MasKOFF チーム一同" },
+  },
   /** 日時カード左上の英字ラベル */
   cardLabel: "ONLINE INTERVIEW",
   /** 日時カード右側の説明（一次・二次共通） */
