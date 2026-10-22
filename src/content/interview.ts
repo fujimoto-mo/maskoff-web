@@ -30,7 +30,7 @@ export const INTERVIEW = {
   /**
    * 面接担当者の一覧（いずれか 1 人が担当）。URL の ?s=<id> で 1 人に絞れる（通常は付けず全員を表示）。
    * message は \n で改行。photo は public/images/ 配下（manifest 経由）。無ければ「写真」のプレースホルダ。
-   * 今の photo は動物アイコン（docs/2404858.png「シンプルかわいいどうぶつアイコン」から犬・リス・猫・うさぎを切り出した透過 PNG）
+   * 今の photo は動物のイラスト（docs/Cute Animal Portrait Sticker Set.png から犬・リス・猫・うさぎを切り出した透過 PNG）
    */
   interviewers: [
     { id: "yamamoto", role: "役員", name: "山本", message: "会社全体の事業を統括する頼れる存在！\nプライベートでは優しい二児のパパです😊", photo: "/images/interview/yamamoto.png" },
