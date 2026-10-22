@@ -40,7 +40,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
           <p className={`mt-1.5 whitespace-pre-line font-display font-black leading-[1.2] tracking-[-.02em] ${ready && !start ? "text-[20px]" : "text-[clamp(28px,7.5vw,40px)]"}`} data-start>
             {ready ? (start ? formatStartJa(start).replace("）", "）\n") : "日時は確定メールをご確認ください") : " "}
           </p>
-          <p className="mt-2 text-[14px] text-fg-invert/80">Zoom・{durationLabel}</p>
+          <p className="mt-2 text-[14px] text-fg-invert/80">Zoom面接｜所要時間：{durationLabel}</p>
         </div>
       </div>
       {joinNote ? (
@@ -67,9 +67,9 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
           <Button href={googleCalendarUrl(ev)} variant="liquid">
             Googleカレンダーに追加
           </Button>
-          <a href={ics} download="maskoff-interview.ics" className="inline-flex items-center rounded-pill border border-fg bg-bg px-[18px] py-2.5 text-[13px] font-bold tracking-[.02em] text-fg transition-colors hover:bg-fg hover:text-fg-invert">
+          <Button href={ics} download="maskoff-interview.ics" variant="liquid-light">
             Apple / Outlook のカレンダーに追加（.ics）
-          </a>
+          </Button>
         </div>
       )}
     </>

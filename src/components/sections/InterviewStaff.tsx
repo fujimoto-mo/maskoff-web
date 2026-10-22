@@ -4,7 +4,7 @@ import { INTERVIEW } from "@/content/interview";
 import { useSearch } from "@/lib/use-search";
 
 /**
- * /interview/ の「面接対応者」（小見出し・案内文と担当者一覧）。URL の ?s=<id> に一致する 1 人だけを出し、無ければ全員を出す
+ * /interview/ の「面接対応者」（案内文と担当者一覧）。URL の ?s=<id> に一致する 1 人だけを出し、無ければ全員を出す
  * （SSR では全員を描き、ハイドレーション後に絞る）。
  * @example <InterviewStaff />
  */
@@ -12,11 +12,10 @@ export default function InterviewStaff() {
   const id = new URLSearchParams(useSearch()).get("s");
   const one = INTERVIEW.interviewers.find((p) => p.id === id);
   const list = one ? [one] : INTERVIEW.interviewers;
-  const { heading, text } = INTERVIEW.staffIntro;
+  const { text } = INTERVIEW.staffIntro;
   return (
     <>
-      <h3 className="mt-4 text-[16px] font-bold text-fg">{heading}</h3>
-      <p className="mt-2 whitespace-pre-line text-[15px] leading-[1.9] text-fg-body">{text}</p>
+      <p className="mt-4 whitespace-pre-line text-[15px] leading-[1.9] text-fg-body">{text}</p>
       <ul className="mt-5 space-y-5">
         {list.map((p) => (
           <li key={p.id} className="grid grid-cols-[72px_1fr] items-start gap-5">
