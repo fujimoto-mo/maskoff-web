@@ -9,6 +9,16 @@ export type Interviewer = { id: string; role: string; name: string; message: str
 export const INTERVIEW = {
   /** 画面上の面接名（h1 と予定の件名に使う）。first = /interview/、second = /interview/second/ */
   titles: { first: "一次面接", second: "二次面接" },
+  /** ページ上部の社名の横に添える英字（2 行） */
+  tagline: "CHALLENGE YOURSELF.\nCHANGE YOUR FUTURE.",
+  /** 上部のキャッチ。script は赤い筆記体の飾り、lines は大見出し（1 要素 = 1 行） */
+  hero: { script: "Recruit Event", lines: ["一歩踏み出す", "その瞬間が、", "未来を変える。"], sub: "仕事も、人生も、もっと面白く。" },
+  /** 日時カード左上の英字ラベル */
+  cardLabel: "ONLINE INTERVIEW",
+  /** 日時カード右側の説明（一次・二次共通） */
+  cardText: "あなたのことをもっと知るための\nカジュアルな面談です。\nリラックスしてご参加ください。",
+  /** 「面接対応者」欄の見出し（大きな和文。\n で改行） */
+  teamHeading: "あなたの「やりたい」を\n一緒に叶える仲間が\nいます。",
   /** 所要時間の表示（日時カード「Zoom・〇〇」）。一次・二次共通 */
   durationLabel: "約30分〜1時間ほど",
   /** カレンダーに追加する予定の長さ（分）。表示の上限に合わせる */
@@ -39,5 +49,5 @@ export const INTERVIEW = {
     { id: "yamamoto", role: "役員", name: "山本", message: "会社全体の事業を統括する頼れる存在！\nプライベートでは優しい二児のパパです😊", photo: "/images/interview/yamamoto.jpg" },
   ] as readonly Interviewer[],
   /** 「面接の前にご覧ください」のリンク（プレビュー環境でも本番 HP へ飛ばすため SITE.url ではなく固定） */
-  prepare: { label: "株式会社MasKOFF ホームページ", href: "https://www.maskoff.co.jp/" },
+  prepare: { label: "株式会社MasKOFF ホームページ", href: "https://www.maskoff.co.jp/", text: "事業内容やブランドの雰囲気を\n事前にチェックしてください。" },
 } as const;
