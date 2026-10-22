@@ -50,3 +50,11 @@ test("parseName: 末尾の「様」を落とす（表示側で「様」を付け
   assert.equal(parseName("田中陽子"), "田中陽子");
   for (const bad of ["", null, undefined, "様"]) assert.equal(parseName(bad), "", String(bad));
 });
+
+test("location が空なら Google は location を付けず、.ics は LOCATION / URL 行を出さない（二次面接）", () => {
+  const ev = { start: parseStart("2026-10-22T13:00")!, durationMin: 60, summary: "二次面接", description: "参加方法: Indeed", location: "" };
+  assert.equal(new URL(googleCalendarUrl(ev)).searchParams.has("location"), false);
+  const ics = icsText(ev, "uid-2");
+  assert.ok(!ics.includes("LOCATION:") && !ics.includes("URL:") && !ics.includes("zoom"));
+  assert.ok(ics.includes("DESCRIPTION:参加方法: Indeed"));
+});

@@ -18,6 +18,8 @@ export function parseStart(d: string | null | undefined): Date | null {
  * URL の k（日時を見えにくくした英数字。例 1U0XI1 = 2026-10-22 13:00 JST）。スプレッドシートの AL 列（データは 4 行目から。AL4 に入れて下へコピー）で作る
  * （W 列 = 一次面接日程「7月16日(木) 13:00」または日付値、G 列 = 姓名「田中陽子様」。式の全文は docs ではなくここが正）:
  * =IF(W4="","",LET(d,IF(ISNUMBER(W4),W4,LET(m,VALUE(REGEXEXTRACT(W4,"(\d+)月")),dd,VALUE(REGEXEXTRACT(W4,"月\s*(\d+)日")),h,VALUE(REGEXEXTRACT(W4,"(\d+)[:：]")),mi,VALUE(REGEXEXTRACT(W4,"[:：](\d+)")),x,DATE(YEAR(TODAY()),m,dd)+TIME(h,mi,0),IF(x<TODAY()-90,DATE(YEAR(TODAY())+1,m,dd)+TIME(h,mi,0),x))),"https://www.maskoff.co.jp/interview/?k="&BASE(BITXOR(ROUND((d-DATE(1970,1,1))*1440),123456789),36)&IF(G4="","","&n="&ENCODEURL(G4))))
+ * 二次面接（/interview/second/。AA 列 = 二次面接日程）は W4 を AA4 に、パスを /interview/second/ にした式:
+ * =IF(AA4="","",LET(d,IF(ISNUMBER(AA4),AA4,LET(m,VALUE(REGEXEXTRACT(AA4,"(\d+)月")),dd,VALUE(REGEXEXTRACT(AA4,"月\s*(\d+)日")),h,VALUE(REGEXEXTRACT(AA4,"(\d+)[:：]")),mi,VALUE(REGEXEXTRACT(AA4,"[:：](\d+)")),x,DATE(YEAR(TODAY()),m,dd)+TIME(h,mi,0),IF(x<TODAY()-90,DATE(YEAR(TODAY())+1,m,dd)+TIME(h,mi,0),x))),"https://www.maskoff.co.jp/interview/second/?k="&BASE(BITXOR(ROUND((d-DATE(1970,1,1))*1440),123456789),36)&IF(G4="","","&n="&ENCODEURL(G4))))
  * 中身は「1970-01-01 00:00 からの JST の分数」を TOKEN_KEY と XOR して 36 進にしたもの。暗号ではない（本人の面接日時しか入れない前提）。
  * TOKEN_KEY を変えると発行済みの URL が全部読めなくなるので、シートの式と必ず同時に変える。
  */
@@ -60,12 +62,14 @@ export function compactJst(date: Date): string {
   return `${p.y}${p.mo.padStart(2, "0")}${p.d.padStart(2, "0")}T${p.h}${p.mi}00`;
 }
 
+/** location は空にできる（空なら Google では未指定、.ics では LOCATION / URL 行を出さない） */
 export type CalendarEvent = { start: Date; durationMin: number; summary: string; description: string; location: string };
 
 /** Google カレンダーの「予定を作成」URL */
 export function googleCalendarUrl(ev: CalendarEvent): string {
   const end = new Date(ev.start.getTime() + ev.durationMin * 60_000);
-  const q = new URLSearchParams({ action: "TEMPLATE", text: ev.summary, dates: `${compactJst(ev.start)}/${compactJst(end)}`, ctz: JST, details: ev.description, location: ev.location });
+  const q = new URLSearchParams({ action: "TEMPLATE", text: ev.summary, dates: `${compactJst(ev.start)}/${compactJst(end)}`, ctz: JST, details: ev.description });
+  if (ev.location) q.set("location", ev.location);
   return `https://calendar.google.com/calendar/render?${q.toString()}`;
 }
 
@@ -86,8 +90,7 @@ export function icsText(ev: CalendarEvent, uid: string): string {
     `DTEND;TZID=${JST}:${compactJst(end)}`,
     `SUMMARY:${icsEscape(ev.summary)}`,
     `DESCRIPTION:${icsEscape(ev.description)}`,
-    `LOCATION:${icsEscape(ev.location)}`,
-    `URL:${ev.location}`,
+    ...(ev.location ? [`LOCATION:${icsEscape(ev.location)}`, `URL:${ev.location}`] : []),
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
