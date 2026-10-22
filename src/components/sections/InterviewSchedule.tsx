@@ -24,13 +24,19 @@ export default function InterviewSchedule() {
   return (
     <>
       {name && <p className="mb-4 text-[16px] font-bold text-fg">{name} 様</p>}
-      <div className="relative overflow-hidden rounded-card bg-fg px-6 py-7 text-fg-invert">
-        <span aria-hidden className="absolute -right-6 -bottom-10 size-36 rounded-full border-[10px] border-marker/70" />
-        <h1 className="text-[15px] font-medium tracking-[.04em]">{title}</h1>
-        <p className={`mt-1.5 font-display font-black leading-[1.2] tracking-[-.02em] ${ready && !start ? "text-[20px]" : "text-[clamp(28px,7.5vw,40px)]"}`} data-start>
-          {ready ? (start ? formatStartJa(start) : "日時は確定メールをご確認ください") : " "}
-        </p>
-        <p className="mt-2 text-[14px] text-fg-invert/80">Zoom・約{durationMin}分前後</p>
+      <div className="relative flex justify-center overflow-hidden rounded-card bg-fg px-6 py-7 text-fg-invert">
+        {/* 2 つの輪が重なるマーク（面接 = 人と人が会う） */}
+        <span aria-hidden className="absolute right-[-38px] bottom-[18px] size-[117px] rounded-full border-[10px] border-marker/70" />
+        <span aria-hidden className="absolute right-[20px] bottom-[-22px] size-[117px] rounded-full border-[10px] border-marker/70" />
+        {/* 3 行をひとかたまりで中央に置き、かたまりの中は日時の左端にそろえる。輪より前面。
+            日時は日付と時刻で改行を固定する（折り返しに任せるとかたまりがカード幅いっぱいになり、中央に寄らない） */}
+        <div className="relative z-[1]">
+          <h1 className="text-[15px] font-medium tracking-[.04em] text-fg-invert">{title}</h1>
+          <p className={`mt-1.5 whitespace-pre-line font-display font-black leading-[1.2] tracking-[-.02em] ${ready && !start ? "text-[20px]" : "text-[clamp(28px,7.5vw,40px)]"}`} data-start>
+            {ready ? (start ? formatStartJa(start).replace("）", "）\n") : "日時は確定メールをご確認ください") : " "}
+          </p>
+          <p className="mt-2 text-[14px] text-fg-invert/80">Zoom・約{durationMin}分前後</p>
+        </div>
       </div>
       <p className="mt-4">
         <Button href={zoom.url} variant="block" className="text-[18px] font-black">
