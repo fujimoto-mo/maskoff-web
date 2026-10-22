@@ -11,14 +11,19 @@ export const INTERVIEW = {
   titles: { first: "一次面接", second: "二次面接" },
   /** ページ上部の社名の横に添える英字（2 行） */
   tagline: "CHALLENGE YOURSELF.\nCHANGE YOUR FUTURE.",
-  /** 上部のキャッチ。script は赤い筆記体の飾り、lines は大見出し（1 要素 = 1 行） */
-  hero: { script: "Recruit Event", lines: ["一歩踏み出す", "その瞬間が、", "未来を変える。"], sub: "仕事も、人生も、もっと面白く。" },
+  /** 上部のキャッチ。lines は大見出し（1 要素 = 1 行） */
+  hero: {
+    lines: ["一歩踏み出す", "その瞬間が、", "未来を変える。"],
+    sub: "仕事も、人生も、もっと面白く。",
+    /** キャッチの右（SP は下）に置く手書きメッセージの画像（docs/S__117104644.jpg を 1000px に縮小） */
+    image: { src: "/images/interview/hero.jpg", alt: "新たな自分をさらけ出せ。株式会社MasKOFF チーム一同" },
+  },
   /** 日時カード左上の英字ラベル */
   cardLabel: "ONLINE INTERVIEW",
   /** 日時カード右側の説明（一次・二次共通） */
   cardText: "あなたのことをもっと知るための\nカジュアルな面談です。\nリラックスしてご参加ください。",
   /** 「面接対応者」欄の見出し（大きな和文。\n で改行） */
-  teamHeading: "あなたの「やりたい」を\n一緒に叶える仲間が\nいます。",
+  teamHeading: "あなたの「やりたい」を\n一緒に叶える仲間がいます。",
   /** 所要時間の表示（日時カード「Zoom・〇〇」）。一次・二次共通 */
   durationLabel: "約30分〜1時間ほど",
   /** カレンダーに追加する予定の長さ（分）。表示の上限に合わせる */

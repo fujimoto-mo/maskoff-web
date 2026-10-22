@@ -1,18 +1,9 @@
 import InterviewSchedule from "@/components/sections/InterviewSchedule";
 import InterviewStaff from "@/components/sections/InterviewStaff";
 import Picture from "@/components/ui/Picture";
+import SectionHeading from "@/components/ui/SectionHeading";
 import { INTERVIEW, type InterviewKind } from "@/content/interview";
 
-/** 赤い筆記体の飾り（「Recruit Event」「Flow」など）。読み上げない */
-function Script({ children, className = "" }: { children: string; className?: string }) {
-  return (
-    <span aria-hidden className={`block w-fit origin-bottom-left -rotate-6 pb-2 font-script text-[46px] leading-[1.15] text-marker ${className}`}>
-      {children}
-    </span>
-  );
-}
-
-const H2 = "mt-3 text-[clamp(24px,3.4vw,30px)] font-bold tracking-[.04em] text-fg";
 
 /**
  * 面接の案内ページの本文（/interview/ と /interview/second/ で共用）。応募者へのメールの「当日の流れや担当者は、こちらのページで」からリンクされる。
@@ -32,28 +23,27 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
           <span className="whitespace-pre-line font-display text-[9px] leading-[1.5] font-medium tracking-[.16em] text-fg-muted">{tagline}</span>
         </header>
 
-        {/* キャッチ */}
-        <div className="pt-14 pb-10 max-sp:pt-10">
-          <Script className="ml-1">{hero.script}</Script>
-          <p className="mt-4 text-[clamp(32px,5.4vw,48px)] leading-[1.35] font-bold tracking-[.06em] text-fg">
-            {hero.lines.map((l) => (
-              <span key={l} className="block">
-                {l}
-              </span>
-            ))}
-          </p>
-          <p className="mt-5 text-[15px] tracking-[.08em] text-fg-body">{hero.sub}</p>
+        {/* キャッチ（PC は右に手書きメッセージの画像、タブレット以下は画像を下に） */}
+        <div className="grid grid-cols-[1fr_minmax(0,400px)] items-center gap-10 pt-14 pb-10 max-pc:grid-cols-1 max-pc:gap-8 max-sp:pt-10">
+          <div>
+            <p className="text-[clamp(32px,5.4vw,48px)] leading-[1.35] font-bold tracking-[.06em] text-fg">
+              {hero.lines.map((l) => (
+                <span key={l} className="block">
+                  {l}
+                </span>
+              ))}
+            </p>
+            <p className="mt-5 text-[15px] tracking-[.08em] text-fg-body">{hero.sub}</p>
+          </div>
+          <Picture src={hero.image.src} alt={hero.image.alt} sizes="(max-width: 960px) 92vw, 400px" priority className="block aspect-square overflow-hidden rounded-[20px] shadow-[0_12px_40px_color-mix(in_srgb,var(--color-fg)_10%,transparent)] max-pc:max-w-[480px]" imgClassName="size-full object-cover" />
         </div>
 
         <InterviewSchedule title={titles[kind]} joinNote={kind === "second" ? secondJoinNote : undefined} />
 
         {/* 当日の流れ */}
         <section aria-labelledby="iv-flow" className="mt-20">
-          <Script>Flow</Script>
-          <h2 id="iv-flow" className={H2}>
-            当日の流れ
-          </h2>
-          <ol className="mt-8 grid grid-cols-4 gap-6 max-pc:grid-cols-2 max-pc:gap-y-8">
+          <SectionHeading en="FLOW" ja="当日の流れ" id="iv-flow" />
+          <ol className="grid grid-cols-4 gap-6 max-pc:grid-cols-2 max-pc:gap-y-8">
             {flow.map((step, i) => (
               <li key={step} className="relative">
                 <span aria-hidden className="flex size-[52px] items-center justify-center rounded-full bg-bg font-display text-[16px] font-semibold text-fg shadow-[0_4px_16px_color-mix(in_srgb,var(--color-fg)_7%,transparent)]">
@@ -73,11 +63,8 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
 
         {/* 面接対応者 */}
         <section aria-labelledby="iv-staff" className="mt-20">
-          <Script>Team</Script>
-          <h2 id="iv-staff" className="mt-3 text-[13px] font-bold tracking-[.12em] text-fg-muted">
-            面接対応者
-          </h2>
-          <p className="mt-2 whitespace-pre-line text-[clamp(24px,3.4vw,30px)] leading-[1.6] font-bold tracking-[.04em] text-fg">{teamHeading}</p>
+          <SectionHeading en="TEAM" ja="面接対応者" id="iv-staff" />
+          <p className="whitespace-pre-line text-[clamp(24px,3.4vw,30px)] leading-[1.6] font-bold tracking-[.04em] text-fg">{teamHeading}</p>
           <p className="mt-4 whitespace-pre-line text-[14px] leading-[1.9] text-fg-body">{staffIntro.text}</p>
           <InterviewStaff />
         </section>

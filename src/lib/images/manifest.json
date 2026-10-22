@@ -107,6 +107,12 @@
     "avif": "/images/optimized/interview/hashizume.avif",
     "webp": "/images/optimized/interview/hashizume.webp"
   },
+  "/images/interview/hero.jpg": {
+    "width": 1000,
+    "height": 1000,
+    "avif": "/images/optimized/interview/hero.avif",
+    "webp": "/images/optimized/interview/hero.webp"
+  },
   "/images/interview/ikeda.jpg": {
     "width": 288,
     "height": 288,
