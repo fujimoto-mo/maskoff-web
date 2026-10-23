@@ -76,7 +76,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
       <p className="whitespace-pre-line text-[14px] leading-[1.9] tracking-[.04em] text-fg-body max-sp:text-[13px]">{greeting}</p>
 
       {/* 日時（SSR では空。最小高さでハイドレーション前後のずれを抑える）。SP は時刻を 2 行目に、所要時間を箱の横幅いっぱいに */}
-      <div className="mt-6 grid min-h-[150px] grid-cols-[auto_1fr] items-center gap-x-7 rounded-[12px] bg-surface px-6 py-6 max-sp:min-h-0 max-sp:gap-x-4 max-sp:px-4 max-sp:py-5">
+      <div className="mt-6 grid min-h-[150px] grid-cols-[auto_1fr] max-sp:mt-4 items-center gap-x-7 rounded-[12px] bg-surface px-6 py-6 max-sp:min-h-0 max-sp:gap-x-4 max-sp:px-4 max-sp:py-5">
         <span aria-hidden className="row-span-2 flex size-[96px] items-center justify-center rounded-full bg-surface-alt text-fg max-sp:row-span-1 max-sp:size-[56px]">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-10 max-sp:size-6">
             <path d="M4.5 6.5h15v13h-15zM4.5 10.5h15M8.5 4v4M15.5 4v4M8 14h1M11.5 14h1M15 14h1M8 17h1M11.5 17h1" />

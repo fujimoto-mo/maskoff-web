@@ -48,7 +48,7 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
         alt={hero.image.alt}
         sizes="(max-width: 600px) 450px, 60vw"
         priority
-        className="absolute top-0 right-0 block h-[360px] w-[60%] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_top,transparent,black_30%)] [mask-composite:intersect] max-pc:h-[300px] max-sp:top-[24px] max-sp:right-auto max-sp:left-[calc(100%-190px)] max-sp:h-[165px] max-sp:w-[450px] max-sp:[mask-image:linear-gradient(to_right,transparent,black_12%),linear-gradient(to_top,transparent,black_30%),linear-gradient(to_bottom,transparent,black_20%)]"
+        className="absolute top-0 right-0 block h-[360px] w-[60%] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_top,transparent,black_30%)] [mask-composite:intersect] max-pc:h-[300px] max-sp:top-[4px] max-sp:right-auto max-sp:left-[calc(100%-190px)] max-sp:h-[165px] max-sp:w-[450px] max-sp:[mask-image:linear-gradient(to_right,transparent,black_12%),linear-gradient(to_top,transparent,black_30%),linear-gradient(to_bottom,transparent,black_20%)]"
         imgClassName="size-full object-cover object-left"
       />
 
@@ -64,7 +64,7 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
         </header>
 
         {/* キャッチ */}
-        <div className="pt-12 pb-10 max-pc:pt-10 max-sp:pt-9 max-sp:pb-7">
+        <div className="pt-12 pb-10 max-pc:pt-10 max-sp:pt-5 max-sp:pb-5">
           {/* タブレット以下は社名の行に入りきらないのでキャッチの上に置く（PC は社名の右） */}
           <p aria-hidden className={`mb-4 flex items-center gap-4 font-display text-[10px] font-semibold tracking-[.22em] pc:hidden ${RED_TEXT}`}>
             {hero.label}
