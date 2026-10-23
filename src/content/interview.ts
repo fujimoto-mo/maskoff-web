@@ -16,7 +16,7 @@ export const INTERVIEW = {
     sub: "リラックスしてお話しできる場です。\n当日はお会いできることを楽しみにしています。",
     /**
      * 上部の室内写真（bg）と、その上に重ねる手書き「TAKE THE MASK OFF」（hand、透過 PNG）。docs/MasKOFF面接招待ランディングページ.png の右上を切り出し、
-     * 焼き込みの罫線・一言を消して、手書きの線だけを抜き出したもの（bg は線の跡を周りの色で埋め、SP で縮小して敷けるよう上の壁を 180px 延ばしてある）。alt は hand に付ける
+     * 焼き込みの罫線・一言を消して、手書きの線だけを抜き出したもの（bg は線の跡を周りの色で埋め、SP で縮小して敷けるよう上の壁を 180px、カードの裏まで続くよう下の机を 80px 延ばしてある）。alt は hand に付ける
      */
     image: { bg: "/images/interview/invite-bg.jpg", hand: "/images/interview/invite-hand.png", alt: "TAKE THE MASK OFF" },
   },
