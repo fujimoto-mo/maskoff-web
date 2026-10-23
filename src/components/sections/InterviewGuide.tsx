@@ -53,8 +53,8 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
             className="absolute top-0 right-[calc(var(--spacing-pad-x)*-1)] block h-[455px] w-[60vw] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_top,transparent,black_45%)] [mask-composite:intersect] max-pc:h-[352px] max-sp:-inset-x-pad-x-sp max-sp:-right-[200px] max-sp:bottom-[calc((100vw_+_220px)*-0.1031)] max-sp:h-auto max-sp:w-auto max-sp:[mask-image:none]"
             imgClassName="size-full object-cover object-left-bottom max-sp:object-right-bottom"
           />
-          {/* SP は見本どおり左側を白く溶かす（文字の下は白、右に行くほど写真が見える） */}
-          <span aria-hidden className="absolute -inset-x-pad-x-sp top-0 -bottom-[68px] hidden bg-[linear-gradient(to_right,var(--color-bg)_0%,color-mix(in_srgb,var(--color-bg)_85%,transparent)_30%,color-mix(in_srgb,var(--color-bg)_35%,transparent)_62%,transparent_85%)] max-sp:block" />
+          {/* SP は見本どおり左側を白く溶かす（文字の下は白、右に行くほど写真が見える）。白はページの地（--color-surface）と同じにしてカードの周りと揃える */}
+          <span aria-hidden className="absolute -inset-x-pad-x-sp top-0 -bottom-[68px] hidden bg-[linear-gradient(to_right,var(--color-surface)_0%,color-mix(in_srgb,var(--color-surface)_85%,transparent)_30%,color-mix(in_srgb,var(--color-surface)_35%,transparent)_62%,transparent_85%)] max-sp:block" />
           {/* 手書き「TAKE THE MASK OFF」（透過 PNG）。PC は写真の左寄り、SP はキャッチの右上 */}
           <Picture src={hero.image.hand} alt={hero.image.alt} sizes="(max-width: 600px) 104px, 14vw" priority className="absolute top-[86px] left-[calc(57vw-var(--spacing-pad-x))] block w-[13vw] max-pc:top-[70px] max-pc:left-auto max-pc:right-[14%] max-pc:w-[200px] max-sp:top-[44px] max-sp:right-0 max-sp:w-[min(104px,26vw)]" imgClassName="block h-auto w-full" />
 
