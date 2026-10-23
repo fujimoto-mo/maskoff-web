@@ -89,7 +89,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
             </p>
             {p ? (
               <p className="mt-1.5 leading-none font-bold tracking-[-.01em] whitespace-nowrap text-fg" data-start>
-                <span className="text-[clamp(26px,3.4vw,40px)] max-sp:text-[length:min(26px,calc((100vw_-_118px)/12.8))]">
+                <span className="text-[clamp(26px,3.4vw,40px)] max-sp:text-[length:min(26px,calc((100vw_-_124px)/12.8))]">
                   {p.year}
                   <span className="text-[.68em]">年</span>
                   {p.month}

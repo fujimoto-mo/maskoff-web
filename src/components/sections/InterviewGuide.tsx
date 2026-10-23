@@ -29,7 +29,7 @@ function CardHeading({ en, ja, id }: { en: string; ja: string; id: string }) {
   );
 }
 
-/** 白いカード（日時・流れ・担当者・HP 誘導で共通の角丸と影）。SP は画面の端から 3px だけ空けるので角丸を小さく */
+/** 白いカード（日時・流れ・担当者・HP 誘導で共通の角丸と影）。SP は画面の端から 6px だけ空けるので角丸を小さく */
 const CARD = "rounded-[14px] bg-bg shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)] max-sp:rounded-[10px]";
 
 /**
@@ -88,8 +88,8 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
           </div>
         </div>
 
-        {/* SP はカードを左右の余白（wrap の 20px）の外まで広げ、画面の端から 3px だけ空ける */}
-        <div className="flex flex-col gap-6 max-sp:-mx-[17px] max-sp:gap-4 pc:grid pc:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] pc:items-start">
+        {/* SP はカードを左右の余白（wrap の 20px）の外まで広げ、画面の端から 6px だけ空ける */}
+        <div className="flex flex-col gap-6 max-sp:-mx-[14px] max-sp:gap-4 pc:grid pc:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] pc:items-start">
           <div className="flex flex-col gap-6 max-pc:contents">
             <div className="relative max-pc:order-1">
               <InterviewSchedule title={titles[kind]} joinNote={kind === "second" ? secondJoinNote : undefined} />
