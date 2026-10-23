@@ -109,7 +109,7 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
                 </div>
                 <div className="flex flex-col items-end gap-6 max-sp:items-stretch">
                   {/* ロゴ（docs/maskoffb.png を 320px に縮小）。PC はボタンの上、SP は見出しの右上に置く */}
-                  <Picture src="/images/interview/maskoff-logo.png" alt="MASK OFF" sizes="(max-width: 600px) 84px, 96px" className="block size-24 overflow-hidden rounded-[14px] shadow-[0_8px_24px_color-mix(in_srgb,var(--color-fg)_22%,transparent)] max-sp:absolute max-sp:top-7 max-sp:right-5 max-sp:size-[84px] max-sp:rounded-[12px]" imgClassName="size-full object-cover" />
+                  <Picture src="/images/interview/maskoff-logo.png" alt="MASK OFF" sizes="(max-width: 600px) 84px, 96px" className="block size-24 overflow-hidden rounded-[14px] shadow-[0_8px_24px_color-mix(in_srgb,var(--color-fg)_22%,transparent)] max-sp:absolute max-sp:top-7 max-sp:right-12 max-sp:size-[84px] max-sp:rounded-[12px]" imgClassName="size-full object-cover" />
                   <a href={prepare.href} target="_blank" rel="noopener" className="group flex items-center justify-between gap-5 rounded-pill bg-fg py-2.5 pr-2.5 pl-7 text-[14px] font-bold whitespace-nowrap text-fg-invert shadow-[0_6px_20px_color-mix(in_srgb,var(--color-fg)_18%,transparent)] transition-opacity hover:opacity-90">
                     {prepare.label}
                     <span aria-hidden className={`flex size-9 flex-none items-center justify-center rounded-full ${RED_BG} text-fg-invert transition-transform group-hover:translate-x-1`}>
