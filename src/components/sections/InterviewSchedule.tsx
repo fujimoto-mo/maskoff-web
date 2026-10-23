@@ -150,13 +150,18 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
               <path d="M2 8h11M9 4l4 4-4 4" />
             </svg>
           </a>
-          <p className="mt-3 text-center text-[12px] leading-[1.8] text-fg-muted max-sp:text-[10.5px]">
-            {zoomNote}
-            <br />
-            ミーティングID：<span className="select-all">{zoom.meetingId}</span>
-            <span className="mx-2">/</span>
-            パスコード：<span className="select-all">{zoom.passcode}</span>
-          </p>
+          <p className="mt-3 text-center text-[12px] leading-[1.8] text-fg-muted max-sp:text-[10.5px]">{zoomNote}</p>
+          {/* リンクが開けないとき用に、ID とパスコードを手入力できるよう大きく出す（数字はタップで全選択） */}
+          <dl className="mt-4 grid grid-cols-2 overflow-hidden rounded-[10px] border border-border">
+            <div className="px-5 py-3 max-sp:px-3">
+              <dt className="text-[12px] text-fg-muted max-sp:text-[11px]">ミーティングID</dt>
+              <dd className="mt-0.5 text-[18px] font-bold tracking-[.04em] whitespace-nowrap text-fg select-all max-sp:text-[15px] max-sp:tracking-normal">{zoom.meetingId}</dd>
+            </div>
+            <div className="border-l border-border px-5 py-3 max-sp:px-3">
+              <dt className="text-[12px] text-fg-muted max-sp:text-[11px]">パスコード</dt>
+              <dd className="mt-0.5 text-[18px] font-bold tracking-[.04em] whitespace-nowrap text-fg select-all max-sp:text-[15px] max-sp:tracking-normal">{zoom.passcode}</dd>
+            </div>
+          </dl>
         </>
       )}
     </section>
