@@ -59,7 +59,7 @@ test("location が空なら Google は location を付けず、.ics は LOCATION
   assert.ok(ics.includes("DESCRIPTION:参加方法: Indeed"));
 });
 
-test("formatStartParts: 「10.22」「THU」「13:00」（JST）", () => {
-  assert.deepEqual(formatStartParts(parseStart("2026-10-22T13:00")!), { date: "10.22", weekday: "THU", time: "13:00" });
-  assert.deepEqual(formatStartParts(parseStart("2026-10-08T23:30:00Z")!), { date: "10.9", weekday: "FRI", time: "08:30" });
+test("formatStartParts: 年・月・日・曜日・時刻に分ける（JST）", () => {
+  assert.deepEqual(formatStartParts(parseStart("2026-10-22T13:00")!), { year: "2026", month: "10", day: "22", weekday: "木", time: "13:00" });
+  assert.deepEqual(formatStartParts(parseStart("2026-12-31T23:30:00Z")!), { year: "2027", month: "1", day: "1", weekday: "金", time: "08:30" });
 });
