@@ -105,9 +105,9 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
                   <p aria-hidden className="font-display text-[34px] leading-none font-bold tracking-[-.01em] text-fg max-sp:hidden">
                     MasKOFF
                   </p>
-                  <a href={prepare.href} target="_blank" rel="noopener" className="group flex items-center justify-between gap-5 rounded-pill bg-bg py-2.5 pr-2.5 pl-7 text-[14px] font-bold whitespace-nowrap text-fg shadow-[0_6px_20px_color-mix(in_srgb,var(--color-fg)_12%,transparent)] transition-shadow hover:shadow-[0_8px_26px_color-mix(in_srgb,var(--color-fg)_20%,transparent)]">
+                  <a href={prepare.href} target="_blank" rel="noopener" className="group flex items-center justify-between gap-5 rounded-pill bg-fg py-2.5 pr-2.5 pl-7 text-[14px] font-bold whitespace-nowrap text-fg-invert shadow-[0_6px_20px_color-mix(in_srgb,var(--color-fg)_18%,transparent)] transition-opacity hover:opacity-90">
                     {prepare.label}
-                    <span aria-hidden className={`flex size-9 flex-none items-center justify-center rounded-full border border-marker ${RED_TEXT} transition-transform group-hover:translate-x-1`}>
+                    <span aria-hidden className="flex size-9 flex-none items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--color-marker)_88%,black)] text-fg-invert transition-transform group-hover:translate-x-1">
                       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" className="size-4">
                         <path d="M2 8h11M9 4l4 4-4 4" />
                       </svg>
