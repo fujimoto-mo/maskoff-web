@@ -9,21 +9,18 @@ export type Interviewer = { id: string; role: string; name: string; message: str
 export const INTERVIEW = {
   /** 画面上の面接名（h1 と予定の件名に使う）。first = /interview/、second = /interview/second/ */
   titles: { first: "一次面接", second: "二次面接" },
-  /** ページ上部の社名の横に添える英字（2 行） */
-  tagline: "CHALLENGE YOURSELF.\nCHANGE YOUR FUTURE.",
-  /** 上部のキャッチ。lines は大見出し（1 要素 = 1 行） */
+  /** ページ右上の一言（社名の行の右端） */
+  tagline: "個性が、社会を動かす力になる。",
+  /** 上部のキャッチ。label は赤い英字ラベル、lines は大見出し（1 要素 = 1 行） */
   hero: {
-    lines: ["一歩踏み出す", "その瞬間が、", "未来を変える。"],
-    sub: "仕事も、人生も、もっと面白く。",
-    /** キャッチの右（SP は下）に置く手書きメッセージの画像（docs/S__117104644.jpg を 1000px に縮小） */
-    image: { src: "/images/interview/hero.jpg", alt: "新たな自分をさらけ出せ。株式会社MasKOFF チーム一同" },
+    label: "INTERVIEW INVITATION",
+    lines: ["あなたらしさを、", "聞かせてください。"],
+    sub: "面接はお互いを知るための時間です。\nリラックスしてお話ししましょう。",
+    /** キャッチの右に敷く室内写真（「TAKE THE MASK OFF」の手書き入り。docs/MasKOFF面接招待ランディングページ.png の右上を切り出し、焼き込みの罫線・一言を消したもの） */
+    image: { src: "/images/interview/invite-hero.jpg", alt: "TAKE THE MASK OFF" },
   },
-  /** 日時カード左上の英字ラベル */
-  cardLabel: "ONLINE INTERVIEW",
-  /** 日時カード右側の説明（一次・二次共通） */
-  cardText: "あなたのことをもっと知るための\nカジュアルな面談です。\nリラックスしてご参加ください。",
-  /** 「面接対応者」欄の見出し（大きな和文。\n で改行） */
-  teamHeading: "あなたの「やりたい」を\n一緒に叶える仲間がいます。",
+  /** 氏名の下の挨拶（\n で改行） */
+  greeting: "このたびはご応募いただき、誠にありがとうございます。\n下記の日程で、面接のご案内をさせていただきます。",
   /** 所要時間の表示（日時カード「Zoom・〇〇」）。一次・二次共通 */
   durationLabel: "約30分〜1時間ほど",
   /** カレンダーに追加する予定の長さ（分）。表示の上限に合わせる */
@@ -33,10 +30,17 @@ export const INTERVIEW = {
     meetingId: "384 594 0162",
     passcode: "6PXTSm",
   },
+  /** Zoom ボタンの下の注記 */
+  zoomNote: "※ 上記ボタンから、当日の時間になりましたらご参加ください。",
   /** 二次面接は Zoom ボタンの代わりにこの案内を枠だけで出す（参加リンクは Indeed のメッセージで送る） */
   secondJoinNote: "ZoomのURLは、Indeedのメッセージを確認ください",
-  /** 当日の流れ（番号付きで表示） */
-  flow: ["あなたについて教えてください", "MasKOFFについてのご紹介", "お仕事・研修制度についてのご説明", "ご質問・ご不安な点について"],
+  /** 当日の流れ（番号付きで表示）。icon は InterviewGuide の FLOW_ICON のキー */
+  flow: [
+    { icon: "user", title: "あなたについて教えてください", text: "これまでのご経験や、今後やりたいことなどをお聞かせください。" },
+    { icon: "building", title: "MasKOFFについてのご紹介", text: "会社のことや、事業・メンバーについてご紹介します。" },
+    { icon: "laptop", title: "お仕事・研修制度についてのご説明", text: "具体的なお仕事内容や研修制度、キャリアのイメージについてお話しします。" },
+    { icon: "chat", title: "ご質問・ご不安な点について", text: "気になることは何でもお気軽にご質問ください。" },
+  ],
   /** 「面接対応者」欄の案内文 */
   staffIntro: {
     text: "当日は、いずれかが面接を担当いたします。\n皆さまとお会いできることを楽しみにしております！",
@@ -54,5 +58,5 @@ export const INTERVIEW = {
     { id: "yamamoto", role: "役員", name: "山本", message: "会社全体の事業を統括する頼れる存在！\nプライベートでは優しい二児のパパです😊", photo: "/images/interview/yamamoto.jpg" },
   ] as readonly Interviewer[],
   /** 「面接の前にご覧ください」のリンク（プレビュー環境でも本番 HP へ飛ばすため SITE.url ではなく固定） */
-  prepare: { label: "株式会社MasKOFF ホームページ", href: "https://www.maskoff.co.jp/", text: "事業内容やブランドの雰囲気を\n事前にチェックしてください。" },
+  prepare: { label: "MasKOFF 公式サイトを見る", href: "https://www.maskoff.co.jp/", text: "事業内容やブランドの雰囲気を事前にチェックしていただくと、よりスムーズにお話しいただけます。" },
 } as const;
