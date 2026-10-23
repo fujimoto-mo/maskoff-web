@@ -74,19 +74,22 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
       <div>
         <p className="whitespace-pre-line text-[14px] leading-[1.9] tracking-[.04em] text-fg-body max-sp:text-[13px]">{greeting}</p>
 
-        {/* 日時（SSR では空。最小高さでハイドレーション前後のずれを抑える）。箱をコンテナにし、日時の文字とアイコンを箱の幅（cqw）から同じ大きさで決める
-            （1 行に収まる大きさ。最大 40px）。アイコンは日時の行の左、ラベル・所要時間と罫線は日時の書き出しに揃える */}
+        {/* 日時（SSR では空。最小高さでハイドレーション前後のずれを抑える）。箱をコンテナにし、日時の文字と左の丸を箱の幅（cqw）から決める
+            （日時は 1 行に収まる大きさで最大 40px）。丸はラベルと日時の 2 行分の左、ラベル・所要時間と罫線は日時の書き出しに揃える */}
         <div className="@container mt-6 grid min-h-[150px] grid-cols-[auto_1fr] content-center gap-x-3 rounded-[12px] bg-surface px-5 py-6 max-sp:mt-2 max-sp:min-h-0 max-sp:px-3 max-sp:py-4">
           <p className="col-start-2 text-[13px] font-bold text-fg max-sp:text-[12px]">
             <span className="sr-only">{title}</span>面接日時
           </p>
-          <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="row-start-2 size-[min(40px,calc((100cqw_-_26px)/13.8))] self-center text-fg">
-            <path d="M4.5 6.5h15v13h-15zM4.5 10.5h15M8.5 4v4M15.5 4v4M8 14h1M11.5 14h1M15 14h1M8 17h1M11.5 17h1" />
-          </svg>
-          <div className="col-start-2 row-start-2 min-w-0 border-b border-border pt-1.5 pb-3">
+          {/* 丸の中にアイコン（参考画像の比率: 丸は日時の文字の約 2.3 倍、上限 72px。アイコンは丸の 52%） */}
+          <span aria-hidden className="row-start-1 row-span-2 flex size-[min(72px,calc((100cqw_-_26px)/15.1*2.3))] items-center justify-center self-center rounded-full bg-placeholder/70 text-fg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-[52%]">
+              <path d="M4.5 6.5h15v13h-15zM4.5 10.5h15M8.5 4v4M15.5 4v4M8 14h1M11.5 14h1M15 14h1M8 17h1M11.5 17h1" />
+            </svg>
+          </span>
+          <div className="col-start-2 min-w-0 border-b border-border pt-1.5 pb-3">
             {p ? (
               <p className="leading-none font-bold tracking-[-.01em] whitespace-nowrap text-fg" data-start>
-                <span className="text-[length:min(40px,calc((100cqw_-_26px)/13.8))]">
+                <span className="text-[length:min(40px,calc((100cqw_-_26px)/15.1))]">
                   {p.year}
                   <span className="text-[.68em]">年</span>
                   {p.month}
