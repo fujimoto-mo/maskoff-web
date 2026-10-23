@@ -20,6 +20,8 @@ type Props = {
   entry?: Entry;
   /** アニメーション WebP（アルファ可）。prefers-reduced-motion が reduce 以外のときだけ表示し、reduce では src の静止画に落ちる。例 "/images/hero/hero-08-anim.webp" */
   anim?: string;
+  /** SP（〜600px）だけ別の画像にする（アートディレクション。public/images 配下で manifest にあるもの）。ブラウザはどちらか 1 枚だけを読む。例 "/images/interview/invite-bg-sp.jpg" */
+  spSrc?: string;
 };
 // className は <picture> に、imgClassName は <img> に付く（SVG も同じ）
 
@@ -31,7 +33,7 @@ type Props = {
  * <Picture src="/images/service/svc-01.png" alt="" sizes="(max-width: 600px) 80vw, 33vw" imgClassName="size-full object-cover" />
  * <Picture src="/images/company/vision-handwriting.svg" alt="創ることが好きだ" width={640} height={160} />
  */
-export default function Picture({ src, alt, sizes, width, height, className, imgClassName, priority = false, entry, anim }: Props) {
+export default function Picture({ src, alt, sizes, width, height, className, imgClassName, priority = false, entry, anim, spSrc }: Props) {
   const loading = priority ? "eager" : "lazy";
   const fetchPriority = priority ? "high" : "auto";
 
@@ -48,10 +50,14 @@ export default function Picture({ src, alt, sizes, width, height, className, img
   const m = entry ?? MANIFEST[src];
   if (!m) throw new Error(`Picture: ${src} が manifest にありません。npm run images を実行してください`);
   if (!sizes) throw new Error(`Picture: ${src} に sizes を指定してください`);
+  const sp = spSrc ? MANIFEST[spSrc] : undefined;
+  if (spSrc && !sp) throw new Error(`Picture: ${spSrc} が manifest にありません。npm run images を実行してください`);
 
   return (
     <picture className={className}>
       {anim && <source type="image/webp" srcSet={anim} media="(prefers-reduced-motion: no-preference)" />}
+      {sp && <source type="image/avif" srcSet={sp.avif} sizes={sizes} media="(max-width: 600px)" />}
+      {sp && <source type="image/webp" srcSet={sp.webp} sizes={sizes} media="(max-width: 600px)" />}
       <source type="image/avif" srcSet={m.avif} sizes={sizes} />
       <source type="image/webp" srcSet={m.webp} sizes={sizes} />
       <img
