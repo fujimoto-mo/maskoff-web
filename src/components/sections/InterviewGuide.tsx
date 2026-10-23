@@ -91,7 +91,7 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
         <div className="flex flex-col gap-6 max-sp:-mx-[14px] max-sp:gap-4 pc:grid pc:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] pc:items-start">
           <div className="flex flex-col gap-6 max-pc:contents">
             <div className="relative max-pc:order-1">
-              <InterviewSchedule title={titles[kind]} joinNote={kind === "second" ? secondJoinNote : undefined} />
+              <InterviewSchedule title={titles[kind]} joinNote={kind === "second" ? secondJoinNote : undefined} showTitle={kind === "second"} />
             </div>
 
             {/* 面接の前に（HP への誘導カード）。右半分に室内写真を敷き、社名とボタンを重ねる */}
