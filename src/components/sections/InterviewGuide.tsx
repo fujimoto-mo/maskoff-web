@@ -29,8 +29,8 @@ function CardHeading({ en, ja, id }: { en: string; ja: string; id: string }) {
   );
 }
 
-/** 白いカード（日時・流れ・担当者・HP 誘導で共通の角丸と影） */
-const CARD = "rounded-[14px] bg-bg shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)]";
+/** 白いカード（日時・流れ・担当者・HP 誘導で共通の角丸と影）。SP は画面の端まで広げるので角丸なし */
+const CARD = "rounded-[14px] bg-bg shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)] max-sp:rounded-none";
 
 /**
  * 面接の案内ページの本文（/interview/ と /interview/second/ で共用）。応募者へのメールの「当日の流れや担当者は、こちらのページで」からリンクされる。
@@ -81,7 +81,8 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
           <p className="mt-5 whitespace-pre-line text-[15px] leading-[1.85] tracking-[.08em] text-fg-body max-sp:mt-4 max-sp:text-[13px]">{hero.sub}</p>
         </div>
 
-        <div className="flex flex-col gap-6 pc:grid pc:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] pc:items-start">
+        {/* SP はカードを左右の余白（wrap の 20px）の外まで広げて画面幅いっぱいに */}
+        <div className="flex flex-col gap-6 max-sp:-mx-pad-x-sp max-sp:gap-4 pc:grid pc:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] pc:items-start">
           <div className="flex flex-col gap-6 max-pc:contents">
             <div className="max-pc:order-1">
               <InterviewSchedule title={titles[kind]} joinNote={kind === "second" ? secondJoinNote : undefined} />

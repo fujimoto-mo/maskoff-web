@@ -63,7 +63,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
   const ics = ev ? `data:text/calendar;charset=utf-8,${encodeURIComponent(icsText(ev, `maskoff-interview-${ev.start.getTime()}`))}` : null;
   const p = ready && start ? formatStartParts(start) : null;
   return (
-    <section aria-label={`${title}の日時`} className="rounded-[14px] bg-bg px-8 pt-8 pb-6 shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)] max-sp:px-4 max-sp:pt-6">
+    <section aria-label={`${title}の日時`} className="rounded-[14px] bg-bg px-8 pt-8 pb-6 shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)] max-sp:rounded-none max-sp:px-5 max-sp:pt-6">
       {name && (
         <p className="mb-3 flex items-center gap-4 text-[clamp(24px,3vw,32px)] leading-[1.3] font-bold tracking-[.06em] text-fg">
           <span aria-hidden className="h-[1.05em] w-[4px] rounded-full bg-marker" />
