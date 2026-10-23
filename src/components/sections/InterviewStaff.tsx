@@ -22,7 +22,7 @@ export default function InterviewStaff() {
           className="grid grid-cols-[96px_1fr] items-start gap-x-4 rounded-[12px] bg-surface p-4 @min-[440px]:block @min-[440px]:rounded-none @min-[440px]:bg-transparent @min-[440px]:px-3 @min-[440px]:py-1 @min-[440px]:not-first:border-l @min-[440px]:not-first:border-border @min-[440px]:[&:nth-child(3n+1)]:border-l-0"
         >
           {p.photo ? (
-            <Picture src={p.photo} alt="" sizes="(max-width: 600px) 96px, 120px" className="block aspect-square overflow-hidden rounded-full bg-bg @min-[440px]:w-[min(100%,120px)] shadow-[0_4px_14px_color-mix(in_srgb,var(--color-fg)_8%,transparent)]" imgClassName="size-full object-contain p-2" />
+            <Picture src={p.photo} alt="" sizes="(max-width: 600px) 96px, 120px" className="block aspect-square overflow-hidden rounded-full @min-[440px]:w-[min(100%,120px)]" imgClassName="size-full object-cover" />
           ) : (
             <span aria-hidden className="flex aspect-square items-center justify-center rounded-full bg-placeholder text-caption text-fg-muted">
               写真
