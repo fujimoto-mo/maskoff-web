@@ -63,10 +63,10 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
   const ics = ev ? `data:text/calendar;charset=utf-8,${encodeURIComponent(icsText(ev, `maskoff-interview-${ev.start.getTime()}`))}` : null;
   const p = ready && start ? formatStartParts(start) : null;
   return (
-    // PC・タブレットは氏名ごと白いカード。SP は氏名を上部の写真の上に出し、白い枠は挨拶から（外側の箱は透明にして内側の div を枠にする）
-    <section aria-label={`${title}の日時`} className="rounded-[14px] bg-bg px-8 pt-8 pb-6 shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)] max-sp:rounded-none max-sp:bg-transparent max-sp:p-0 max-sp:shadow-none">
+    // 氏名ごと白いカード。SP は画面幅いっぱいの他のカードと違い、左右に 3px 空けて角丸を残す（上部の写真がカードの上端の裏まで続く）
+    <section aria-label={`${title}の日時`} className="rounded-[14px] bg-bg px-8 pt-8 pb-6 shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)] max-sp:mx-[3px] max-sp:rounded-[10px] max-sp:px-5 max-sp:pt-5">
       {name && (
-        <p className="mb-3 flex items-center gap-4 max-sp:mb-0 max-sp:px-5 max-sp:pt-3 max-sp:pb-4 text-[clamp(24px,3vw,32px)] leading-[1.3] font-bold tracking-[.06em] text-fg">
+        <p className="mb-3 flex items-center gap-4 max-sp:mb-2 text-[clamp(24px,3vw,32px)] leading-[1.3] font-bold tracking-[.06em] text-fg">
           <span aria-hidden className="h-[1.05em] w-[4px] rounded-full bg-marker" />
           <span>
             {name}
@@ -74,7 +74,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
           </span>
         </p>
       )}
-      <div className="max-sp:bg-bg max-sp:px-5 max-sp:pt-5 max-sp:pb-6 max-sp:shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)]">
+      <div>
         <p className="whitespace-pre-line text-[14px] leading-[1.9] tracking-[.04em] text-fg-body max-sp:text-[13px]">{greeting}</p>
 
         {/* 日時（SSR では空。最小高さでハイドレーション前後のずれを抑える）。SP は時刻を 2 行目に、所要時間を箱の横幅いっぱいに */}
