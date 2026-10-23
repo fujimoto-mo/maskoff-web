@@ -33,8 +33,8 @@ export const INTERVIEW = {
   },
   /** Zoom ボタンの下の注記 */
   zoomNote: "※ 上記ボタンから、当日の時間になりましたらご参加ください。",
-  /** 二次面接は Zoom ボタンの代わりにこの案内を枠だけで出す（参加リンクは Indeed のメッセージで送る） */
-  secondJoinNote: "ZoomのURLは、Indeedのメッセージを確認ください",
+  /** 二次面接は Zoom ボタンの代わりにこの案内を枠だけで出す（参加リンクは Indeed のメッセージで送る）。\n で改行（カレンダーの予定には改行なしで入る） */
+  secondJoinNote: "ZoomのURLは、Indeedのメッセージを\n確認ください",
   /** 当日の流れ（番号付きで表示）。icon は InterviewGuide の FLOW_ICON のキー */
   flow: [
     { icon: "user", title: "あなたについて教えてください", text: "これまでのご経験や、今後やりたいことなどをお聞かせください。" },
