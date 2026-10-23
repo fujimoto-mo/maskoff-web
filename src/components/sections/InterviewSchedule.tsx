@@ -63,8 +63,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
   const ics = ev ? `data:text/calendar;charset=utf-8,${encodeURIComponent(icsText(ev, `maskoff-interview-${ev.start.getTime()}`))}` : null;
   const p = ready && start ? formatStartParts(start) : null;
   return (
-    // 氏名ごと白いカード。SP は画面幅いっぱいの他のカードと違い、左右に 3px 空けて角丸を残す（上部の写真がカードの上端の裏まで続く）
-    <section aria-label={`${title}の日時`} className="rounded-[14px] bg-bg px-8 pt-8 pb-6 shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)] max-sp:mx-[3px] max-sp:rounded-[10px] max-sp:px-5 max-sp:pt-5">
+    <section aria-label={`${title}の日時`} className="rounded-[14px] bg-bg px-8 pt-8 pb-6 shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)] max-sp:rounded-[10px] max-sp:px-4 max-sp:pt-5">
       {name && (
         <p className="mb-3 flex items-center gap-4 max-sp:mb-2 text-[clamp(24px,3vw,32px)] leading-[1.3] font-bold tracking-[.06em] text-fg">
           <span aria-hidden className="h-[1.05em] w-[4px] rounded-full bg-marker" />
@@ -77,10 +76,10 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
       <div>
         <p className="whitespace-pre-line text-[14px] leading-[1.9] tracking-[.04em] text-fg-body max-sp:text-[13px]">{greeting}</p>
 
-        {/* 日時（SSR では空。最小高さでハイドレーション前後のずれを抑える）。SP は時刻を 2 行目に、所要時間を箱の横幅いっぱいに */}
-        <div className="mt-6 grid min-h-[150px] grid-cols-[auto_1fr] max-sp:mt-2 items-center gap-x-7 rounded-[12px] bg-surface px-6 py-6 max-sp:min-h-0 max-sp:gap-x-4 max-sp:px-4 max-sp:py-5">
-          <span aria-hidden className="row-span-2 flex size-[96px] items-center justify-center rounded-full bg-surface-alt text-fg max-sp:row-span-1 max-sp:size-[56px]">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-10 max-sp:size-6">
+        {/* 日時（SSR では空。最小高さでハイドレーション前後のずれを抑える）。SP は 1 行に収まるよう文字を画面幅に合わせて縮め（アイコンと余白も小さく）、所要時間を箱の横幅いっぱいに */}
+        <div className="mt-6 grid min-h-[150px] grid-cols-[auto_1fr] max-sp:mt-2 items-center gap-x-7 rounded-[12px] bg-surface px-6 py-6 max-sp:min-h-0 max-sp:gap-x-2.5 max-sp:px-3 max-sp:py-4">
+          <span aria-hidden className="row-span-2 flex size-[96px] items-center justify-center rounded-full bg-surface-alt text-fg max-sp:row-span-1 max-sp:size-11">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-10 max-sp:size-5">
               <path d="M4.5 6.5h15v13h-15zM4.5 10.5h15M8.5 4v4M15.5 4v4M8 14h1M11.5 14h1M15 14h1M8 17h1M11.5 17h1" />
             </svg>
           </span>
@@ -90,7 +89,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
             </p>
             {p ? (
               <p className="mt-1.5 leading-none font-bold tracking-[-.01em] whitespace-nowrap text-fg" data-start>
-                <span className="text-[clamp(26px,3.4vw,40px)] max-sp:text-[clamp(20px,6.2vw,26px)]">
+                <span className="text-[clamp(26px,3.4vw,40px)] max-sp:text-[length:min(26px,calc((100vw_-_118px)/12.8))]">
                   {p.year}
                   <span className="text-[.68em]">年</span>
                   {p.month}
@@ -98,7 +97,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
                   {p.day}
                   <span className="text-[.68em]">日</span>
                   <span className="ml-1 text-[.68em]">({p.weekday})</span>
-                  <span className="ml-3 max-sp:mt-1.5 max-sp:ml-0 max-sp:block">
+                  <span className="ml-3 max-sp:ml-1.5">
                     {p.time}
                     <span className="ml-1 text-[.8em]">〜</span>
                   </span>

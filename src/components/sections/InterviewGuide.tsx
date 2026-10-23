@@ -29,8 +29,8 @@ function CardHeading({ en, ja, id }: { en: string; ja: string; id: string }) {
   );
 }
 
-/** 白いカード（日時・流れ・担当者・HP 誘導で共通の角丸と影）。SP は画面の端まで広げるので角丸なし */
-const CARD = "rounded-[14px] bg-bg shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)] max-sp:rounded-none";
+/** 白いカード（日時・流れ・担当者・HP 誘導で共通の角丸と影）。SP は画面の端から 3px だけ空けるので角丸を小さく */
+const CARD = "rounded-[14px] bg-bg shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)] max-sp:rounded-[10px]";
 
 /**
  * 面接の案内ページの本文（/interview/ と /interview/second/ で共用）。応募者へのメールの「当日の流れや担当者は、こちらのページで」からリンクされる。
@@ -57,7 +57,7 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
           {/* SP は見本どおり左側を白く溶かす（文字の下は白、右に行くほど写真が見える） */}
           <span aria-hidden className="absolute -inset-x-pad-x-sp top-0 bottom-0 hidden bg-[linear-gradient(to_right,var(--color-bg)_0%,color-mix(in_srgb,var(--color-bg)_85%,transparent)_30%,color-mix(in_srgb,var(--color-bg)_35%,transparent)_62%,transparent_85%)] max-sp:block" />
           {/* 手書き「TAKE THE MASK OFF」（透過 PNG）。PC は写真の左寄り、SP はキャッチの右上 */}
-          <Picture src={hero.image.hand} alt={hero.image.alt} sizes="(max-width: 600px) 104px, 14vw" priority className="absolute top-[86px] left-[calc(57vw-var(--spacing-pad-x))] block w-[13vw] max-pc:top-[70px] max-pc:left-auto max-pc:right-[14%] max-pc:w-[200px] max-sp:top-[44px] max-sp:right-0 max-sp:w-[104px]" imgClassName="block h-auto w-full" />
+          <Picture src={hero.image.hand} alt={hero.image.alt} sizes="(max-width: 600px) 104px, 14vw" priority className="absolute top-[86px] left-[calc(57vw-var(--spacing-pad-x))] block w-[13vw] max-pc:top-[70px] max-pc:left-auto max-pc:right-[14%] max-pc:w-[200px] max-sp:top-[44px] max-sp:right-0 max-sp:w-[min(104px,26vw)]" imgClassName="block h-auto w-full" />
 
           <header className="relative flex items-center gap-x-8 pt-7 max-sp:pt-5">
             <a href={prepare.href} className="font-display text-[30px] leading-none font-bold tracking-[-.01em] text-fg max-sp:text-[26px]">
@@ -74,9 +74,9 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
             {/* タブレット以下は社名の行に入りきらないのでキャッチの上に置く（PC は社名の右） */}
             <p aria-hidden className={`mb-4 flex items-center gap-4 font-display text-[10px] font-semibold tracking-[.22em] max-sp:mb-2 pc:hidden ${RED_TEXT}`}>
               {hero.label}
-              <span className="h-px w-16 bg-marker" />
+              <span className="h-px w-16 bg-marker max-sp:w-8" />
             </p>
-            <h1 className="text-[clamp(30px,5vw,58px)] leading-[1.38] font-bold tracking-[.06em] text-fg">
+            <h1 className="text-[clamp(30px,5vw,58px)] leading-[1.38] max-sp:text-[length:min(30px,7.7vw)] font-bold tracking-[.06em] text-fg">
               <span className="sr-only">{titles[kind]}のご案内 </span>
               {hero.lines.map((l) => (
                 <span key={l} className="block">
@@ -88,8 +88,8 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
           </div>
         </div>
 
-        {/* SP はカードを左右の余白（wrap の 20px）の外まで広げて画面幅いっぱいに */}
-        <div className="flex flex-col gap-6 max-sp:-mx-pad-x-sp max-sp:gap-4 pc:grid pc:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] pc:items-start">
+        {/* SP はカードを左右の余白（wrap の 20px）の外まで広げ、画面の端から 3px だけ空ける */}
+        <div className="flex flex-col gap-6 max-sp:-mx-[17px] max-sp:gap-4 pc:grid pc:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] pc:items-start">
           <div className="flex flex-col gap-6 max-pc:contents">
             <div className="relative max-pc:order-1">
               <InterviewSchedule title={titles[kind]} joinNote={kind === "second" ? secondJoinNote : undefined} />
