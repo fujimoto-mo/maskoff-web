@@ -45,17 +45,17 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
       <div className="wrap relative">
         {/* 上部（社名・キャッチ）。背景の室内写真と手書きは別画像で重ねる（手書きの大きさ・位置を写真の拡縮と切り離すため） */}
         <div className="relative">
-          {/* 室内写真（上の壁を延ばした縦長版。下端の机を基準に置く）。PC・タブレットは右寄せで左と下を背景色へ溶かす。SP は画面幅いっぱいに敷いて下は招待カードの上端の裏まで伸ばし、縮小して右端の机・椅子が見えるようにする */}
+          {/* 室内写真（上の壁を延ばした縦長版。下端の机を基準に置く）。PC・タブレットは右寄せで左と下を背景色へ溶かす。SP は下端を招待カードの上端に揃え（椅子がカードに隠れないように）、枠を右へ 200px はみ出させて中央の椅子を画面の右端に寄せる */}
           <Picture
             src={hero.image.bg}
             alt=""
             sizes="(max-width: 600px) 100vw, 60vw"
             priority
-            className="absolute top-0 right-[calc(var(--spacing-pad-x)*-1)] block h-[360px] w-[60vw] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_top,transparent,black_30%)] [mask-composite:intersect] max-pc:h-[300px] max-sp:-inset-x-pad-x-sp max-sp:-bottom-[48px] max-sp:h-auto max-sp:w-auto max-sp:[mask-image:none]"
+            className="absolute top-0 right-[calc(var(--spacing-pad-x)*-1)] block h-[360px] w-[60vw] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_top,transparent,black_30%)] [mask-composite:intersect] max-pc:h-[300px] max-sp:-inset-x-pad-x-sp max-sp:-right-[200px] max-sp:bottom-0 max-sp:h-auto max-sp:w-auto max-sp:[mask-image:none]"
             imgClassName="size-full object-cover object-left-bottom max-sp:object-right-bottom"
           />
           {/* SP は見本どおり左側を白く溶かす（文字の下は白、右に行くほど写真が見える） */}
-          <span aria-hidden className="absolute -inset-x-pad-x-sp top-0 -bottom-[48px] hidden bg-[linear-gradient(to_right,var(--color-bg)_0%,color-mix(in_srgb,var(--color-bg)_85%,transparent)_30%,color-mix(in_srgb,var(--color-bg)_35%,transparent)_62%,transparent_85%)] max-sp:block" />
+          <span aria-hidden className="absolute -inset-x-pad-x-sp top-0 bottom-0 hidden bg-[linear-gradient(to_right,var(--color-bg)_0%,color-mix(in_srgb,var(--color-bg)_85%,transparent)_30%,color-mix(in_srgb,var(--color-bg)_35%,transparent)_62%,transparent_85%)] max-sp:block" />
           {/* 手書き「TAKE THE MASK OFF」（透過 PNG）。PC は写真の左寄り、SP はキャッチの右上 */}
           <Picture src={hero.image.hand} alt={hero.image.alt} sizes="(max-width: 600px) 104px, 14vw" priority className="absolute top-[86px] left-[calc(57vw-var(--spacing-pad-x))] block w-[13vw] max-pc:top-[70px] max-pc:left-auto max-pc:right-[14%] max-pc:w-[200px] max-sp:top-[44px] max-sp:right-0 max-sp:w-[104px]" imgClassName="block h-auto w-full" />
 
