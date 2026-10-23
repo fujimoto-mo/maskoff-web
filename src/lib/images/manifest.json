@@ -131,6 +131,12 @@
     "avif": "/images/optimized/interview/invite-hand.avif",
     "webp": "/images/optimized/interview/invite-hand.webp"
   },
+  "/images/interview/maskoff-logo.png": {
+    "width": 320,
+    "height": 320,
+    "avif": "/images/optimized/interview/maskoff-logo.avif",
+    "webp": "/images/optimized/interview/maskoff-logo.webp"
+  },
   "/images/interview/michiwaki.jpg": {
     "width": 288,
     "height": 288,
