@@ -28,8 +28,8 @@ export default function InterviewStaff() {
             </span>
           )}
           <div className="@min-[440px]:mt-3">
-            <p className="text-[17px] leading-[1.4] font-bold text-fg">{p.name}</p>
             <p className="text-[12px] text-fg-muted">{p.role}</p>
+            <p className="text-[17px] leading-[1.4] font-bold text-fg">{p.name}</p>
             <span aria-hidden className="mt-2 block h-[2px] w-5 bg-marker" />
             {p.message && <p className="mt-2.5 whitespace-pre-line text-[12px] leading-[1.75] text-fg-body @min-[440px]:whitespace-normal">{p.message}</p>}
           </div>
