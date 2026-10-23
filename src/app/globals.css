@@ -711,6 +711,15 @@
     --cl-shift: 20px;
     --cl-scale: 120;
   }
+  /* 白地・黒枠版（Button variant="liquid-light"）。枠は box-shadow で付けて寸法を liquid と揃える。
+     hover の赤背景・赤い点は .cta-liquid:hover がそのまま効く（詳細度が高いため） */
+  .cta-liquid-light {
+    background-color: var(--color-bg);
+    box-shadow: inset 0 0 0 1px var(--color-fg);
+  }
+  .cta-liquid-light .cl-fill {
+    background: var(--color-fg);
+  }
   .cl-fill {
     position: absolute;
     top: calc(50% - var(--cl-dot) / 2);
@@ -982,4 +991,11 @@
     opacity: 0;
     transform: translate(7px, -50%);
   }
+}
+
+/* ヘッダー・フッターを出さないページ（/interview/ など。メールから直接開く案内ページ）。どちらもレイアウト共通の Server Component で
+   静的エクスポートではパスを知れないため、ページ側の目印で消す（JS で消すと一瞬出てガタつく） */
+body:has([data-hide-header]) > header,
+body:has([data-hide-footer]) > footer {
+  display: none;
 }
