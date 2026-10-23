@@ -29,8 +29,11 @@ export default function InterviewStaff() {
             </span>
           )}
           <div className="@min-[440px]:mt-3">
-            <p className="text-[12px] text-fg-muted">{p.role}</p>
-            <p className="text-[17px] leading-[1.3] font-bold text-fg">{p.name}</p>
+            {/* 肩書と氏名を 1 行に（肩書 → 氏名の順、下端を揃える） */}
+            <p className="flex items-baseline gap-2 leading-[1.3]">
+              <span className="text-[12px] text-fg-muted">{p.role}</span>
+              <span className="text-[17px] font-bold text-fg">{p.name}</span>
+            </p>
             <span aria-hidden className={`mt-1 block h-[2px] w-5 ${RED_BG}`} />
             {p.message && <p className="mt-2.5 whitespace-pre-line text-[12px] leading-[1.75] text-fg-body @min-[440px]:whitespace-normal">{p.message}</p>}
           </div>
