@@ -113,11 +113,17 @@
     "avif": "/images/optimized/interview/ikeda.avif",
     "webp": "/images/optimized/interview/ikeda.webp"
   },
-  "/images/interview/invite-hero.jpg": {
+  "/images/interview/invite-bg.jpg": {
     "width": 776,
     "height": 284,
-    "avif": "/images/optimized/interview/invite-hero.avif",
-    "webp": "/images/optimized/interview/invite-hero.webp"
+    "avif": "/images/optimized/interview/invite-bg.avif",
+    "webp": "/images/optimized/interview/invite-bg.webp"
+  },
+  "/images/interview/invite-hand.png": {
+    "width": 200,
+    "height": 180,
+    "avif": "/images/optimized/interview/invite-hand.avif",
+    "webp": "/images/optimized/interview/invite-hand.webp"
   },
   "/images/interview/michiwaki.jpg": {
     "width": 288,

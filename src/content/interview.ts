@@ -14,8 +14,11 @@ export const INTERVIEW = {
     label: "INTERVIEW INVITATION",
     lines: ["あなたらしさを、", "聞かせてください。"],
     sub: "リラックスしてお話しできる場です。\n当日はお会いできることを楽しみにしています。",
-    /** キャッチの右に敷く室内写真（「TAKE THE MASK OFF」の手書き入り。docs/MasKOFF面接招待ランディングページ.png の右上を切り出し、焼き込みの罫線・一言を消したもの） */
-    image: { src: "/images/interview/invite-hero.jpg", alt: "TAKE THE MASK OFF" },
+    /**
+     * 上部の室内写真（bg）と、その上に重ねる手書き「TAKE THE MASK OFF」（hand、透過 PNG）。docs/MasKOFF面接招待ランディングページ.png の右上を切り出し、
+     * 焼き込みの罫線・一言を消して、手書きの線だけを抜き出したもの（bg は線の跡を周りの色で埋めてある）。alt は hand に付ける
+     */
+    image: { bg: "/images/interview/invite-bg.jpg", hand: "/images/interview/invite-hand.png", alt: "TAKE THE MASK OFF" },
   },
   /** 氏名の下の挨拶（\n で改行） */
   greeting: "このたびはご応募いただき、誠にありがとうございます。\n下記の日程で、面接のご案内をさせていただきます。",

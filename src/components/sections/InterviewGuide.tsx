@@ -42,55 +42,62 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
   const { flow, prepare, titles, secondJoinNote, hero, staffIntro } = INTERVIEW;
   return (
     <div className="relative overflow-hidden bg-surface pb-24 max-sp:pb-16" data-hide-header data-hide-footer>
-      {/* 右上の室内写真（左と下は背景色へ溶かす）。SP は縮めて、手書きだけが画面の右上（キャッチの右）に来るよう左端を 190px 手前に置く */}
-      <Picture
-        src={hero.image.src}
-        alt={hero.image.alt}
-        sizes="(max-width: 600px) 450px, 60vw"
-        priority
-        className="absolute top-0 right-0 block h-[360px] w-[60%] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_top,transparent,black_30%)] [mask-composite:intersect] max-pc:h-[300px] max-sp:top-[-14px] max-sp:right-auto max-sp:left-[calc(100%-190px)] max-sp:h-[165px] max-sp:w-[450px] max-sp:[mask-image:linear-gradient(to_right,transparent,black_12%),linear-gradient(to_top,transparent,black_30%),linear-gradient(to_bottom,transparent,black_20%)]"
-        imgClassName="size-full object-cover object-left"
-      />
-
       <div className="wrap relative">
-        <header className="flex items-center gap-x-8 pt-7 max-sp:pt-5">
-          <a href={prepare.href} className="font-display text-[30px] leading-none font-bold tracking-[-.01em] text-fg max-sp:text-[26px]">
-            MasKOFF
-          </a>
-          <p aria-hidden className={`flex flex-1 items-center gap-4 font-display text-[11px] font-semibold tracking-[.24em] max-pc:hidden ${RED_TEXT}`}>
-            {hero.label}
-            <span className="h-px flex-1 bg-marker" />
-          </p>
-        </header>
+        {/* 上部（社名・キャッチ）。背景の室内写真と手書きは別画像で重ねる（手書きの大きさ・位置を写真の拡縮と切り離すため） */}
+        <div className="relative">
+          {/* 室内写真。PC・タブレットは右寄せで左と下を背景色へ溶かす。SP は画面幅いっぱいに敷き、下は氏名の下（招待カードの上端）まで伸ばす */}
+          <Picture
+            src={hero.image.bg}
+            alt=""
+            sizes="(max-width: 600px) 100vw, 60vw"
+            priority
+            className="absolute top-0 right-[calc(var(--spacing-pad-x)*-1)] block h-[360px] w-[60vw] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_top,transparent,black_30%)] [mask-composite:intersect] max-pc:h-[300px] max-sp:-inset-x-pad-x-sp max-sp:-bottom-[80px] max-sp:h-auto max-sp:w-auto max-sp:[mask-image:none]"
+            imgClassName="size-full object-cover object-left max-sp:object-[70%_100%]"
+          />
+          {/* SP は写真の上の文字を読みやすくするため左から白を薄く重ねる */}
+          <span aria-hidden className="absolute -inset-x-pad-x-sp top-0 -bottom-[80px] hidden bg-[linear-gradient(to_right,color-mix(in_srgb,var(--color-bg)_70%,transparent),color-mix(in_srgb,var(--color-bg)_20%,transparent)_70%,transparent)] max-sp:block" />
+          {/* 手書き「TAKE THE MASK OFF」（透過 PNG）。PC は写真の左寄り、SP はキャッチの右上 */}
+          <Picture src={hero.image.hand} alt={hero.image.alt} sizes="(max-width: 600px) 104px, 14vw" priority className="absolute top-[86px] left-[calc(57vw-var(--spacing-pad-x))] block w-[13vw] max-pc:top-[70px] max-pc:left-auto max-pc:right-[14%] max-pc:w-[200px] max-sp:top-[44px] max-sp:right-0 max-sp:w-[104px]" imgClassName="block h-auto w-full" />
 
-        {/* キャッチ */}
-        <div className="pt-12 pb-10 max-pc:pt-10 max-sp:pt-3 max-sp:pb-2">
-          {/* タブレット以下は社名の行に入りきらないのでキャッチの上に置く（PC は社名の右） */}
-          <p aria-hidden className={`mb-4 flex items-center gap-4 font-display text-[10px] max-sp:mb-2 font-semibold tracking-[.22em] pc:hidden ${RED_TEXT}`}>
-            {hero.label}
-            <span className="h-px w-16 bg-marker" />
-          </p>
-          <h1 className="text-[clamp(30px,5vw,58px)] leading-[1.38] font-bold tracking-[.06em] text-fg">
-            <span className="sr-only">{titles[kind]}のご案内 </span>
-            {hero.lines.map((l) => (
-              <span key={l} className="block">
-                {l}
-              </span>
-            ))}
-          </h1>
-          <p className="mt-5 whitespace-pre-line text-[15px] leading-[1.85] tracking-[.08em] text-fg-body max-sp:mt-2 max-sp:text-[13px]">{hero.sub}</p>
+          <header className="relative flex items-center gap-x-8 pt-7 max-sp:pt-5">
+            <a href={prepare.href} className="font-display text-[30px] leading-none font-bold tracking-[-.01em] text-fg max-sp:text-[26px]">
+              MasKOFF
+            </a>
+            <p aria-hidden className={`flex flex-1 items-center gap-4 font-display text-[11px] font-semibold tracking-[.24em] max-pc:hidden ${RED_TEXT}`}>
+              {hero.label}
+              <span className="h-px flex-1 bg-marker" />
+            </p>
+          </header>
+
+          {/* キャッチ */}
+          <div className="relative pt-12 pb-10 max-pc:pt-10 max-sp:pt-3 max-sp:pb-2">
+            {/* タブレット以下は社名の行に入りきらないのでキャッチの上に置く（PC は社名の右） */}
+            <p aria-hidden className={`mb-4 flex items-center gap-4 font-display text-[10px] font-semibold tracking-[.22em] max-sp:mb-2 pc:hidden ${RED_TEXT}`}>
+              {hero.label}
+              <span className="h-px w-16 bg-marker" />
+            </p>
+            <h1 className="text-[clamp(30px,5vw,58px)] leading-[1.38] font-bold tracking-[.06em] text-fg">
+              <span className="sr-only">{titles[kind]}のご案内 </span>
+              {hero.lines.map((l) => (
+                <span key={l} className="block">
+                  {l}
+                </span>
+              ))}
+            </h1>
+            <p className="mt-5 whitespace-pre-line text-[15px] leading-[1.85] tracking-[.08em] text-fg-body max-sp:mt-2 max-sp:text-[13px]">{hero.sub}</p>
+          </div>
         </div>
 
         {/* SP はカードを左右の余白（wrap の 20px）の外まで広げて画面幅いっぱいに */}
         <div className="flex flex-col gap-6 max-sp:-mx-pad-x-sp max-sp:gap-4 pc:grid pc:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] pc:items-start">
           <div className="flex flex-col gap-6 max-pc:contents">
-            <div className="max-pc:order-1">
+            <div className="relative max-pc:order-1">
               <InterviewSchedule title={titles[kind]} joinNote={kind === "second" ? secondJoinNote : undefined} />
             </div>
 
             {/* 面接の前に（HP への誘導カード）。右半分に室内写真を敷き、社名とボタンを重ねる */}
             <section aria-labelledby="iv-prepare" className={`relative overflow-hidden ${CARD} max-pc:order-4`}>
-              <Picture src={hero.image.src} alt="" sizes="(max-width: 960px) 100vw, 30vw" className="absolute inset-y-0 right-0 block w-[48%] [mask-image:linear-gradient(to_right,transparent,black_40%)] max-sp:w-full max-sp:opacity-40" imgClassName="size-full object-cover object-right" />
+              <Picture src={hero.image.bg} alt="" sizes="(max-width: 960px) 100vw, 30vw" className="absolute inset-y-0 right-0 block w-[48%] [mask-image:linear-gradient(to_right,transparent,black_40%)] max-sp:w-full max-sp:opacity-40" imgClassName="size-full object-cover object-right" />
               <div className="relative grid grid-cols-[1fr_auto] items-end gap-6 px-8 py-8 max-sp:grid-cols-1 max-sp:px-5 max-sp:py-7">
                 <div>
                   <span aria-hidden className="block h-[3px] w-10 bg-marker" />
