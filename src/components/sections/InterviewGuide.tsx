@@ -45,14 +45,15 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
       <div className="wrap relative">
         {/* 上部（社名・キャッチ）。背景の室内写真と手書きは別画像で重ねる（手書きの大きさ・位置を写真の拡縮と切り離すため） */}
         <div className="relative">
-          {/* 室内写真（上の壁と下の机を延ばした縦長版。下端の机を基準に置き、PC・タブレットは延ばした机の分だけ枠を高くして下を溶かす）。PC・タブレットは右寄せで左と下を背景色へ溶かす。SP は右 62% の枠に写真の右端（右の椅子とその上の植物）だけを切り出して見せる（画像を右下に置き、はみ出した左側は枠で隠す。写真の下端の机は延ばしてあり、招待カードの裏まで 68px 続けて左右 3px の隙間に写真を見せる。椅子の高さは延長分を除いた枠の高さ × 1.7 で従来どおり） */}
+          {/* 室内写真（上の壁と下の机を延ばした縦長版。下端の机を基準に置く）。PC・タブレットは右寄せで左と下を背景色へ溶かし、延ばした机の分だけ枠を高くする。SP は植物を椅子の右へ移した別画像（bgSp）を、枠を右へ 200px はみ出させて中央の椅子が画面の右端に来るように敷き、延ばした机（80px × 拡大率）を招待カードの裏に回して左右の隙間に見せる */}
           <Picture
             src={hero.image.bg}
+            spSrc={hero.image.bgSp}
             alt=""
             sizes="(max-width: 600px) 100vw, 60vw"
             priority
-            className="absolute top-0 right-[calc(var(--spacing-pad-x)*-1)] block h-[455px] w-[60vw] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_top,transparent,black_45%)] [mask-composite:intersect] max-pc:h-[352px] max-sp:right-[calc(var(--spacing-pad-x-sp)*-1)] max-sp:-bottom-[68px] max-sp:h-auto max-sp:w-[62%] max-sp:overflow-hidden max-sp:[mask-image:linear-gradient(to_right,transparent,black_45%)]"
-            imgClassName="size-full object-cover object-left-bottom max-sp:absolute max-sp:right-0 max-sp:bottom-0 max-sp:h-[calc((100%_-_68px)*1.993)] max-sp:w-auto max-sp:max-w-none"
+            className="absolute top-0 right-[calc(var(--spacing-pad-x)*-1)] block h-[455px] w-[60vw] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_top,transparent,black_45%)] [mask-composite:intersect] max-pc:h-[352px] max-sp:-inset-x-pad-x-sp max-sp:-right-[200px] max-sp:bottom-[calc((100vw_+_220px)*-0.1031)] max-sp:h-auto max-sp:w-auto max-sp:[mask-image:none]"
+            imgClassName="size-full object-cover object-left-bottom max-sp:object-right-bottom"
           />
           {/* SP は見本どおり左側を白く溶かす（文字の下は白、右に行くほど写真が見える） */}
           <span aria-hidden className="absolute -inset-x-pad-x-sp top-0 -bottom-[68px] hidden bg-[linear-gradient(to_right,var(--color-bg)_0%,color-mix(in_srgb,var(--color-bg)_85%,transparent)_30%,color-mix(in_srgb,var(--color-bg)_35%,transparent)_62%,transparent_85%)] max-sp:block" />
