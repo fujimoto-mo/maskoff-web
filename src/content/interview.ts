@@ -13,7 +13,7 @@ export const INTERVIEW = {
   hero: {
     label: "INTERVIEW INVITATION",
     lines: ["あなたらしさを、", "聞かせてください。"],
-    sub: "面接はお互いを知るための時間です。\nリラックスしてお話ししましょう。",
+    sub: "リラックスしてお話しできる場です。\n当日はお会いできることを楽しみにしています。",
     /** キャッチの右に敷く室内写真（「TAKE THE MASK OFF」の手書き入り。docs/MasKOFF面接招待ランディングページ.png の右上を切り出し、焼き込みの罫線・一言を消したもの） */
     image: { src: "/images/interview/invite-hero.jpg", alt: "TAKE THE MASK OFF" },
   },
