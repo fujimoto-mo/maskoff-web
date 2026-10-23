@@ -53,8 +53,10 @@ export const INTERVIEW = {
    */
   interviewers: [
     { id: "ikeda", role: "採用担当", name: "池田", message: "細かいところまで気が配れる、しっかり者の採用担当！\n持ち前の丁寧さで、みんなをサポートしています💪", photo: "/images/interview/ikeda.jpg" },
-    { id: "hashizume", role: "役員", name: "橋爪", message: "クライアント様からの信頼も厚い、優しいお姉さん！\nメンバーからも頼られる、みんなの相談役です✨", photo: "/images/interview/hashizume.jpg" },
+    // 紹介文・写真は仮（池田と同じ）。差し替え待ち
+    { id: "watanabe", role: "採用担当", name: "渡邊", message: "細かいところまで気が配れる、しっかり者の採用担当！\n持ち前の丁寧さで、みんなをサポートしています💪", photo: "/images/interview/ikeda.jpg" },
     { id: "michiwaki", role: "講師", name: "道脇", message: "アパレルが大好きな、カリキュラム卒業生！\n現在は講師としても活躍しています👕✨", photo: "/images/interview/michiwaki.jpg" },
+    { id: "hashizume", role: "役員", name: "橋爪", message: "クライアント様からの信頼も厚い、優しいお姉さん！\nメンバーからも頼られる、みんなの相談役です✨", photo: "/images/interview/hashizume.jpg" },
     { id: "ooishi", role: "役員", name: "大石", message: "常に最新情報をキャッチアップする、勢いあふれる役員！\n日々のトレーニングも欠かさない、ストイックな一面も🏃", photo: "/images/interview/ooishi.jpg" },
     { id: "yamamoto", role: "役員", name: "山本", message: "会社全体の事業を統括する頼れる存在！\nプライベートでは優しい二児のパパです😊", photo: "/images/interview/yamamoto.jpg" },
   ] as readonly Interviewer[],
