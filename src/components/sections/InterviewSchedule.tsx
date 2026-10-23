@@ -55,7 +55,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
   const ev = start
     ? joinNote
       ? // 二次面接は Zoom の情報を予定に入れない（参加方法は Indeed のメッセージで送る）
-        { start, durationMin, summary: `株式会社MasKOFF ${title}`, description: `参加方法: ${joinNote}`, location: "" }
+        { start, durationMin, summary: `株式会社MasKOFF ${title}`, description: `参加方法: ${joinNote.replace(/\n/g, "")}`, location: "" }
       : { start, durationMin, summary: `株式会社MasKOFF ${title}（Zoom）`, description: `Zoom: ${zoom.url}\nミーティングID: ${zoom.meetingId}\nパスコード: ${zoom.passcode}`, location: zoom.url }
     : null;
   const ics = ev ? `data:text/calendar;charset=utf-8,${encodeURIComponent(icsText(ev, `maskoff-interview-${ev.start.getTime()}`))}` : null;
@@ -136,7 +136,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
 
         {joinNote ? (
           // ボタンではなく枠だけ（押せない）
-          <p className="mt-5 rounded-[14px] border border-fg px-5 py-3.5 text-center text-[15px] leading-[1.7] font-bold text-fg">{joinNote}</p>
+          <p className="mt-5 rounded-[14px] border border-fg px-5 py-3.5 text-center text-[15px] leading-[1.7] font-bold whitespace-pre-line text-fg max-sp:px-3 max-sp:text-[length:min(15px,4.1vw)]">{joinNote}</p>
         ) : (
           <>
             <a href={zoom.url} target="_blank" rel="noopener" className={`group mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-pill ${RED_BG} px-7 py-4 text-[17px] font-bold tracking-[.06em] text-fg-invert transition-opacity hover:opacity-90 max-sp:px-5 max-sp:text-[15px]`}>
