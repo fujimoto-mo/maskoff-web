@@ -9,8 +9,6 @@ export type Interviewer = { id: string; role: string; name: string; message: str
 export const INTERVIEW = {
   /** 画面上の面接名（h1 と予定の件名に使う）。first = /interview/、second = /interview/second/ */
   titles: { first: "一次面接", second: "二次面接" },
-  /** ページ右上の一言（社名の行の右端） */
-  tagline: "個性が、社会を動かす力になる。",
   /** 上部のキャッチ。label は赤い英字ラベル、lines は大見出し（1 要素 = 1 行） */
   hero: {
     label: "INTERVIEW INVITATION",

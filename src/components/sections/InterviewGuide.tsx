@@ -39,7 +39,7 @@ const CARD = "rounded-[14px] bg-bg shadow-[0_10px_36px_color-mix(in_srgb,var(--c
  * @example <InterviewGuide kind="second" />
  */
 export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
-  const { flow, prepare, titles, secondJoinNote, tagline, hero, staffIntro } = INTERVIEW;
+  const { flow, prepare, titles, secondJoinNote, hero, staffIntro } = INTERVIEW;
   return (
     <div className="relative overflow-hidden bg-surface pb-24 max-sp:pb-16" data-hide-header data-hide-footer>
       {/* 右上の室内写真（左と下は背景色へ溶かす）。SP は縮めて、手書きだけが画面の右上（キャッチの右）に来るよう左端を 190px 手前に置く */}
@@ -61,7 +61,6 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
             {hero.label}
             <span className="h-px flex-1 bg-marker" />
           </p>
-          <p className="ml-auto text-[11px] tracking-[.12em] text-fg-body max-sp:text-[10px]">{tagline}</p>
         </header>
 
         {/* キャッチ */}
