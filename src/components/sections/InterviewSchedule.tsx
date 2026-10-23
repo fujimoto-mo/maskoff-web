@@ -1,12 +1,10 @@
 "use client";
 import type { ReactNode } from "react";
+import { RED_BG } from "@/components/sections/interview-red";
 import Picture from "@/components/ui/Picture";
 import { INTERVIEW } from "@/content/interview";
 import { formatStartParts, googleCalendarUrl, icsText, parseName, parseStart, parseToken } from "@/lib/interview-schedule";
 import { useHydrated, useSearch } from "@/lib/use-search";
-
-/** Zoom ボタンの赤。白文字とのコントラストを確保するため純色ではなく黒を 12% 混ぜる（.cta-liquid の hover と同じ） */
-const RED = "bg-[color-mix(in_srgb,var(--color-marker)_88%,black)]";
 
 /** Apple のロゴ（単色なので currentColor。Google / Outlook は多色のため public/images/interview/*.svg） */
 const APPLE =
@@ -66,7 +64,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
     <section aria-label={`${title}の日時`} className="rounded-[14px] bg-bg px-8 pt-8 pb-6 shadow-[0_10px_36px_color-mix(in_srgb,var(--color-fg)_7%,transparent)] max-sp:rounded-[10px] max-sp:px-4 max-sp:pt-5">
       {name && (
         <p className="mb-3 flex items-center gap-4 max-sp:mb-2 text-[clamp(24px,3vw,32px)] leading-[1.3] font-bold tracking-[.06em] text-fg">
-          <span aria-hidden className="h-[1.05em] w-[4px] rounded-full bg-marker" />
+          <span aria-hidden className={`h-[1.05em] w-[4px] rounded-full ${RED_BG}`} />
           <span>
             {name}
             <span className="ml-2 text-[.7em]">様</span>
@@ -139,7 +137,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
           <p className="mt-5 rounded-[14px] border border-fg px-5 py-3.5 text-center text-[15px] leading-[1.7] font-bold text-fg">{joinNote}</p>
         ) : (
           <>
-            <a href={zoom.url} target="_blank" rel="noopener" className={`group mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-pill ${RED} px-7 py-4 text-[17px] font-bold tracking-[.06em] text-fg-invert transition-opacity hover:opacity-90 max-sp:px-5 max-sp:text-[15px]`}>
+            <a href={zoom.url} target="_blank" rel="noopener" className={`group mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-pill ${RED_BG} px-7 py-4 text-[17px] font-bold tracking-[.06em] text-fg-invert transition-opacity hover:opacity-90 max-sp:px-5 max-sp:text-[15px]`}>
               <span />
               <span className="flex items-center gap-3">
                 <svg aria-hidden viewBox="0 0 24 24" fill="currentColor" className="size-6 flex-none">

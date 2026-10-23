@@ -1,10 +1,8 @@
 import InterviewSchedule from "@/components/sections/InterviewSchedule";
 import InterviewStaff from "@/components/sections/InterviewStaff";
 import Picture from "@/components/ui/Picture";
+import { RED_BG, RED_TEXT } from "@/components/sections/interview-red";
 import { INTERVIEW, type InterviewKind } from "@/content/interview";
-
-/** 英字ラベルの赤（小さい文字でも白地とのコントラストを取るため黒を 12% 混ぜる。Zoom ボタンと同じ） */
-const RED_TEXT = "text-[color-mix(in_srgb,var(--color-marker)_88%,black)]";
 
 /** 当日の流れのアイコン（24px グリッドの線、currentColor）。content/interview.ts の flow[].icon から引く */
 const FLOW_ICON: Record<string, string> = {
@@ -20,7 +18,7 @@ function CardHeading({ en, ja, id }: { en: string; ja: string; id: string }) {
     <div>
       <p aria-hidden className={`flex items-center gap-3 font-display text-[11px] font-semibold tracking-[.22em] ${RED_TEXT}`}>
         {en}
-        <span className="h-px w-16 bg-marker" />
+        <span className={`h-px w-16 ${RED_BG}`} />
       </p>
       <h2 id={id} className="mt-2 text-[clamp(24px,2.4vw,30px)] leading-[1.35] font-bold tracking-[.06em] text-fg">
         {ja}
@@ -66,7 +64,7 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
             </a>
             <p aria-hidden className={`flex flex-1 items-center gap-4 font-display text-[11px] font-semibold tracking-[.24em] max-pc:hidden ${RED_TEXT}`}>
               {hero.label}
-              <span className="h-px flex-1 bg-marker" />
+              <span className={`h-px flex-1 ${RED_BG}`} />
             </p>
           </header>
 
@@ -75,7 +73,7 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
             {/* タブレット以下は社名の行に入りきらないのでキャッチの上に置く（PC は社名の右） */}
             <p aria-hidden className={`mb-4 flex items-center gap-4 font-display text-[10px] font-semibold tracking-[.22em] max-sp:mb-2 pc:hidden ${RED_TEXT}`}>
               {hero.label}
-              <span className="h-px w-16 bg-marker max-sp:w-8" />
+              <span className={`h-px w-16 max-sp:w-8 ${RED_BG}`} />
             </p>
             <h1 className="text-[clamp(30px,5vw,58px)] leading-[1.38] max-sp:text-[length:min(30px,7.7vw)] font-bold tracking-[.06em] text-fg">
               <span className="sr-only">{titles[kind]}のご案内 </span>
@@ -101,7 +99,7 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
               <Picture src={hero.image.bg} alt="" sizes="(max-width: 960px) 100vw, 30vw" className="absolute inset-y-0 right-0 block w-[48%] [mask-image:linear-gradient(to_right,transparent,black_40%)] max-sp:w-full max-sp:opacity-40" imgClassName="size-full object-cover object-right" />
               <div className="relative grid grid-cols-[1fr_auto] items-end gap-6 px-8 py-8 max-sp:grid-cols-1 max-sp:px-5 max-sp:py-7">
                 <div>
-                  <span aria-hidden className="block h-[3px] w-10 bg-marker" />
+                  <span aria-hidden className={`block h-[3px] w-10 ${RED_BG}`} />
                   <h2 id="iv-prepare" className="mt-4 text-[clamp(26px,2.6vw,34px)] leading-[1.3] font-bold tracking-[.04em] text-fg">
                     面接の前に
                     <br />
@@ -115,7 +113,7 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
                   </p>
                   <a href={prepare.href} target="_blank" rel="noopener" className="group flex items-center justify-between gap-5 rounded-pill bg-fg py-2.5 pr-2.5 pl-7 text-[14px] font-bold whitespace-nowrap text-fg-invert shadow-[0_6px_20px_color-mix(in_srgb,var(--color-fg)_18%,transparent)] transition-opacity hover:opacity-90">
                     {prepare.label}
-                    <span aria-hidden className="flex size-9 flex-none items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--color-marker)_88%,black)] text-fg-invert transition-transform group-hover:translate-x-1">
+                    <span aria-hidden className={`flex size-9 flex-none items-center justify-center rounded-full ${RED_BG} text-fg-invert transition-transform group-hover:translate-x-1`}>
                       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" className="size-4">
                         <path d="M2 8h11M9 4l4 4-4 4" />
                       </svg>
@@ -130,18 +128,20 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
             {/* 当日の流れ */}
             <section aria-labelledby="iv-flow" className={`${CARD} px-8 pt-7 pb-4 max-pc:order-2 max-sp:px-5`}>
               <CardHeading en="TODAY'S FLOW" ja="当日の流れ" id="iv-flow" />
-              <ol className="relative mt-4">
-                {/* 赤い点をつなぐ縦線（番号 52px + 間 16px の右に 16px 幅の列） */}
-                <span aria-hidden className="absolute top-9 bottom-9 left-[75px] w-px bg-marker/50 max-sp:left-[59px]" />
+              <ol className="mt-4">
                 {flow.map((s, i) => (
                   <li key={s.title} className="grid grid-cols-[52px_16px_52px_1fr] items-center gap-x-4 py-2.5 max-sp:grid-cols-[44px_8px_1fr] max-sp:gap-x-3">
                     <span aria-hidden className="flex size-[52px] items-center justify-center rounded-full bg-surface-alt font-display text-[17px] font-semibold text-fg max-sp:size-11 max-sp:text-[15px]">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span aria-hidden className="relative mx-auto size-[7px] rounded-full bg-marker" />
-                    {/* SP はアイコンと文を薄いグレーの箱にまとめる */}
-                    <div className="contents max-sp:grid max-sp:grid-cols-[40px_1fr] max-sp:items-center max-sp:gap-x-3 max-sp:rounded-[10px] max-sp:bg-surface max-sp:p-3">
-                      <span aria-hidden className="flex size-[52px] items-center justify-center rounded-full bg-surface-alt text-fg max-sp:size-10 max-sp:bg-bg">
+                    {/* 赤い点と縦線。線は行ごとに引き（li の上下の余白 py-2.5 の分だけはみ出させて次の行とつなぐ）、最初の行は点から下、最後の行は点まで（端は点で止める） */}
+                    <span aria-hidden className="relative flex items-center justify-center self-stretch">
+                      <span className={`absolute left-1/2 w-px -translate-x-1/2 ${RED_BG} ${i === 0 ? "top-1/2" : "-top-2.5"} ${i === flow.length - 1 ? "bottom-1/2" : "-bottom-2.5"}`} />
+                      <span className={`relative size-[7px] rounded-full ${RED_BG}`} />
+                    </span>
+                    {/* SP は文だけを薄いグレーの箱に入れる（アイコンは出さない） */}
+                    <div className="contents max-sp:block max-sp:rounded-[10px] max-sp:bg-surface max-sp:px-4 max-sp:py-3">
+                      <span aria-hidden className="flex size-[52px] items-center justify-center rounded-full bg-surface-alt text-fg max-sp:hidden">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-6 max-sp:size-5">
                           <path d={FLOW_ICON[s.icon]} />
                         </svg>

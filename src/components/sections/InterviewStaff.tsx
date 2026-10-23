@@ -1,4 +1,5 @@
 "use client";
+import { RED_BG } from "@/components/sections/interview-red";
 import Picture from "@/components/ui/Picture";
 import { INTERVIEW } from "@/content/interview";
 import { useSearch } from "@/lib/use-search";
@@ -30,7 +31,7 @@ export default function InterviewStaff() {
           <div className="@min-[440px]:mt-3">
             <p className="text-[12px] text-fg-muted">{p.role}</p>
             <p className="text-[17px] leading-[1.3] font-bold text-fg">{p.name}</p>
-            <span aria-hidden className="mt-1 block h-[2px] w-5 bg-marker" />
+            <span aria-hidden className={`mt-1 block h-[2px] w-5 ${RED_BG}`} />
             {p.message && <p className="mt-2.5 whitespace-pre-line text-[12px] leading-[1.75] text-fg-body @min-[440px]:whitespace-normal">{p.message}</p>}
           </div>
         </li>
