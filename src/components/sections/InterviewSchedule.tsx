@@ -42,11 +42,11 @@ function CalButton({ icon, name, href, download }: { icon: ReactNode; name: stri
  * 無ければ ?d=2026-10-22T13:00（JST）から読む（静的エクスポートなので SSR では日時なしで描き、ハイドレーション後に差し替える）。
  * ?n=氏名（シートの G 列。ENCODEURL 済み）があれば「〇〇 様」の見出しを出す（/interview/ は GA4 を読まず、Referer も送らない）。k / d が無い・不正なときは日時の代わりに「日時は確定メールをご確認ください」を出し、カレンダー登録は出さない。
  * joinNote を渡すと Zoom ボタンの代わりにその文言を枠だけで出し、ID・パスコードも出さない（二次面接）。
- * showTitle を付けると日時のラベルを「面接日時」ではなく「{title}日時」（例 二次面接日時）にする。
+ * 日時のラベルは「{title}日時」（例 一次面接日時）。
  * @example <InterviewSchedule title="一次面接" />
- * @example <InterviewSchedule title="二次面接" joinNote="Indeedのメッセージを確認ください" showTitle />
+ * @example <InterviewSchedule title="二次面接" joinNote="Indeedのメッセージを確認ください" />
  */
-export default function InterviewSchedule({ title, joinNote, showTitle = false }: { title: string; joinNote?: string; showTitle?: boolean }) {
+export default function InterviewSchedule({ title, joinNote }: { title: string; joinNote?: string }) {
   const search = useSearch();
   const ready = useHydrated();
   const q = new URLSearchParams(search);
@@ -79,7 +79,7 @@ export default function InterviewSchedule({ title, joinNote, showTitle = false }
             （日時は 1 行に収まる大きさで最大 40px）。丸はラベルと日時の 2 行分の左、ラベル・所要時間と罫線は日時の書き出しに揃える */}
         <div className="@container mt-6 grid min-h-[150px] grid-cols-[auto_1fr] content-center gap-x-3 rounded-[12px] bg-surface px-5 py-6 max-sp:mt-2 max-sp:min-h-0 max-sp:px-3 max-sp:py-4">
           <p className="col-start-2 text-[13px] font-bold text-fg max-sp:text-[12px]">
-            {showTitle ? `${title}日時` : <><span className="sr-only">{title}</span>面接日時</>}
+            {title}日時
           </p>
           {/* 丸の中にアイコン（参考画像の比率: 丸は日時の文字の約 2.3 倍、上限 72px。アイコンは丸の 52%） */}
           <span aria-hidden className="row-start-1 row-span-2 flex size-[min(72px,calc((100cqw_-_26px)/15.1*2.3))] items-center justify-center self-center rounded-full bg-placeholder/70 text-fg">
