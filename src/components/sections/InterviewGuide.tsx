@@ -133,10 +133,10 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
                     <span aria-hidden className="flex size-[52px] items-center justify-center rounded-full bg-surface-alt font-display text-[17px] font-semibold text-fg max-sp:size-11 max-sp:text-[15px]">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    {/* 赤い点と灰色の縦線（2px）。線は行ごとに引き（li の上下の余白 py-2.5 の分だけはみ出させて次の行とつなぐ）、最初の行は点から下、最後の行は点まで（端は点で止める） */}
+                    {/* 赤い点（8px）と灰色の縦線（2px）。どちらも偶数幅にして中心を画素に揃える。線は行ごとに引き（li の上下の余白 py-2.5 より少し長くはみ出させ、隣の行と重ねて切れ目を出さない）、最初の行は点から下、最後の行は点まで（端は点で止める） */}
                     <span aria-hidden className="relative flex items-center justify-center self-stretch">
-                      <span className={`absolute left-1/2 w-[2px] -translate-x-1/2 bg-placeholder-text ${i === 0 ? "top-1/2" : "-top-2.5"} ${i === flow.length - 1 ? "bottom-1/2" : "-bottom-2.5"}`} />
-                      <span className={`relative size-[7px] rounded-full ${RED_BG}`} />
+                      <span className={`absolute left-1/2 w-[2px] -translate-x-1/2 bg-placeholder-text ${i === 0 ? "top-1/2" : "-top-3"} ${i === flow.length - 1 ? "bottom-1/2" : "-bottom-3"}`} />
+                      <span className={`relative size-2 rounded-full ${RED_BG}`} />
                     </span>
                     {/* SP は文だけを薄いグレーの箱に入れる（アイコンは出さない） */}
                     <div className="contents max-sp:block max-sp:rounded-[10px] max-sp:bg-surface max-sp:px-4 max-sp:py-3">

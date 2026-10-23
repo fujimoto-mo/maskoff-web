@@ -149,6 +149,12 @@
     "avif": "/images/optimized/interview/ooishi.avif",
     "webp": "/images/optimized/interview/ooishi.webp"
   },
+  "/images/interview/watanabe.jpg": {
+    "width": 288,
+    "height": 288,
+    "avif": "/images/optimized/interview/watanabe.avif",
+    "webp": "/images/optimized/interview/watanabe.webp"
+  },
   "/images/interview/yamamoto.jpg": {
     "width": 288,
     "height": 288,
