@@ -74,20 +74,20 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
       <div>
         <p className="whitespace-pre-line text-[14px] leading-[1.9] tracking-[.04em] text-fg-body max-sp:text-[13px]">{greeting}</p>
 
-        {/* 日時（SSR では空。最小高さでハイドレーション前後のずれを抑える）。SP は 1 行に収まるよう文字を画面幅に合わせて縮め（アイコンと余白も小さく）、所要時間を箱の横幅いっぱいに */}
-        <div className="mt-6 grid min-h-[150px] grid-cols-[auto_1fr] max-sp:mt-2 items-center gap-x-7 rounded-[12px] bg-surface px-6 py-6 max-sp:min-h-0 max-sp:gap-x-2.5 max-sp:px-3 max-sp:py-4">
-          <span aria-hidden className="row-span-2 flex size-[96px] items-center justify-center rounded-full bg-surface-alt text-fg max-sp:row-span-1 max-sp:size-11">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-10 max-sp:size-5">
+        {/* 日時（SSR では空。最小高さでハイドレーション前後のずれを抑える）。日時は 1 行に収まるよう、文字を日時の列の幅（コンテナクエリの cqw）に合わせて縮める。SP はアイコンと余白も小さくし、所要時間を箱の横幅いっぱいに */}
+        <div className="mt-6 grid min-h-[150px] grid-cols-[auto_1fr] max-sp:mt-2 items-center gap-x-4 rounded-[12px] bg-surface px-5 py-6 max-sp:min-h-0 max-sp:gap-x-2.5 max-sp:px-3 max-sp:py-4">
+          <span aria-hidden className="row-span-2 flex size-[68px] items-center justify-center rounded-full bg-surface-alt text-fg max-sp:row-span-1 max-sp:size-11">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-8 max-sp:size-5">
               <path d="M4.5 6.5h15v13h-15zM4.5 10.5h15M8.5 4v4M15.5 4v4M8 14h1M11.5 14h1M15 14h1M8 17h1M11.5 17h1" />
             </svg>
           </span>
-          <div className="min-w-0 self-end border-b border-border pb-3 max-sp:self-center">
+          <div className="@container min-w-0 self-end border-b border-border pb-3 max-sp:self-center">
             <p className="text-[13px] font-bold text-fg max-sp:text-[12px]">
               <span className="sr-only">{title}</span>面接日時
             </p>
             {p ? (
               <p className="mt-1.5 leading-none font-bold tracking-[-.01em] whitespace-nowrap text-fg" data-start>
-                <span className="text-[clamp(26px,3.4vw,40px)] max-sp:text-[length:min(26px,calc((100vw_-_124px)/12.8))]">
+                <span className="text-[length:min(40px,calc((100cqw_-_14px)/12.8))]">
                   {p.year}
                   <span className="text-[.68em]">年</span>
                   {p.month}
