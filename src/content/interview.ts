@@ -9,15 +9,16 @@ export type Interviewer = { id: string; role: string; name: string; message: str
 export const INTERVIEW = {
   /** 画面上の面接名（h1 と予定の件名に使う）。first = /interview/、second = /interview/second/ */
   titles: { first: "一次面接", second: "二次面接" },
-  /** ページ右上の一言（社名の行の右端） */
-  tagline: "個性が、社会を動かす力になる。",
   /** 上部のキャッチ。label は赤い英字ラベル、lines は大見出し（1 要素 = 1 行） */
   hero: {
     label: "INTERVIEW INVITATION",
     lines: ["あなたらしさを、", "聞かせてください。"],
-    sub: "面接はお互いを知るための時間です。\nリラックスしてお話ししましょう。",
-    /** キャッチの右に敷く室内写真（「TAKE THE MASK OFF」の手書き入り。docs/MasKOFF面接招待ランディングページ.png の右上を切り出し、焼き込みの罫線・一言を消したもの） */
-    image: { src: "/images/interview/invite-hero.jpg", alt: "TAKE THE MASK OFF" },
+    sub: "リラックスしてお話しできる場です。\n当日はお会いできることを楽しみにしています。",
+    /**
+     * 上部の室内写真（bg）と、その上に重ねる手書き「TAKE THE MASK OFF」（hand、透過 PNG）。docs/MasKOFF面接招待ランディングページ.png の右上を切り出し、
+     * 焼き込みの罫線・一言を消して、手書きの線だけを抜き出したもの（bg は線の跡を周りの色で埋め、SP で縮小して敷けるよう上の壁を 180px、カードの裏まで続くよう下の机を 80px 延ばしてある）。bgSp は SP 用で、植物を中央の椅子の右へ移したもの。alt は hand に付ける
+     */
+    image: { bg: "/images/interview/invite-bg.jpg", bgSp: "/images/interview/invite-bg-sp.jpg", hand: "/images/interview/invite-hand.png", alt: "TAKE THE MASK OFF" },
   },
   /** 氏名の下の挨拶（\n で改行） */
   greeting: "このたびはご応募いただき、誠にありがとうございます。\n下記の日程で、面接のご案内をさせていただきます。",
@@ -51,9 +52,11 @@ export const INTERVIEW = {
    * 今の photo は各人の持ち物をイメージした線画（丸枠で切り抜いた 288px の JPEG。public/images/interview/）
    */
   interviewers: [
-    { id: "ikeda", role: "人事", name: "池田", message: "細かいところまで気が配れる、しっかり者の人事担当！\n持ち前の丁寧さで、みんなをサポートしています💪", photo: "/images/interview/ikeda.jpg" },
-    { id: "hashizume", role: "役員", name: "橋爪", message: "クライアント様からの信頼も厚い、優しいお姉さん！\nメンバーからも頼られる、みんなの相談役です✨", photo: "/images/interview/hashizume.jpg" },
+    { id: "ikeda", role: "採用担当", name: "池田", message: "細かいところまで気が配れる、しっかり者の採用担当！\n持ち前の丁寧さで、みんなをサポートしています💪", photo: "/images/interview/ikeda.jpg" },
+    // 紹介文・写真は仮（池田と同じ）。差し替え待ち
+    { id: "watanabe", role: "採用担当", name: "渡邊", message: "細かいところまで気が配れる、しっかり者の採用担当！\n持ち前の丁寧さで、みんなをサポートしています💪", photo: "/images/interview/ikeda.jpg" },
     { id: "michiwaki", role: "講師", name: "道脇", message: "アパレルが大好きな、カリキュラム卒業生！\n現在は講師としても活躍しています👕✨", photo: "/images/interview/michiwaki.jpg" },
+    { id: "hashizume", role: "役員", name: "橋爪", message: "クライアント様からの信頼も厚い、優しいお姉さん！\nメンバーからも頼られる、みんなの相談役です✨", photo: "/images/interview/hashizume.jpg" },
     { id: "ooishi", role: "役員", name: "大石", message: "常に最新情報をキャッチアップする、勢いあふれる役員！\n日々のトレーニングも欠かさない、ストイックな一面も🏃", photo: "/images/interview/ooishi.jpg" },
     { id: "yamamoto", role: "役員", name: "山本", message: "会社全体の事業を統括する頼れる存在！\nプライベートでは優しい二児のパパです😊", photo: "/images/interview/yamamoto.jpg" },
   ] as readonly Interviewer[],
