@@ -16,18 +16,18 @@ const APPLE =
 function CalButton({ icon, name, href, download }: { icon: ReactNode; name: string; href: string; download?: string }) {
   const body = (
     <>
-      <span aria-hidden className="flex size-7 flex-none items-center justify-center">
+      <span aria-hidden className="flex size-7 flex-none items-center justify-center max-sp:size-[18px]">
         {icon}
       </span>
-      <span className="min-w-0 text-[13px] leading-[1.45] text-fg max-sp:text-center max-sp:text-[10px] max-sp:tracking-[-.02em]">
+      <span className="min-w-0 text-[13px] leading-[1.45] text-fg max-sp:text-[length:min(10px,2.55vw)] max-sp:tracking-[-.04em]">
         {name}
         <br />
         カレンダーに登録
       </span>
     </>
   );
-  // SP は 3 つ並べると幅が足りないので、アイコンを上・文言を下に縦に組む
-  const cls = "flex items-center gap-3 rounded-[8px] border border-border bg-bg px-4 py-3 transition-colors hover:bg-surface max-sp:flex-col max-sp:gap-1.5 max-sp:px-1 max-sp:py-2.5";
+  // SP は 3 つ並べると幅が詰まるので、アイコンと余白を小さくし文字を画面幅に合わせて縮める（アイコンは文言の左のまま）
+  const cls = "flex items-center gap-3 rounded-[8px] border border-border bg-bg px-4 py-3 transition-colors hover:bg-surface max-sp:justify-center max-sp:gap-1 max-sp:px-1 max-sp:py-2.5";
   return download ? (
     <a href={href} download={download} className={cls}>
       {body}
@@ -117,11 +117,11 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
         {ev && ics && (
           <div className="mt-5">
             <p className="text-[13px] font-bold text-fg max-sp:sr-only">カレンダーに登録する</p>
-            <div className="mt-2 grid grid-cols-3 gap-2.5 max-sp:gap-2">
-              <CalButton icon={<Picture src="/images/interview/google.svg" alt="" width={24} height={24} imgClassName="block size-6 max-sp:size-5" />} name="Google" href={googleCalendarUrl(ev)} />
+            <div className="mt-2 grid grid-cols-3 gap-2.5 max-sp:gap-1.5">
+              <CalButton icon={<Picture src="/images/interview/google.svg" alt="" width={24} height={24} imgClassName="block size-6 max-sp:size-[18px]" />} name="Google" href={googleCalendarUrl(ev)} />
               <CalButton
                 icon={
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="size-6 text-fg max-sp:size-5">
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="size-6 text-fg max-sp:size-[18px]">
                     <path d={APPLE} />
                   </svg>
                 }
@@ -129,7 +129,7 @@ export default function InterviewSchedule({ title, joinNote }: { title: string; 
                 href={ics}
                 download="maskoff-interview.ics"
               />
-              <CalButton icon={<Picture src="/images/interview/outlook.svg" alt="" width={26} height={26} imgClassName="block size-[26px] max-sp:size-[22px]" />} name="Outlook" href={ics} download="maskoff-interview.ics" />
+              <CalButton icon={<Picture src="/images/interview/outlook.svg" alt="" width={26} height={26} imgClassName="block size-[26px] max-sp:size-[19px]" />} name="Outlook" href={ics} download="maskoff-interview.ics" />
             </div>
           </div>
         )}

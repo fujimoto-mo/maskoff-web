@@ -45,14 +45,14 @@ export default function InterviewGuide({ kind }: { kind: InterviewKind }) {
       <div className="wrap relative">
         {/* 上部（社名・キャッチ）。背景の室内写真と手書きは別画像で重ねる（手書きの大きさ・位置を写真の拡縮と切り離すため） */}
         <div className="relative">
-          {/* 室内写真（上の壁を延ばした縦長版。下端の机を基準に置く）。PC・タブレットは右寄せで左と下を背景色へ溶かす。SP は下端を招待カードの上端に揃え（椅子がカードに隠れないように）、枠を右へ 200px はみ出させて中央の椅子を画面の右端に寄せる */}
+          {/* 室内写真（上の壁を延ばした縦長版。下端の机を基準に置く）。PC・タブレットは右寄せで左と下を背景色へ溶かす。SP は右 62% の枠に写真の右端（右の椅子とその上の植物）だけを切り出して見せる（画像を枠の 170% の高さで右下に置き、はみ出した左側は枠で隠す。下端は招待カードの上端に揃える） */}
           <Picture
             src={hero.image.bg}
             alt=""
             sizes="(max-width: 600px) 100vw, 60vw"
             priority
-            className="absolute top-0 right-[calc(var(--spacing-pad-x)*-1)] block h-[360px] w-[60vw] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_top,transparent,black_30%)] [mask-composite:intersect] max-pc:h-[300px] max-sp:-inset-x-pad-x-sp max-sp:-right-[200px] max-sp:bottom-0 max-sp:h-auto max-sp:w-auto max-sp:[mask-image:none]"
-            imgClassName="size-full object-cover object-left-bottom max-sp:object-right-bottom"
+            className="absolute top-0 right-[calc(var(--spacing-pad-x)*-1)] block h-[360px] w-[60vw] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_top,transparent,black_30%)] [mask-composite:intersect] max-pc:h-[300px] max-sp:right-[calc(var(--spacing-pad-x-sp)*-1)] max-sp:bottom-0 max-sp:h-auto max-sp:w-[62%] max-sp:overflow-hidden max-sp:[mask-image:linear-gradient(to_right,transparent,black_45%)]"
+            imgClassName="size-full object-cover object-left-bottom max-sp:absolute max-sp:right-0 max-sp:bottom-0 max-sp:h-[170%] max-sp:w-auto max-sp:max-w-none"
           />
           {/* SP は見本どおり左側を白く溶かす（文字の下は白、右に行くほど写真が見える） */}
           <span aria-hidden className="absolute -inset-x-pad-x-sp top-0 bottom-0 hidden bg-[linear-gradient(to_right,var(--color-bg)_0%,color-mix(in_srgb,var(--color-bg)_85%,transparent)_30%,color-mix(in_srgb,var(--color-bg)_35%,transparent)_62%,transparent_85%)] max-sp:block" />
