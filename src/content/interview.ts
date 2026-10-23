@@ -53,8 +53,7 @@ export const INTERVIEW = {
    */
   interviewers: [
     { id: "ikeda", role: "採用担当", name: "池田", message: "明るく柔軟な対応が得意な、頼れる人事担当！\nどんなときも相手に寄り添い、安心して話せる雰囲気を大切にしています🍀", photo: "/images/interview/ikeda.jpg" },
-    // 写真は仮（池田と同じ）。差し替え待ち
-    { id: "watanabe", role: "採用担当", name: "渡邉", message: "元アパレルデザイナーならではの感性と、細やかな気配りが魅力！\n一つひとつ丁寧に向き合い、みんなをサポートしています🌸", photo: "/images/interview/ikeda.jpg" },
+    { id: "watanabe", role: "採用担当", name: "渡邉", message: "元アパレルデザイナーならではの感性と、細やかな気配りが魅力！\n一つひとつ丁寧に向き合い、みんなをサポートしています🌸", photo: "/images/interview/watanabe.jpg" },
     { id: "michiwaki", role: "講師", name: "道脇", message: "アパレルが大好きな、カリキュラム卒業生！\n現在は講師としても活躍しています👕", photo: "/images/interview/michiwaki.jpg" },
     { id: "hashizume", role: "役員", name: "橋爪", message: "クライアント様からの信頼も厚い、優しいお姉さん！\nメンバーからも頼られる、みんなの相談役です✨", photo: "/images/interview/hashizume.jpg" },
     { id: "ooishi", role: "役員", name: "大石", message: "常に最新情報をキャッチアップする、勢いあふれる役員！\n日々のトレーニングも欠かさない、ストイックな一面も💪", photo: "/images/interview/ooishi.jpg" },
