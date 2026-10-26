@@ -1,7 +1,7 @@
 /**
  * /interview/ の日時まわり（純粋関数。node:test 対象）。
  * URL の k（parseToken）または d（例 2026-10-22T13:00。タイムゾーン無しは JST とみなす。ISO 8601 の完全形も可）を Date にし、
- * 「10月22日（木）13:00〜」の表示文字列と、Google カレンダー URL / .ics を作る。
+ * 「10月22日（木）13:00〜」の表示文字列を作る。
  */
 const JST = "Asia/Tokyo";
 
@@ -60,46 +60,6 @@ export function formatStartJa(start: Date): string {
 export function formatStartParts(start: Date): { year: string; month: string; day: string; weekday: string; time: string } {
   const p = jstParts(start);
   return { year: p.y, month: p.mo, day: p.d, weekday: p.wd, time: `${p.h}:${p.mi}` };
-}
-
-/** "20261022T130000"（JST、カレンダー用） */
-export function compactJst(date: Date): string {
-  const p = jstParts(date);
-  return `${p.y}${p.mo.padStart(2, "0")}${p.d.padStart(2, "0")}T${p.h}${p.mi}00`;
-}
-
-/** location は空にできる（空なら Google では未指定、.ics では LOCATION / URL 行を出さない） */
-export type CalendarEvent = { start: Date; durationMin: number; summary: string; description: string; location: string };
-
-/** Google カレンダーの「予定を作成」URL */
-export function googleCalendarUrl(ev: CalendarEvent): string {
-  const end = new Date(ev.start.getTime() + ev.durationMin * 60_000);
-  const q = new URLSearchParams({ action: "TEMPLATE", text: ev.summary, dates: `${compactJst(ev.start)}/${compactJst(end)}`, ctz: JST, details: ev.description });
-  if (ev.location) q.set("location", ev.location);
-  return `https://calendar.google.com/calendar/render?${q.toString()}`;
-}
-
-const icsEscape = (s: string) => s.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
-
-/** .ics の本文（CRLF 区切り）。Apple / Outlook 用 */
-export function icsText(ev: CalendarEvent, uid: string): string {
-  const end = new Date(ev.start.getTime() + ev.durationMin * 60_000);
-  const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
-  return [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//MasKOFF//Interview//JA",
-    "BEGIN:VEVENT",
-    `UID:${uid}`,
-    `DTSTAMP:${stamp}`,
-    `DTSTART;TZID=${JST}:${compactJst(ev.start)}`,
-    `DTEND;TZID=${JST}:${compactJst(end)}`,
-    `SUMMARY:${icsEscape(ev.summary)}`,
-    `DESCRIPTION:${icsEscape(ev.description)}`,
-    ...(ev.location ? [`LOCATION:${icsEscape(ev.location)}`, `URL:${ev.location}`] : []),
-    "END:VEVENT",
-    "END:VCALENDAR",
-  ].join("\r\n");
 }
 
 /** URL の n（氏名。シートの G 列「田中陽子様」）→ 敬称を除いた氏名。末尾の「様 / さま」と空白を落とし 40 文字まで */
