@@ -24,8 +24,6 @@ export const INTERVIEW = {
   greeting: "このたびはご応募いただき、誠にありがとうございます。\n下記の日程で、面接のご案内をさせていただきます。",
   /** 所要時間の表示（日時カード「Zoom・〇〇」）。一次・二次共通 */
   durationLabel: "約30分〜1時間ほど",
-  /** カレンダーに追加する予定の長さ（分）。表示の上限に合わせる */
-  durationMin: 60,
   zoom: {
     url: "https://us05web.zoom.us/j/3845940162?pwd=LVqx53ktscsUVkQmHOVeddP5WaSykP.1",
     meetingId: "384 594 0162",
@@ -33,7 +31,7 @@ export const INTERVIEW = {
   },
   /** Zoom ボタンの下の注記 */
   zoomNote: "※ 上記ボタンから、当日の時間になりましたらご参加ください。",
-  /** 二次面接は Zoom ボタンの代わりにこの案内を枠だけで出す（参加リンクは Indeed のメッセージで送る）。\n で改行（カレンダーの予定には改行なしで入る） */
+  /** 二次面接は Zoom ボタンの代わりにこの案内を枠だけで出す（参加リンクは Indeed のメッセージで送る）。\n で改行 */
   secondJoinNote: "ZoomのURLは、Indeedのメッセージを\n確認ください",
   /** 当日の流れ（番号付きで表示）。icon は InterviewGuide の FLOW_ICON のキー */
   flow: [
