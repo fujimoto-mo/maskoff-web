@@ -1,7 +1,6 @@
 /**
- * 一次面接・二次面接の案内ページ（/interview/・/interview/second/）の固定内容。Zoom・担当・流れは共通。JICOO の予約完了メール・リマインドメールから
+ * 一次面接・二次面接の案内ページ（/interview/・/interview/second/）の固定内容。Zoom の案内・担当・流れは共通。JICOO の予約完了メール・リマインドメールから
  * `https://www.maskoff.co.jp/interview/?k=1U0XI1&n=%E7%94%B0...&s=a` のようにリンクする（k は日時、n は氏名。シートの AL 列の式は lib/interview-schedule.ts の TOKEN_KEY 参照。s は担当者 id。いずれも省略可）。
- * Zoom の URL・ミーティング ID・パスコードはここで固定（JICOO 側の値と一致させる）。
  */
 export type InterviewKind = "first" | "second";
 export type Interviewer = { id: string; role: string; name: string; message: string; photo?: string };
@@ -24,15 +23,8 @@ export const INTERVIEW = {
   greeting: "このたびはご応募いただき、誠にありがとうございます。\n下記の日程で、面接のご案内をさせていただきます。",
   /** 所要時間の表示（日時カード「Zoom・〇〇」）。一次・二次共通 */
   durationLabel: "約30分〜1時間ほど",
-  zoom: {
-    url: "https://us05web.zoom.us/j/3845940162?pwd=LVqx53ktscsUVkQmHOVeddP5WaSykP.1",
-    meetingId: "384 594 0162",
-    passcode: "6PXTSm",
-  },
-  /** Zoom ボタンの下の注記 */
-  zoomNote: "※ 上記ボタンから、当日の時間になりましたらご参加ください。",
-  /** 二次面接は Zoom ボタンの代わりにこの案内を枠だけで出す（参加リンクは Indeed のメッセージで送る）。\n で改行 */
-  secondJoinNote: "ZoomのURLは、Indeedのメッセージを\n確認ください",
+  /** 日時の下に枠だけで出す案内（参加リンクは Indeed のメッセージで送る）。一次・二次共通。\n で改行 */
+  joinNote: "ZoomのURLは、Indeedのメッセージを\n確認ください",
   /** 当日の流れ（番号付きで表示）。icon は InterviewGuide の FLOW_ICON のキー */
   flow: [
     { icon: "user", title: "あなたについて教えてください", text: "これまでのご経験や、今後やりたいことなどをお聞かせください。" },
